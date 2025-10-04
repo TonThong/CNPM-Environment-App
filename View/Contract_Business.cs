@@ -10,21 +10,11 @@ using System.Windows.Forms;
 
 namespace Environmental_Monitoring.View
 {
-    public partial class Mainlayout : Form
+    public partial class Contract_Business : Mainlayout
     {
-        public Mainlayout()
+        public Contract_Business()
         {
             InitializeComponent();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Environmental_Monitoring/1.0.0": {
+        "runtime": {
+          "Environmental_Monitoring.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Environmental_Monitoring/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
