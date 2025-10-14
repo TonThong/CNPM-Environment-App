@@ -4,7 +4,10 @@
     <Compile Update="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="View\Contract_Business.cs">
+    <Compile Update="View\Contract.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Contract_pages\ContractBusiness.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="View\Introduce.cs">

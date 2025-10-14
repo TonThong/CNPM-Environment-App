@@ -8,26 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Environmental_Monitoring.View
+namespace Environmental_Monitoring.View.Contract_pages
 {
-    public partial class Mainlayout : Form
+    public partial class ContractBusiness : Contract
     {
-        public Mainlayout()
+        public ContractBusiness()
         {
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Mainlayout_Load(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }

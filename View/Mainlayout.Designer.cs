@@ -39,7 +39,12 @@
             btnIntro = new Button();
             picLogo = new PictureBox();
             labelName = new Label();
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            background = new Panel();
+            txbSearch = new TextBox();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
+            background.SuspendLayout();
             SuspendLayout();
             // 
             // btnNav
@@ -188,11 +193,29 @@
             labelName.BackColor = Color.Transparent;
             labelName.Font = new Font("Times New Roman", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelName.ForeColor = Color.DarkGreen;
-            labelName.Location = new Point(204, 25);
+            labelName.Location = new Point(185, 25);
             labelName.Name = "labelName";
             labelName.Size = new Size(296, 45);
             labelName.TabIndex = 10;
             labelName.Text = "GREEN FLOW";
+            // 
+            // background
+            // 
+            background.Controls.Add(txbSearch);
+            background.Location = new Point(79, 86);
+            background.Margin = new Padding(0);
+            background.Name = "background";
+            background.Size = new Size(711, 344);
+            background.TabIndex = 11;
+            // 
+            // txbSearch
+            // 
+            txbSearch.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txbSearch.Location = new Point(463, 17);
+            txbSearch.Name = "txbSearch";
+            txbSearch.Size = new Size(214, 38);
+            txbSearch.TabIndex = 0;
+            txbSearch.Text = "Nhập Từ Khóa";
             // 
             // Mainlayout
             // 
@@ -201,6 +224,7 @@
             BackgroundImage = Properties.Resources.ca7af95a0a6ef742275e971b4cf43ad79d9b4ea4;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(847, 508);
+            Controls.Add(background);
             Controls.Add(labelName);
             Controls.Add(picLogo);
             Controls.Add(btnIntro);
@@ -214,7 +238,10 @@
             Controls.Add(btnNav);
             Name = "Mainlayout";
             Text = "Mainlayout";
+            Load += Mainlayout_Load;
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
+            background.ResumeLayout(false);
+            background.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -232,5 +259,9 @@
         private Button btnIntro;
         private PictureBox picLogo;
         private Label labelName;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker2;
+        private TextBox txbSearch;
+        protected Panel background;
     }
 }

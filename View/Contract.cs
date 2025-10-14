@@ -10,24 +10,24 @@ using System.Windows.Forms;
 
 namespace Environmental_Monitoring.View
 {
-    public partial class Mainlayout : Form
+    public partial class Contract : Mainlayout
     {
-        public Mainlayout()
+        public Contract()
         {
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void labelBusiness_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void Mainlayout_Load(object sender, EventArgs e)
+        private void label1_Click_1(object sender, EventArgs e)
         {
 
         }
