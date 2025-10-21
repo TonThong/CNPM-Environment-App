@@ -191,7 +191,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(810, 493);
+            ClientSize = new Size(830, 493);
             Name = "ContractBusiness";
             Text = "ContractBusiness";
             background.ResumeLayout(false);

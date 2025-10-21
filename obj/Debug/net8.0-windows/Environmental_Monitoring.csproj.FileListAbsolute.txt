@@ -23,3 +23,4 @@ E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Mon
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Contract_pages.ContractBusiness.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Contract_pages.ContractExperiment.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Contract_pages.ContractPlan.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Contract_pages.ContractResult.resources
