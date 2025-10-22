@@ -34,7 +34,9 @@
             btnApprove = new Button();
             btnRequestEdit = new Button();
             btnMail = new Button();
+            dvgResult = new DataGridView();
             background.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dvgResult).BeginInit();
             SuspendLayout();
             // 
             // labelResult
@@ -43,6 +45,7 @@
             // 
             // background
             // 
+            background.Controls.Add(dvgResult);
             background.Controls.Add(btnRequestEdit);
             background.Controls.Add(btnMail);
             background.Controls.Add(btnExportPDF);
@@ -59,6 +62,7 @@
             background.Controls.SetChildIndex(btnExportPDF, 0);
             background.Controls.SetChildIndex(btnMail, 0);
             background.Controls.SetChildIndex(btnRequestEdit, 0);
+            background.Controls.SetChildIndex(dvgResult, 0);
             // 
             // labelContractID
             // 
@@ -117,6 +121,15 @@
             btnMail.Text = "Gửi Mail";
             btnMail.UseVisualStyleBackColor = true;
             // 
+            // dvgResult
+            // 
+            dvgResult.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dvgResult.Location = new Point(3, 153);
+            dvgResult.Name = "dvgResult";
+            dvgResult.RowHeadersWidth = 51;
+            dvgResult.Size = new Size(706, 129);
+            dvgResult.TabIndex = 24;
+            // 
             // ContractResult
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -124,8 +137,10 @@
             ClientSize = new Size(800, 450);
             Name = "ContractResult";
             Text = "ContractResult";
+            Load += ContractResult_Load;
             background.ResumeLayout(false);
             background.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dvgResult).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -138,5 +153,6 @@
         private Button btnMail;
         private Button btnExportPDF;
         private Button btnApprove;
+        private DataGridView dvgResult;
     }
 }

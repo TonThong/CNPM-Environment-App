@@ -23,9 +23,9 @@ namespace Environmental_Monitoring.Model
 
         public DateTime? NgayTraKetQua { get; set; }
 
-        public ContractType? ContractType { get; set; }
+        public string ContractType { get; set; }
 
-        public ContractStatus? Status { get; set; }
+        public string Status { get; set; }
 
         // Foreign Keys
         public int? CustomerID { get; set; }

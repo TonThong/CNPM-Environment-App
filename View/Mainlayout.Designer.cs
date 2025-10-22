@@ -60,6 +60,7 @@
             btnNav.Size = new Size(74, 70);
             btnNav.TabIndex = 0;
             btnNav.UseVisualStyleBackColor = false;
+            btnNav.Click += btnNav_Click;
             // 
             // btnHome
             // 

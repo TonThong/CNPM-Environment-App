@@ -31,5 +31,10 @@ namespace Environmental_Monitoring.View
         {
 
         }
+
+        private void btnNav_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
