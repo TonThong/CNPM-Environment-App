@@ -1784,23 +1784,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tonth\\.nuget\\packages\\": {},
+    "C:\\Users\\chitu\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Environmental_Monitoring.csproj",
+      "projectUniqueName": "C:\\Github\\CNPM-Environment-App\\Environmental_Monitoring.csproj",
       "projectName": "Environmental_Monitoring",
-      "projectPath": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Environmental_Monitoring.csproj",
-      "packagesPath": "C:\\Users\\tonth\\.nuget\\packages\\",
-      "outputPath": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\obj\\",
+      "projectPath": "C:\\Github\\CNPM-Environment-App\\Environmental_Monitoring.csproj",
+      "packagesPath": "C:\\Users\\chitu\\.nuget\\packages\\",
+      "outputPath": "C:\\Github\\CNPM-Environment-App\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\tonth\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\chitu\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1865,7 +1865,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

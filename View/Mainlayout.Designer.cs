@@ -33,7 +33,7 @@ namespace Environmental_Monitoring.View
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainlayout));
             lblBigName = new Label();
             panelMenu = new Panel();
-            menuButton1 = new MenuButton();
+            btnToggleMenu = new MenuButton();
             btnNotification = new MenuButton();
             btnStats = new MenuButton();
             btnContracts = new MenuButton();
@@ -46,8 +46,10 @@ namespace Environmental_Monitoring.View
             panelContent = new RoundedPanel();
             pictureBox1 = new PictureBox();
             btnBell = new MenuButton();
+            panelHeadder = new Panel();
             panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panelHeadder.SuspendLayout();
             SuspendLayout();
             // 
             // lblBigName
@@ -56,7 +58,7 @@ namespace Environmental_Monitoring.View
             lblBigName.BackColor = Color.Transparent;
             lblBigName.Font = new Font("Times New Roman", 28.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lblBigName.ForeColor = Color.DarkGreen;
-            lblBigName.Location = new Point(232, 44);
+            lblBigName.Location = new Point(150, 45);
             lblBigName.Name = "lblBigName";
             lblBigName.Size = new Size(346, 53);
             lblBigName.TabIndex = 18;
@@ -65,7 +67,7 @@ namespace Environmental_Monitoring.View
             // panelMenu
             // 
             panelMenu.BackColor = Color.FromArgb(217, 217, 217);
-            panelMenu.Controls.Add(menuButton1);
+            panelMenu.Controls.Add(btnToggleMenu);
             panelMenu.Controls.Add(btnNotification);
             panelMenu.Controls.Add(btnStats);
             panelMenu.Controls.Add(btnContracts);
@@ -74,32 +76,33 @@ namespace Environmental_Monitoring.View
             panelMenu.Controls.Add(btnHome);
             panelMenu.Controls.Add(btnSetting);
             panelMenu.Controls.Add(btnUser);
+            panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point(0, 0);
             panelMenu.Name = "panelMenu";
-            panelMenu.Size = new Size(90, 855);
+            panelMenu.Size = new Size(190, 853);
             panelMenu.TabIndex = 15;
             // 
-            // menuButton1
+            // btnToggleMenu
             // 
-            menuButton1.ActiveBackColor = Color.FromArgb(220, 240, 220);
-            menuButton1.ActiveBorderColor = Color.FromArgb(0, 100, 0);
-            menuButton1.BackColor = Color.Transparent;
-            menuButton1.BackgroundImage = (Image)resources.GetObject("menuButton1.BackgroundImage");
-            menuButton1.BackgroundImageLayout = ImageLayout.Stretch;
-            menuButton1.BorderLeftSize = 5;
-            menuButton1.FlatAppearance.BorderSize = 0;
-            menuButton1.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            menuButton1.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            menuButton1.FlatStyle = FlatStyle.Flat;
-            menuButton1.HoverBackColor = Color.FromArgb(230, 230, 230);
-            menuButton1.InactiveBackColor = Color.Transparent;
-            menuButton1.IsSelected = false;
-            menuButton1.Location = new Point(0, 0);
-            menuButton1.Name = "menuButton1";
-            menuButton1.PressedBackColor = Color.FromArgb(200, 200, 200);
-            menuButton1.Size = new Size(90, 90);
-            menuButton1.TabIndex = 10;
-            menuButton1.UseVisualStyleBackColor = false;
+            btnToggleMenu.ActiveBackColor = Color.FromArgb(220, 240, 220);
+            btnToggleMenu.ActiveBorderColor = Color.FromArgb(0, 100, 0);
+            btnToggleMenu.BackColor = Color.Transparent;
+            btnToggleMenu.BackgroundImage = (Image)resources.GetObject("btnToggleMenu.BackgroundImage");
+            btnToggleMenu.BackgroundImageLayout = ImageLayout.Stretch;
+            btnToggleMenu.BorderLeftSize = 5;
+            btnToggleMenu.FlatAppearance.BorderSize = 0;
+            btnToggleMenu.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            btnToggleMenu.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            btnToggleMenu.FlatStyle = FlatStyle.Flat;
+            btnToggleMenu.HoverBackColor = Color.FromArgb(230, 230, 230);
+            btnToggleMenu.InactiveBackColor = Color.Transparent;
+            btnToggleMenu.IsSelected = false;
+            btnToggleMenu.Location = new Point(0, 0);
+            btnToggleMenu.Name = "btnToggleMenu";
+            btnToggleMenu.PressedBackColor = Color.FromArgb(200, 200, 200);
+            btnToggleMenu.Size = new Size(190, 90);
+            btnToggleMenu.TabIndex = 10;
+            btnToggleMenu.UseVisualStyleBackColor = false;
             // 
             // btnNotification
             // 
@@ -119,7 +122,7 @@ namespace Environmental_Monitoring.View
             btnNotification.Location = new Point(0, 360);
             btnNotification.Name = "btnNotification";
             btnNotification.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnNotification.Size = new Size(90, 90);
+            btnNotification.Size = new Size(190, 90);
             btnNotification.TabIndex = 9;
             btnNotification.UseVisualStyleBackColor = false;
             // 
@@ -141,7 +144,7 @@ namespace Environmental_Monitoring.View
             btnStats.Location = new Point(0, 450);
             btnStats.Name = "btnStats";
             btnStats.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnStats.Size = new Size(90, 90);
+            btnStats.Size = new Size(190, 90);
             btnStats.TabIndex = 3;
             btnStats.UseVisualStyleBackColor = false;
             // 
@@ -163,7 +166,7 @@ namespace Environmental_Monitoring.View
             btnContracts.Location = new Point(0, 270);
             btnContracts.Name = "btnContracts";
             btnContracts.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnContracts.Size = new Size(90, 90);
+            btnContracts.Size = new Size(190, 90);
             btnContracts.TabIndex = 1;
             btnContracts.UseVisualStyleBackColor = false;
             btnContracts.Click += btnContracts_Click;
@@ -186,7 +189,7 @@ namespace Environmental_Monitoring.View
             btnIntroduce.Location = new Point(0, 720);
             btnIntroduce.Name = "btnIntroduce";
             btnIntroduce.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnIntroduce.Size = new Size(90, 90);
+            btnIntroduce.Size = new Size(190, 90);
             btnIntroduce.TabIndex = 8;
             btnIntroduce.UseVisualStyleBackColor = false;
             // 
@@ -208,7 +211,7 @@ namespace Environmental_Monitoring.View
             btnAI.Location = new Point(0, 630);
             btnAI.Name = "btnAI";
             btnAI.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnAI.Size = new Size(90, 90);
+            btnAI.Size = new Size(190, 90);
             btnAI.TabIndex = 7;
             btnAI.UseVisualStyleBackColor = false;
             // 
@@ -230,7 +233,7 @@ namespace Environmental_Monitoring.View
             btnHome.Location = new Point(0, 90);
             btnHome.Name = "btnHome";
             btnHome.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnHome.Size = new Size(90, 90);
+            btnHome.Size = new Size(190, 90);
             btnHome.TabIndex = 5;
             btnHome.UseVisualStyleBackColor = false;
             // 
@@ -252,7 +255,7 @@ namespace Environmental_Monitoring.View
             btnSetting.Location = new Point(0, 540);
             btnSetting.Name = "btnSetting";
             btnSetting.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnSetting.Size = new Size(90, 90);
+            btnSetting.Size = new Size(190, 90);
             btnSetting.TabIndex = 4;
             btnSetting.UseVisualStyleBackColor = false;
             btnSetting.Click += btnSetting_Click;
@@ -275,7 +278,7 @@ namespace Environmental_Monitoring.View
             btnUser.Location = new Point(0, 180);
             btnUser.Name = "btnUser";
             btnUser.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnUser.Size = new Size(90, 90);
+            btnUser.Size = new Size(190, 90);
             btnUser.TabIndex = 2;
             btnUser.UseVisualStyleBackColor = false;
             // 
@@ -315,7 +318,7 @@ namespace Environmental_Monitoring.View
             // 
             pictureBox1.BackColor = Color.Transparent;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(93, 0);
+            pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(140, 140);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -337,12 +340,23 @@ namespace Environmental_Monitoring.View
             btnBell.HoverBackColor = Color.LightGray;
             btnBell.InactiveBackColor = Color.Transparent;
             btnBell.IsSelected = false;
-            btnBell.Location = new Point(1225, 30);
+            btnBell.Location = new Point(1137, 25);
             btnBell.Name = "btnBell";
             btnBell.PressedBackColor = Color.Silver;
             btnBell.Size = new Size(90, 90);
             btnBell.TabIndex = 9;
             btnBell.UseVisualStyleBackColor = false;
+            // 
+            // panelHeadder
+            // 
+            panelHeadder.BackColor = Color.Transparent;
+            panelHeadder.Controls.Add(lblBigName);
+            panelHeadder.Controls.Add(btnBell);
+            panelHeadder.Controls.Add(pictureBox1);
+            panelHeadder.Location = new Point(90, 0);
+            panelHeadder.Name = "panelHeadder";
+            panelHeadder.Size = new Size(1230, 140);
+            panelHeadder.TabIndex = 21;
             // 
             // Mainlayout
             // 
@@ -350,18 +364,18 @@ namespace Environmental_Monitoring.View
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1421, 853);
-            Controls.Add(btnBell);
-            Controls.Add(pictureBox1);
+            Controls.Add(panelHeadder);
             Controls.Add(panelContent);
-            Controls.Add(lblBigName);
             Controls.Add(panelMenu);
             Controls.Add(btnMenu);
             Name = "Mainlayout";
             panelMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panelHeadder.ResumeLayout(false);
+            panelHeadder.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -381,6 +395,7 @@ namespace Environmental_Monitoring.View
         private PictureBox pictureBox1;
         private MenuButton btnBell;
         private MenuButton btnNotification;
-        private MenuButton menuButton1;
+        private MenuButton btnToggleMenu;
+        private Panel panelHeadder;
     }
 }

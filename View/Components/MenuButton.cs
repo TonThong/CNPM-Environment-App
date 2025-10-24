@@ -1,27 +1,23 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
+using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Environmental_Monitoring.View.Components
 {
     public class MenuButton : Button
     {
-        // === Các thuộc tính tùy chỉnh (Fields) ===
         private bool _isSelected = false;
         private bool isHovering = false;
-        private bool isPressed = false; // 🌟 TRẠNG THÁI MỚI: Nhấn chuột
+        private bool isPressed = false;
 
-        private int _borderLeftSize = 10;
+        private int _borderLeftSize = 15;
         private Color _inactiveBackColor = Color.Transparent;
-        private Color _activeBackColor = Color.FromArgb(220, 240, 220); // Xanh nhạt
-        private Color _activeBorderColor = Color.FromArgb(0, 100, 0); // Xanh đậm
-        private Color _hoverBackColor = Color.FromArgb(230, 230, 230); // Màu hover
-        private Color _pressedBackColor = Color.FromArgb(200, 200, 200); // 🌟 MÀU MỚI: Khi nhấn
-
-        // Các thuộc tính công khai (Giữ nguyên)
-        // ... (InactiveBackColor, ActiveBackColor, ActiveBorderColor, BorderLeftSize, IsSelected, HoverBackColor)
+        private Color _activeBackColor = Color.FromArgb(220, 240, 220); 
+        private Color _activeBorderColor = Color.FromArgb(0, 100, 0);
+        private Color _hoverBackColor = Color.FromArgb(230, 230, 230); 
+        private Color _pressedBackColor = Color.FromArgb(200, 200, 200); 
 
         [Category("Custom Appearance")]
         [Description("Màu nền khi di chuột qua")]
@@ -39,8 +35,6 @@ namespace Environmental_Monitoring.View.Components
             set { _pressedBackColor = value; Invalidate(); }
         }
 
-        // --- Các thuộc tính khác (InactiveBackColor, ActiveBackColor, ActiveBorderColor, BorderLeftSize, IsSelected)
-        // đã có sẵn trong code của bạn, không thay đổi phần đó ---
 
         [Category("Custom Appearance")]
         [Description("Màu nền khi không được chọn")]
@@ -82,21 +76,17 @@ namespace Environmental_Monitoring.View.Components
             set
             {
                 _isSelected = value;
-                Invalidate(); // Yêu cầu nút vẽ lại
+                Invalidate(); 
             }
         }
 
-
-        // === Hàm dựng (Constructor) ===
         public MenuButton()
         {
-            // Thiết lập mặc định cho giao diện phẳng
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
             FlatAppearance.MouseDownBackColor = Color.Transparent;
             FlatAppearance.MouseOverBackColor = Color.Transparent;
 
-            // Bật các cờ style
             SetStyle(ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.ResizeRedraw |
@@ -105,9 +95,16 @@ namespace Environmental_Monitoring.View.Components
                           ControlStyles.Selectable, true);
 
             BackColor = _inactiveBackColor;
+
+            SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                  ControlStyles.AllPaintingInWmPaint |
+                  ControlStyles.ResizeRedraw |
+                  ControlStyles.SupportsTransparentBackColor |
+                  ControlStyles.UserPaint |
+                  ControlStyles.Selectable |
+                  ControlStyles.Opaque, true);
         }
 
-        // === Ghi đè sự kiện chuột ===
         protected override void OnMouseEnter(EventArgs e)
         {
             base.OnMouseEnter(e);
@@ -122,7 +119,6 @@ namespace Environmental_Monitoring.View.Components
             Invalidate();
         }
 
-        // 🌟 THÊM: Xử lý trạng thái Pressed
         protected override void OnMouseDown(MouseEventArgs mevent)
         {
             base.OnMouseDown(mevent);
@@ -137,25 +133,22 @@ namespace Environmental_Monitoring.View.Components
             Invalidate();
         }
 
-        // 🌟 CẬP NHẬT LOGIC: OnPaintBackground (Chọn màu nền)
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
             Color currentBackColor = _inactiveBackColor;
 
             if (_isSelected)
                 currentBackColor = _activeBackColor;
-            // 🌟 Ưu tiên Pressed (Nhấn) cao hơn Hover
+          
             else if (isPressed)
                 currentBackColor = _pressedBackColor;
             else if (isHovering)
                 currentBackColor = _hoverBackColor;
 
-            // Gán màu nền tạm thời cho control
             BackColor = currentBackColor;
 
             if (BackColor == Color.Transparent && Parent != null)
             {
-                // LOGIC VẼ NỀN TRONG SUỐT THỰC SỰ
                 Graphics g = pevent.Graphics;
                 g.TranslateTransform(-Left, -Top);
 
@@ -172,7 +165,7 @@ namespace Environmental_Monitoring.View.Components
             }
             else
             {
-                // LOGIC VẼ NỀN MÀU ĐẶC (Solid Color)
+       
                 using (SolidBrush brush = new SolidBrush(BackColor))
                 {
                     pevent.Graphics.FillRectangle(brush, pevent.ClipRectangle);
@@ -180,19 +173,15 @@ namespace Environmental_Monitoring.View.Components
             }
         }
 
-        // === OnPaint (Không cần thay đổi logic chọn màu vì nó đã chuyển sang OnPaintBackground) ===
         protected override void OnPaint(PaintEventArgs pe)
         {
-            // KHÔNG gọi base.OnPaint(pe)
-
+           
             Graphics g = pe.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            // 1. Vẽ Nền
             OnPaintBackground(pe);
 
-            // 2. Vẽ vạch Active (Nếu đang được chọn)
             if (_isSelected)
             {
                 using (SolidBrush borderBrush = new SolidBrush(_activeBorderColor))
@@ -201,45 +190,48 @@ namespace Environmental_Monitoring.View.Components
                 }
             }
 
-            // 3. Vẽ Icon (từ BackgroundImage) - Logic giữ nguyên
+            const int ICON_SIZE = 90;     
+            const int ICON_MARGIN_LEFT = 0; 
+            const int SPACING_AFTER_ICON = 10;
+
             if (BackgroundImage != null)
             {
-                Rectangle destRect;
-                Image img = BackgroundImage;
+                
+                int iconX = ICON_MARGIN_LEFT;
+                int iconY = (Height - ICON_SIZE) / 2;
 
-                float imgAspect = (float)img.Width / img.Height;
-                float btnAspect = (float)Width / Height;
+                Rectangle destRect = new Rectangle(iconX, iconY, ICON_SIZE, ICON_SIZE);
 
-                int newWidth;
-                int newHeight;
-                int newX;
-                int newY;
+               
+                g.DrawImage(BackgroundImage, destRect);
+            }
 
-                int padding = 5;
-                RectangleF buttonRect = new RectangleF(
-                    padding,
-                    padding,
-                    Width - padding * 2,
-                    Height - padding * 2
+            if (!string.IsNullOrEmpty(Text) && Parent != null && Parent.Width > 100)
+            {
+                int textStartX = ICON_MARGIN_LEFT + ICON_SIZE + SPACING_AFTER_ICON;
+
+                Rectangle textRect = new Rectangle(
+                    textStartX,
+                    0,
+                    Width - textStartX, 
+                    Height
                 );
 
-                if (imgAspect > btnAspect)
-                {
-                    newWidth = (int)buttonRect.Width;
-                    newHeight = (int)(newWidth / imgAspect);
-                }
-                else
-                {
-                    newHeight = (int)buttonRect.Height;
-                    newWidth = (int)(newHeight * imgAspect);
-                }
+                TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.Left | TextFormatFlags.EndEllipsis;
 
-                newX = padding + (int)(buttonRect.Width - newWidth) / 2;
-                newY = padding + (int)(buttonRect.Height - newHeight) / 2;
+                TextRenderer.DrawText(
+                    g,
+                    Text,
+                    Font,
+                    textRect,
+                    ForeColor,
+                    flags
+                );
+            }
 
-                destRect = new Rectangle(newX, newY, newWidth, newHeight);
-
-                g.DrawImage(img, destRect);
+            if (Image != null)
+            {
+                Image = null;
             }
         }
     }
