@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\controller\\data\\contractrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\data\\contractrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contract_pages\\contractresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contract_pages\\contractresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\mainlayout.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\mainlayout.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\model\\contract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:model\\contract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contract_pages\\contractresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contract_pages\\contractresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,58 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Contract.cs",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Model\\Contract.cs",
-              "RelativeDocumentMoniker": "Model\\Contract.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Model\\Contract.cs",
-              "RelativeToolTip": "Model\\Contract.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAswB8AAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-22T06:08:18.174Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ContractRepo.cs",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Controller\\Data\\ContractRepo.cs",
-              "RelativeDocumentMoniker": "Controller\\Data\\ContractRepo.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Controller\\Data\\ContractRepo.cs",
-              "RelativeToolTip": "Controller\\Data\\ContractRepo.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAYwC0AAAAAAAAAAAAAAA==",
+              "Title": "Mainlayout.cs [Design]",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Mainlayout.cs",
+              "RelativeDocumentMoniker": "View\\Mainlayout.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Mainlayout.cs [Design]",
+              "RelativeToolTip": "View\\Mainlayout.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-22T06:05:48.505Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-24T02:29:33.066Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ContractResult.cs",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Contract_pages\\ContractResult.cs",
-              "RelativeDocumentMoniker": "View\\Contract_pages\\ContractResult.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Contract_pages\\ContractResult.cs",
-              "RelativeToolTip": "View\\Contract_pages\\ContractResult.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAGAAAAAAAAAA==",
+              "Title": "Mainlayout.Designer.cs",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Mainlayout.Designer.cs",
+              "RelativeDocumentMoniker": "View\\Mainlayout.Designer.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Mainlayout.Designer.cs",
+              "RelativeToolTip": "View\\Mainlayout.Designer.cs",
+              "ViewState": "AgIAAD0BAAAAAAAAAAAUwGwBAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-22T05:50:35.785Z",
+              "WhenOpened": "2025-10-24T02:24:12.467Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ContractResult.cs [Design]",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Contract_pages\\ContractResult.cs",
-              "RelativeDocumentMoniker": "View\\Contract_pages\\ContractResult.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Contract_pages\\ContractResult.cs [Design]",
-              "RelativeToolTip": "View\\Contract_pages\\ContractResult.cs [Design]",
+              "DocumentIndex": 2,
+              "Title": "Mainlayout.cs",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Mainlayout.cs",
+              "RelativeDocumentMoniker": "View\\Mainlayout.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Mainlayout.cs",
+              "RelativeToolTip": "View\\Mainlayout.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAA/wB8AAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-22T05:50:33.881Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-10-24T02:22:27.47Z",
+              "EditorCaption": ""
             }
           ]
         }

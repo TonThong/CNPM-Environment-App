@@ -4,20 +4,26 @@
     <Compile Update="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="View\Contract.cs">
-      <SubType>Form</SubType>
+    <Compile Update="View\AI.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="View\Contract_pages\ContractBusiness.cs">
-      <SubType>Form</SubType>
+    <Compile Update="View\Components\MenuButton.cs">
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Update="View\Contract_pages\ContractExperiment.cs">
-      <SubType>Form</SubType>
+    <Compile Update="View\Components\Roundedbutton.cs">
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Update="View\Contract_pages\ContractPlan.cs">
-      <SubType>Form</SubType>
+    <Compile Update="View\Components\RoundedComboBox.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="View\Contract_pages\ContractResult.cs">
-      <SubType>Form</SubType>
+    <Compile Update="View\Components\RoundedDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="View\Components\RoundedPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="View\Components\RoundedTextBox.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="View\Introduce.cs">
       <SubType>Form</SubType>
@@ -27,6 +33,15 @@
     </Compile>
     <Compile Update="View\Mainlayout.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Notification.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="View\Setting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="View\Stats.cs">
+      <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
 </Project>
