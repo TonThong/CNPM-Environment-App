@@ -23,6 +23,11 @@ namespace Environmental_Monitoring.View
             InitializeComponent();
 
             txtMatKhau.UseSystemPasswordChar = true;
+            picShowPass.Image = Properties.Resources.eyeclose;
+            picShowPass.Parent = txtMatKhau;
+            picShowPass.BackColor = txtMatKhau.BackColor;
+            picShowPass.Location = new Point(txtMatKhau.Width - picShowPass.Width - 8, (txtMatKhau.Height - picShowPass.Height) / 2);
+            picShowPass.BringToFront();
         }
 
         private void Login_Load(object sender, EventArgs e)
@@ -32,7 +37,7 @@ namespace Environmental_Monitoring.View
 
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
-            string taiKhoan = txtTaiKhoan.Text.Trim(); 
+            string taiKhoan = txtTaiKhoan.Text.Trim();
             string matKhau = txtMatKhau.Text;
 
             if (string.IsNullOrEmpty(taiKhoan) || string.IsNullOrEmpty(matKhau))
@@ -85,6 +90,20 @@ namespace Environmental_Monitoring.View
             catch (Exception ex)
             {
                 MessageBox.Show("Đã xảy ra lỗi kết nối database: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void picShowPass_Click(object sender, EventArgs e)
+        {
+            if (txtMatKhau.UseSystemPasswordChar == true)
+            {
+                txtMatKhau.UseSystemPasswordChar = false;             
+                picShowPass.Image = Properties.Resources.eye; 
+            }
+            else
+            {
+                txtMatKhau.UseSystemPasswordChar = true;
+                picShowPass.Image = Properties.Resources.eyeclose;
             }
         }
     }

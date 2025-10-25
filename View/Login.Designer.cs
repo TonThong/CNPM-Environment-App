@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             roundedPanel1 = new Environmental_Monitoring.View.Components.RoundedPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
+            picShowPass = new PictureBox();
             pictureBox1 = new PictureBox();
             label2 = new Label();
             txtTaiKhoan = new Environmental_Monitoring.View.Components.RoundedTextBox();
@@ -42,6 +43,7 @@
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             roundedPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picShowPass).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -63,6 +65,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.Controls.Add(picShowPass, 2, 7);
             tableLayoutPanel1.Controls.Add(pictureBox1, 1, 1);
             tableLayoutPanel1.Controls.Add(label2, 1, 3);
             tableLayoutPanel1.Controls.Add(txtTaiKhoan, 1, 5);
@@ -90,6 +93,18 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3.33333254F));
             tableLayoutPanel1.Size = new Size(410, 595);
             tableLayoutPanel1.TabIndex = 0;
+            // 
+            // picShowPass
+            // 
+            picShowPass.Cursor = Cursors.Hand;
+            picShowPass.Image = Properties.Resources.eyeclose;
+            picShowPass.Location = new Point(372, 343);
+            picShowPass.Name = "picShowPass";
+            picShowPass.Size = new Size(25, 25);
+            picShowPass.SizeMode = PictureBoxSizeMode.Zoom;
+            picShowPass.TabIndex = 2;
+            picShowPass.TabStop = false;
+            picShowPass.Click += picShowPass_Click;
             // 
             // pictureBox1
             // 
@@ -131,6 +146,7 @@
             txtTaiKhoan.ReadOnly = false;
             txtTaiKhoan.Size = new Size(322, 46);
             txtTaiKhoan.TabIndex = 2;
+            txtTaiKhoan.UseSystemPasswordChar = false;
             // 
             // txtMatKhau
             // 
@@ -148,6 +164,7 @@
             txtMatKhau.ReadOnly = false;
             txtMatKhau.Size = new Size(322, 46);
             txtMatKhau.TabIndex = 3;
+            txtMatKhau.UseSystemPasswordChar = false;
             // 
             // linkLabel1
             // 
@@ -231,6 +248,7 @@
             roundedPanel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picShowPass).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -249,5 +267,6 @@
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
         private Components.RoundedButton btnDangNhap;
         private Label label3;
+        private PictureBox picShowPass;
     }
 }
