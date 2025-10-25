@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Github\\CNPM-Environment-App\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\notification.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\notification.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|C:\\Github\\CNPM-Environment-App\\view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\components\\menubutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\components\\menubutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,38 +42,63 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MenuButton.cs",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Components\\MenuButton.cs",
-              "RelativeDocumentMoniker": "View\\Components\\MenuButton.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Components\\MenuButton.cs",
-              "RelativeToolTip": "View\\Components\\MenuButton.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAkAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Notification.cs [Design]",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Notification.cs",
+              "RelativeDocumentMoniker": "View\\Notification.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Notification.cs [Design]",
+              "RelativeToolTip": "View\\Notification.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-24T03:59:21.005Z",
+              "WhenOpened": "2025-10-25T02:11:36.302Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Notification.Designer.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Notification.Designer.cs",
+              "RelativeDocumentMoniker": "View\\Notification.Designer.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Notification.Designer.cs",
+              "RelativeToolTip": "View\\Notification.Designer.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAD4v0sAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T01:51:21.136Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Notification.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Notification.cs",
+              "RelativeDocumentMoniker": "View\\Notification.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Notification.cs",
+              "RelativeToolTip": "View\\Notification.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAYwJEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T01:30:38.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Mainlayout.cs [Design]",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs",
               "RelativeDocumentMoniker": "View\\Mainlayout.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs [Design]*",
-              "RelativeToolTip": "View\\Mainlayout.cs [Design]*",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs [Design]",
+              "RelativeToolTip": "View\\Mainlayout.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-24T02:29:33.066Z",
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Mainlayout.cs",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs",
               "RelativeDocumentMoniker": "View\\Mainlayout.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs*",
-              "RelativeToolTip": "View\\Mainlayout.cs*",
-              "ViewState": "AgIAACwAAAAAAAAAAAAmwEAAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs",
+              "RelativeToolTip": "View\\Mainlayout.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-24T02:22:27.47Z",
               "EditorCaption": ""
