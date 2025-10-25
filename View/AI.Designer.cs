@@ -31,19 +31,9 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint1 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 30D);
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint2 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 70D);
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblAI = new Label();
-            chartTaiKy = new System.Windows.Forms.DataVisualization.Charting.Chart();
             lblTaiKy = new Label();
             roundedPanel5 = new RoundedPanel();
-            chartONhiem = new System.Windows.Forms.DataVisualization.Charting.Chart();
             btnGuess2 = new RoundedButton();
             cmbDiaPhuong = new ComboBox();
             lblMucDoONhiem = new Label();
@@ -52,9 +42,8 @@ namespace Environmental_Monitoring.View
             btnGuess1 = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             roundedTextBox1 = new RoundedTextBox();
-            ((System.ComponentModel.ISupportInitialize)chartTaiKy).BeginInit();
+            roundedTextBox2 = new RoundedTextBox();
             roundedPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)chartONhiem).BeginInit();
             roundedPanel6.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -69,36 +58,11 @@ namespace Environmental_Monitoring.View
             lblAI.TabIndex = 5;
             lblAI.Text = "AI Dự Đoán";
             // 
-            // chartTaiKy
-            // 
-            chartArea1.Name = "ChartArea1";
-            chartTaiKy.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            chartTaiKy.Legends.Add(legend1);
-            chartTaiKy.Location = new Point(3, 136);
-            chartTaiKy.Name = "chartTaiKy";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            dataPoint1.Color = Color.FromArgb(0, 192, 192);
-            dataPoint1.CustomProperties = "PieLabelStyle=Disabled";
-            dataPoint1.Label = "   ";
-            dataPoint2.Color = Color.FromArgb(255, 125, 125);
-            dataPoint2.CustomProperties = "PieLabelStyle=Disabled";
-            dataPoint2.Label = "Khả Năng Tái kí";
-            series1.Points.Add(dataPoint1);
-            series1.Points.Add(dataPoint2);
-            chartTaiKy.Series.Add(series1);
-            chartTaiKy.Size = new Size(523, 395);
-            chartTaiKy.TabIndex = 17;
-            chartTaiKy.Text = "chart3";
-            // 
             // lblTaiKy
             // 
             lblTaiKy.AutoSize = true;
             lblTaiKy.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            lblTaiKy.Location = new Point(28, 9);
+            lblTaiKy.Location = new Point(30, 9);
             lblTaiKy.Name = "lblTaiKy";
             lblTaiKy.Size = new Size(94, 38);
             lblTaiKy.TabIndex = 0;
@@ -110,7 +74,6 @@ namespace Environmental_Monitoring.View
             roundedPanel5.BorderColor = Color.Transparent;
             roundedPanel5.BorderRadius = 20;
             roundedPanel5.BorderSize = 0;
-            roundedPanel5.Controls.Add(chartONhiem);
             roundedPanel5.Controls.Add(btnGuess2);
             roundedPanel5.Controls.Add(cmbDiaPhuong);
             roundedPanel5.Controls.Add(lblMucDoONhiem);
@@ -120,28 +83,6 @@ namespace Environmental_Monitoring.View
             roundedPanel5.Name = "roundedPanel5";
             roundedPanel5.Size = new Size(531, 554);
             roundedPanel5.TabIndex = 9;
-            // 
-            // chartONhiem
-            // 
-            chartArea2.Name = "ChartArea1";
-            chartONhiem.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            chartONhiem.Legends.Add(legend2);
-            chartONhiem.Location = new Point(3, 162);
-            chartONhiem.Name = "chartONhiem";
-            series2.BackImageAlignment = System.Windows.Forms.DataVisualization.Charting.ChartImageAlignmentStyle.Center;
-            series2.BorderColor = Color.DarkGray;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.EmptyPointStyle.IsValueShownAsLabel = true;
-            series2.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.DashDot;
-            series2.Legend = "Legend1";
-            series2.Name = "2025";
-            series2.SmartLabelStyle.CalloutLineAnchorCapStyle = System.Windows.Forms.DataVisualization.Charting.LineAnchorCapStyle.None;
-            chartONhiem.Series.Add(series2);
-            chartONhiem.Size = new Size(523, 369);
-            chartONhiem.TabIndex = 19;
-            chartONhiem.Text = "chart4";
             // 
             // btnGuess2
             // 
@@ -157,7 +98,7 @@ namespace Environmental_Monitoring.View
             btnGuess2.HoverColor = Color.FromArgb(34, 139, 34);
             btnGuess2.Location = new Point(367, 110);
             btnGuess2.Name = "btnGuess2";
-            btnGuess2.Size = new Size(121, 37);
+            btnGuess2.Size = new Size(120, 40);
             btnGuess2.TabIndex = 18;
             btnGuess2.Text = "Dự Đoán";
             btnGuess2.UseVisualStyleBackColor = false;
@@ -166,7 +107,7 @@ namespace Environmental_Monitoring.View
             // 
             cmbDiaPhuong.ForeColor = SystemColors.WindowText;
             cmbDiaPhuong.FormattingEnabled = true;
-            cmbDiaPhuong.Location = new Point(79, 69);
+            cmbDiaPhuong.Location = new Point(80, 70);
             cmbDiaPhuong.Name = "cmbDiaPhuong";
             cmbDiaPhuong.Size = new Size(225, 28);
             cmbDiaPhuong.TabIndex = 15;
@@ -186,7 +127,7 @@ namespace Environmental_Monitoring.View
             // 
             lblONhiem.AutoSize = true;
             lblONhiem.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            lblONhiem.Location = new Point(40, 14);
+            lblONhiem.Location = new Point(30, 14);
             lblONhiem.Name = "lblONhiem";
             lblONhiem.Size = new Size(134, 38);
             lblONhiem.TabIndex = 1;
@@ -198,8 +139,8 @@ namespace Environmental_Monitoring.View
             roundedPanel6.BorderColor = Color.Transparent;
             roundedPanel6.BorderRadius = 20;
             roundedPanel6.BorderSize = 0;
+            roundedPanel6.Controls.Add(roundedTextBox2);
             roundedPanel6.Controls.Add(btnGuess1);
-            roundedPanel6.Controls.Add(chartTaiKy);
             roundedPanel6.Controls.Add(lblTaiKy);
             roundedPanel6.Dock = DockStyle.Fill;
             roundedPanel6.Location = new Point(64, 115);
@@ -219,9 +160,9 @@ namespace Environmental_Monitoring.View
             btnGuess1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnGuess1.ForeColor = Color.White;
             btnGuess1.HoverColor = Color.FromArgb(34, 139, 34);
-            btnGuess1.Location = new Point(379, 61);
+            btnGuess1.Location = new Point(380, 60);
             btnGuess1.Name = "btnGuess1";
-            btnGuess1.Size = new Size(105, 37);
+            btnGuess1.Size = new Size(105, 40);
             btnGuess1.TabIndex = 20;
             btnGuess1.Text = "Dự Đoán";
             btnGuess1.UseVisualStyleBackColor = false;
@@ -267,6 +208,25 @@ namespace Environmental_Monitoring.View
             roundedTextBox1.ReadOnly = false;
             roundedTextBox1.Size = new Size(531, 45);
             roundedTextBox1.TabIndex = 21;
+            roundedTextBox1.UseSystemPasswordChar = false;
+            // 
+            // roundedTextBox2
+            // 
+            roundedTextBox2.BorderRadius = 15;
+            roundedTextBox2.BorderThickness = 2;
+            roundedTextBox2.FocusBorderColor = Color.DimGray;
+            roundedTextBox2.HoverBorderColor = Color.DarkGray;
+            roundedTextBox2.Location = new Point(30, 60);
+            roundedTextBox2.Multiline = false;
+            roundedTextBox2.Name = "roundedTextBox2";
+            roundedTextBox2.NormalBorderColor = Color.Gray;
+            roundedTextBox2.Padding = new Padding(10);
+            roundedTextBox2.PasswordChar = '\0';
+            roundedTextBox2.PlaceholderText = "Nhập Tên Khách Hàng";
+            roundedTextBox2.ReadOnly = false;
+            roundedTextBox2.Size = new Size(323, 40);
+            roundedTextBox2.TabIndex = 21;
+            roundedTextBox2.UseSystemPasswordChar = false;
             // 
             // AI
             // 
@@ -276,10 +236,8 @@ namespace Environmental_Monitoring.View
             Name = "AI";
             Size = new Size(1227, 715);
             Load += AIguess_Load;
-            ((System.ComponentModel.ISupportInitialize)chartTaiKy).EndInit();
             roundedPanel5.ResumeLayout(false);
             roundedPanel5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)chartONhiem).EndInit();
             roundedPanel6.ResumeLayout(false);
             roundedPanel6.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
@@ -302,5 +260,6 @@ namespace Environmental_Monitoring.View
 
         private TableLayoutPanel tableLayoutPanel1;
         private RoundedTextBox roundedTextBox1;
+        private RoundedTextBox roundedTextBox2;
     }
 }

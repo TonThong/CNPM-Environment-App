@@ -177,3 +177,8 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x64\native\
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x64\native\krbcc64.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\BCrypt.Net-Next.dll
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.AlertPanel.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Contract.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.BusinessContent.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.PlanContent.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.RealContent.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.ResultContent.resources

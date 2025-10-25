@@ -27,7 +27,6 @@ namespace CNPM.View.Components
             comboBox.ForeColor = Color.Black;
             comboBox.BackColor = Color.White;
 
-            // Lùi text vào trong (padding 1/4 chiều rộng)
             comboBox.Margin = new Padding(0);
             comboBox.Location = new Point(Width / 4, (Height - comboBox.PreferredHeight) / 2);
             comboBox.Width = Width - Width / 4 - 10;
@@ -113,7 +112,6 @@ namespace CNPM.View.Components
                 e.Graphics.DrawPath(pen, path);
             }
 
-            // Cập nhật lại vị trí combobox mỗi lần resize
             comboBox.Location = new Point(Width / 4, (Height - comboBox.PreferredHeight) / 2);
             comboBox.Width = Width - Width / 4 - 10;
         }

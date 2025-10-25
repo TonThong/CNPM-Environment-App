@@ -82,7 +82,6 @@ namespace Environmental_Monitoring.View.Components
                     pevent.Graphics.DrawPath(penBorder, pathBorder);
             }
 
-            // --- VẼ ẢNH (ICON) + CHỮ ---
             Rectangle textRect = rectSurface;
             int padding = 10;
             int textOffset = 0;
@@ -113,7 +112,6 @@ namespace Environmental_Monitoring.View.Components
                 pevent.Graphics.DrawImage(Image, imgLocation);
             }
 
-            // --- VẼ CHỮ ---
             StringFormat sf = new StringFormat
             {
                 LineAlignment = StringAlignment.Center,
