@@ -25,6 +25,21 @@
     <Compile Update="View\Components\RoundedTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="View\Contract.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="View\ContractContent\BusinessContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="View\ContractContent\PlanContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="View\ContractContent\RealContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="View\ContractContent\ResultContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="View\Introduce.cs">
       <SubType>Form</SubType>
     </Compile>

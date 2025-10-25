@@ -80,3 +80,8 @@ E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Mon
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Stats.resources
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.Windows.Forms.DataVisualization.dll
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.RoundedTextBox.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Contract.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.BusinessContent.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.PlanContent.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.RealContent.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.ResultContent.resources
