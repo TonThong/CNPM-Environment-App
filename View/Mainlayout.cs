@@ -123,7 +123,7 @@ namespace Environmental_Monitoring.View
             {
                 LoadPage(new AI());
             }
-       
+
         }
 
         private void HighlightButton(MenuButton selectedButton)
