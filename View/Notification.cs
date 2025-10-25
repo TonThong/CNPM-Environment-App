@@ -58,7 +58,7 @@ namespace Environmental_Monitoring
 
             string query = @"
         SELECT 
-            c.ContractID, 
+            c.MaDon, 
             cust.TenNguoiDaiDien,
             
             -- Cột Số Ngày Sắp Hết Hạn (chỉ hiển thị nếu > 0)
@@ -110,7 +110,7 @@ namespace Environmental_Monitoring
 
                 if (dgv.Columns.Count > 0)
                 {
-                    dgv.Columns["ContractID"].HeaderText = "Mã Đơn";
+                    dgv.Columns["MaDon"].HeaderText = "Mã Đơn";
                     dgv.Columns["TenNguoiDaiDien"].HeaderText = "Tên Khách Hàng";
 
                     if (loaiThongBao == "SapHetHan")

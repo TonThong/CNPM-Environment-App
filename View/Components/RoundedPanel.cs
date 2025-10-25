@@ -36,7 +36,7 @@ namespace Environmental_Monitoring.View.Components
         public RoundedPanel()
         {
             DoubleBuffered = true;
-            BackColor = Color.Honeydew; // màu nền nhẹ (có thể đổi)
+            BackColor = Color.Honeydew; 
         }
 
         protected override void OnPaint(PaintEventArgs e)

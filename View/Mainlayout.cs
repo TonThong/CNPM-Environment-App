@@ -106,8 +106,11 @@ namespace Environmental_Monitoring.View
 
             HighlightButton(clickedButton);
 
-
-            if (clickedButton == btnNotification)
+            if (clickedButton == btnContracts)
+            {
+                LoadPage(new Contract());
+            }
+            else if (clickedButton == btnNotification)
             {
                 LoadPage(new Notification());
             }
@@ -150,10 +153,5 @@ namespace Environmental_Monitoring.View
             pageToLoad.Dock = DockStyle.Fill;
             panelContent.Controls.Add(pageToLoad);
         }
-        private void button1_Click(object sender, EventArgs e) { }
-        private void btnSetting_Click(object sender, EventArgs e) { }
-        private void button1_Click_1(object sender, EventArgs e) { }
-        private void btnContracts_Click(object sender, EventArgs e) { }
-        private void pnlIndicator_Paint(object sender, PaintEventArgs e) { }
     }
 }
