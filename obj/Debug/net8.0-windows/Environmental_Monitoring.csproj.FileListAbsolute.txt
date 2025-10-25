@@ -175,3 +175,4 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x64\native\
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x64\native\k5sprt64.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x64\native\krb5_64.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x64\native\krbcc64.dll
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\BCrypt.Net-Next.dll
