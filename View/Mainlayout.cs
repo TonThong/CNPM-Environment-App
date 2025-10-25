@@ -1,4 +1,6 @@
-﻿using Environmental_Monitoring.View.Components;
+﻿using Environmental_Monitoring;
+using Environmental_Monitoring.View;
+using Environmental_Monitoring.View.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,20 +12,20 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Environmental_Monitoring.View
-{
+{ 
+
     public partial class Mainlayout : Form
     {
-        // === KHAI BÁO TRẠNG THÁI ===
-        private MenuButton currentActiveButton;
 
-        // Đảm bảo không còn khai báo AnimationTimer, pnlIndicator, indicatorTargetY, AnimationStep ở đây
-        // (Nếu chúng còn tồn tại trong Designer.cs thì vẫn ổn)
+        private MenuButton currentActiveButton;
 
         public Mainlayout()
         {
             InitializeComponent();
 
-            // Gán CÙNG MỘT sự kiện Click cho tất cả các nút menu
+            this.DoubleBuffered = true;
+
+            btnToggleMenu.Click += new EventHandler(btnToggleMenu_Click);
             btnHome.Click += new EventHandler(MenuButton_Click);
             btnUser.Click += new EventHandler(MenuButton_Click);
             btnContracts.Click += new EventHandler(MenuButton_Click);
@@ -33,18 +35,67 @@ namespace Environmental_Monitoring.View
             btnAI.Click += new EventHandler(MenuButton_Click);
             btnIntroduce.Click += new EventHandler(MenuButton_Click);
 
-            // Tải trang mặc định khi mở ứng dụng
-            HighlightButton(btnNotification); // Sử dụng HighlightButton (chuyển đổi tức thời)
-            LoadPage(new Notification()); // Tải trang thông báo
+            HighlightButton(btnNotification);
+            LoadPage(new Notification()); 
+
+            panelMenu.Width = menuCollapsedWidth; 
+            SetMenuState(isMenuCollapsed);
+        }
+
+        private bool isMenuCollapsed = true;
+        private int menuCollapsedWidth = 90;
+        private int menuExpandedWidth = 190;
+
+        private void btnToggleMenu_Click(object sender, EventArgs e)
+        {
+            isMenuCollapsed = !isMenuCollapsed;
+
+
+            int oldMenuWidth = panelMenu.Width;
+
+            int newMenuWidth = isMenuCollapsed ? menuCollapsedWidth : menuExpandedWidth;
+
+            int widthDifference = newMenuWidth - oldMenuWidth;
+
+            this.SuspendLayout();
+
+            panelMenu.Width = newMenuWidth;
+            panelContent.Left += widthDifference;
+            panelHeadder.Left += widthDifference;
+
+            SetMenuState(isMenuCollapsed);
+
+            this.ResumeLayout();
+        }
+
+        private void SetMenuState(bool collapsed)
+        {
+            string homeText = collapsed ? "" : "Home";
+            string userText = collapsed ? "" : "User";
+            string contractsText = collapsed ? "" : "Contracts";
+            string notificationText = collapsed ? "" : "Notification";
+            string statsText = collapsed ? "" : "Stats";
+            string settingText = collapsed ? "" : "Settings";
+            string aiText = collapsed ? "" : "AI";
+            string introduceText = collapsed ? "" : "Introduce";
+
+            btnHome.Text = homeText;
+            btnUser.Text = userText;
+            btnContracts.Text = contractsText;
+            btnNotification.Text = notificationText;
+            btnStats.Text = statsText;
+            btnSetting.Text = settingText;
+            btnAI.Text = aiText;
+            btnIntroduce.Text = introduceText;
+
+
         }
 
         private void MenuButton_Click(object sender, EventArgs e)
         {
-            // 1. Reset TẤT CẢ các nút (Tắt vạch xanh đậm của nút cũ)
             MenuButton oldActiveButton = currentActiveButton;
             ResetAllButtons();
 
-            // Buộc nút cũ vẽ lại để hiển thị nền Transparent/InactiveColor
             if (oldActiveButton != null)
             {
                 oldActiveButton.Invalidate();
@@ -52,10 +103,10 @@ namespace Environmental_Monitoring.View
 
             MenuButton clickedButton = (MenuButton)sender;
 
-            // 2. Tô sáng nút vừa nhấn (Chuyển đổi tức thời)
+
             HighlightButton(clickedButton);
 
-            // 3. Tải Trang (UserControl) tương ứng
+
             if (clickedButton == btnNotification)
             {
                 LoadPage(new Notification());
@@ -72,48 +123,33 @@ namespace Environmental_Monitoring.View
             {
                 LoadPage(new AI());
             }
-            else if (clickedButton == btnContracts)
-            {
-                LoadPage(new Contract());
-            }
-            // v.v...
+       
         }
 
-        // === Phương thức 1: Tô sáng nút được chọn (Chuyển đổi tức thời) ===
         private void HighlightButton(MenuButton selectedButton)
         {
             currentActiveButton = selectedButton;
             selectedButton.IsSelected = true;
 
-            // Nếu bạn có Panel Indicator (pnlIndicator) và KHÔNG muốn thấy nó, hãy ẩn nó đi.
-            // if (pnlIndicator != null) pnlIndicator.Visible = false; 
-
-            // Giữ lại dòng này nếu bạn muốn Icon đổi màu khi được chọn:
-            // selectedButton.ForeColor = Color.White; 
         }
 
-        // === Phương thức 2: Reset tất cả các nút ===
         private void ResetAllButtons()
         {
-            // Giả định panelMenu tồn tại và chứa các MenuButton
             foreach (Control ctrl in panelMenu.Controls)
             {
                 if (ctrl is MenuButton btn)
                 {
-                    btn.IsSelected = false; // Tắt cờ IsSelected
+                    btn.IsSelected = false; 
                 }
             }
         }
 
-        // === Phương thức 3: Tải Trang (UserControl) vào Panel ===
         private void LoadPage(UserControl pageToLoad)
         {
             panelContent.Controls.Clear();
             pageToLoad.Dock = DockStyle.Fill;
             panelContent.Controls.Add(pageToLoad);
         }
-
-        // === Các phương thức không dùng (Giữ nguyên hoặc xóa) ===
         private void button1_Click(object sender, EventArgs e) { }
         private void btnSetting_Click(object sender, EventArgs e) { }
         private void button1_Click_1(object sender, EventArgs e) { }
