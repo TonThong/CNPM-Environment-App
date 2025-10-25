@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Environmental_Monitoring")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+514c64f9eef2de49d3960963be11e40ccbdf40d3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f11f83245d1e2f3cee49d997e955d9b3123b788a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Environmental_Monitoring")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Environmental_Monitoring")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
