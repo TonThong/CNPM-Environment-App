@@ -125,6 +125,7 @@ namespace Environmental_Monitoring
             roundedTextBox1.ReadOnly = false;
             roundedTextBox1.Size = new Size(534, 45);
             roundedTextBox1.TabIndex = 19;
+            roundedTextBox1.UseSystemPasswordChar = false;
             // 
             // label3
             // 

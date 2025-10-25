@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Environmental_Monitoring.View.Components;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Environmental_Monitoring.View
 
             if (string.IsNullOrEmpty(taiKhoan) || string.IsNullOrEmpty(matKhau))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ tài khoản và mật khẩu.", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                alertPanel.ShowAlert("Vui lòng nhập đầy đủ tài khoản và mật khẩu.", AlertPanel.AlertType.Error);
                 return;
             }
 
@@ -68,20 +69,19 @@ namespace Environmental_Monitoring.View
 
                                 if (isPasswordValid)
                                 {
-                                    MessageBox.Show($"Chào mừng {hoTen} đã đăng nhập thành công!", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    alertPanel.OnClose += AlertPanel_Success_OnClose;
+                                    alertPanel.ShowAlert("Đăng nhập thành công!", AlertPanel.AlertType.Success);
 
-                                    Mainlayout mainForm = new Mainlayout();
-                                    mainForm.Show();
-                                    this.Hide();
+                                    this.Enabled = false;
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Mật khẩu không chính xác. Vui lòng thử lại.", "Lỗi Đăng Nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    alertPanel.ShowAlert("Mật khẩu không chính xác. Vui lòng thử lại.", AlertPanel.AlertType.Error);
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("Tài khoản không tồn tại. Vui lòng kiểm tra lại Email.", "Lỗi Đăng Nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                alertPanel.ShowAlert("Tài khoản không tồn tại. Vui lòng kiểm tra lại Email.", AlertPanel.AlertType.Error);
                             }
                         }
                     }
@@ -89,8 +89,17 @@ namespace Environmental_Monitoring.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi kết nối database: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                alertPanel.ShowAlert("Lỗi kết nối dữ liệu hệ thống: " + ex.Message, AlertPanel.AlertType.Error);
             }
+        }
+
+        private void AlertPanel_Success_OnClose(object sender, EventArgs e)
+        {
+            alertPanel.OnClose -= AlertPanel_Success_OnClose;
+
+            Mainlayout mainForm = new Mainlayout();
+            mainForm.Show();
+            this.Hide();
         }
 
         private void picShowPass_Click(object sender, EventArgs e)

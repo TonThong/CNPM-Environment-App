@@ -41,6 +41,7 @@
             label3 = new Label();
             label1 = new Label();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+            alertPanel = new Environmental_Monitoring.View.Components.AlertPanel();
             roundedPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picShowPass).BeginInit();
@@ -232,6 +233,14 @@
             sqlCommand1.CommandTimeout = 30;
             sqlCommand1.EnableOptimizedParameterBinding = false;
             // 
+            // alertPanel
+            // 
+            alertPanel.Location = new Point(1012, 10);
+            alertPanel.Name = "alertPanel";
+            alertPanel.Size = new Size(400, 100);
+            alertPanel.TabIndex = 2;
+            alertPanel.Visible = false;
+            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -239,6 +248,7 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1421, 853);
+            Controls.Add(alertPanel);
             Controls.Add(label1);
             Controls.Add(roundedPanel1);
             DoubleBuffered = true;
@@ -268,5 +278,6 @@
         private Components.RoundedButton btnDangNhap;
         private Label label3;
         private PictureBox picShowPass;
+        private Components.AlertPanel alertPanel;
     }
 }

@@ -47,7 +47,9 @@ namespace Environmental_Monitoring.View
             pictureBox1 = new PictureBox();
             btnBell = new MenuButton();
             panelHeadder = new Panel();
+            roundedTextBox1 = new RoundedTextBox();
             panelMenu.SuspendLayout();
+            panelContent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panelHeadder.SuspendLayout();
             SuspendLayout();
@@ -309,6 +311,7 @@ namespace Environmental_Monitoring.View
             panelContent.BorderColor = Color.Transparent;
             panelContent.BorderRadius = 20;
             panelContent.BorderSize = 0;
+            panelContent.Controls.Add(roundedTextBox1);
             panelContent.Location = new Point(90, 140);
             panelContent.Name = "panelContent";
             panelContent.Size = new Size(1227, 715);
@@ -358,6 +361,24 @@ namespace Environmental_Monitoring.View
             panelHeadder.Size = new Size(1230, 140);
             panelHeadder.TabIndex = 21;
             // 
+            // roundedTextBox1
+            // 
+            roundedTextBox1.BorderRadius = 15;
+            roundedTextBox1.BorderThickness = 2;
+            roundedTextBox1.FocusBorderColor = Color.HotPink;
+            roundedTextBox1.HoverBorderColor = Color.DodgerBlue;
+            roundedTextBox1.Location = new Point(486, 76);
+            roundedTextBox1.Multiline = false;
+            roundedTextBox1.Name = "roundedTextBox1";
+            roundedTextBox1.NormalBorderColor = Color.Gray;
+            roundedTextBox1.Padding = new Padding(10);
+            roundedTextBox1.PasswordChar = '\0';
+            roundedTextBox1.PlaceholderText = "";
+            roundedTextBox1.ReadOnly = false;
+            roundedTextBox1.Size = new Size(188, 38);
+            roundedTextBox1.TabIndex = 0;
+            roundedTextBox1.UseSystemPasswordChar = false;
+            // 
             // Mainlayout
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -372,6 +393,7 @@ namespace Environmental_Monitoring.View
             Controls.Add(btnMenu);
             Name = "Mainlayout";
             panelMenu.ResumeLayout(false);
+            panelContent.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panelHeadder.ResumeLayout(false);
             panelHeadder.PerformLayout();
@@ -397,5 +419,6 @@ namespace Environmental_Monitoring.View
         private MenuButton btnNotification;
         private MenuButton btnToggleMenu;
         private Panel panelHeadder;
+        private RoundedTextBox roundedTextBox1;
     }
 }

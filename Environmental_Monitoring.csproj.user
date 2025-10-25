@@ -25,6 +25,9 @@
     <Compile Update="View\Components\RoundedTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="View\Components\AlertPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="View\Introduce.cs">
       <SubType>Form</SubType>
     </Compile>
