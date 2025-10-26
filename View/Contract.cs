@@ -50,7 +50,7 @@ namespace Environmental_Monitoring.View
             pnContent.BorderColor = Color.Transparent;
             pnContent.BorderRadius = 20;
             pnContent.BorderSize = 0;
-            pnContent.Location = new Point(3, 192);
+            pnContent.Location = new Point(0, 192);
             pnContent.Name = "pnContent";
             pnContent.Size = new Size(1227, 507);
             pnContent.TabIndex = 31;
