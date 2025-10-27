@@ -181,6 +181,30 @@ C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.PlanContent.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.RealContent.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.ResultContent.resources
+<<<<<<< HEAD
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\BCrypt.Net-Next.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\BouncyCastle.Cryptography.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Google.Protobuf.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\K4os.Compression.LZ4.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\K4os.Compression.LZ4.Streams.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\K4os.Hash.xxHash.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\MySql.Data.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\ZstdSharp.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win-x64\native\comerr64.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win-x64\native\gssapi64.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win-x64\native\k5sprt64.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win-x64\native\krb5_64.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win-x64\native\krbcc64.dll
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.AlertPanel.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Contract.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.BusinessContent.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.PlanContent.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.RealContent.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.ResultContent.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ExperimentContent.resources
+=======
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.CustomComboBox.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.CreateUpdateEmployee.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Employee.resources
+>>>>>>> 91f904495b403c2aff2e461804b757e09232940c
