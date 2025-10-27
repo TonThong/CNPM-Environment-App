@@ -126,6 +126,10 @@ namespace Environmental_Monitoring.View
             {
                 LoadPage(new AI());
             }
+            else if (clickedButton == btnContracts)
+            {
+                LoadPage(new Contract());
+            }
 
         }
 

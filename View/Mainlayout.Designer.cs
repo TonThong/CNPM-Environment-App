@@ -169,7 +169,6 @@ namespace Environmental_Monitoring.View
             btnContracts.Size = new Size(190, 90);
             btnContracts.TabIndex = 1;
             btnContracts.UseVisualStyleBackColor = false;
-      
             // 
             // btnIntroduce
             // 
@@ -258,7 +257,6 @@ namespace Environmental_Monitoring.View
             btnSetting.Size = new Size(190, 90);
             btnSetting.TabIndex = 4;
             btnSetting.UseVisualStyleBackColor = false;
-        
             // 
             // btnUser
             // 
