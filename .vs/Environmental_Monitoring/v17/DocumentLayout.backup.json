@@ -3,7 +3,12 @@
   "WorkspaceRootPath": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -13,21 +18,31 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Microsoft.Common.CurrentVersion.targets",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ViewState": "AgIAAD0WAAAAAAAAAAAmwEsWAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2025-10-27T13:02:35.045Z",
+              "Title": "PlanContent.cs [Design]",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\PlanContent.cs",
+              "RelativeDocumentMoniker": "View\\ContractContent\\PlanContent.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\PlanContent.cs [Design]",
+              "RelativeToolTip": "View\\ContractContent\\PlanContent.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T17:59:57.928Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PlanContent.cs",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\PlanContent.cs",
+              "RelativeDocumentMoniker": "View\\ContractContent\\PlanContent.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\PlanContent.cs",
+              "RelativeToolTip": "View\\ContractContent\\PlanContent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T17:57:14.919Z",
               "EditorCaption": ""
             }
           ]
