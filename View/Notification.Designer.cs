@@ -51,11 +51,11 @@ namespace Environmental_Monitoring
             // 
             tableLayoutPanel1.BackColor = Color.FromArgb(217, 244, 227);
             tableLayoutPanel1.ColumnCount = 5;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.80769253F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44.23077F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.92307687F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44.23077F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.80769253F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(dgvSapQuaHan, 1, 3);
             tableLayoutPanel1.Controls.Add(roundedTextBox1, 3, 1);
             tableLayoutPanel1.Controls.Add(label3, 1, 1);
@@ -65,11 +65,11 @@ namespace Environmental_Monitoring
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 5;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3.06124282F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10.2041445F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10.2041445F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 71.53044F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5.000031F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 2.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999997F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999997F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 71.99998F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5.00002956F));
             tableLayoutPanel1.Size = new Size(1221, 709);
             tableLayoutPanel1.TabIndex = 0;
             // 
@@ -90,7 +90,7 @@ namespace Environmental_Monitoring
             dgvSapQuaHan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSapQuaHan.Dock = DockStyle.Fill;
             dgvSapQuaHan.EnableHeadersVisualStyles = false;
-            dgvSapQuaHan.Location = new Point(61, 168);
+            dgvSapQuaHan.Location = new Point(64, 164);
             dgvSapQuaHan.Name = "dgvSapQuaHan";
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(237, 230, 147);
@@ -105,7 +105,7 @@ namespace Environmental_Monitoring
             dataGridViewCellStyle3.BackColor = Color.FromArgb(237, 230, 147);
             dataGridViewCellStyle3.SelectionBackColor = Color.Goldenrod;
             dgvSapQuaHan.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            dgvSapQuaHan.Size = new Size(534, 501);
+            dgvSapQuaHan.Size = new Size(531, 504);
             dgvSapQuaHan.TabIndex = 15;
             // 
             // roundedTextBox1
@@ -115,7 +115,7 @@ namespace Environmental_Monitoring
             roundedTextBox1.BorderThickness = 1;
             roundedTextBox1.FocusBorderColor = SystemColors.ControlDark;
             roundedTextBox1.HoverBorderColor = Color.DarkGray;
-            roundedTextBox1.Location = new Point(624, 24);
+            roundedTextBox1.Location = new Point(625, 24);
             roundedTextBox1.Multiline = false;
             roundedTextBox1.Name = "roundedTextBox1";
             roundedTextBox1.NormalBorderColor = Color.DarkGray;
@@ -123,7 +123,7 @@ namespace Environmental_Monitoring
             roundedTextBox1.PasswordChar = '\0';
             roundedTextBox1.PlaceholderText = "Tìm Kiếm...";
             roundedTextBox1.ReadOnly = false;
-            roundedTextBox1.Size = new Size(534, 45);
+            roundedTextBox1.Size = new Size(531, 45);
             roundedTextBox1.TabIndex = 19;
             roundedTextBox1.UseSystemPasswordChar = false;
             // 
@@ -131,7 +131,7 @@ namespace Environmental_Monitoring
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            label3.Location = new Point(61, 21);
+            label3.Location = new Point(64, 21);
             label3.Name = "label3";
             label3.Size = new Size(211, 50);
             label3.TabIndex = 20;
@@ -150,7 +150,7 @@ namespace Environmental_Monitoring
             btnSapQuaHan.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             btnSapQuaHan.ForeColor = Color.Black;
             btnSapQuaHan.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSapQuaHan.Location = new Point(178, 104);
+            btnSapQuaHan.Location = new Point(179, 101);
             btnSapQuaHan.Name = "btnSapQuaHan";
             btnSapQuaHan.Size = new Size(300, 50);
             btnSapQuaHan.TabIndex = 13;
@@ -175,14 +175,14 @@ namespace Environmental_Monitoring
             dgvQuaHan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvQuaHan.Dock = DockStyle.Fill;
             dgvQuaHan.EnableHeadersVisualStyles = false;
-            dgvQuaHan.Location = new Point(624, 168);
+            dgvQuaHan.Location = new Point(625, 164);
             dgvQuaHan.Name = "dgvQuaHan";
             dgvQuaHan.RowHeadersVisible = false;
             dgvQuaHan.RowHeadersWidth = 51;
             dataGridViewCellStyle5.BackColor = Color.FromArgb(230, 101, 101);
             dataGridViewCellStyle5.SelectionBackColor = Color.Maroon;
             dgvQuaHan.RowsDefaultCellStyle = dataGridViewCellStyle5;
-            dgvQuaHan.Size = new Size(534, 501);
+            dgvQuaHan.Size = new Size(531, 504);
             dgvQuaHan.TabIndex = 17;
             // 
             // btnQuaHan
@@ -198,7 +198,7 @@ namespace Environmental_Monitoring
             btnQuaHan.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             btnQuaHan.ForeColor = Color.Black;
             btnQuaHan.HoverColor = Color.FromArgb(34, 139, 34);
-            btnQuaHan.Location = new Point(741, 104);
+            btnQuaHan.Location = new Point(740, 101);
             btnQuaHan.Name = "btnQuaHan";
             btnQuaHan.Size = new Size(300, 50);
             btnQuaHan.TabIndex = 14;

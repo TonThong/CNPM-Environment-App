@@ -18,65 +18,96 @@ namespace Environmental_Monitoring.View
         private void InitializeComponent()
         {
             roundedPanel1 = new Environmental_Monitoring.View.Components.RoundedPanel();
-            pnContent = new Environmental_Monitoring.View.Components.RoundedPanel();
-            btnResult = new Environmental_Monitoring.View.Components.RoundedButton();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            roundedButton1 = new Environmental_Monitoring.View.Components.RoundedButton();
             btnReal = new Environmental_Monitoring.View.Components.RoundedButton();
             btnPlan = new Environmental_Monitoring.View.Components.RoundedButton();
             btnBusiness = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnResult = new Environmental_Monitoring.View.Components.RoundedButton();
+            tableLayoutPanel3 = new TableLayoutPanel();
+            roundedTextBox1 = new Environmental_Monitoring.View.Components.RoundedTextBox();
             lbContract = new Label();
-            btnExperiment = new Environmental_Monitoring.View.Components.RoundedButton();
+            pnContent = new Environmental_Monitoring.View.Components.RoundedPanel();
             roundedPanel1.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
+            tableLayoutPanel3.SuspendLayout();
             SuspendLayout();
             // 
             // roundedPanel1
             // 
-            roundedPanel1.BackColor = Color.Honeydew;
+            roundedPanel1.BackColor = Color.FromArgb(217, 244, 227);
             roundedPanel1.BorderColor = Color.Transparent;
             roundedPanel1.BorderRadius = 20;
             roundedPanel1.BorderSize = 0;
-            roundedPanel1.Controls.Add(btnExperiment);
-            roundedPanel1.Controls.Add(pnContent);
-            roundedPanel1.Controls.Add(btnResult);
-            roundedPanel1.Controls.Add(btnReal);
-            roundedPanel1.Controls.Add(btnPlan);
-            roundedPanel1.Controls.Add(btnBusiness);
-            roundedPanel1.Controls.Add(lbContract);
+            roundedPanel1.Controls.Add(tableLayoutPanel1);
+            roundedPanel1.ForeColor = Color.Transparent;
             roundedPanel1.Location = new Point(0, 0);
             roundedPanel1.Name = "roundedPanel1";
-            roundedPanel1.Size = new Size(1227, 712);
+            roundedPanel1.Size = new Size(1227, 715);
             roundedPanel1.TabIndex = 0;
             // 
-            // pnContent
+            // tableLayoutPanel1
             // 
-            pnContent.BackColor = Color.White;
-            pnContent.BorderColor = Color.Transparent;
-            pnContent.BorderRadius = 20;
-            pnContent.BorderSize = 0;
-            pnContent.Location = new Point(3, 192);
-            pnContent.Name = "pnContent";
-            pnContent.Size = new Size(1227, 507);
-            pnContent.TabIndex = 31;
+            tableLayoutPanel1.BackColor = Color.FromArgb(217, 244, 227);
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 3);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 1, 1);
+            tableLayoutPanel1.Controls.Add(pnContent, 0, 4);
+            tableLayoutPanel1.Location = new Point(3, 3);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 5;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 74F));
+            tableLayoutPanel1.Size = new Size(1221, 709);
+            tableLayoutPanel1.TabIndex = 32;
             // 
-            // btnResult
+            // tableLayoutPanel2
             // 
-            btnResult.BackColor = Color.FromArgb(217, 217, 217);
-            btnResult.BaseColor = Color.FromArgb(217, 217, 217);
-            btnResult.BorderColor = Color.Transparent;
-            btnResult.BorderRadius = 25;
-            btnResult.BorderSize = 0;
-            btnResult.FlatAppearance.BorderSize = 0;
-            btnResult.FlatStyle = FlatStyle.Flat;
-            btnResult.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnResult.ForeColor = Color.Black;
-            btnResult.HoverColor = Color.FromArgb(34, 139, 34);
-            btnResult.Location = new Point(964, 100);
-            btnResult.Name = "btnResult";
-            btnResult.Padding = new Padding(30, 15, 30, 15);
-            btnResult.Size = new Size(225, 60);
-            btnResult.TabIndex = 30;
-            btnResult.Text = "Kết Quả";
-            btnResult.UseVisualStyleBackColor = false;
-            btnResult.Click += btnResult_Click;
+            tableLayoutPanel2.ColumnCount = 7;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.5454545F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.5454545F));
+            tableLayoutPanel2.Controls.Add(roundedButton1, 4, 0);
+            tableLayoutPanel2.Controls.Add(btnReal, 3, 0);
+            tableLayoutPanel2.Controls.Add(btnPlan, 2, 0);
+            tableLayoutPanel2.Controls.Add(btnBusiness, 1, 0);
+            tableLayoutPanel2.Controls.Add(btnResult, 5, 0);
+            tableLayoutPanel2.Location = new Point(3, 115);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.Size = new Size(1215, 64);
+            tableLayoutPanel2.TabIndex = 21;
+            // 
+            // roundedButton1
+            // 
+            roundedButton1.BackColor = Color.FromArgb(217, 217, 217);
+            roundedButton1.BaseColor = Color.FromArgb(217, 217, 217);
+            roundedButton1.BorderColor = Color.Transparent;
+            roundedButton1.BorderRadius = 25;
+            roundedButton1.BorderSize = 0;
+            roundedButton1.FlatAppearance.BorderSize = 0;
+            roundedButton1.FlatStyle = FlatStyle.Flat;
+            roundedButton1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            roundedButton1.ForeColor = Color.Black;
+            roundedButton1.HoverColor = Color.FromArgb(34, 139, 34);
+            roundedButton1.Location = new Point(718, 3);
+            roundedButton1.Name = "roundedButton1";
+            roundedButton1.Padding = new Padding(30, 15, 30, 15);
+            roundedButton1.Size = new Size(214, 58);
+            roundedButton1.TabIndex = 31;
+            roundedButton1.Text = "Phòng Thí Nghiệm";
+            roundedButton1.UseVisualStyleBackColor = false;
             // 
             // btnReal
             // 
@@ -90,10 +121,10 @@ namespace Environmental_Monitoring.View
             btnReal.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnReal.ForeColor = Color.Black;
             btnReal.HoverColor = Color.FromArgb(34, 139, 34);
-            btnReal.Location = new Point(502, 100);
+            btnReal.Location = new Point(498, 3);
             btnReal.Name = "btnReal";
             btnReal.Padding = new Padding(30, 15, 30, 15);
-            btnReal.Size = new Size(225, 60);
+            btnReal.Size = new Size(214, 58);
             btnReal.TabIndex = 29;
             btnReal.Text = "Hiện Trường";
             btnReal.UseVisualStyleBackColor = false;
@@ -111,10 +142,10 @@ namespace Environmental_Monitoring.View
             btnPlan.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPlan.ForeColor = Color.Black;
             btnPlan.HoverColor = Color.FromArgb(34, 139, 34);
-            btnPlan.Location = new Point(271, 100);
+            btnPlan.Location = new Point(278, 3);
             btnPlan.Name = "btnPlan";
             btnPlan.Padding = new Padding(30, 15, 30, 15);
-            btnPlan.Size = new Size(225, 60);
+            btnPlan.Size = new Size(214, 58);
             btnPlan.TabIndex = 28;
             btnPlan.Text = "Kế Hoạch";
             btnPlan.UseVisualStyleBackColor = false;
@@ -132,56 +163,108 @@ namespace Environmental_Monitoring.View
             btnBusiness.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnBusiness.ForeColor = Color.Black;
             btnBusiness.HoverColor = Color.FromArgb(34, 139, 34);
-            btnBusiness.Location = new Point(40, 100);
+            btnBusiness.Location = new Point(58, 3);
             btnBusiness.Name = "btnBusiness";
             btnBusiness.Padding = new Padding(30, 15, 30, 15);
-            btnBusiness.Size = new Size(225, 60);
+            btnBusiness.Size = new Size(214, 58);
             btnBusiness.TabIndex = 27;
             btnBusiness.Text = "Kinh Doanh";
             btnBusiness.UseVisualStyleBackColor = false;
             btnBusiness.Click += btnBusiness_Click;
             // 
+            // btnResult
+            // 
+            btnResult.BackColor = Color.FromArgb(217, 217, 217);
+            btnResult.BaseColor = Color.FromArgb(217, 217, 217);
+            btnResult.BorderColor = Color.Transparent;
+            btnResult.BorderRadius = 25;
+            btnResult.BorderSize = 0;
+            btnResult.FlatAppearance.BorderSize = 0;
+            btnResult.FlatStyle = FlatStyle.Flat;
+            btnResult.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnResult.ForeColor = Color.Black;
+            btnResult.HoverColor = Color.FromArgb(34, 139, 34);
+            btnResult.Location = new Point(938, 3);
+            btnResult.Name = "btnResult";
+            btnResult.Padding = new Padding(30, 15, 30, 15);
+            btnResult.Size = new Size(214, 58);
+            btnResult.TabIndex = 30;
+            btnResult.Text = "Kết Quả";
+            btnResult.UseVisualStyleBackColor = false;
+            btnResult.Click += btnResult_Click;
+            // 
+            // tableLayoutPanel3
+            // 
+            tableLayoutPanel3.ColumnCount = 4;
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel3.Controls.Add(roundedTextBox1, 2, 0);
+            tableLayoutPanel3.Controls.Add(lbContract, 1, 0);
+            tableLayoutPanel3.Location = new Point(3, 24);
+            tableLayoutPanel3.Name = "tableLayoutPanel3";
+            tableLayoutPanel3.RowCount = 1;
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel3.Size = new Size(1215, 64);
+            tableLayoutPanel3.TabIndex = 22;
+            // 
+            // roundedTextBox1
+            // 
+            roundedTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            roundedTextBox1.BackColor = Color.White;
+            roundedTextBox1.BorderRadius = 15;
+            roundedTextBox1.BorderThickness = 1;
+            roundedTextBox1.FocusBorderColor = SystemColors.ControlDark;
+            roundedTextBox1.HoverBorderColor = Color.DarkGray;
+            roundedTextBox1.Location = new Point(615, 3);
+            roundedTextBox1.Multiline = false;
+            roundedTextBox1.Name = "roundedTextBox1";
+            roundedTextBox1.NormalBorderColor = Color.DarkGray;
+            roundedTextBox1.Padding = new Padding(9, 12, 9, 9);
+            roundedTextBox1.PasswordChar = '\0';
+            roundedTextBox1.PlaceholderText = "Tìm Kiếm...";
+            roundedTextBox1.ReadOnly = false;
+            roundedTextBox1.Size = new Size(534, 45);
+            roundedTextBox1.TabIndex = 19;
+            roundedTextBox1.UseSystemPasswordChar = false;
+            // 
             // lbContract
             // 
             lbContract.AutoSize = true;
             lbContract.BackColor = Color.Transparent;
-            lbContract.Font = new Font("Times New Roman", 28.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lbContract.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lbContract.ForeColor = Color.Black;
-            lbContract.Location = new Point(40, 12);
+            lbContract.Location = new Point(63, 0);
             lbContract.Name = "lbContract";
-            lbContract.Size = new Size(488, 53);
+            lbContract.Size = new Size(383, 50);
             lbContract.TabIndex = 26;
             lbContract.Text = "QUẢN LÍ HỢP ĐỒNG";
             // 
-            // btnExperiment
+            // pnContent
             // 
-            btnExperiment.BackColor = Color.FromArgb(217, 217, 217);
-            btnExperiment.BaseColor = Color.FromArgb(217, 217, 217);
-            btnExperiment.BorderColor = Color.Transparent;
-            btnExperiment.BorderRadius = 25;
-            btnExperiment.BorderSize = 0;
-            btnExperiment.FlatAppearance.BorderSize = 0;
-            btnExperiment.FlatStyle = FlatStyle.Flat;
-            btnExperiment.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExperiment.ForeColor = Color.Black;
-            btnExperiment.HoverColor = Color.FromArgb(34, 139, 34);
-            btnExperiment.Location = new Point(733, 100);
-            btnExperiment.Name = "btnExperiment";
-            btnExperiment.Padding = new Padding(30, 15, 30, 15);
-            btnExperiment.Size = new Size(225, 60);
-            btnExperiment.TabIndex = 32;
-            btnExperiment.Text = "Thí Nghiệm";
-            btnExperiment.UseVisualStyleBackColor = false;
-            btnExperiment.Click += btnExperiment_Click;
+            pnContent.BackColor = Color.White;
+            pnContent.BorderColor = Color.Transparent;
+            pnContent.BorderRadius = 20;
+            pnContent.BorderSize = 0;
+            pnContent.Location = new Point(3, 185);
+            pnContent.Name = "pnContent";
+            pnContent.Size = new Size(1215, 521);
+            pnContent.TabIndex = 23;
             // 
             // Contract
             // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Transparent;
             Controls.Add(roundedPanel1);
             Name = "Contract";
             Size = new Size(1227, 715);
             roundedPanel1.ResumeLayout(false);
-            roundedPanel1.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel3.ResumeLayout(false);
+            tableLayoutPanel3.PerformLayout();
             ResumeLayout(false);
 
         }
@@ -199,12 +282,16 @@ namespace Environmental_Monitoring.View
         }
 
         private Components.RoundedPanel roundedPanel1;
-        private Components.RoundedPanel pnContent;
         private Components.RoundedButton btnResult;
         private Components.RoundedButton btnReal;
         private Components.RoundedButton btnPlan;
         private Components.RoundedButton btnBusiness;
-        private Components.RoundedButton btnExperiment;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Components.RoundedTextBox roundedTextBox1;
+        private TableLayoutPanel tableLayoutPanel2;
+        private TableLayoutPanel tableLayoutPanel3;
+        private Components.RoundedButton roundedButton1;
+        private Components.RoundedPanel pnContent;
         private Label lbContract;
 
         private void btnPlan_Click(object sender, EventArgs e)
@@ -222,9 +309,9 @@ namespace Environmental_Monitoring.View
             LoadPage(new ResultContent());
         }
 
-        private void btnExperiment_Click(object sender, EventArgs e)
+        private void label3_Click(object sender, EventArgs e)
         {
-            LoadPage(new ExperimentContent());
+
         }
     }
 }

@@ -106,7 +106,12 @@ namespace Environmental_Monitoring.View
 
             HighlightButton(clickedButton);
 
-            if (clickedButton == btnContracts)
+
+            if (clickedButton == btnUser)
+            {
+                LoadPage(new Employee());
+            }
+            else if (clickedButton == btnContracts)
             {
                 LoadPage(new Contract());
             }

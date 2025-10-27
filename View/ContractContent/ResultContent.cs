@@ -16,5 +16,25 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             InitializeComponent();
         }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void roundedButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMail_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

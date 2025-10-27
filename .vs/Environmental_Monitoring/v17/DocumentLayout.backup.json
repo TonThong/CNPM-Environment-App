@@ -7,8 +7,37 @@
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+=======
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\properties\\resources.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:properties\\resources.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\model\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:model\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\model\\employees.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:model\\employees.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\controller\\data\\employeerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\data\\employeerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\components\\createupdateemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\components\\createupdateemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\controller\\data\\rolerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\data\\rolerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+>>>>>>> 91f904495b403c2aff2e461804b757e09232940c
     }
   ],
   "DocumentGroupContainers": [
@@ -24,6 +53,7 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Mainlayout.cs",
+<<<<<<< HEAD
               "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Mainlayout.cs",
               "RelativeDocumentMoniker": "View\\Mainlayout.cs",
               "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Mainlayout.cs",
@@ -31,11 +61,59 @@
               "ViewState": "AgIAAI0AAAAAAAAAAAAowIIAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-25T09:16:15.578Z",
+=======
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs",
+              "RelativeDocumentMoniker": "View\\Mainlayout.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs",
+              "RelativeToolTip": "View\\Mainlayout.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAgwHAAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T07:42:13.297Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Resources.resx",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Properties\\Resources.resx",
+              "RelativeDocumentMoniker": "Properties\\Resources.resx",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Properties\\Resources.resx",
+              "RelativeToolTip": "Properties\\Resources.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-10-27T07:38:21.066Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PagedResult.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Model\\PagedResult.cs",
+              "RelativeDocumentMoniker": "Model\\PagedResult.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Model\\PagedResult.cs*",
+              "RelativeToolTip": "Model\\PagedResult.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T07:33:30.417Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Employees.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Model\\Employees.cs",
+              "RelativeDocumentMoniker": "Model\\Employees.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Model\\Employees.cs*",
+              "RelativeToolTip": "Model\\Employees.cs*",
+              "ViewState": "AgIAADgAAAAAAAAAAAAQwEQAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T07:25:25.462Z",
+>>>>>>> 91f904495b403c2aff2e461804b757e09232940c
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+<<<<<<< HEAD
               "Title": "Contract.cs",
               "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\Contract.cs",
               "RelativeDocumentMoniker": "View\\Contract.cs",
@@ -44,6 +122,94 @@
               "ViewState": "AgIAALoAAAAAAAAAAAAlwMUAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-24T02:35:09.334Z"
+=======
+              "Title": "Employee.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Employee.cs",
+              "RelativeDocumentMoniker": "View\\Employee.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Employee.cs",
+              "RelativeToolTip": "View\\Employee.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAA0wEoAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T07:23:45.657Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "RoleRepo.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Controller\\Data\\RoleRepo.cs",
+              "RelativeDocumentMoniker": "Controller\\Data\\RoleRepo.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Controller\\Data\\RoleRepo.cs*",
+              "RelativeToolTip": "Controller\\Data\\RoleRepo.cs*",
+              "ViewState": "AgIAAAUAAAAAAAAAAADwvyEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T07:19:10.389Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "EmployeeRepo.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Controller\\Data\\EmployeeRepo.cs",
+              "RelativeDocumentMoniker": "Controller\\Data\\EmployeeRepo.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Controller\\Data\\EmployeeRepo.cs*",
+              "RelativeToolTip": "Controller\\Data\\EmployeeRepo.cs*",
+              "ViewState": "AgIAACoAAAAAAAAAAAAIwDcAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T07:18:38.151Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CreateUpdateEmployee.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Components\\CreateUpdateEmployee.cs",
+              "RelativeDocumentMoniker": "View\\Components\\CreateUpdateEmployee.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Components\\CreateUpdateEmployee.cs",
+              "RelativeToolTip": "View\\Components\\CreateUpdateEmployee.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAYwEIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T07:17:58.348Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 286,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 126,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 73,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+>>>>>>> 91f904495b403c2aff2e461804b757e09232940c
             }
           ]
         }

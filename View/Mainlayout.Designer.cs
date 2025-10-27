@@ -54,11 +54,12 @@ namespace Environmental_Monitoring.View
             // 
             // lblBigName
             // 
+            lblBigName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             lblBigName.AutoSize = true;
             lblBigName.BackColor = Color.Transparent;
             lblBigName.Font = new Font("Times New Roman", 28.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lblBigName.ForeColor = Color.DarkGreen;
-            lblBigName.Location = new Point(150, 45);
+            lblBigName.Location = new Point(140, 45);
             lblBigName.Name = "lblBigName";
             lblBigName.Size = new Size(346, 53);
             lblBigName.TabIndex = 18;
@@ -327,6 +328,7 @@ namespace Environmental_Monitoring.View
             // 
             btnBell.ActiveBackColor = Color.FromArgb(220, 240, 220);
             btnBell.ActiveBorderColor = Color.FromArgb(0, 100, 0);
+            btnBell.Anchor = AnchorStyles.Right;
             btnBell.BackColor = Color.Transparent;
             btnBell.BackgroundImage = (Image)resources.GetObject("btnBell.BackgroundImage");
             btnBell.BackgroundImageLayout = ImageLayout.Stretch;
@@ -349,8 +351,8 @@ namespace Environmental_Monitoring.View
             // 
             panelHeadder.BackColor = Color.Transparent;
             panelHeadder.Controls.Add(lblBigName);
-            panelHeadder.Controls.Add(btnBell);
             panelHeadder.Controls.Add(pictureBox1);
+            panelHeadder.Controls.Add(btnBell);
             panelHeadder.Location = new Point(90, 0);
             panelHeadder.Name = "panelHeadder";
             panelHeadder.Size = new Size(1230, 140);
