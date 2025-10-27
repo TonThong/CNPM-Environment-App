@@ -74,7 +74,7 @@
             tableLayoutPanel1.Controls.Add(linkLabel1, 1, 9);
             tableLayoutPanel1.Controls.Add(btnDangNhap, 1, 11);
             tableLayoutPanel1.Controls.Add(label3, 1, 13);
-            tableLayoutPanel1.Location = new Point(5, 11);
+            tableLayoutPanel1.Location = new Point(6, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 15;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3.33333254F));
@@ -92,14 +92,14 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3.33333254F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5.55555439F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3.33333254F));
-            tableLayoutPanel1.Size = new Size(410, 595);
+            tableLayoutPanel1.Size = new Size(411, 614);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // picShowPass
             // 
             picShowPass.Cursor = Cursors.Hand;
             picShowPass.Image = Properties.Resources.eyeclose;
-            picShowPass.Location = new Point(372, 343);
+            picShowPass.Location = new Point(372, 355);
             picShowPass.Name = "picShowPass";
             picShowPass.Size = new Size(25, 25);
             picShowPass.SizeMode = PictureBoxSizeMode.Zoom;
@@ -112,10 +112,10 @@
             pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(44, 22);
+            pictureBox1.Location = new Point(44, 23);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Padding = new Padding(100, 0, 0, 0);
-            pictureBox1.Size = new Size(322, 159);
+            pictureBox1.Size = new Size(322, 164);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
@@ -124,9 +124,9 @@
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            label2.Location = new Point(44, 203);
+            label2.Location = new Point(44, 210);
             label2.Name = "label2";
-            label2.Size = new Size(322, 33);
+            label2.Size = new Size(322, 34);
             label2.TabIndex = 1;
             label2.Text = "Tài Khoản";
             label2.TextAlign = ContentAlignment.MiddleLeft;
@@ -137,7 +137,7 @@
             txtTaiKhoan.BorderThickness = 2;
             txtTaiKhoan.FocusBorderColor = Color.DimGray;
             txtTaiKhoan.HoverBorderColor = Color.DarkGray;
-            txtTaiKhoan.Location = new Point(44, 258);
+            txtTaiKhoan.Location = new Point(44, 267);
             txtTaiKhoan.Multiline = false;
             txtTaiKhoan.Name = "txtTaiKhoan";
             txtTaiKhoan.NormalBorderColor = Color.LightGray;
@@ -155,7 +155,7 @@
             txtMatKhau.BorderThickness = 2;
             txtMatKhau.FocusBorderColor = Color.DimGray;
             txtMatKhau.HoverBorderColor = Color.DarkGray;
-            txtMatKhau.Location = new Point(44, 343);
+            txtMatKhau.Location = new Point(44, 355);
             txtMatKhau.Multiline = false;
             txtMatKhau.Name = "txtMatKhau";
             txtMatKhau.NormalBorderColor = Color.LightGray;
@@ -175,9 +175,9 @@
             linkLabel1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
             linkLabel1.LinkBehavior = LinkBehavior.HoverUnderline;
             linkLabel1.LinkColor = Color.FromArgb(1, 42, 7);
-            linkLabel1.Location = new Point(44, 411);
+            linkLabel1.Location = new Point(44, 426);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(322, 33);
+            linkLabel1.Size = new Size(322, 34);
             linkLabel1.TabIndex = 4;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "Quên Mật Khẩu";
@@ -195,7 +195,7 @@
             btnDangNhap.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnDangNhap.ForeColor = Color.White;
             btnDangNhap.HoverColor = Color.FromArgb(34, 139, 34);
-            btnDangNhap.Location = new Point(44, 466);
+            btnDangNhap.Location = new Point(44, 483);
             btnDangNhap.Name = "btnDangNhap";
             btnDangNhap.Size = new Size(322, 46);
             btnDangNhap.TabIndex = 5;
@@ -209,9 +209,9 @@
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
             label3.ForeColor = Color.FromArgb(2, 85, 9);
-            label3.Location = new Point(44, 534);
+            label3.Location = new Point(44, 554);
             label3.Name = "label3";
-            label3.Size = new Size(322, 33);
+            label3.Size = new Size(322, 34);
             label3.TabIndex = 6;
             label3.Text = "Đăng Nhập Bằng Face ID";
             label3.TextAlign = ContentAlignment.MiddleCenter;

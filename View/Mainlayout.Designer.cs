@@ -304,6 +304,7 @@ namespace Environmental_Monitoring.View
             // 
             // panelContent
             // 
+            panelContent.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelContent.BackColor = Color.FromArgb(217, 244, 227);
             panelContent.BorderColor = Color.Transparent;
             panelContent.BorderRadius = 20;

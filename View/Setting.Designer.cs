@@ -32,11 +32,11 @@ namespace Environmental_Monitoring
         private void InitializeComponent()
         {
             roundedPanel3 = new RoundedPanel();
+            customComboBox2 = new CustomComboBox();
+            customComboBox1 = new CustomComboBox();
             roundedButton1 = new RoundedButton();
             checkBox2 = new CheckBox();
             checkBox1 = new CheckBox();
-            comboBox2 = new ComboBox();
-            comboBox1 = new ComboBox();
             label2 = new Label();
             label10 = new Label();
             label13 = new Label();
@@ -64,11 +64,11 @@ namespace Environmental_Monitoring
             roundedPanel3.BorderColor = Color.Transparent;
             roundedPanel3.BorderRadius = 20;
             roundedPanel3.BorderSize = 0;
+            roundedPanel3.Controls.Add(customComboBox2);
+            roundedPanel3.Controls.Add(customComboBox1);
             roundedPanel3.Controls.Add(roundedButton1);
             roundedPanel3.Controls.Add(checkBox2);
             roundedPanel3.Controls.Add(checkBox1);
-            roundedPanel3.Controls.Add(comboBox2);
-            roundedPanel3.Controls.Add(comboBox1);
             roundedPanel3.Controls.Add(label2);
             roundedPanel3.Controls.Add(label10);
             roundedPanel3.Controls.Add(label13);
@@ -77,6 +77,52 @@ namespace Environmental_Monitoring
             roundedPanel3.Name = "roundedPanel3";
             roundedPanel3.Size = new Size(519, 504);
             roundedPanel3.TabIndex = 17;
+            // 
+            // customComboBox2
+            // 
+            customComboBox2.ArrowColor = Color.DimGray;
+            customComboBox2.BackColor = Color.White;
+            customComboBox2.BorderRadius = 15;
+            customComboBox2.BorderThickness = 2;
+            customComboBox2.DropDownBackColor = Color.White;
+            customComboBox2.DropDownHeight = 150;
+            customComboBox2.DropDownHoverColor = Color.DarkGray;
+            customComboBox2.FocusBorderColor = Color.FromArgb(64, 64, 64);
+            customComboBox2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            customComboBox2.ForeColor = Color.Black;
+            customComboBox2.HoverBorderColor = Color.DimGray;
+            customComboBox2.Items.AddRange(new object[] { "Sáng", "Tối" });
+            customComboBox2.Location = new Point(94, 229);
+            customComboBox2.Name = "customComboBox2";
+            customComboBox2.NormalBorderColor = Color.Gray;
+            customComboBox2.SelectedIndex = -1;
+            customComboBox2.SelectedItem = null;
+            customComboBox2.SelectedValue = null;
+            customComboBox2.Size = new Size(230, 35);
+            customComboBox2.TabIndex = 23;
+            // 
+            // customComboBox1
+            // 
+            customComboBox1.ArrowColor = Color.DimGray;
+            customComboBox1.BackColor = Color.White;
+            customComboBox1.BorderRadius = 15;
+            customComboBox1.BorderThickness = 2;
+            customComboBox1.DropDownBackColor = Color.White;
+            customComboBox1.DropDownHeight = 150;
+            customComboBox1.DropDownHoverColor = Color.DarkGray;
+            customComboBox1.FocusBorderColor = Color.FromArgb(64, 64, 64);
+            customComboBox1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            customComboBox1.ForeColor = Color.Black;
+            customComboBox1.HoverBorderColor = Color.DimGray;
+            customComboBox1.Items.AddRange(new object[] { "Tiếng Việt", "English" });
+            customComboBox1.Location = new Point(94, 128);
+            customComboBox1.Name = "customComboBox1";
+            customComboBox1.NormalBorderColor = Color.Gray;
+            customComboBox1.SelectedIndex = -1;
+            customComboBox1.SelectedItem = null;
+            customComboBox1.SelectedValue = null;
+            customComboBox1.Size = new Size(230, 35);
+            customComboBox1.TabIndex = 22;
             // 
             // roundedButton1
             // 
@@ -116,24 +162,6 @@ namespace Environmental_Monitoring
             checkBox1.TabIndex = 19;
             checkBox1.Text = "Email";
             checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // comboBox2
-            // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(102, 230);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(151, 28);
-            comboBox2.TabIndex = 18;
-            comboBox2.Text = "Sáng ";
-            // 
-            // comboBox1
-            // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(102, 125);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(151, 28);
-            comboBox1.TabIndex = 17;
-            comboBox1.Text = "Tiếng Việt";
             // 
             // label2
             // 
@@ -360,16 +388,16 @@ namespace Environmental_Monitoring
         private Label label6;
         private Label label12;
         private RoundedPanel roundedPanel3;
-        private ComboBox comboBox1;
         private Label label2;
         private Label label10;
         private Label label13;
         private Label label15;
         private CheckBox checkBox2;
         private CheckBox checkBox1;
-        private ComboBox comboBox2;
         private RoundedButton roundedButton1;
         private TableLayoutPanel tableLayoutPanel1;
         private RoundedTextBox roundedTextBox1;
+        private CustomComboBox customComboBox2;
+        private CustomComboBox customComboBox1;
     }
 }

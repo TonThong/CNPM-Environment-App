@@ -58,8 +58,6 @@
             btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             cbbRole = new ComboBox();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            customComboBox1 = new Environmental_Monitoring.View.Components.CustomComboBox();
-            customComboBox2 = new Environmental_Monitoring.View.Components.CustomComboBox();
             SuspendLayout();
             // 
             // label1
@@ -338,60 +336,12 @@
             cbbRole.Size = new Size(226, 28);
             cbbRole.TabIndex = 29;
             // 
-            // customComboBox1
-            // 
-            customComboBox1.ArrowColor = Color.DimGray;
-            customComboBox1.BackColor = Color.White;
-            customComboBox1.BorderRadius = 15;
-            customComboBox1.BorderThickness = 2;
-            customComboBox1.DropDownBackColor = Color.White;
-            customComboBox1.DropDownHeight = 150;
-            customComboBox1.DropDownHoverColor = Color.DodgerBlue;
-            customComboBox1.FocusBorderColor = Color.HotPink;
-            customComboBox1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            customComboBox1.ForeColor = Color.Black;
-            customComboBox1.HoverBorderColor = Color.DodgerBlue;
-            customComboBox1.Location = new Point(168, 368);
-            customComboBox1.Name = "customComboBox1";
-            customComboBox1.NormalBorderColor = Color.Gray;
-            customComboBox1.SelectedIndex = -1;
-            customComboBox1.SelectedItem = null;
-            customComboBox1.SelectedValue = null;
-            customComboBox1.Size = new Size(188, 38);
-            customComboBox1.TabIndex = 30;
-            // 
-            // customComboBox2
-            // 
-            customComboBox2.ArrowColor = Color.DimGray;
-            customComboBox2.BackColor = Color.White;
-            customComboBox2.BorderRadius = 15;
-            customComboBox2.BorderThickness = 2;
-            customComboBox2.DisplayMember = "1";
-            customComboBox2.DropDownBackColor = Color.White;
-            customComboBox2.DropDownHeight = 150;
-            customComboBox2.DropDownHoverColor = Color.DodgerBlue;
-            customComboBox2.FocusBorderColor = Color.HotPink;
-            customComboBox2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            customComboBox2.ForeColor = Color.Black;
-            customComboBox2.HoverBorderColor = Color.DodgerBlue;
-            customComboBox2.Items.AddRange(new object[] { "1", "2", "3", "4", "5", "6", "", "" });
-            customComboBox2.Location = new Point(405, 385);
-            customComboBox2.Name = "customComboBox2";
-            customComboBox2.NormalBorderColor = Color.Gray;
-            customComboBox2.SelectedIndex = -1;
-            customComboBox2.SelectedItem = null;
-            customComboBox2.SelectedValue = null;
-            customComboBox2.Size = new Size(188, 38);
-            customComboBox2.TabIndex = 31;
-            // 
             // CreateUpdateEmployee
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(217, 244, 227);
             ClientSize = new Size(922, 523);
-            Controls.Add(customComboBox2);
-            Controls.Add(customComboBox1);
             Controls.Add(cbbRole);
             Controls.Add(btnSave);
             Controls.Add(label17);
@@ -460,7 +410,5 @@
         private Components.RoundedButton btnSave;
         private ComboBox cbbRole;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private Components.CustomComboBox customComboBox1;
-        private Components.CustomComboBox customComboBox2;
     }
 }
