@@ -7,9 +7,6 @@ using System.Diagnostics.Contracts;
 
 namespace Environmental_Monitoring.Model 
 {
-    // =============================================
-    // Table for storing Employee information
-    // =============================================
     [Table("Employees")]
     public class Employee
     {
@@ -24,7 +21,7 @@ namespace Environmental_Monitoring.Model
         [StringLength(100)]
         public string HoTen { get; set; }
 
-        public int? NamSinh { get; set; } // YEAR can be mapped to int
+        public int? NamSinh { get; set; } 
 
         [StringLength(100)]
         public string PhongBan { get; set; }
@@ -42,14 +39,12 @@ namespace Environmental_Monitoring.Model
         [StringLength(255)]
         public string PasswordHash { get; set; }
 
-        public byte[] FaceIDData { get; set; } // BLOB is mapped to byte array
+        public byte[] FaceIDData { get; set; } 
 
-        // Foreign Key
         public int? RoleID { get; set; }
         [ForeignKey("RoleID")]
         public virtual Role Role { get; set; }
 
-        // Navigation properties
         public virtual ICollection<Contract> Contracts { get; set; }
 
         [InverseProperty("EmployeeHT")]
@@ -60,6 +55,33 @@ namespace Environmental_Monitoring.Model
 
         public Employee()
         {
+            Contracts = new HashSet<Contract>();
+            SamplesAssignedHT = new HashSet<EnvironmentalSample>();
+            SamplesAssignedPTN = new HashSet<EnvironmentalSample>();
+        }
+
+        public Employee(DataRow row)
+        {
+            EmployeeID = Convert.ToInt32(row["EmployeeID"]); 
+            MaNhanVien = row["MaNhanVien"].ToString();
+            HoTen = row["HoTen"].ToString();
+
+            if (row["NamSinh"] != DBNull.Value)
+                NamSinh = Convert.ToInt32(row["NamSinh"]); 
+            else
+                NamSinh = null;
+
+            PhongBan = row["PhongBan"].ToString();
+            DiaChi = row["DiaChi"].ToString();
+            SoDienThoai = row["SoDienThoai"].ToString();
+            Email = row["Email"].ToString();
+            PasswordHash = row["PasswordHash"].ToString();
+
+            if (row["RoleID"] != DBNull.Value)
+                RoleID = Convert.ToInt32(row["RoleID"]); 
+            else
+                RoleID = null;
+
             Contracts = new HashSet<Contract>();
             SamplesAssignedHT = new HashSet<EnvironmentalSample>();
             SamplesAssignedPTN = new HashSet<EnvironmentalSample>();

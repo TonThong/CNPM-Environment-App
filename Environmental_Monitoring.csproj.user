@@ -7,14 +7,17 @@
     <Compile Update="View\AI.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="View\Components\CreateUpdateEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Components\CustomCombobox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="View\Components\MenuButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="View\Components\Roundedbutton.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\Components\RoundedComboBox.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="View\Components\RoundedDataGridView.cs">
       <SubType>Component</SubType>
@@ -41,6 +44,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="View\ContractContent\ResultContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="View\Employee.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="View\Introduce.cs">

@@ -43,8 +43,8 @@ namespace Environmental_Monitoring.View
             roundedButton2 = new RoundedButton();
             label2 = new Label();
             label4 = new Label();
-            roundedTextBox1 = new RoundedTextBox();
             label1 = new Label();
+            roundedTextBox1 = new RoundedTextBox();
             tableLayoutPanel1.SuspendLayout();
             roundedPanel4.SuspendLayout();
             SuspendLayout();
@@ -213,6 +213,16 @@ namespace Environmental_Monitoring.View
             label4.Text = "Tỷ Lệ Đúng/Trễ Hẹn";
             label4.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            label1.Location = new Point(21, 176);
+            label1.Name = "label1";
+            label1.Size = new Size(231, 31);
+            label1.TabIndex = 15;
+            label1.Text = "Số Lượng Đơn Hàng";
+            // 
             // roundedTextBox1
             // 
             roundedTextBox1.BackColor = Color.White;
@@ -231,16 +241,6 @@ namespace Environmental_Monitoring.View
             roundedTextBox1.Size = new Size(531, 45);
             roundedTextBox1.TabIndex = 20;
             roundedTextBox1.UseSystemPasswordChar = false;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            label1.Location = new Point(21, 176);
-            label1.Name = "label1";
-            label1.Size = new Size(231, 31);
-            label1.TabIndex = 15;
-            label1.Text = "Số Lượng Đơn Hàng";
             // 
             // Stats
             // 

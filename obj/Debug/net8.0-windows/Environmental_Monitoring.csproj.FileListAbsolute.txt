@@ -142,7 +142,6 @@ C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.Form1.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.Properties.Resources.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.AI.resources
-C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\CNPM.View.Components.RoundedComboBox.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.RoundedTextBox.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Introduce.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Login.resources
@@ -182,3 +181,6 @@ C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.PlanContent.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.RealContent.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.ResultContent.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.CustomComboBox.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.CreateUpdateEmployee.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Employee.resources
