@@ -8,7 +8,6 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\Azure.Identity.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\BCrypt.Net-Next.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\BouncyCastle.Cryptography.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\Google.Protobuf.dll
-C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.Windows.Forms.DataVisualization.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\K4os.Compression.LZ4.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\K4os.Compression.LZ4.Streams.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\K4os.Hash.xxHash.dll
@@ -39,6 +38,8 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.IdentityModel.Tok
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.Memory.Data.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.Security.Cryptography.Pkcs.dll
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\WinForms.DataVisualization.Utilities.dll
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\WinForms.DataVisualization.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\ZstdSharp.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\cs\Microsoft.Data.SqlClient.resources.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\de\Microsoft.Data.SqlClient.resources.dll
@@ -71,6 +72,8 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.csproj.AssemblyReference.cache
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Interop.Accessibility.dll
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.csproj.ResolveComReference.cache
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.Form1.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.Properties.Resources.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.AI.resources

@@ -54,13 +54,9 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
-            "HIC.System.Windows.Forms.DataVisualization": {
-              "target": "Package",
-              "version": "[1.0.1, )"
-            },
             "Microsoft.Data.SqlClient": {
               "target": "Package",
-              "version": "[6.1.2, )"
+              "version": "[7.0.0-preview2.25289.6, )"
             },
             "MySql.Data": {
               "target": "Package",
@@ -69,6 +65,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.9.0, )"
+            },
+            "WinForms.DataVisualization": {
+              "target": "Package",
+              "version": "[1.10.0, )"
             }
           },
           "imports": [
