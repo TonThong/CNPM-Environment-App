@@ -215,3 +215,4 @@ E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Mon
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.pdb
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.genruntimeconfig.cache
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\ref\Environmental_Monitoring.dll
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.PopUpContract.resources
