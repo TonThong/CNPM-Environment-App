@@ -55,40 +55,41 @@ namespace Environmental_Monitoring
         private void LoadNotifications(DataGridView dgv, string loaiThongBao)
         {
             DataTable dataTable = new DataTable();
-
-            string query = @"
-        SELECT 
-            c.MaDon, 
-            cust.TenNguoiDaiDien,
-            
-            -- Cột Số Ngày Sắp Hết Hạn (chỉ hiển thị nếu > 0)
-            CASE 
-                WHEN DATEDIFF(c.NgayTraKetQua, CURDATE()) > 0 
-                THEN DATEDIFF(c.NgayTraKetQua, CURDATE()) 
-                ELSE NULL 
-            END AS SoNgaySapHetHan,
-            
-            -- Cột Số Ngày Đã Hết Hạn (chỉ hiển thị nếu <= 0, và lấy giá trị dương)
-            CASE 
-                WHEN DATEDIFF(c.NgayTraKetQua, CURDATE()) <= 0 
-                THEN ABS(DATEDIFF(c.NgayTraKetQua, CURDATE())) 
-                ELSE NULL 
-            END AS SoNgayDaHetHan
-        FROM 
-            Notifications n
-        JOIN 
-            Contracts c ON n.ContractID = c.ContractID
-        JOIN 
-            Customers cust ON c.CustomerID = cust.CustomerID
-        "; 
+            string query = "";
 
             if (loaiThongBao == "SapHetHan")
             {
-                query += " WHERE DATEDIFF(c.NgayTraKetQua, CURDATE()) > 0";
+                // Lấy TẤT CẢ hợp đồng CHƯA tới hạn
+                // VÀ có trạng thái KHÁC 'Completed'
+                query = @"
+                    SELECT 
+                        c.MaDon, 
+                        cust.TenNguoiDaiDien,
+                        DATEDIFF(c.NgayTraKetQua, CURDATE()) AS SoNgay
+                    FROM 
+                        Contracts c
+                    JOIN 
+                        Customers cust ON c.CustomerID = cust.CustomerID
+                    WHERE 
+                        DATEDIFF(c.NgayTraKetQua, CURDATE()) > 0
+                        AND c.Status != 'Completed'"; // <--- DÒNG MỚI THÊM VÀO
             }
-            else 
+            else // "QuaHan"
             {
-                query += " WHERE DATEDIFF(c.NgayTraKetQua, CURDATE()) <= 0";
+                // Lấy TẤT CẢ hợp đồng ĐÃ quá hạn
+                // VÀ có trạng thái KHÁC 'Completed' (ví dụ: 'Expired', 'Active')
+                query = @"
+                    SELECT 
+                        c.MaDon, 
+                        cust.TenNguoiDaiDien,
+                        ABS(DATEDIFF(c.NgayTraKetQua, CURDATE())) AS SoNgay
+                    FROM 
+                        Contracts c
+                    JOIN 
+                        Customers cust ON c.CustomerID = cust.CustomerID
+                    WHERE 
+                        DATEDIFF(c.NgayTraKetQua, CURDATE()) <= 0
+                        AND c.Status != 'Completed'"; // <--- DÒNG MỚI THÊM VÀO
             }
 
             try
@@ -108,6 +109,7 @@ namespace Environmental_Monitoring
 
                 dgv.DataSource = dataTable;
 
+                // Đổi tên các cột cho gọn gàng
                 if (dgv.Columns.Count > 0)
                 {
                     dgv.Columns["MaDon"].HeaderText = "Mã Đơn";
@@ -115,15 +117,11 @@ namespace Environmental_Monitoring
 
                     if (loaiThongBao == "SapHetHan")
                     {
-                        dgv.Columns["SoNgaySapHetHan"].HeaderText = "Số Ngày Còn Lại";
-                        dgv.Columns["SoNgaySapHetHan"].Visible = true;
-                        dgv.Columns["SoNgayDaHetHan"].Visible = false;
+                        dgv.Columns["SoNgay"].HeaderText = "Số Ngày Còn Lại";
                     }
                     else
                     {
-                        dgv.Columns["SoNgaySapHetHan"].Visible = false;
-                        dgv.Columns["SoNgayDaHetHan"].HeaderText = "Số Ngày Quá Hạn";
-                        dgv.Columns["SoNgayDaHetHan"].Visible = true;
+                        dgv.Columns["SoNgay"].HeaderText = "Số Ngày Quá Hạn";
                     }
                 }
             }

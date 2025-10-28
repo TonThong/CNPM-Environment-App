@@ -35,14 +35,15 @@ namespace Environmental_Monitoring.View
             lblTaiKy = new Label();
             roundedPanel5 = new RoundedPanel();
             btnGuess2 = new RoundedButton();
-            cmbDiaPhuong = new ComboBox();
             lblMucDoONhiem = new Label();
             lblONhiem = new Label();
             roundedPanel6 = new RoundedPanel();
+            roundedTextBox2 = new RoundedTextBox();
             btnGuess1 = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             roundedTextBox1 = new RoundedTextBox();
-            roundedTextBox2 = new RoundedTextBox();
+            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+            customComboBox1 = new CustomComboBox();
             roundedPanel5.SuspendLayout();
             roundedPanel6.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -74,8 +75,8 @@ namespace Environmental_Monitoring.View
             roundedPanel5.BorderColor = Color.Transparent;
             roundedPanel5.BorderRadius = 20;
             roundedPanel5.BorderSize = 0;
+            roundedPanel5.Controls.Add(customComboBox1);
             roundedPanel5.Controls.Add(btnGuess2);
-            roundedPanel5.Controls.Add(cmbDiaPhuong);
             roundedPanel5.Controls.Add(lblMucDoONhiem);
             roundedPanel5.Controls.Add(lblONhiem);
             roundedPanel5.Dock = DockStyle.Fill;
@@ -96,22 +97,12 @@ namespace Environmental_Monitoring.View
             btnGuess2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnGuess2.ForeColor = Color.White;
             btnGuess2.HoverColor = Color.FromArgb(34, 139, 34);
-            btnGuess2.Location = new Point(367, 110);
+            btnGuess2.Location = new Point(369, 66);
             btnGuess2.Name = "btnGuess2";
             btnGuess2.Size = new Size(120, 40);
             btnGuess2.TabIndex = 18;
             btnGuess2.Text = "Dự Đoán";
             btnGuess2.UseVisualStyleBackColor = false;
-            // 
-            // cmbDiaPhuong
-            // 
-            cmbDiaPhuong.ForeColor = SystemColors.WindowText;
-            cmbDiaPhuong.FormattingEnabled = true;
-            cmbDiaPhuong.Location = new Point(80, 70);
-            cmbDiaPhuong.Name = "cmbDiaPhuong";
-            cmbDiaPhuong.Size = new Size(225, 28);
-            cmbDiaPhuong.TabIndex = 15;
-            cmbDiaPhuong.Text = "Hà Nội";
             // 
             // lblMucDoONhiem
             // 
@@ -148,6 +139,24 @@ namespace Environmental_Monitoring.View
             roundedPanel6.Size = new Size(531, 554);
             roundedPanel6.TabIndex = 8;
             // 
+            // roundedTextBox2
+            // 
+            roundedTextBox2.BorderRadius = 15;
+            roundedTextBox2.BorderThickness = 2;
+            roundedTextBox2.FocusBorderColor = Color.DimGray;
+            roundedTextBox2.HoverBorderColor = Color.DarkGray;
+            roundedTextBox2.Location = new Point(30, 60);
+            roundedTextBox2.Multiline = false;
+            roundedTextBox2.Name = "roundedTextBox2";
+            roundedTextBox2.NormalBorderColor = Color.Gray;
+            roundedTextBox2.Padding = new Padding(10);
+            roundedTextBox2.PasswordChar = '\0';
+            roundedTextBox2.PlaceholderText = "Nhập Tên Khách Hàng";
+            roundedTextBox2.ReadOnly = false;
+            roundedTextBox2.Size = new Size(323, 40);
+            roundedTextBox2.TabIndex = 21;
+            roundedTextBox2.UseSystemPasswordChar = false;
+            // 
             // btnGuess1
             // 
             btnGuess1.BackColor = Color.FromArgb(0, 113, 0);
@@ -160,7 +169,7 @@ namespace Environmental_Monitoring.View
             btnGuess1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnGuess1.ForeColor = Color.White;
             btnGuess1.HoverColor = Color.FromArgb(34, 139, 34);
-            btnGuess1.Location = new Point(380, 60);
+            btnGuess1.Location = new Point(389, 60);
             btnGuess1.Name = "btnGuess1";
             btnGuess1.Size = new Size(105, 40);
             btnGuess1.TabIndex = 20;
@@ -210,23 +219,33 @@ namespace Environmental_Monitoring.View
             roundedTextBox1.TabIndex = 21;
             roundedTextBox1.UseSystemPasswordChar = false;
             // 
-            // roundedTextBox2
+            // sqlCommand1
             // 
-            roundedTextBox2.BorderRadius = 15;
-            roundedTextBox2.BorderThickness = 2;
-            roundedTextBox2.FocusBorderColor = Color.DimGray;
-            roundedTextBox2.HoverBorderColor = Color.DarkGray;
-            roundedTextBox2.Location = new Point(30, 60);
-            roundedTextBox2.Multiline = false;
-            roundedTextBox2.Name = "roundedTextBox2";
-            roundedTextBox2.NormalBorderColor = Color.Gray;
-            roundedTextBox2.Padding = new Padding(10);
-            roundedTextBox2.PasswordChar = '\0';
-            roundedTextBox2.PlaceholderText = "Nhập Tên Khách Hàng";
-            roundedTextBox2.ReadOnly = false;
-            roundedTextBox2.Size = new Size(323, 40);
-            roundedTextBox2.TabIndex = 21;
-            roundedTextBox2.UseSystemPasswordChar = false;
+            sqlCommand1.CommandTimeout = 30;
+            sqlCommand1.EnableOptimizedParameterBinding = false;
+            // 
+            // customComboBox1
+            // 
+            customComboBox1.ArrowColor = Color.DimGray;
+            customComboBox1.BackColor = Color.White;
+            customComboBox1.BorderRadius = 15;
+            customComboBox1.BorderThickness = 2;
+            customComboBox1.DropDownBackColor = Color.White;
+            customComboBox1.DropDownHeight = 150;
+            customComboBox1.DropDownHoverColor = Color.DodgerBlue;
+            customComboBox1.FocusBorderColor = Color.HotPink;
+            customComboBox1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            customComboBox1.ForeColor = Color.Black;
+            customComboBox1.HoverBorderColor = Color.DodgerBlue;
+            customComboBox1.Items.AddRange(new object[] { "Thành phố Hà Nội", "", "", "Thành phố Hải Phòng", "", "", "Thành phố Huế", "", "", "Thành phố Đà Nẵng", "", "", "Thành phố Hồ Chí Minh ", "Thành phố Cần Thơ ", "An Giang", "", "", "Bắc Ninh", "Cà Mau", "", "", "Cao Bằng", "", "", "Đắk Lắk", "", "", "Điện Biên", "", "", "Đồng Nai", "Đồng Tháp", "", "", "Gia Lai", "", "", "Hà Tĩnh", "", "", "Hưng Yên", "", "", "Khánh Hòa", "Lai Châu", "", "", "Lạng Sơn", "", "", "Lào Cai", "", "", "Lâm Đồng", "Nghệ An", "", "", "Ninh Bình", "", "", "Phú Thọ", "", "", "Quảng Ngãi ", "", "", "Quảng Ninh", "", "", "Quảng Trị", "", "", "Sơn La", "", "", "Tây Ninh", "Thái Nguyên", "", "", "Thanh Hóa", "", "", "Tuyên Quang", "Vĩnh Long" });
+            customComboBox1.Location = new Point(40, 66);
+            customComboBox1.Name = "customComboBox1";
+            customComboBox1.NormalBorderColor = Color.Gray;
+            customComboBox1.SelectedIndex = -1;
+            customComboBox1.SelectedItem = null;
+            customComboBox1.SelectedValue = null;
+            customComboBox1.Size = new Size(278, 38);
+            customComboBox1.TabIndex = 19;
             // 
             // AI
             // 
@@ -247,12 +266,11 @@ namespace Environmental_Monitoring.View
 
         #endregion
         private Label lblAI;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartTaiKy;
+
         private Label lblTaiKy;
         private RoundedPanel roundedPanel5;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartONhiem;
+    
         private RoundedButton btnGuess2;
-        private ComboBox cmbDiaPhuong;
         private Label lblMucDoONhiem;
         private Label lblONhiem;
         private RoundedPanel roundedPanel6;
@@ -261,5 +279,7 @@ namespace Environmental_Monitoring.View
         private TableLayoutPanel tableLayoutPanel1;
         private RoundedTextBox roundedTextBox1;
         private RoundedTextBox roundedTextBox2;
+        private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+        private CustomComboBox customComboBox1;
     }
 }

@@ -28,60 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            lbCustomer = new Label();
-            lbContract = new Label();
-            btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
-            checkedListBox1 = new CheckedListBox();
             panel1 = new Panel();
-            roundedDataGridView1 = new Environmental_Monitoring.View.Components.RoundedDataGridView();
+            checkedListBox1 = new CheckedListBox();
+            label1 = new Label();
+            label2 = new Label();
+            btnContracts = new Environmental_Monitoring.View.Components.RoundedButton();
             btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
             roundedButton2 = new Environmental_Monitoring.View.Components.RoundedButton();
+            roundedDataGridView1 = new Environmental_Monitoring.View.Components.RoundedDataGridView();
+            lblParamNameValue = new Label();
+            lblUnitValue = new Label();
+            lblDeptValue = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView1).BeginInit();
             SuspendLayout();
-            // 
-            // lbCustomer
-            // 
-            lbCustomer.AutoSize = true;
-            lbCustomer.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbCustomer.Location = new Point(29, 96);
-            lbCustomer.Name = "lbCustomer";
-            lbCustomer.Size = new Size(235, 25);
-            lbCustomer.TabIndex = 41;
-            lbCustomer.Text = "Chọn mẫu môi trường";
-            lbCustomer.Click += lbCustomer_Click;
-            // 
-            // lbContract
-            // 
-            lbContract.AutoSize = true;
-            lbContract.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbContract.Location = new Point(520, 96);
-            lbContract.Name = "lbContract";
-            lbContract.Size = new Size(189, 25);
-            lbContract.TabIndex = 42;
-            lbContract.Text = "Chọn thông số đo";
-            lbContract.Click += lbContract_Click;
-            // 
-            // btnSave
-            // 
-            btnSave.BackColor = Color.SeaGreen;
-            btnSave.BaseColor = Color.SeaGreen;
-            btnSave.BorderColor = Color.Transparent;
-            btnSave.BorderRadius = 25;
-            btnSave.BorderSize = 0;
-            btnSave.Enabled = false;
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            btnSave.ForeColor = Color.White;
-            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSave.Location = new Point(3, 15);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(341, 50);
-            btnSave.TabIndex = 51;
-            btnSave.Text = "Danh Sách Hợp Đồng";
-            btnSave.UseVisualStyleBackColor = false;
             // 
             // btnSearch
             // 
@@ -103,43 +64,72 @@
             btnSearch.Text = "Mã Hợp Đồng: ";
             btnSearch.UseVisualStyleBackColor = false;
             // 
+            // panel1
+            // 
+            panel1.BackColor = Color.White;
+            panel1.Controls.Add(checkedListBox1);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(btnContracts);
+            panel1.Controls.Add(btnCancel);
+            panel1.Controls.Add(roundedButton2);
+            panel1.Controls.Add(roundedDataGridView1);
+            panel1.Controls.Add(btnSearch);
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1227, 507);
+            panel1.TabIndex = 1;
+            panel1.Paint += panel1_Paint;
+            // 
             // checkedListBox1
             // 
             checkedListBox1.FormattingEnabled = true;
             checkedListBox1.Location = new Point(38, 141);
             checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new Size(150, 136);
-            checkedListBox1.TabIndex = 53;
+            checkedListBox1.Size = new Size(150, 114);
+            checkedListBox1.TabIndex = 68;
+            checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged_1;
+            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
             // 
-            // panel1
+            // label1
             // 
-            panel1.BackColor = Color.White;
-            panel1.Controls.Add(btnCancel);
-            panel1.Controls.Add(roundedButton2);
-            panel1.Controls.Add(roundedDataGridView1);
-            panel1.Controls.Add(checkedListBox1);
-            panel1.Controls.Add(btnSearch);
-            panel1.Controls.Add(btnSave);
-            panel1.Controls.Add(lbContract);
-            panel1.Controls.Add(lbCustomer);
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1227, 507);
-            panel1.TabIndex = 1;
+            label1.AutoSize = true;
+            label1.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(38, 84);
+            label1.Name = "label1";
+            label1.Size = new Size(235, 25);
+            label1.TabIndex = 58;
+            label1.Text = "Chọn mẫu môi trường";
             // 
-            // roundedDataGridView1
+            // label2
             // 
-            roundedDataGridView1.BackgroundColor = Color.White;
-            roundedDataGridView1.BorderRadius = 20;
-            roundedDataGridView1.BorderStyle = BorderStyle.None;
-            roundedDataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            roundedDataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            roundedDataGridView1.EnableHeadersVisualStyles = false;
-            roundedDataGridView1.Location = new Point(520, 141);
-            roundedDataGridView1.Name = "roundedDataGridView1";
-            roundedDataGridView1.RowHeadersWidth = 51;
-            roundedDataGridView1.Size = new Size(591, 188);
-            roundedDataGridView1.TabIndex = 54;
+            label2.AutoSize = true;
+            label2.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(520, 84);
+            label2.Name = "label2";
+            label2.Size = new Size(189, 25);
+            label2.TabIndex = 59;
+            label2.Text = "Chọn thông số đo";
+            // 
+            // btnContracts
+            // 
+            btnContracts.BackColor = Color.SeaGreen;
+            btnContracts.BaseColor = Color.SeaGreen;
+            btnContracts.BorderColor = Color.Transparent;
+            btnContracts.BorderRadius = 25;
+            btnContracts.BorderSize = 0;
+            btnContracts.FlatAppearance.BorderSize = 0;
+            btnContracts.FlatStyle = FlatStyle.Flat;
+            btnContracts.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnContracts.ForeColor = Color.White;
+            btnContracts.HoverColor = Color.FromArgb(34, 139, 34);
+            btnContracts.Location = new Point(29, 15);
+            btnContracts.Name = "btnContracts";
+            btnContracts.Size = new Size(341, 50);
+            btnContracts.TabIndex = 57;
+            btnContracts.Text = "Danh Sách Hợp Đồng";
+            btnContracts.UseVisualStyleBackColor = false;
+            btnContracts.Click += btnContracts_Click;
             // 
             // btnCancel
             // 
@@ -179,6 +169,47 @@
             roundedButton2.Text = "Lưu";
             roundedButton2.UseVisualStyleBackColor = false;
             // 
+            // roundedDataGridView1
+            // 
+            roundedDataGridView1.BackgroundColor = Color.White;
+            roundedDataGridView1.BorderRadius = 20;
+            roundedDataGridView1.BorderStyle = BorderStyle.None;
+            roundedDataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            roundedDataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            roundedDataGridView1.EnableHeadersVisualStyles = false;
+            roundedDataGridView1.Location = new Point(520, 141);
+            roundedDataGridView1.Name = "roundedDataGridView1";
+            roundedDataGridView1.RowHeadersWidth = 51;
+            roundedDataGridView1.Size = new Size(674, 188);
+            roundedDataGridView1.TabIndex = 67;
+            // 
+            // lblParamNameValue
+            // 
+            lblParamNameValue.AutoSize = true;
+            lblParamNameValue.Font = new Font("Times New Roman", 11F);
+            lblParamNameValue.Location = new Point(640, 370);
+            lblParamNameValue.Name = "lblParamNameValue";
+            lblParamNameValue.Size = new Size(0, 21);
+            lblParamNameValue.TabIndex = 62;
+            // 
+            // lblUnitValue
+            // 
+            lblUnitValue.AutoSize = true;
+            lblUnitValue.Font = new Font("Times New Roman", 11F);
+            lblUnitValue.Location = new Point(640, 395);
+            lblUnitValue.Name = "lblUnitValue";
+            lblUnitValue.Size = new Size(0, 21);
+            lblUnitValue.TabIndex = 64;
+            // 
+            // lblDeptValue
+            // 
+            lblDeptValue.AutoSize = true;
+            lblDeptValue.Font = new Font("Times New Roman", 11F);
+            lblDeptValue.Location = new Point(640, 420);
+            lblDeptValue.Name = "lblDeptValue";
+            lblDeptValue.Size = new Size(0, 21);
+            lblDeptValue.TabIndex = 66;
+            // 
             // PlanContent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -186,6 +217,7 @@
             Controls.Add(panel1);
             Name = "PlanContent";
             Size = new Size(1227, 507);
+            Load += PlanContent_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView1).EndInit();
@@ -193,15 +225,21 @@
         }
 
         #endregion
-
-        private Label lbCustomer;
-        private Label lbContract;
-        private Components.RoundedButton btnSave;
         private Components.RoundedButton btnSearch;
-        private CheckedListBox checkedListBox1;
         private Panel panel1;
         private Components.RoundedDataGridView roundedDataGridView1;
         private Components.RoundedButton btnCancel;
         private Components.RoundedButton roundedButton2;
+        private Components.RoundedButton btnContracts;
+        private Label label2;
+        private Label label1;
+        private ComboBox cbbParameters;
+        private Label lblParamTitle;
+        private Label lblParamNameValue;
+        private Label lblUnitTitle;
+        private Label lblUnitValue;
+        private Label lblDeptTitle;
+        private Label lblDeptValue;
+        private CheckedListBox checkedListBox1;
     }
 }
