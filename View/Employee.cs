@@ -61,23 +61,22 @@ namespace Environmental_Monitoring.View
 
         private void AddActionColumns()
         {
-            // --- Tạo cột Sửa ---
             DataGridViewImageColumn colEdit = new DataGridViewImageColumn();
             colEdit.Name = "colEdit";
             colEdit.HeaderText = "Sửa";
-            // Gán trực tiếp Image từ Resources
             colEdit.Image = Properties.Resources.edit;
             colEdit.ImageLayout = DataGridViewImageCellLayout.Zoom;
 
-            // --- Tạo cột Xóa ---
+            colEdit.DefaultCellStyle.Padding = new Padding(5);
+
             DataGridViewImageColumn colDelete = new DataGridViewImageColumn();
             colDelete.Name = "colDelete";
             colDelete.HeaderText = "Xóa";
-            // Gán trực tiếp Image từ Resources
             colDelete.Image = Properties.Resources.delete;
             colDelete.ImageLayout = DataGridViewImageCellLayout.Zoom;
 
-            // ... (phần code Add columns của bạn) ...
+            colDelete.DefaultCellStyle.Padding = new Padding(5);
+
             if (dgvEmployee.Columns["colEdit"] == null)
             {
                 dgvEmployee.Columns.Add(colEdit);

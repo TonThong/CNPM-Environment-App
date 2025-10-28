@@ -16,7 +16,6 @@ namespace Environmental_Monitoring.View
     {
         string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;Uid=sql12800882;Pwd=TMlsWFrPxZ;";
 
-        // === SỬA 1: Đơn giản hóa class, bỏ 'Status' đi ===
         private class ChartDataPoint
         {
             public int Month { get; set; }
@@ -86,13 +85,11 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        // === SỬA 2: Sửa SQL để trả về OnTimeFlag (1 hoặc 0) ===
         private async Task<List<ChartDataPoint>> LoadChartDataAsync(int year, int quarter)
         {
             var results = new List<ChartDataPoint>();
             int[] months = GetMonthsForQuarter(quarter);
 
-            // ⚙️ Dùng chuỗi động cho IN(...)
             string monthList = string.Join(",", months);
 
             string sql = $@"
@@ -132,7 +129,6 @@ namespace Environmental_Monitoring.View
             return results;
         }
 
-        // === SỬA 3: Sửa lỗi "chỉ hiện 1 tháng" bằng CustomLabels ===
         private void UpdateOrderQuantityChart(List<ChartDataPoint> data, int[] months)
         {
             var chart = chartOrderQuantity;
@@ -196,12 +192,10 @@ namespace Environmental_Monitoring.View
             }
         }
 
-
-        // === SỬA 4: Đã dọn dẹp, logic này giờ đã đúng ===
         private void UpdateOnTimeRateChart(List<ChartDataPoint> data)
         {
             var chart = chartOnTimeRate;
-            chart.Series.Clear(); // Luôn xóa series cũ
+            chart.Series.Clear();
             chart.Legends[0].Docking = Docking.Right;
 
             int totalOnTime = data.Where(d => d.IsOnTime == true).Sum(d => d.Count);
@@ -210,7 +204,7 @@ namespace Environmental_Monitoring.View
 
             if (total == 0)
             {
-                return; // Thoát nếu không có dữ liệu
+                return; 
             }
 
             var seriesPie = new Series("Tỷ lệ")

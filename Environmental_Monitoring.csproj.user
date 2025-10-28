@@ -19,6 +19,9 @@
     <Compile Update="View\Components\Roundedbutton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="View\Components\RoundedCombobox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="View\Components\RoundedDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>

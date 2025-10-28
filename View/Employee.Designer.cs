@@ -106,7 +106,9 @@ namespace Environmental_Monitoring.View
             dgvEmployee.Location = new Point(79, 111);
             dgvEmployee.Margin = new Padding(3, 4, 3, 4);
             dgvEmployee.Name = "dgvEmployee";
+            dgvEmployee.RowHeadersVisible = false;
             dgvEmployee.RowHeadersWidth = 51;
+            dgvEmployee.RowTemplate.Height = 35;
             dgvEmployee.Size = new Size(1051, 447);
             dgvEmployee.TabIndex = 24;
             dgvEmployee.CellContentClick += dgvEmployee_CellContentClick;
@@ -220,6 +222,7 @@ namespace Environmental_Monitoring.View
             txbSearch.ReadOnly = false;
             txbSearch.Size = new Size(440, 45);
             txbSearch.TabIndex = 21;
+            txbSearch.UseSystemPasswordChar = false;
             txbSearch.TextChanged += txbSearch_TextChanged;
             // 
             // labelTitle

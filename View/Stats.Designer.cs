@@ -30,12 +30,12 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             label2 = new Label();
             label4 = new Label();
             txtSearch = new RoundedTextBox();
@@ -98,6 +98,7 @@ namespace Environmental_Monitoring.View
             // 
             // roundedPanel4
             // 
+            roundedPanel4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             roundedPanel4.BackColor = Color.White;
             roundedPanel4.BorderColor = Color.Transparent;
             roundedPanel4.BorderRadius = 20;
@@ -105,7 +106,6 @@ namespace Environmental_Monitoring.View
             roundedPanel4.Controls.Add(cmbNam);
             roundedPanel4.Controls.Add(cmbQuy);
             roundedPanel4.Controls.Add(btnApply);
-            roundedPanel4.Dock = DockStyle.Fill;
             roundedPanel4.Location = new Point(64, 115);
             roundedPanel4.Name = "roundedPanel4";
             roundedPanel4.Size = new Size(531, 64);
@@ -217,33 +217,33 @@ namespace Environmental_Monitoring.View
             // 
             // chartOrderQuantity
             // 
-            chartArea3.Name = "ChartArea1";
-            chartOrderQuantity.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            chartOrderQuantity.Legends.Add(legend3);
+            chartArea1.Name = "ChartArea1";
+            chartOrderQuantity.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chartOrderQuantity.Legends.Add(legend1);
             chartOrderQuantity.Location = new Point(64, 255);
             chartOrderQuantity.Name = "chartOrderQuantity";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            chartOrderQuantity.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chartOrderQuantity.Series.Add(series1);
             chartOrderQuantity.Size = new Size(531, 412);
             chartOrderQuantity.TabIndex = 21;
             chartOrderQuantity.Text = "chartOrderQuantity";
             // 
             // chartOnTimeRate
             // 
-            chartArea4.Name = "ChartArea1";
-            chartOnTimeRate.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            chartOnTimeRate.Legends.Add(legend4);
+            chartArea2.Name = "ChartArea1";
+            chartOnTimeRate.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            chartOnTimeRate.Legends.Add(legend2);
             chartOnTimeRate.Location = new Point(625, 255);
             chartOnTimeRate.Name = "chartOnTimeRate";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            chartOnTimeRate.Series.Add(series4);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            chartOnTimeRate.Series.Add(series2);
             chartOnTimeRate.Size = new Size(531, 412);
             chartOnTimeRate.TabIndex = 22;
             chartOnTimeRate.Text = "chartOnTimeRate";

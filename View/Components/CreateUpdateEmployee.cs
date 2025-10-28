@@ -51,16 +51,16 @@ namespace Environmental_Monitoring.View
             Model.Employee emp = new Model.Employee();
 
             emp.EmployeeID = id;
-            emp.MaNhanVien = txbMaNV.Text;
-            emp.HoTen = txbHoTen.Text;
-            emp.PhongBan = txbPhong.Text;
-            emp.DiaChi = txbDiaChi.Text;
-            emp.SoDienThoai = txbSDT.Text;
-            emp.Email = txbEmail.Text;
-            emp.PasswordHash = txbPass.Text;
+            emp.MaNhanVien = txtMaNV.Text;
+            emp.HoTen = txtHoTen.Text;
+            emp.PhongBan = txtPhong.Text;
+            emp.DiaChi = txtDiaChi.Text;
+            emp.SoDienThoai = txtSDT.Text;
+            emp.Email = txtEmail.Text;
+            emp.PasswordHash = txtMatKhau.Text;
             emp.RoleID = int.Parse(cbbRole.SelectedValue.ToString());
             int namSinh = 0;
-            int.TryParse(txbNamSinh.Text, out namSinh);
+            int.TryParse(txtNamSinh.Text, out namSinh);
             emp.NamSinh = namSinh;
 
             return emp;
@@ -68,30 +68,30 @@ namespace Environmental_Monitoring.View
 
         private void SetData(Model.Employee model)
         {
-            txbMaNV.Text = model.MaNhanVien;
-            txbHoTen.Text = model.HoTen;
-            txbNamSinh.Text = model.NamSinh.ToString();
-            txbPhong.Text = model.PhongBan;
-            txbDiaChi.Text = model.DiaChi;
-            txbSDT.Text = model.SoDienThoai;
-            txbEmail.Text = model.Email;
+            txtMaNV.Text = model.MaNhanVien;
+            txtHoTen.Text = model.HoTen;
+            txtNamSinh.Text = model.NamSinh.ToString();
+            txtPhong.Text = model.PhongBan;
+            txtDiaChi.Text = model.DiaChi;
+            txtSDT.Text = model.SoDienThoai;
+            txtEmail.Text = model.Email;
             cbbRole.SelectedValue = model.RoleID;
         }
 
 
         private bool ValidateData()
         {
-            if (string.IsNullOrWhiteSpace(txbMaNV.Text))
+            if (string.IsNullOrWhiteSpace(txtMaNV.Text))
             {
                 MessageBox.Show("Vui lòng nhập Mã nhân viên.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbMaNV.Focus();
+                txtMaNV.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txbHoTen.Text))
+            if (string.IsNullOrWhiteSpace(txtHoTen.Text))
             {
                 MessageBox.Show("Vui lòng nhập Họ tên.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbHoTen.Focus();
+                txtHoTen.Focus();
                 return false;
             }
 
@@ -103,70 +103,70 @@ namespace Environmental_Monitoring.View
             }
 
             int namSinh = 0;
-            if (string.IsNullOrWhiteSpace(txbNamSinh.Text))
+            if (string.IsNullOrWhiteSpace(txtNamSinh.Text))
             {
                 MessageBox.Show("Vui lòng nhập Năm sinh.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbNamSinh.Focus();
+                txtNamSinh.Focus();
                 return false;
             }
-            if (!int.TryParse(txbNamSinh.Text, out namSinh))
+            if (!int.TryParse(txtNamSinh.Text, out namSinh))
             {
                 MessageBox.Show("Năm sinh phải là một con số (ví dụ: 1990).", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbNamSinh.Focus();
+                txtNamSinh.Focus();
                 return false;
             }
             if (namSinh <= 1900 || namSinh > DateTime.Now.Year)
             {
                 MessageBox.Show("Năm sinh không hợp lệ.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbNamSinh.Focus();
+                txtNamSinh.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txbEmail.Text))
+            if (string.IsNullOrWhiteSpace(txtEmail.Text))
             {
                 MessageBox.Show("Vui lòng nhập Email.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbEmail.Focus();
+                txtEmail.Focus();
                 return false;
             }
             try
             {
-                System.Net.Mail.MailAddress mailAddress = new System.Net.Mail.MailAddress(txbEmail.Text);
+                System.Net.Mail.MailAddress mailAddress = new System.Net.Mail.MailAddress(txtEmail.Text);
             }
             catch (FormatException)
             {
                 MessageBox.Show("Định dạng Email không hợp lệ.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbEmail.Focus();
+                txtEmail.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txbPhong.Text))
+            if (string.IsNullOrWhiteSpace(txtPhong.Text))
             {
                 MessageBox.Show("Vui lòng nhập Phòng ban.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbPhong.Focus();
+                txtPhong.Focus();
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(txbDiaChi.Text))
+            if (string.IsNullOrWhiteSpace(txtDiaChi.Text))
             {
                 MessageBox.Show("Vui lòng nhập Địa chỉ.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbDiaChi.Focus();
+                txtDiaChi.Focus();
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(txbSDT.Text))
+            if (string.IsNullOrWhiteSpace(txtSDT.Text))
             {
                 MessageBox.Show("Vui lòng nhập Số điện thoại.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbSDT.Focus();
+                txtSDT.Focus();
                 return false;
             }
-            if (id == 0 && string.IsNullOrWhiteSpace(txbPass.Text))
+            if (id == 0 && string.IsNullOrWhiteSpace(txtMatKhau.Text))
             {
                 MessageBox.Show("Vui lòng nhập Mật khẩu.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbPass.Focus();
+                txtMatKhau.Focus();
                 return false;
             }
-            if (id == 0 && txbPass.Text.Length < 6)
+            if (id == 0 && txtMatKhau.Text.Length < 6)
             {
                 MessageBox.Show("Mật khẩu phải có ít nhất 6 ký tự.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txbPass.Focus();
+                txtMatKhau.Focus();
                 return false;
             }
             return true;
@@ -194,7 +194,7 @@ namespace Environmental_Monitoring.View
             else
             {
                 // Cập nhật
-                if(string.IsNullOrEmpty(txbPass.Text))
+                if(string.IsNullOrEmpty(txtMatKhau.Text))
                 {
                     emp.PasswordHash = employee.PasswordHash;
                 }
