@@ -32,11 +32,11 @@ namespace Environmental_Monitoring
         private void InitializeComponent()
         {
             roundedPanel3 = new RoundedPanel();
-            customComboBox2 = new CustomComboBox();
-            customComboBox1 = new CustomComboBox();
-            roundedButton1 = new RoundedButton();
-            checkBox2 = new CheckBox();
-            checkBox1 = new CheckBox();
+            cmbGiaoDien = new CustomComboBox();
+            cmbNgonNgu = new CustomComboBox();
+            btnSave = new RoundedButton();
+            cbUngDung = new CheckBox();
+            cbEmail = new CheckBox();
             label2 = new Label();
             label10 = new Label();
             label13 = new Label();
@@ -64,11 +64,11 @@ namespace Environmental_Monitoring
             roundedPanel3.BorderColor = Color.Transparent;
             roundedPanel3.BorderRadius = 20;
             roundedPanel3.BorderSize = 0;
-            roundedPanel3.Controls.Add(customComboBox2);
-            roundedPanel3.Controls.Add(customComboBox1);
-            roundedPanel3.Controls.Add(roundedButton1);
-            roundedPanel3.Controls.Add(checkBox2);
-            roundedPanel3.Controls.Add(checkBox1);
+            roundedPanel3.Controls.Add(cmbGiaoDien);
+            roundedPanel3.Controls.Add(cmbNgonNgu);
+            roundedPanel3.Controls.Add(btnSave);
+            roundedPanel3.Controls.Add(cbUngDung);
+            roundedPanel3.Controls.Add(cbEmail);
             roundedPanel3.Controls.Add(label2);
             roundedPanel3.Controls.Add(label10);
             roundedPanel3.Controls.Add(label13);
@@ -78,90 +78,91 @@ namespace Environmental_Monitoring
             roundedPanel3.Size = new Size(519, 504);
             roundedPanel3.TabIndex = 17;
             // 
-            // customComboBox2
+            // cmbGiaoDien
             // 
-            customComboBox2.ArrowColor = Color.DimGray;
-            customComboBox2.BackColor = Color.White;
-            customComboBox2.BorderRadius = 15;
-            customComboBox2.BorderThickness = 2;
-            customComboBox2.DropDownBackColor = Color.White;
-            customComboBox2.DropDownHeight = 150;
-            customComboBox2.DropDownHoverColor = Color.DarkGray;
-            customComboBox2.FocusBorderColor = Color.FromArgb(64, 64, 64);
-            customComboBox2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            customComboBox2.ForeColor = Color.Black;
-            customComboBox2.HoverBorderColor = Color.DimGray;
-            customComboBox2.Items.AddRange(new object[] { "Sáng", "Tối" });
-            customComboBox2.Location = new Point(94, 229);
-            customComboBox2.Name = "customComboBox2";
-            customComboBox2.NormalBorderColor = Color.Gray;
-            customComboBox2.SelectedIndex = -1;
-            customComboBox2.SelectedItem = null;
-            customComboBox2.SelectedValue = null;
-            customComboBox2.Size = new Size(230, 35);
-            customComboBox2.TabIndex = 23;
+            cmbGiaoDien.ArrowColor = Color.DimGray;
+            cmbGiaoDien.BackColor = Color.White;
+            cmbGiaoDien.BorderRadius = 15;
+            cmbGiaoDien.BorderThickness = 2;
+            cmbGiaoDien.DropDownBackColor = Color.White;
+            cmbGiaoDien.DropDownHeight = 150;
+            cmbGiaoDien.DropDownHoverColor = Color.DarkGray;
+            cmbGiaoDien.FocusBorderColor = Color.FromArgb(64, 64, 64);
+            cmbGiaoDien.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbGiaoDien.ForeColor = Color.Black;
+            cmbGiaoDien.HoverBorderColor = Color.DimGray;
+            cmbGiaoDien.Items.AddRange(new object[] { "Sáng", "Tối" });
+            cmbGiaoDien.Location = new Point(94, 229);
+            cmbGiaoDien.Name = "cmbGiaoDien";
+            cmbGiaoDien.NormalBorderColor = Color.Gray;
+            cmbGiaoDien.SelectedIndex = -1;
+            cmbGiaoDien.SelectedItem = null;
+            cmbGiaoDien.SelectedValue = null;
+            cmbGiaoDien.Size = new Size(230, 35);
+            cmbGiaoDien.TabIndex = 23;
             // 
-            // customComboBox1
+            // cmbNgonNgu
             // 
-            customComboBox1.ArrowColor = Color.DimGray;
-            customComboBox1.BackColor = Color.White;
-            customComboBox1.BorderRadius = 15;
-            customComboBox1.BorderThickness = 2;
-            customComboBox1.DropDownBackColor = Color.White;
-            customComboBox1.DropDownHeight = 150;
-            customComboBox1.DropDownHoverColor = Color.DarkGray;
-            customComboBox1.FocusBorderColor = Color.FromArgb(64, 64, 64);
-            customComboBox1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            customComboBox1.ForeColor = Color.Black;
-            customComboBox1.HoverBorderColor = Color.DimGray;
-            customComboBox1.Items.AddRange(new object[] { "Tiếng Việt", "English" });
-            customComboBox1.Location = new Point(94, 128);
-            customComboBox1.Name = "customComboBox1";
-            customComboBox1.NormalBorderColor = Color.Gray;
-            customComboBox1.SelectedIndex = -1;
-            customComboBox1.SelectedItem = null;
-            customComboBox1.SelectedValue = null;
-            customComboBox1.Size = new Size(230, 35);
-            customComboBox1.TabIndex = 22;
+            cmbNgonNgu.ArrowColor = Color.DimGray;
+            cmbNgonNgu.BackColor = Color.White;
+            cmbNgonNgu.BorderRadius = 15;
+            cmbNgonNgu.BorderThickness = 2;
+            cmbNgonNgu.DropDownBackColor = Color.White;
+            cmbNgonNgu.DropDownHeight = 150;
+            cmbNgonNgu.DropDownHoverColor = Color.DarkGray;
+            cmbNgonNgu.FocusBorderColor = Color.FromArgb(64, 64, 64);
+            cmbNgonNgu.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbNgonNgu.ForeColor = Color.Black;
+            cmbNgonNgu.HoverBorderColor = Color.DimGray;
+            cmbNgonNgu.Items.AddRange(new object[] { "Tiếng Việt", "English" });
+            cmbNgonNgu.Location = new Point(94, 128);
+            cmbNgonNgu.Name = "cmbNgonNgu";
+            cmbNgonNgu.NormalBorderColor = Color.Gray;
+            cmbNgonNgu.SelectedIndex = -1;
+            cmbNgonNgu.SelectedItem = null;
+            cmbNgonNgu.SelectedValue = null;
+            cmbNgonNgu.Size = new Size(230, 35);
+            cmbNgonNgu.TabIndex = 22;
             // 
-            // roundedButton1
+            // btnSave
             // 
-            roundedButton1.BackColor = Color.FromArgb(0, 113, 0);
-            roundedButton1.BaseColor = Color.FromArgb(0, 113, 0);
-            roundedButton1.BorderColor = Color.Transparent;
-            roundedButton1.BorderRadius = 15;
-            roundedButton1.BorderSize = 0;
-            roundedButton1.FlatAppearance.BorderSize = 0;
-            roundedButton1.FlatStyle = FlatStyle.Flat;
-            roundedButton1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            roundedButton1.ForeColor = Color.White;
-            roundedButton1.HoverColor = Color.FromArgb(34, 139, 34);
-            roundedButton1.Location = new Point(307, 370);
-            roundedButton1.Name = "roundedButton1";
-            roundedButton1.Size = new Size(148, 37);
-            roundedButton1.TabIndex = 21;
-            roundedButton1.Text = "Lưu Cài Đặt";
-            roundedButton1.UseVisualStyleBackColor = false;
+            btnSave.BackColor = Color.FromArgb(0, 113, 0);
+            btnSave.BaseColor = Color.FromArgb(0, 113, 0);
+            btnSave.BorderColor = Color.Transparent;
+            btnSave.BorderRadius = 15;
+            btnSave.BorderSize = 0;
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            btnSave.ForeColor = Color.White;
+            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
+            btnSave.Location = new Point(307, 370);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(148, 37);
+            btnSave.TabIndex = 21;
+            btnSave.Text = "Lưu Cài Đặt";
+            btnSave.UseVisualStyleBackColor = false;
+            btnSave.Click += btnSave_Click;
             // 
-            // checkBox2
+            // cbUngDung
             // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(102, 380);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(99, 24);
-            checkBox2.TabIndex = 20;
-            checkBox2.Text = "Ứng Dụng";
-            checkBox2.UseVisualStyleBackColor = true;
+            cbUngDung.AutoSize = true;
+            cbUngDung.Location = new Point(102, 380);
+            cbUngDung.Name = "cbUngDung";
+            cbUngDung.Size = new Size(99, 24);
+            cbUngDung.TabIndex = 20;
+            cbUngDung.Text = "Ứng Dụng";
+            cbUngDung.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // cbEmail
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(102, 336);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(68, 24);
-            checkBox1.TabIndex = 19;
-            checkBox1.Text = "Email";
-            checkBox1.UseVisualStyleBackColor = true;
+            cbEmail.AutoSize = true;
+            cbEmail.Location = new Point(102, 336);
+            cbEmail.Name = "cbEmail";
+            cbEmail.Size = new Size(68, 24);
+            cbEmail.TabIndex = 19;
+            cbEmail.Text = "Email";
+            cbEmail.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -392,12 +393,12 @@ namespace Environmental_Monitoring
         private Label label10;
         private Label label13;
         private Label label15;
-        private CheckBox checkBox2;
-        private CheckBox checkBox1;
-        private RoundedButton roundedButton1;
+        private CheckBox cbUngDung;
+        private CheckBox cbEmail;
+        private RoundedButton btnSave;
         private TableLayoutPanel tableLayoutPanel1;
         private RoundedTextBox roundedTextBox1;
-        private CustomComboBox customComboBox2;
-        private CustomComboBox customComboBox1;
+        private CustomComboBox cmbGiaoDien;
+        private CustomComboBox cmbNgonNgu;
     }
 }

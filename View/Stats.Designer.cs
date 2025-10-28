@@ -141,11 +141,11 @@ namespace Environmental_Monitoring.View
             cmbQuy.BorderThickness = 2;
             cmbQuy.DropDownBackColor = Color.White;
             cmbQuy.DropDownHeight = 150;
-            cmbQuy.DropDownHoverColor = SystemColors.Control;
-            cmbQuy.FocusBorderColor = Color.FromArgb(64, 64, 64);
+            cmbQuy.DropDownHoverColor = Color.DodgerBlue;
+            cmbQuy.FocusBorderColor = Color.HotPink;
             cmbQuy.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cmbQuy.ForeColor = Color.Black;
-            cmbQuy.HoverBorderColor = Color.Black;
+            cmbQuy.HoverBorderColor = Color.DodgerBlue;
             cmbQuy.Location = new Point(28, 9);
             cmbQuy.Name = "cmbQuy";
             cmbQuy.NormalBorderColor = Color.Gray;
