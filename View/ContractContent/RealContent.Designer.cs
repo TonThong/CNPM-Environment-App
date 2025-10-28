@@ -31,8 +31,8 @@
             btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
             btnMail = new Environmental_Monitoring.View.Components.RoundedButton();
             btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
-            btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             roundedDataGridView2 = new Environmental_Monitoring.View.Components.RoundedDataGridView();
+            btnContracts = new Environmental_Monitoring.View.Components.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView2).BeginInit();
             SuspendLayout();
             // 
@@ -94,26 +94,6 @@
             btnSearch.Text = "Mã Hợp Đồng: ";
             btnSearch.UseVisualStyleBackColor = false;
             // 
-            // btnSave
-            // 
-            btnSave.BackColor = Color.SeaGreen;
-            btnSave.BaseColor = Color.SeaGreen;
-            btnSave.BorderColor = Color.Transparent;
-            btnSave.BorderRadius = 25;
-            btnSave.BorderSize = 0;
-            btnSave.Enabled = false;
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            btnSave.ForeColor = Color.White;
-            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSave.Location = new Point(3, 45);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(341, 50);
-            btnSave.TabIndex = 59;
-            btnSave.Text = "Danh Sách Hợp Đồng";
-            btnSave.UseVisualStyleBackColor = false;
-            // 
             // roundedDataGridView2
             // 
             roundedDataGridView2.BackgroundColor = Color.White;
@@ -128,15 +108,35 @@
             roundedDataGridView2.Size = new Size(1192, 188);
             roundedDataGridView2.TabIndex = 65;
             // 
+            // btnContracts
+            // 
+            btnContracts.BackColor = Color.SeaGreen;
+            btnContracts.BaseColor = Color.SeaGreen;
+            btnContracts.BorderColor = Color.Transparent;
+            btnContracts.BorderRadius = 25;
+            btnContracts.BorderSize = 0;
+            btnContracts.FlatAppearance.BorderSize = 0;
+            btnContracts.FlatStyle = FlatStyle.Flat;
+            btnContracts.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnContracts.ForeColor = Color.White;
+            btnContracts.HoverColor = Color.FromArgb(34, 139, 34);
+            btnContracts.Location = new Point(18, 45);
+            btnContracts.Name = "btnContracts";
+            btnContracts.Size = new Size(341, 50);
+            btnContracts.TabIndex = 66;
+            btnContracts.Text = "Danh Sách Hợp Đồng";
+            btnContracts.UseVisualStyleBackColor = false;
+            btnContracts.Click += btnContracts_Click;
+            // 
             // RealContent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnContracts);
             Controls.Add(roundedDataGridView2);
             Controls.Add(btnCancel);
             Controls.Add(btnMail);
             Controls.Add(btnSearch);
-            Controls.Add(btnSave);
             Name = "RealContent";
             Size = new Size(1227, 507);
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView2).EndInit();
@@ -148,7 +148,7 @@
         private Components.RoundedButton btnCancel;
         private Components.RoundedButton btnMail;
         private Components.RoundedButton btnSearch;
-        private Components.RoundedButton btnSave;
         private Components.RoundedDataGridView roundedDataGridView2;
+        private Components.RoundedButton btnContracts;
     }
 }

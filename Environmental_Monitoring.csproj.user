@@ -43,6 +43,9 @@
     <Compile Update="View\ContractContent\PlanContent.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="View\ContractContent\PopUpContract.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="View\ContractContent\RealContent.cs">
       <SubType>UserControl</SubType>
     </Compile>

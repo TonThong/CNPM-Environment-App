@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Environmental_Monitoring.View
-{ 
+{
 
     public partial class Mainlayout : Form
     {
@@ -36,9 +36,9 @@ namespace Environmental_Monitoring.View
             btnIntroduce.Click += new EventHandler(MenuButton_Click);
 
             HighlightButton(btnNotification);
-            LoadPage(new Notification()); 
+            LoadPage(new Notification());
 
-            panelMenu.Width = menuCollapsedWidth; 
+            panelMenu.Width = menuCollapsedWidth;
             SetMenuState(isMenuCollapsed);
         }
 
@@ -151,7 +151,7 @@ namespace Environmental_Monitoring.View
             {
                 if (ctrl is MenuButton btn)
                 {
-                    btn.IsSelected = false; 
+                    btn.IsSelected = false;
                 }
             }
         }

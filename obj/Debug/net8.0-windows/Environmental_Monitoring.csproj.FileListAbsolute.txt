@@ -107,16 +107,14 @@ C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.genruntimeconfig.cache
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\ref\Environmental_Monitoring.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.exe
-E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.deps.json
-E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.runtimeconfig.json
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.dll
-E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.pdb
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\BCrypt.Net-Next.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\MySql.Data.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Azure.Core.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Azure.Identity.dll
-E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\BCrypt.Net-Next.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\BouncyCastle.Cryptography.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Google.Protobuf.dll
-E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.Windows.Forms.DataVisualization.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\K4os.Compression.LZ4.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\K4os.Compression.LZ4.Streams.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\K4os.Hash.xxHash.dll
@@ -138,7 +136,6 @@ E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Microsoft.Identit
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Tokens.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Microsoft.SqlServer.Server.dll
-E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\MySql.Data.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.ClientModel.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.Configuration.ConfigurationManager.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.Data.SqlClient.dll
@@ -147,6 +144,8 @@ E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.IdentityMo
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.Memory.Data.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\System.Security.Cryptography.Pkcs.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\WinForms.DataVisualization.Utilities.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\WinForms.DataVisualization.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\ZstdSharp.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\cs\Microsoft.Data.SqlClient.resources.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\de\Microsoft.Data.SqlClient.resources.dll
@@ -162,7 +161,6 @@ E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\tr\Microsoft.Data
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\zh-Hans\Microsoft.Data.SqlClient.resources.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\zh-Hant\Microsoft.Data.SqlClient.resources.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll
-E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
@@ -179,6 +177,8 @@ E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win\lib\
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.csproj.AssemblyReference.cache
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Interop.Accessibility.dll
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.csproj.ResolveComReference.cache
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.Form1.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.Properties.Resources.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.AI.resources
@@ -190,6 +190,7 @@ E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Mon
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.BusinessContent.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ExperimentContent.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.PlanContent.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.PopUpContract.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.RealContent.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.ResultContent.resources
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Employee.resources
@@ -209,5 +210,8 @@ E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environm.F3062F65
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.dll
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\refint\Environmental_Monitoring.dll
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.pdb
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.deps.json
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.runtimeconfig.json
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Environmental_Monitoring.pdb
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.genruntimeconfig.cache
 E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\ref\Environmental_Monitoring.dll
