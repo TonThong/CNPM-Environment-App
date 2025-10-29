@@ -210,12 +210,12 @@ namespace Environmental_Monitoring.View
             txbSearch.BackColor = Color.White;
             txbSearch.BorderRadius = 15;
             txbSearch.BorderThickness = 1;
-            txbSearch.FocusBorderColor = SystemColors.ControlDark;
+            txbSearch.FocusBorderColor = Color.DimGray;
             txbSearch.HoverBorderColor = Color.DarkGray;
             txbSearch.Location = new Point(619, 3);
             txbSearch.Multiline = false;
             txbSearch.Name = "txbSearch";
-            txbSearch.NormalBorderColor = Color.DarkGray;
+            txbSearch.NormalBorderColor = Color.LightGray;
             txbSearch.Padding = new Padding(9, 12, 9, 9);
             txbSearch.PasswordChar = '\0';
             txbSearch.PlaceholderText = "Tìm Kiếm...";

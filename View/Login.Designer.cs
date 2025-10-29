@@ -50,6 +50,7 @@
             // 
             // roundedPanel1
             // 
+            roundedPanel1.Anchor = AnchorStyles.None;
             roundedPanel1.BackColor = Color.Honeydew;
             roundedPanel1.BorderColor = Color.Transparent;
             roundedPanel1.BorderRadius = 20;
@@ -219,6 +220,7 @@
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point, 163);

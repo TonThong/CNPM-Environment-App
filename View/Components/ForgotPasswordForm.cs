@@ -25,13 +25,45 @@ namespace Environmental_Monitoring.View
         private RoundedTextBox txtXacNhanMatKhauMoi;
         private RoundedButton btnSave;
 
+        // === THÊM 2 KHAI BÁO NÀY ===
+        private PictureBox picShowPassNew;
+        private PictureBox picShowPassConfirm;
+
         private AlertPanel loginAlertPanel;
 
         public ForgotPasswordForm(AlertPanel alertPanelFromLogin)
         {
             InitializeComponent();
-
             this.loginAlertPanel = alertPanelFromLogin;
+
+            // === THÊM LOGIC NÀY VÀO CONSTRUCTOR ===
+            // (Bạn cũng có thể đặt nó trong InitializeComponent, nhưng constructor sạch hơn)
+
+            // Thiết lập icon cho Mật Khẩu Mới
+            picShowPassNew = new PictureBox();
+            picShowPassNew.Image = Properties.Resources.eyeclose;
+            picShowPassNew.Size = new Size(24, 24); // Kích thước icon
+            picShowPassNew.SizeMode = PictureBoxSizeMode.Zoom;
+            picShowPassNew.Cursor = Cursors.Hand;
+            picShowPassNew.Parent = txtMatKhauMoi; // Đặt nó LÊN TRÊN textbox
+            picShowPassNew.BackColor = txtMatKhauMoi.BackColor;
+            // Căn icon vào góc phải, ở giữa chiều cao
+            picShowPassNew.Location = new Point(txtMatKhauMoi.Width - picShowPassNew.Width - 8, (txtMatKhauMoi.Height - picShowPassNew.Height) / 2);
+            picShowPassNew.Click += picShowPassNew_Click; // Gắn sự kiện click
+            picShowPassNew.BringToFront();
+
+            // Thiết lập icon cho Xác Nhận Mật Khẩu Mới
+            picShowPassConfirm = new PictureBox();
+            picShowPassConfirm.Image = Properties.Resources.eyeclose;
+            picShowPassConfirm.Size = new Size(24, 24);
+            picShowPassConfirm.SizeMode = PictureBoxSizeMode.Zoom;
+            picShowPassConfirm.Cursor = Cursors.Hand;
+            picShowPassConfirm.Parent = txtXacNhanMatKhauMoi; // Đặt nó LÊN TRÊN textbox
+            picShowPassConfirm.BackColor = txtXacNhanMatKhauMoi.BackColor;
+            // Căn icon
+            picShowPassConfirm.Location = new Point(txtXacNhanMatKhauMoi.Width - picShowPassConfirm.Width - 8, (txtXacNhanMatKhauMoi.Height - picShowPassConfirm.Height) / 2);
+            picShowPassConfirm.Click += picShowPassConfirm_Click; // Gắn sự kiện click
+            picShowPassConfirm.BringToFront();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -120,7 +152,9 @@ namespace Environmental_Monitoring.View
             txtXacNhanMatKhauMoi = new RoundedTextBox();
             btnSave = new RoundedButton();
             SuspendLayout();
-       
+            // 
+            // label1
+            // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 163);
             label1.Location = new Point(80, 9);
@@ -153,12 +187,12 @@ namespace Environmental_Monitoring.View
             // 
             txtTaiKhoan.BorderRadius = 15;
             txtTaiKhoan.BorderThickness = 2;
-            txtTaiKhoan.FocusBorderColor = Color.HotPink;
-            txtTaiKhoan.HoverBorderColor = Color.DodgerBlue;
+            txtTaiKhoan.FocusBorderColor = Color.DimGray;
+            txtTaiKhoan.HoverBorderColor = Color.DarkGray;
             txtTaiKhoan.Location = new Point(67, 142);
             txtTaiKhoan.Multiline = false;
             txtTaiKhoan.Name = "txtTaiKhoan";
-            txtTaiKhoan.NormalBorderColor = Color.Gray;
+            txtTaiKhoan.NormalBorderColor = Color.LightGray;
             txtTaiKhoan.Padding = new Padding(10);
             txtTaiKhoan.PasswordChar = '\0';
             txtTaiKhoan.PlaceholderText = "Nhập Tài Khoản";
@@ -171,12 +205,12 @@ namespace Environmental_Monitoring.View
             // 
             txtSoDienThoai.BorderRadius = 15;
             txtSoDienThoai.BorderThickness = 2;
-            txtSoDienThoai.FocusBorderColor = Color.HotPink;
-            txtSoDienThoai.HoverBorderColor = Color.DodgerBlue;
+            txtSoDienThoai.FocusBorderColor = Color.DimGray;
+            txtSoDienThoai.HoverBorderColor = Color.DarkGray;
             txtSoDienThoai.Location = new Point(67, 196);
             txtSoDienThoai.Multiline = false;
             txtSoDienThoai.Name = "txtSoDienThoai";
-            txtSoDienThoai.NormalBorderColor = Color.Gray;
+            txtSoDienThoai.NormalBorderColor = Color.LightGray;
             txtSoDienThoai.Padding = new Padding(10);
             txtSoDienThoai.PasswordChar = '\0';
             txtSoDienThoai.PlaceholderText = "Nhập Số Điện Thoại";
@@ -189,37 +223,37 @@ namespace Environmental_Monitoring.View
             // 
             txtMatKhauMoi.BorderRadius = 15;
             txtMatKhauMoi.BorderThickness = 2;
-            txtMatKhauMoi.FocusBorderColor = Color.HotPink;
-            txtMatKhauMoi.HoverBorderColor = Color.DodgerBlue;
+            txtMatKhauMoi.FocusBorderColor = Color.DimGray;
+            txtMatKhauMoi.HoverBorderColor = Color.DarkGray;
             txtMatKhauMoi.Location = new Point(67, 298);
             txtMatKhauMoi.Multiline = false;
             txtMatKhauMoi.Name = "txtMatKhauMoi";
-            txtMatKhauMoi.NormalBorderColor = Color.Gray;
+            txtMatKhauMoi.NormalBorderColor = Color.LightGray;
             txtMatKhauMoi.Padding = new Padding(10);
-            txtMatKhauMoi.PasswordChar = '\0';
+            txtMatKhauMoi.PasswordChar = '●';
             txtMatKhauMoi.PlaceholderText = "Nhập Mật Khẩu Mới";
             txtMatKhauMoi.ReadOnly = false;
             txtMatKhauMoi.Size = new Size(296, 40);
             txtMatKhauMoi.TabIndex = 5;
-            txtMatKhauMoi.UseSystemPasswordChar = false;
+            txtMatKhauMoi.UseSystemPasswordChar = true;
             // 
             // txtXacNhanMatKhauMoi
             // 
             txtXacNhanMatKhauMoi.BorderRadius = 15;
             txtXacNhanMatKhauMoi.BorderThickness = 2;
-            txtXacNhanMatKhauMoi.FocusBorderColor = Color.HotPink;
-            txtXacNhanMatKhauMoi.HoverBorderColor = Color.DodgerBlue;
+            txtXacNhanMatKhauMoi.FocusBorderColor = Color.DimGray;
+            txtXacNhanMatKhauMoi.HoverBorderColor = Color.DarkGray;
             txtXacNhanMatKhauMoi.Location = new Point(67, 353);
             txtXacNhanMatKhauMoi.Multiline = false;
             txtXacNhanMatKhauMoi.Name = "txtXacNhanMatKhauMoi";
-            txtXacNhanMatKhauMoi.NormalBorderColor = Color.Gray;
+            txtXacNhanMatKhauMoi.NormalBorderColor = Color.LightGray;
             txtXacNhanMatKhauMoi.Padding = new Padding(10);
-            txtXacNhanMatKhauMoi.PasswordChar = '\0';
+            txtXacNhanMatKhauMoi.PasswordChar = '●';
             txtXacNhanMatKhauMoi.PlaceholderText = "Xác Nhận Mật Khẩu Mới";
             txtXacNhanMatKhauMoi.ReadOnly = false;
             txtXacNhanMatKhauMoi.Size = new Size(296, 40);
             txtXacNhanMatKhauMoi.TabIndex = 6;
-            txtXacNhanMatKhauMoi.UseSystemPasswordChar = false;
+            txtXacNhanMatKhauMoi.UseSystemPasswordChar = true;
             // 
             // btnSave
             // 
@@ -262,8 +296,37 @@ namespace Environmental_Monitoring.View
         private void AlertPanel_Success_OnClose(object sender, EventArgs e)
         {
             loginAlertPanel.OnClose -= AlertPanel_Success_OnClose;
-
             this.Close();
+        }
+
+        // === THÊM 2 HÀM SỰ KIỆN CLICK NÀY VÀO ===
+
+        private void picShowPassNew_Click(object sender, EventArgs e)
+        {
+            if (txtMatKhauMoi.UseSystemPasswordChar == true)
+            {
+                txtMatKhauMoi.UseSystemPasswordChar = false;
+                picShowPassNew.Image = Properties.Resources.eye; 
+            }
+            else
+            {
+                txtMatKhauMoi.UseSystemPasswordChar = true;
+                picShowPassNew.Image = Properties.Resources.eyeclose; 
+            }
+        }
+
+        private void picShowPassConfirm_Click(object sender, EventArgs e)
+        {
+            if (txtXacNhanMatKhauMoi.UseSystemPasswordChar == true)
+            {
+                txtXacNhanMatKhauMoi.UseSystemPasswordChar = false;
+                picShowPassConfirm.Image = Properties.Resources.eye; 
+            }
+            else
+            {
+                txtXacNhanMatKhauMoi.UseSystemPasswordChar = true;
+                picShowPassConfirm.Image = Properties.Resources.eyeclose; // Ảnh mắt đóng
+            }
         }
     }
 }
