@@ -219,3 +219,7 @@ C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.RoundedComboBox.resources
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\Environmental_Monitoring.dll.config
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ForgotPasswordForm.resources
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\en\Environmental_Monitoring.resources.dll
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.Strings.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.Strings.en.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\en\Environmental_Monitoring.resources.dll

@@ -16,6 +16,11 @@
         },
         "runtime": {
           "Environmental_Monitoring.dll": {}
+        },
+        "resources": {
+          "en/Environmental_Monitoring.resources.dll": {
+            "locale": "en"
+          }
         }
       },
       "Azure.Core/1.49.0": {

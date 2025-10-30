@@ -25,7 +25,7 @@ namespace Environmental_Monitoring.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Tiếng Việt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Vi")]
         public string Language {
             get {
                 return ((string)(this["Language"]));
