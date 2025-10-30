@@ -29,224 +29,289 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
-            btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
-            txtboxEmployee = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxEndDate = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxStartDate = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxIDContract = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxOwner = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxAddress = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxPhone = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxCustomerName = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            lbContract = new Label();
-            lbCustomer = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
             lbNamePage = new Label();
+            btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
+            lbCustomer = new Label();
+            txtboxEmployee = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
+            txtboxEndDate = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtboxCustomerName = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtboxStartDate = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtboxPhone = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtboxIDContract = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtboxAddress = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtboxOwner = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            lbContract = new Label();
             panel1.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.White;
-            panel1.Controls.Add(btnSearch);
-            panel1.Controls.Add(btnSave);
-            panel1.Controls.Add(txtboxEmployee);
-            panel1.Controls.Add(txtboxEndDate);
-            panel1.Controls.Add(txtboxStartDate);
-            panel1.Controls.Add(txtboxIDContract);
-            panel1.Controls.Add(txtboxOwner);
-            panel1.Controls.Add(txtboxAddress);
-            panel1.Controls.Add(txtboxPhone);
-            panel1.Controls.Add(txtboxCustomerName);
+            panel1.Controls.Add(tableLayoutPanel1);
             panel1.Controls.Add(lbContract);
-            panel1.Controls.Add(lbCustomer);
-            panel1.Controls.Add(lbNamePage);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(1227, 507);
             panel1.TabIndex = 0;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 5;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Controls.Add(lbNamePage, 1, 1);
+            tableLayoutPanel1.Controls.Add(btnSearch, 3, 13);
+            tableLayoutPanel1.Controls.Add(lbCustomer, 1, 3);
+            tableLayoutPanel1.Controls.Add(txtboxEmployee, 3, 11);
+            tableLayoutPanel1.Controls.Add(btnSave, 1, 13);
+            tableLayoutPanel1.Controls.Add(txtboxEndDate, 3, 9);
+            tableLayoutPanel1.Controls.Add(txtboxCustomerName, 1, 5);
+            tableLayoutPanel1.Controls.Add(txtboxStartDate, 3, 7);
+            tableLayoutPanel1.Controls.Add(txtboxPhone, 1, 7);
+            tableLayoutPanel1.Controls.Add(txtboxIDContract, 3, 5);
+            tableLayoutPanel1.Controls.Add(txtboxAddress, 1, 9);
+            tableLayoutPanel1.Controls.Add(txtboxOwner, 1, 11);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 15;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Size = new Size(1227, 507);
+            tableLayoutPanel1.TabIndex = 53;
+            // 
+            // lbNamePage
+            // 
+            lbNamePage.AutoSize = true;
+            lbNamePage.BackColor = Color.Transparent;
+            tableLayoutPanel1.SetColumnSpan(lbNamePage, 3);
+            lbNamePage.Font = new Font("Times New Roman", 24F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lbNamePage.ForeColor = Color.Black;
+            lbNamePage.Location = new Point(64, 25);
+            lbNamePage.Name = "lbNamePage";
+            lbNamePage.Size = new Size(833, 45);
+            lbNamePage.TabIndex = 40;
+            lbNamePage.Text = "THÔNG TIN KHÁCH HÀNG VÀ HỢP ĐỒNG";
             // 
             // btnSearch
             // 
             btnSearch.BackColor = Color.FromArgb(217, 217, 217);
             btnSearch.BaseColor = Color.FromArgb(217, 217, 217);
             btnSearch.BorderColor = Color.Transparent;
-            btnSearch.BorderRadius = 25;
+            btnSearch.BorderRadius = 20;
             btnSearch.BorderSize = 0;
             btnSearch.FlatAppearance.BorderSize = 0;
             btnSearch.FlatStyle = FlatStyle.Flat;
             btnSearch.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
             btnSearch.ForeColor = Color.Black;
             btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSearch.Location = new Point(703, 425);
+            btnSearch.Location = new Point(676, 428);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(450, 50);
+            btnSearch.Size = new Size(384, 44);
             btnSearch.TabIndex = 52;
             btnSearch.Text = "Trình Duyệt";
             btnSearch.UseVisualStyleBackColor = false;
             // 
-            // btnSave
+            // lbCustomer
             // 
-            btnSave.BackColor = Color.SeaGreen;
-            btnSave.BaseColor = Color.SeaGreen;
-            btnSave.BorderColor = Color.Transparent;
-            btnSave.BorderRadius = 25;
-            btnSave.BorderSize = 0;
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            btnSave.ForeColor = Color.White;
-            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSave.Location = new Point(151, 425);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(450, 50);
-            btnSave.TabIndex = 51;
-            btnSave.Text = "Lưu";
-            btnSave.UseVisualStyleBackColor = false;
+            lbCustomer.AutoSize = true;
+            lbCustomer.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbCustomer.Location = new Point(64, 100);
+            lbCustomer.Name = "lbCustomer";
+            lbCustomer.Size = new Size(140, 25);
+            lbCustomer.TabIndex = 41;
+            lbCustomer.Text = "Khách Hàng";
             // 
             // txtboxEmployee
             // 
             txtboxEmployee.BorderRadius = 15;
             txtboxEmployee.BorderThickness = 2;
             txtboxEmployee.FocusBorderColor = Color.HotPink;
-            txtboxEmployee.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtboxEmployee.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             txtboxEmployee.HoverBorderColor = Color.DodgerBlue;
-            txtboxEmployee.Location = new Point(703, 351);
+            txtboxEmployee.Location = new Point(676, 358);
             txtboxEmployee.Multiline = false;
             txtboxEmployee.Name = "txtboxEmployee";
-            txtboxEmployee.NormalBorderColor = Color.Gray;
-            txtboxEmployee.Padding = new Padding(30, 15, 30, 15);
+            txtboxEmployee.NormalBorderColor = Color.LightGray;
+            txtboxEmployee.Padding = new Padding(20, 7, 10, 10);
             txtboxEmployee.PasswordChar = '\0';
             txtboxEmployee.PlaceholderText = "Mã Nhân Viên Phụ Trách";
             txtboxEmployee.ReadOnly = false;
-            txtboxEmployee.Size = new Size(450, 50);
+            txtboxEmployee.Size = new Size(384, 44);
             txtboxEmployee.TabIndex = 50;
+            txtboxEmployee.UseSystemPasswordChar = false;
+            // 
+            // btnSave
+            // 
+            btnSave.BackColor = Color.SeaGreen;
+            btnSave.BaseColor = Color.SeaGreen;
+            btnSave.BorderColor = Color.Transparent;
+            btnSave.BorderRadius = 20;
+            btnSave.BorderSize = 0;
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSave.ForeColor = Color.White;
+            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
+            btnSave.Location = new Point(64, 428);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(384, 44);
+            btnSave.TabIndex = 51;
+            btnSave.Text = "Lưu";
+            btnSave.UseVisualStyleBackColor = false;
             // 
             // txtboxEndDate
             // 
             txtboxEndDate.BorderRadius = 15;
             txtboxEndDate.BorderThickness = 2;
             txtboxEndDate.FocusBorderColor = Color.HotPink;
-            txtboxEndDate.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtboxEndDate.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             txtboxEndDate.HoverBorderColor = Color.DodgerBlue;
-            txtboxEndDate.Location = new Point(703, 279);
+            txtboxEndDate.Location = new Point(676, 288);
             txtboxEndDate.Multiline = false;
             txtboxEndDate.Name = "txtboxEndDate";
-            txtboxEndDate.NormalBorderColor = Color.Gray;
-            txtboxEndDate.Padding = new Padding(30, 15, 30, 15);
+            txtboxEndDate.NormalBorderColor = Color.LightGray;
+            txtboxEndDate.Padding = new Padding(20, 7, 10, 10);
             txtboxEndDate.PasswordChar = '\0';
             txtboxEndDate.PlaceholderText = "Ngày Dự Kiến Trả Kết Quả";
             txtboxEndDate.ReadOnly = false;
-            txtboxEndDate.Size = new Size(450, 50);
+            txtboxEndDate.Size = new Size(384, 44);
             txtboxEndDate.TabIndex = 49;
-            // 
-            // txtboxStartDate
-            // 
-            txtboxStartDate.BorderRadius = 15;
-            txtboxStartDate.BorderThickness = 2;
-            txtboxStartDate.FocusBorderColor = Color.HotPink;
-            txtboxStartDate.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtboxStartDate.HoverBorderColor = Color.DodgerBlue;
-            txtboxStartDate.Location = new Point(703, 211);
-            txtboxStartDate.Multiline = false;
-            txtboxStartDate.Name = "txtboxStartDate";
-            txtboxStartDate.NormalBorderColor = Color.Gray;
-            txtboxStartDate.Padding = new Padding(30, 15, 30, 15);
-            txtboxStartDate.PasswordChar = '\0';
-            txtboxStartDate.PlaceholderText = "Ngày Lập Hợp Đồng";
-            txtboxStartDate.ReadOnly = false;
-            txtboxStartDate.Size = new Size(450, 50);
-            txtboxStartDate.TabIndex = 48;
-            // 
-            // txtboxIDContract
-            // 
-            txtboxIDContract.BorderRadius = 15;
-            txtboxIDContract.BorderThickness = 2;
-            txtboxIDContract.FocusBorderColor = Color.HotPink;
-            txtboxIDContract.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtboxIDContract.HoverBorderColor = Color.DodgerBlue;
-            txtboxIDContract.Location = new Point(703, 141);
-            txtboxIDContract.Multiline = false;
-            txtboxIDContract.Name = "txtboxIDContract";
-            txtboxIDContract.NormalBorderColor = Color.Gray;
-            txtboxIDContract.Padding = new Padding(30, 15, 30, 15);
-            txtboxIDContract.PasswordChar = '\0';
-            txtboxIDContract.PlaceholderText = "Số Hợp Đồng";
-            txtboxIDContract.ReadOnly = false;
-            txtboxIDContract.Size = new Size(450, 50);
-            txtboxIDContract.TabIndex = 47;
-            // 
-            // txtboxOwner
-            // 
-            txtboxOwner.BorderRadius = 15;
-            txtboxOwner.BorderThickness = 2;
-            txtboxOwner.FocusBorderColor = Color.HotPink;
-            txtboxOwner.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtboxOwner.HoverBorderColor = Color.DodgerBlue;
-            txtboxOwner.Location = new Point(151, 351);
-            txtboxOwner.Multiline = false;
-            txtboxOwner.Name = "txtboxOwner";
-            txtboxOwner.NormalBorderColor = Color.Gray;
-            txtboxOwner.Padding = new Padding(30, 15, 30, 15);
-            txtboxOwner.PasswordChar = '\0';
-            txtboxOwner.PlaceholderText = "Người Đại Diện";
-            txtboxOwner.ReadOnly = false;
-            txtboxOwner.Size = new Size(450, 50);
-            txtboxOwner.TabIndex = 46;
-            // 
-            // txtboxAddress
-            // 
-            txtboxAddress.BorderRadius = 15;
-            txtboxAddress.BorderThickness = 2;
-            txtboxAddress.FocusBorderColor = Color.HotPink;
-            txtboxAddress.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtboxAddress.HoverBorderColor = Color.DodgerBlue;
-            txtboxAddress.Location = new Point(151, 279);
-            txtboxAddress.Multiline = false;
-            txtboxAddress.Name = "txtboxAddress";
-            txtboxAddress.NormalBorderColor = Color.Gray;
-            txtboxAddress.Padding = new Padding(30, 15, 30, 15);
-            txtboxAddress.PasswordChar = '\0';
-            txtboxAddress.PlaceholderText = "Địa Chỉ";
-            txtboxAddress.ReadOnly = false;
-            txtboxAddress.Size = new Size(450, 50);
-            txtboxAddress.TabIndex = 45;
-            // 
-            // txtboxPhone
-            // 
-            txtboxPhone.BorderRadius = 15;
-            txtboxPhone.BorderThickness = 2;
-            txtboxPhone.FocusBorderColor = Color.HotPink;
-            txtboxPhone.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtboxPhone.HoverBorderColor = Color.DodgerBlue;
-            txtboxPhone.Location = new Point(151, 211);
-            txtboxPhone.Multiline = false;
-            txtboxPhone.Name = "txtboxPhone";
-            txtboxPhone.NormalBorderColor = Color.Gray;
-            txtboxPhone.Padding = new Padding(30, 15, 30, 15);
-            txtboxPhone.PasswordChar = '\0';
-            txtboxPhone.PlaceholderText = "Số Điện Thoại";
-            txtboxPhone.ReadOnly = false;
-            txtboxPhone.Size = new Size(450, 50);
-            txtboxPhone.TabIndex = 44;
+            txtboxEndDate.UseSystemPasswordChar = false;
             // 
             // txtboxCustomerName
             // 
             txtboxCustomerName.BorderRadius = 15;
             txtboxCustomerName.BorderThickness = 2;
             txtboxCustomerName.FocusBorderColor = Color.HotPink;
-            txtboxCustomerName.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtboxCustomerName.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             txtboxCustomerName.HoverBorderColor = Color.DodgerBlue;
-            txtboxCustomerName.Location = new Point(151, 141);
+            txtboxCustomerName.Location = new Point(64, 148);
             txtboxCustomerName.Multiline = false;
             txtboxCustomerName.Name = "txtboxCustomerName";
-            txtboxCustomerName.NormalBorderColor = Color.Gray;
-            txtboxCustomerName.Padding = new Padding(30, 15, 30, 15);
+            txtboxCustomerName.NormalBorderColor = Color.LightGray;
+            txtboxCustomerName.Padding = new Padding(20, 7, 10, 10);
             txtboxCustomerName.PasswordChar = '\0';
             txtboxCustomerName.PlaceholderText = "Tên Khách Hàng / Doanh Nghiệp";
             txtboxCustomerName.ReadOnly = false;
-            txtboxCustomerName.Size = new Size(450, 50);
+            txtboxCustomerName.Size = new Size(384, 44);
             txtboxCustomerName.TabIndex = 43;
+            txtboxCustomerName.UseSystemPasswordChar = false;
+            // 
+            // txtboxStartDate
+            // 
+            txtboxStartDate.BorderRadius = 15;
+            txtboxStartDate.BorderThickness = 2;
+            txtboxStartDate.FocusBorderColor = Color.HotPink;
+            txtboxStartDate.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxStartDate.HoverBorderColor = Color.DodgerBlue;
+            txtboxStartDate.Location = new Point(676, 218);
+            txtboxStartDate.Multiline = false;
+            txtboxStartDate.Name = "txtboxStartDate";
+            txtboxStartDate.NormalBorderColor = Color.LightGray;
+            txtboxStartDate.Padding = new Padding(20, 7, 10, 10);
+            txtboxStartDate.PasswordChar = '\0';
+            txtboxStartDate.PlaceholderText = "Ngày Lập Hợp Đồng";
+            txtboxStartDate.ReadOnly = false;
+            txtboxStartDate.Size = new Size(384, 44);
+            txtboxStartDate.TabIndex = 48;
+            txtboxStartDate.UseSystemPasswordChar = false;
+            // 
+            // txtboxPhone
+            // 
+            txtboxPhone.BorderRadius = 15;
+            txtboxPhone.BorderThickness = 2;
+            txtboxPhone.FocusBorderColor = Color.HotPink;
+            txtboxPhone.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxPhone.HoverBorderColor = Color.DodgerBlue;
+            txtboxPhone.Location = new Point(64, 218);
+            txtboxPhone.Multiline = false;
+            txtboxPhone.Name = "txtboxPhone";
+            txtboxPhone.NormalBorderColor = Color.LightGray;
+            txtboxPhone.Padding = new Padding(20, 7, 10, 10);
+            txtboxPhone.PasswordChar = '\0';
+            txtboxPhone.PlaceholderText = "Số Điện Thoại";
+            txtboxPhone.ReadOnly = false;
+            txtboxPhone.Size = new Size(384, 44);
+            txtboxPhone.TabIndex = 44;
+            txtboxPhone.UseSystemPasswordChar = false;
+            // 
+            // txtboxIDContract
+            // 
+            txtboxIDContract.BorderRadius = 15;
+            txtboxIDContract.BorderThickness = 2;
+            txtboxIDContract.FocusBorderColor = Color.HotPink;
+            txtboxIDContract.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxIDContract.HoverBorderColor = Color.DodgerBlue;
+            txtboxIDContract.Location = new Point(676, 148);
+            txtboxIDContract.Multiline = false;
+            txtboxIDContract.Name = "txtboxIDContract";
+            txtboxIDContract.NormalBorderColor = Color.LightGray;
+            txtboxIDContract.Padding = new Padding(20, 7, 10, 10);
+            txtboxIDContract.PasswordChar = '\0';
+            txtboxIDContract.PlaceholderText = "Số Hợp Đồng";
+            txtboxIDContract.ReadOnly = false;
+            txtboxIDContract.Size = new Size(384, 44);
+            txtboxIDContract.TabIndex = 47;
+            txtboxIDContract.UseSystemPasswordChar = false;
+            txtboxIDContract.TextChanged += txtboxIDContract_TextChanged;
+            // 
+            // txtboxAddress
+            // 
+            txtboxAddress.BorderRadius = 15;
+            txtboxAddress.BorderThickness = 2;
+            txtboxAddress.FocusBorderColor = Color.HotPink;
+            txtboxAddress.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxAddress.HoverBorderColor = Color.DodgerBlue;
+            txtboxAddress.Location = new Point(64, 288);
+            txtboxAddress.Multiline = false;
+            txtboxAddress.Name = "txtboxAddress";
+            txtboxAddress.NormalBorderColor = Color.LightGray;
+            txtboxAddress.Padding = new Padding(20, 7, 10, 10);
+            txtboxAddress.PasswordChar = '\0';
+            txtboxAddress.PlaceholderText = "Địa Chỉ";
+            txtboxAddress.ReadOnly = false;
+            txtboxAddress.Size = new Size(384, 44);
+            txtboxAddress.TabIndex = 45;
+            txtboxAddress.UseSystemPasswordChar = false;
+            // 
+            // txtboxOwner
+            // 
+            txtboxOwner.BorderRadius = 15;
+            txtboxOwner.BorderThickness = 2;
+            txtboxOwner.FocusBorderColor = Color.HotPink;
+            txtboxOwner.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxOwner.HoverBorderColor = Color.DodgerBlue;
+            txtboxOwner.Location = new Point(64, 358);
+            txtboxOwner.Multiline = false;
+            txtboxOwner.Name = "txtboxOwner";
+            txtboxOwner.NormalBorderColor = Color.LightGray;
+            txtboxOwner.Padding = new Padding(20, 7, 10, 10);
+            txtboxOwner.PasswordChar = '\0';
+            txtboxOwner.PlaceholderText = "Người Đại Diện";
+            txtboxOwner.ReadOnly = false;
+            txtboxOwner.Size = new Size(384, 44);
+            txtboxOwner.TabIndex = 46;
+            txtboxOwner.UseSystemPasswordChar = false;
             // 
             // lbContract
             // 
@@ -258,28 +323,6 @@
             lbContract.TabIndex = 42;
             lbContract.Text = "Hợp Đồng";
             // 
-            // lbCustomer
-            // 
-            lbCustomer.AutoSize = true;
-            lbCustomer.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbCustomer.Location = new Point(151, 96);
-            lbCustomer.Name = "lbCustomer";
-            lbCustomer.Size = new Size(140, 25);
-            lbCustomer.TabIndex = 41;
-            lbCustomer.Text = "Khách Hàng";
-            // 
-            // lbNamePage
-            // 
-            lbNamePage.AutoSize = true;
-            lbNamePage.BackColor = Color.Transparent;
-            lbNamePage.Font = new Font("Times New Roman", 24F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lbNamePage.ForeColor = Color.Black;
-            lbNamePage.Location = new Point(111, 29);
-            lbNamePage.Name = "lbNamePage";
-            lbNamePage.Size = new Size(833, 45);
-            lbNamePage.TabIndex = 40;
-            lbNamePage.Text = "THÔNG TIN KHÁCH HÀNG VÀ HỢP ĐỒNG";
-            // 
             // BusinessContent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -289,6 +332,8 @@
             Size = new Size(1227, 507);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -308,5 +353,6 @@
         private Components.RoundedButton btnSave;
         private Components.RoundedButton btnSearch;
         private Panel panel1;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }
