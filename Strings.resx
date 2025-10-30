@@ -189,9 +189,6 @@
   <data name="Alert_SaveError" xml:space="preserve">
     <value>Lỗi Khi Lưu Cài Đặt:</value>
   </data>
-  <data name="Alert_LoadLanguageError" xml:space="preserve">
-    <value>Lỗi khi tải tài nguyên ngôn ngữ:</value>
-  </data>
   <data name="Employee_Title" xml:space="preserve">
     <value>Quản lý nhân viên</value>
   </data>
@@ -323,5 +320,116 @@
   </data>
   <data name="Validation_EmployeeCodeExists" xml:space="preserve">
     <value>Mã nhân viên này đã tồn tại.</value>
+  </data>
+  <data name="Notification_Title" xml:space="preserve">
+    <value>Thông Báo</value>
+  </data>
+  <data name="Notification_Panel_Soon" xml:space="preserve">
+    <value>Hợp Đồng Sắp Quá Hạn</value>
+  </data>
+  <data name="Notification_Panel_Overdue" xml:space="preserve">
+    <value>Hợp Đồng Quá Hạn</value>
+  </data>
+  <data name="Grid_ContractCode" xml:space="preserve">
+    <value>Mã Đơn</value>
+  </data>
+  <data name="Grid_CustomerName" xml:space="preserve">
+    <value>Tên Khách Hàng</value>
+  </data>
+  <data name="Grid_DaysRemaining" xml:space="preserve">
+    <value>Số Ngày Còn Lại</value>
+  </data>
+  <data name="Grid_DaysOverdue" xml:space="preserve">
+    <value>Số Ngày Quá Hạn</value>
+  </data>
+  <data name="Alert_LoadDataError" xml:space="preserve">
+    <value>Đã xảy ra lỗi khi tải dữ liệu:</value>
+  </data>
+  <data name="Alert_LoadLanguageError" xml:space="preserve">
+    <value>Lỗi khi tải tài nguyên ngôn ngữ:</value>
+  </data>
+  <data name="Stats_Title" xml:space="preserve">
+    <value>Báo Cáo Và Thống Kê</value>
+  </data>
+  <data name="Stats_ApplyButton" xml:space="preserve">
+    <value>Áp Dụng</value>
+  </data>
+  <data name="Stats_Loading" xml:space="preserve">
+    <value>Đang tải...</value>
+  </data>
+  <data name="Stats_OrderCount" xml:space="preserve">
+    <value>Số Lượng Đơn Hàng</value>
+  </data>
+  <data name="Stats_OnTimeRate" xml:space="preserve">
+    <value>Tỷ Lệ Đúng/Trễ Hẹn</value>
+  </data>
+  <data name="Stats_Quarter1" xml:space="preserve">
+    <value>Quý 1</value>
+  </data>
+  <data name="Stats_Quarter2" xml:space="preserve">
+    <value>Quý 2</value>
+  </data>
+  <data name="Stats_Quarter3" xml:space="preserve">
+    <value>Quý 3</value>
+  </data>
+  <data name="Stats_Quarter4" xml:space="preserve">
+    <value>Quý 4</value>
+  </data>
+  <data name="Stats_Month" xml:space="preserve">
+    <value>Tháng {0}</value>
+  </data>
+  <data name="Stats_OnTime" xml:space="preserve">
+    <value>Đúng hẹn</value>
+  </data>
+  <data name="Stats_Late" xml:space="preserve">
+    <value>Trễ hẹn</value>
+  </data>
+  <data name="Stats_Rate" xml:space="preserve">
+    <value>Tỷ lệ</value>
+  </data>
+  <data name="Validation_SelectYearAndQuarter" xml:space="preserve">
+    <value>Vui lòng chọn Năm và Quý.</value>
+  </data>
+  <data name="Alert_ErrorDetails" xml:space="preserve">
+    <value>Lỗi Chi Tiết</value>
+  </data>
+  <data name="AI_Title" xml:space="preserve">
+    <value>AI Dự Đoán</value>
+  </data>
+  <data name="AI_Panel_Resign" xml:space="preserve">
+    <value>Tái Ký</value>
+  </data>
+  <data name="AI_Panel_Pollution" xml:space="preserve">
+    <value>Ô Nhiễm</value>
+  </data>
+  <data name="AI_Placeholder_Customer" xml:space="preserve">
+    <value>Nhập Tên Khách Hàng</value>
+  </data>
+  <data name="AI_Label_PollutionLevel" xml:space="preserve">
+    <value>Mức Độ Ô Nhiễm</value>
+  </data>
+  <data name="AI_Button_Predict" xml:space="preserve">
+    <value>Dự Đoán</value>
+  </data>
+  <data name="Introduce_Title" xml:space="preserve">
+    <value>Giới Thiệu</value>
+  </data>
+  <data name="Introduce_AppVersion" xml:space="preserve">
+    <value>Phiên Bản</value>
+  </data>
+  <data name="Introduce_PrivacyPolicy" xml:space="preserve">
+    <value>Chính sách bảo mật</value>
+  </data>
+  <data name="Introduce_PrivacyPolicy_Text" xml:space="preserve">
+    <value>Vui lòng xem lại Chính sách bảo mật để hiểu</value>
+  </data>
+  <data name="Introduce_Notice_Text" xml:space="preserve">
+    <value>Phần mềm này chứa mã nguồn được cung cấp bởi GREENFLOW Corporation</value>
+  </data>
+  <data name="Introduce_Contact" xml:space="preserve">
+    <value>Liên Hệ</value>
+  </data>
+  <data name="Introduce_Notice" xml:space="preserve">
+    <value>Chú Ý</value>
   </data>
 </root>

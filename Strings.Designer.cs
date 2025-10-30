@@ -70,6 +70,60 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dự Đoán.
+        /// </summary>
+        internal static string AI_Button_Predict {
+            get {
+                return ResourceManager.GetString("AI_Button_Predict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mức Độ Ô Nhiễm.
+        /// </summary>
+        internal static string AI_Label_PollutionLevel {
+            get {
+                return ResourceManager.GetString("AI_Label_PollutionLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ô Nhiễm.
+        /// </summary>
+        internal static string AI_Panel_Pollution {
+            get {
+                return ResourceManager.GetString("AI_Panel_Pollution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tái Ký.
+        /// </summary>
+        internal static string AI_Panel_Resign {
+            get {
+                return ResourceManager.GetString("AI_Panel_Resign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhập Tên Khách Hàng.
+        /// </summary>
+        internal static string AI_Placeholder_Customer {
+            get {
+                return ResourceManager.GetString("AI_Placeholder_Customer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AI Dự Đoán.
+        /// </summary>
+        internal static string AI_Title {
+            get {
+                return ResourceManager.GetString("AI_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn có chắc chắn muốn XÓA nhân viên có Mã: {0}?.
         /// </summary>
         internal static string Alert_DeleteConfirm_Message {
@@ -102,6 +156,24 @@ namespace Environmental_Monitoring {
         internal static string Alert_DeleteSuccess {
             get {
                 return ResourceManager.GetString("Alert_DeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lỗi Chi Tiết.
+        /// </summary>
+        internal static string Alert_ErrorDetails {
+            get {
+                return ResourceManager.GetString("Alert_ErrorDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã xảy ra lỗi khi tải dữ liệu:.
+        /// </summary>
+        internal static string Alert_LoadDataError {
+            get {
+                return ResourceManager.GetString("Alert_LoadDataError", resourceCulture);
             }
         }
         
@@ -241,6 +313,105 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mã Đơn.
+        /// </summary>
+        internal static string Grid_ContractCode {
+            get {
+                return ResourceManager.GetString("Grid_ContractCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên Khách Hàng.
+        /// </summary>
+        internal static string Grid_CustomerName {
+            get {
+                return ResourceManager.GetString("Grid_CustomerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số Ngày Quá Hạn.
+        /// </summary>
+        internal static string Grid_DaysOverdue {
+            get {
+                return ResourceManager.GetString("Grid_DaysOverdue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số Ngày Còn Lại.
+        /// </summary>
+        internal static string Grid_DaysRemaining {
+            get {
+                return ResourceManager.GetString("Grid_DaysRemaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phiên Bản.
+        /// </summary>
+        internal static string Introduce_AppVersion {
+            get {
+                return ResourceManager.GetString("Introduce_AppVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Liên Hệ.
+        /// </summary>
+        internal static string Introduce_Contact {
+            get {
+                return ResourceManager.GetString("Introduce_Contact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chú Ý.
+        /// </summary>
+        internal static string Introduce_Notice {
+            get {
+                return ResourceManager.GetString("Introduce_Notice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phần mềm này chứa mã nguồn được cung cấp bởi GREENFLOW Corporation.
+        /// </summary>
+        internal static string Introduce_Notice_Text {
+            get {
+                return ResourceManager.GetString("Introduce_Notice_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chính sách bảo mật.
+        /// </summary>
+        internal static string Introduce_PrivacyPolicy {
+            get {
+                return ResourceManager.GetString("Introduce_PrivacyPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vui lòng xem lại Chính sách bảo mật để hiểu.
+        /// </summary>
+        internal static string Introduce_PrivacyPolicy_Text {
+            get {
+                return ResourceManager.GetString("Introduce_PrivacyPolicy_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giới Thiệu.
+        /// </summary>
+        internal static string Introduce_Title {
+            get {
+                return ResourceManager.GetString("Introduce_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AI.
         /// </summary>
         internal static string Menu_AI {
@@ -309,6 +480,33 @@ namespace Environmental_Monitoring {
         internal static string Menu_User {
             get {
                 return ResourceManager.GetString("Menu_User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hợp Đồng Quá Hạn.
+        /// </summary>
+        internal static string Notification_Panel_Overdue {
+            get {
+                return ResourceManager.GetString("Notification_Panel_Overdue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hợp Đồng Sắp Quá Hạn.
+        /// </summary>
+        internal static string Notification_Panel_Soon {
+            get {
+                return ResourceManager.GetString("Notification_Panel_Soon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông Báo.
+        /// </summary>
+        internal static string Notification_Title {
+            get {
+                return ResourceManager.GetString("Notification_Title", resourceCulture);
             }
         }
         
@@ -529,6 +727,123 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Áp Dụng.
+        /// </summary>
+        internal static string Stats_ApplyButton {
+            get {
+                return ResourceManager.GetString("Stats_ApplyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trễ hẹn.
+        /// </summary>
+        internal static string Stats_Late {
+            get {
+                return ResourceManager.GetString("Stats_Late", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang tải....
+        /// </summary>
+        internal static string Stats_Loading {
+            get {
+                return ResourceManager.GetString("Stats_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tháng {0}.
+        /// </summary>
+        internal static string Stats_Month {
+            get {
+                return ResourceManager.GetString("Stats_Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đúng hẹn.
+        /// </summary>
+        internal static string Stats_OnTime {
+            get {
+                return ResourceManager.GetString("Stats_OnTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tỷ Lệ Đúng/Trễ Hẹn.
+        /// </summary>
+        internal static string Stats_OnTimeRate {
+            get {
+                return ResourceManager.GetString("Stats_OnTimeRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số Lượng Đơn Hàng.
+        /// </summary>
+        internal static string Stats_OrderCount {
+            get {
+                return ResourceManager.GetString("Stats_OrderCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quý 1.
+        /// </summary>
+        internal static string Stats_Quarter1 {
+            get {
+                return ResourceManager.GetString("Stats_Quarter1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quý 2.
+        /// </summary>
+        internal static string Stats_Quarter2 {
+            get {
+                return ResourceManager.GetString("Stats_Quarter2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quý 3.
+        /// </summary>
+        internal static string Stats_Quarter3 {
+            get {
+                return ResourceManager.GetString("Stats_Quarter3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quý 4.
+        /// </summary>
+        internal static string Stats_Quarter4 {
+            get {
+                return ResourceManager.GetString("Stats_Quarter4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tỷ lệ.
+        /// </summary>
+        internal static string Stats_Rate {
+            get {
+                return ResourceManager.GetString("Stats_Rate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Báo Cáo Và Thống Kê.
+        /// </summary>
+        internal static string Stats_Title {
+            get {
+                return ResourceManager.GetString("Stats_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tối.
         /// </summary>
         internal static string Theme_Dark {
@@ -669,6 +984,15 @@ namespace Environmental_Monitoring {
         internal static string Validation_RoleRequired {
             get {
                 return ResourceManager.GetString("Validation_RoleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vui lòng chọn Năm và Quý..
+        /// </summary>
+        internal static string Validation_SelectYearAndQuarter {
+            get {
+                return ResourceManager.GetString("Validation_SelectYearAndQuarter", resourceCulture);
             }
         }
         
