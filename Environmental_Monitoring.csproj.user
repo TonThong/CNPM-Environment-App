@@ -62,7 +62,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="View\Introduce.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="View\Login.cs">
       <SubType>Form</SubType>

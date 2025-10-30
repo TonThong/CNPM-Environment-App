@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace Environmental_Monitoring.View
 {
-    public partial class Introduce : Form
+    public partial class Introduce : UserControl
     {
         public Introduce()
         {
             InitializeComponent();
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
