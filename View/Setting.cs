@@ -66,12 +66,13 @@ namespace Environmental_Monitoring
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Mainlayout mainForm = this.ParentForm as Mainlayout; 
+            Mainlayout mainForm = this.ParentForm as Mainlayout;
+
+            ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
+
             try
             {
-                ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
-                CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
-
                 if (cmbNgonNgu.SelectedItem != null)
                 {
                     Properties.Settings.Default.Language = cmbNgonNgu.SelectedItem.ToString();
@@ -94,13 +95,10 @@ namespace Environmental_Monitoring
 
                 Properties.Settings.Default.Save();
 
+                string successMessage = rm.GetString("Alert_SaveSuccess", culture);
                 if (mainForm != null)
                 {
-                    mainForm.ShowGlobalAlert("Đã lưu cài đặt thành công!", AlertPanel.AlertType.Success);
-                }
-                else
-                {
-                    MessageBox.Show("Đã lưu cài đặt thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    mainForm.ShowGlobalAlert(successMessage, AlertPanel.AlertType.Success);
                 }
 
                 string selectedLanguage = Properties.Settings.Default.Language;
@@ -112,6 +110,8 @@ namespace Environmental_Monitoring
                 CultureInfo newCulture = new CultureInfo(cultureName);
                 Thread.CurrentThread.CurrentCulture = newCulture;
                 Thread.CurrentThread.CurrentUICulture = newCulture;
+
+                culture = newCulture;
 
                 if (mainForm != null)
                 {
@@ -125,25 +125,22 @@ namespace Environmental_Monitoring
             }
             catch (Exception ex)
             {
+                string errorMessage = rm.GetString("Alert_SaveError", culture);
                 if (mainForm != null)
                 {
-                    mainForm.ShowGlobalAlert("Lỗi khi lưu cài đặt: " + ex.Message, AlertPanel.AlertType.Error);
-                }
-                else
-                {
-                    MessageBox.Show("Lỗi khi lưu cài đặt: " + ex.Message);
+                    mainForm.ShowGlobalAlert(errorMessage + ex.Message, AlertPanel.AlertType.Error);
                 }
             }
         }
 
         public void UpdateUIText()
         {
+            ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
+
             try
             {
-                LoadSettings(); 
-
-                ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
-                CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
+                LoadSettings();
 
                 lblBaoCao.Text = rm.GetString("Settings_Title", culture);
                 lblUserSupport.Text = rm.GetString("Settings_UserSupport", culture);
@@ -151,23 +148,21 @@ namespace Environmental_Monitoring
                 lblLanguage.Text = rm.GetString("Settings_Language", culture);
                 lblTheme.Text = rm.GetString("Settings_Theme", culture);
                 lblNotification.Text = rm.GetString("Settings_Notification", culture);
-                cbEmail.Text = rm.GetString("Settings_Email", culture);
+                cbEmail.Text = rm.GetString("Email", culture);
                 cbUngDung.Text = rm.GetString("Settings_App", culture);
                 btnSave.Text = rm.GetString("Settings_SaveButton", culture);
                 lblUserManual.Text = rm.GetString("Settings_UserManual", culture);
                 lblViewDocument.Text = rm.GetString("Settings_ViewDocument", culture);
                 lblQuestion.Text = rm.GetString("Settings_Question", culture);
+                txtSearch.Text = rm.GetString("Search_Placeholder", culture);
             }
             catch (Exception ex)
             {
+                string errorMessage = rm.GetString("Alert_LoadLanguageError", culture);
                 Mainlayout mainForm = this.ParentForm as Mainlayout;
                 if (mainForm != null)
                 {
-                    mainForm.ShowGlobalAlert("Lỗi khi tải tài nguyên ngôn ngữ: " + ex.Message, AlertPanel.AlertType.Error);
-                }
-                else
-                {
-                    MessageBox.Show("Lỗi khi tải tài nguyên ngôn ngữ: " + ex.Message);
+                    mainForm.ShowGlobalAlert(errorMessage + ex.Message, AlertPanel.AlertType.Error);
                 }
             }
         }

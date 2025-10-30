@@ -46,7 +46,7 @@ namespace Environmental_Monitoring
             CultureInfo culture = new CultureInfo(cultureName);
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
-            Application.Run(new Login());
+            Application.Run(new Mainlayout());
         }
     }
 }

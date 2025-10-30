@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
+            lblMaNV = new Label();
+            lblYear = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
+            lblDepartment = new Label();
+            lblHoTen = new Label();
             label9 = new Label();
             label10 = new Label();
-            label11 = new Label();
-            label12 = new Label();
+            lblRole = new Label();
+            lblSDT = new Label();
             label13 = new Label();
             label14 = new Label();
-            label15 = new Label();
-            label16 = new Label();
+            lblEmail = new Label();
+            lblAddress = new Label();
             label17 = new Label();
-            label18 = new Label();
+            lblPass = new Label();
             btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             txtMaNV = new Environmental_Monitoring.View.Components.RoundedTextBox();
@@ -62,27 +62,27 @@
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // lblMaNV
             // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label1.AutoSize = true;
-            label1.Location = new Point(49, 26);
-            label1.Name = "label1";
-            label1.Size = new Size(104, 47);
-            label1.TabIndex = 0;
-            label1.Text = "Mã nhân viên";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
+            lblMaNV.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblMaNV.AutoSize = true;
+            lblMaNV.Location = new Point(49, 26);
+            lblMaNV.Name = "lblMaNV";
+            lblMaNV.Size = new Size(104, 47);
+            lblMaNV.TabIndex = 0;
+            lblMaNV.Text = "Mã nhân viên";
+            lblMaNV.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // lblYear
             // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Location = new Point(508, 26);
-            label2.Name = "label2";
-            label2.Size = new Size(104, 47);
-            label2.TabIndex = 2;
-            label2.Text = "Năm sinh";
-            label2.TextAlign = ContentAlignment.MiddleCenter;
+            lblYear.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblYear.AutoSize = true;
+            lblYear.Location = new Point(508, 26);
+            lblYear.Name = "lblYear";
+            lblYear.Size = new Size(104, 47);
+            lblYear.TabIndex = 2;
+            lblYear.Text = "Năm sinh";
+            lblYear.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
@@ -128,27 +128,27 @@
             label6.TabIndex = 10;
             label6.Text = "*";
             // 
-            // label7
+            // lblDepartment
             // 
-            label7.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label7.AutoSize = true;
-            label7.Location = new Point(508, 120);
-            label7.Name = "label7";
-            label7.Size = new Size(104, 47);
-            label7.TabIndex = 8;
-            label7.Text = "Phòng ban";
-            label7.TextAlign = ContentAlignment.MiddleCenter;
+            lblDepartment.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblDepartment.AutoSize = true;
+            lblDepartment.Location = new Point(508, 120);
+            lblDepartment.Name = "lblDepartment";
+            lblDepartment.Size = new Size(104, 47);
+            lblDepartment.TabIndex = 8;
+            lblDepartment.Text = "Phòng ban";
+            lblDepartment.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label8
+            // lblHoTen
             // 
-            label8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label8.AutoSize = true;
-            label8.Location = new Point(49, 120);
-            label8.Name = "label8";
-            label8.Size = new Size(104, 47);
-            label8.TabIndex = 6;
-            label8.Text = "Họ tên";
-            label8.TextAlign = ContentAlignment.MiddleCenter;
+            lblHoTen.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblHoTen.AutoSize = true;
+            lblHoTen.Location = new Point(49, 120);
+            lblHoTen.Name = "lblHoTen";
+            lblHoTen.Size = new Size(104, 47);
+            lblHoTen.TabIndex = 6;
+            lblHoTen.Text = "Họ tên";
+            lblHoTen.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label9
             // 
@@ -172,27 +172,27 @@
             label10.TabIndex = 22;
             label10.Text = "*";
             // 
-            // label11
+            // lblRole
             // 
-            label11.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label11.AutoSize = true;
-            label11.Location = new Point(508, 308);
-            label11.Name = "label11";
-            label11.Size = new Size(104, 47);
-            label11.TabIndex = 20;
-            label11.Text = "Vai trò";
-            label11.TextAlign = ContentAlignment.MiddleCenter;
+            lblRole.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblRole.AutoSize = true;
+            lblRole.Location = new Point(508, 308);
+            lblRole.Name = "lblRole";
+            lblRole.Size = new Size(104, 47);
+            lblRole.TabIndex = 20;
+            lblRole.Text = "Vai trò";
+            lblRole.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label12
+            // lblSDT
             // 
-            label12.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label12.AutoSize = true;
-            label12.Location = new Point(508, 214);
-            label12.Name = "label12";
-            label12.Size = new Size(104, 47);
-            label12.TabIndex = 18;
-            label12.Text = "Số điện thoại";
-            label12.TextAlign = ContentAlignment.MiddleCenter;
+            lblSDT.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblSDT.AutoSize = true;
+            lblSDT.Location = new Point(508, 214);
+            lblSDT.Name = "lblSDT";
+            lblSDT.Size = new Size(104, 47);
+            lblSDT.TabIndex = 18;
+            lblSDT.Text = "Số điện thoại";
+            lblSDT.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label13
             // 
@@ -216,27 +216,27 @@
             label14.TabIndex = 16;
             label14.Text = "*";
             // 
-            // label15
+            // lblEmail
             // 
-            label15.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label15.AutoSize = true;
-            label15.Location = new Point(49, 308);
-            label15.Name = "label15";
-            label15.Size = new Size(104, 47);
-            label15.TabIndex = 14;
-            label15.Text = "Email";
-            label15.TextAlign = ContentAlignment.MiddleCenter;
+            lblEmail.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblEmail.AutoSize = true;
+            lblEmail.Location = new Point(49, 308);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(104, 47);
+            lblEmail.TabIndex = 14;
+            lblEmail.Text = "Email";
+            lblEmail.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label16
+            // lblAddress
             // 
-            label16.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label16.AutoSize = true;
-            label16.Location = new Point(49, 214);
-            label16.Name = "label16";
-            label16.Size = new Size(104, 47);
-            label16.TabIndex = 12;
-            label16.Text = "Địa chỉ";
-            label16.TextAlign = ContentAlignment.MiddleCenter;
+            lblAddress.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblAddress.AutoSize = true;
+            lblAddress.Location = new Point(49, 214);
+            lblAddress.Name = "lblAddress";
+            lblAddress.Size = new Size(104, 47);
+            lblAddress.TabIndex = 12;
+            lblAddress.Text = "Địa chỉ";
+            lblAddress.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label17
             // 
@@ -249,16 +249,16 @@
             label17.TabIndex = 26;
             label17.Text = "*";
             // 
-            // label18
+            // lblPass
             // 
-            label18.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label18.AutoSize = true;
-            label18.Location = new Point(49, 402);
-            label18.Name = "label18";
-            label18.Size = new Size(104, 47);
-            label18.TabIndex = 24;
-            label18.Text = "Mật khẩu";
-            label18.TextAlign = ContentAlignment.MiddleCenter;
+            lblPass.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblPass.AutoSize = true;
+            lblPass.Location = new Point(49, 402);
+            lblPass.Name = "lblPass";
+            lblPass.Size = new Size(104, 47);
+            lblPass.TabIndex = 24;
+            lblPass.Text = "Mật khẩu";
+            lblPass.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnSave
             // 
@@ -364,28 +364,28 @@
             tableLayoutPanel1.Controls.Add(txtHoTen, 3, 3);
             tableLayoutPanel1.Controls.Add(txtMatKhau, 3, 9);
             tableLayoutPanel1.Controls.Add(txtEmail, 3, 7);
-            tableLayoutPanel1.Controls.Add(label1, 1, 1);
+            tableLayoutPanel1.Controls.Add(lblMaNV, 1, 1);
             tableLayoutPanel1.Controls.Add(txtDiaChi, 3, 5);
             tableLayoutPanel1.Controls.Add(label3, 2, 1);
             tableLayoutPanel1.Controls.Add(label10, 6, 5);
             tableLayoutPanel1.Controls.Add(txtNamSinh, 7, 1);
-            tableLayoutPanel1.Controls.Add(label11, 5, 7);
+            tableLayoutPanel1.Controls.Add(lblRole, 5, 7);
             tableLayoutPanel1.Controls.Add(label5, 6, 3);
             tableLayoutPanel1.Controls.Add(txtMaNV, 3, 1);
             tableLayoutPanel1.Controls.Add(label6, 6, 1);
-            tableLayoutPanel1.Controls.Add(label16, 1, 5);
-            tableLayoutPanel1.Controls.Add(label12, 5, 5);
+            tableLayoutPanel1.Controls.Add(lblAddress, 1, 5);
+            tableLayoutPanel1.Controls.Add(lblSDT, 5, 5);
             tableLayoutPanel1.Controls.Add(label17, 2, 9);
             tableLayoutPanel1.Controls.Add(label4, 2, 3);
             tableLayoutPanel1.Controls.Add(label14, 2, 5);
-            tableLayoutPanel1.Controls.Add(label7, 5, 3);
+            tableLayoutPanel1.Controls.Add(lblDepartment, 5, 3);
             tableLayoutPanel1.Controls.Add(label13, 2, 7);
-            tableLayoutPanel1.Controls.Add(label15, 1, 7);
-            tableLayoutPanel1.Controls.Add(label18, 1, 9);
+            tableLayoutPanel1.Controls.Add(lblEmail, 1, 7);
+            tableLayoutPanel1.Controls.Add(lblPass, 1, 9);
             tableLayoutPanel1.Controls.Add(label9, 6, 7);
             tableLayoutPanel1.Controls.Add(btnSave, 7, 9);
-            tableLayoutPanel1.Controls.Add(label8, 1, 3);
-            tableLayoutPanel1.Controls.Add(label2, 5, 1);
+            tableLayoutPanel1.Controls.Add(lblHoTen, 1, 3);
+            tableLayoutPanel1.Controls.Add(lblYear, 5, 1);
             tableLayoutPanel1.Controls.Add(cbbRole, 7, 7);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
@@ -440,7 +440,7 @@
             txtPhong.NormalBorderColor = Color.LightGray;
             txtPhong.Padding = new Padding(10);
             txtPhong.PasswordChar = '\0';
-            txtPhong.PlaceholderText = "Nhập Năm Sinh";
+            txtPhong.PlaceholderText = "Nhập Phòng Ban";
             txtPhong.ReadOnly = false;
             txtPhong.Size = new Size(224, 41);
             txtPhong.TabIndex = 36;
@@ -546,24 +546,24 @@
 
         #endregion
 
-        private Label label1;
-        private Label label2;
+        private Label lblMaNV;
+        private Label lblYear;
         private Label label3;
         private Label label4;
         private Label label5;
         private Label label6;
-        private Label label7;
-        private Label label8;
+        private Label lblDepartment;
+        private Label lblHoTen;
         private Label label9;
         private Label label10;
-        private Label label11;
-        private Label label12;
+        private Label lblRole;
+        private Label lblSDT;
         private Label label13;
         private Label label14;
-        private Label label15;
-        private Label label16;
+        private Label lblEmail;
+        private Label lblAddress;
         private Label label17;
-        private Label label18;
+        private Label lblPass;
         private Components.RoundedButton btnSave;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Components.RoundedTextBox txtMaNV;

@@ -52,7 +52,7 @@ namespace Environmental_Monitoring
             lblBaoCao = new Label();
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
-            roundedTextBox1 = new RoundedTextBox();
+            txtSearch = new RoundedTextBox();
             roundedPanel3.SuspendLayout();
             roundedPanel2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -329,7 +329,7 @@ namespace Environmental_Monitoring
             tableLayoutPanel1.Controls.Add(roundedPanel2, 1, 3);
             tableLayoutPanel1.Controls.Add(roundedPanel3, 3, 3);
             tableLayoutPanel1.Controls.Add(lblBaoCao, 1, 1);
-            tableLayoutPanel1.Controls.Add(roundedTextBox1, 3, 1);
+            tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 5;
@@ -341,24 +341,24 @@ namespace Environmental_Monitoring
             tableLayoutPanel1.Size = new Size(1221, 709);
             tableLayoutPanel1.TabIndex = 18;
             // 
-            // roundedTextBox1
+            // txtSearch
             // 
-            roundedTextBox1.BackColor = Color.White;
-            roundedTextBox1.BorderRadius = 15;
-            roundedTextBox1.BorderThickness = 1;
-            roundedTextBox1.FocusBorderColor = SystemColors.ControlDark;
-            roundedTextBox1.HoverBorderColor = Color.DarkGray;
-            roundedTextBox1.Location = new Point(637, 24);
-            roundedTextBox1.Multiline = false;
-            roundedTextBox1.Name = "roundedTextBox1";
-            roundedTextBox1.NormalBorderColor = Color.DarkGray;
-            roundedTextBox1.Padding = new Padding(9, 12, 9, 9);
-            roundedTextBox1.PasswordChar = '\0';
-            roundedTextBox1.PlaceholderText = "Tìm Kiếm...";
-            roundedTextBox1.ReadOnly = false;
-            roundedTextBox1.Size = new Size(519, 45);
-            roundedTextBox1.TabIndex = 20;
-            roundedTextBox1.UseSystemPasswordChar = false;
+            txtSearch.BackColor = Color.White;
+            txtSearch.BorderRadius = 15;
+            txtSearch.BorderThickness = 1;
+            txtSearch.FocusBorderColor = SystemColors.ControlDark;
+            txtSearch.HoverBorderColor = Color.DarkGray;
+            txtSearch.Location = new Point(637, 24);
+            txtSearch.Multiline = false;
+            txtSearch.Name = "txtSearch";
+            txtSearch.NormalBorderColor = Color.DarkGray;
+            txtSearch.Padding = new Padding(9, 12, 9, 9);
+            txtSearch.PasswordChar = '\0';
+            txtSearch.PlaceholderText = "Tìm Kiếm...";
+            txtSearch.ReadOnly = false;
+            txtSearch.Size = new Size(519, 45);
+            txtSearch.TabIndex = 20;
+            txtSearch.UseSystemPasswordChar = false;
             // 
             // Setting
             // 
@@ -397,7 +397,7 @@ namespace Environmental_Monitoring
         private CheckBox cbEmail;
         private RoundedButton btnSave;
         private TableLayoutPanel tableLayoutPanel1;
-        private RoundedTextBox roundedTextBox1;
+        private RoundedTextBox txtSearch;
         private CustomComboBox cmbGiaoDien;
         private CustomComboBox cmbNgonNgu;
     }

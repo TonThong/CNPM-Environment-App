@@ -135,9 +135,6 @@
   <data name="Settings_Notification" xml:space="preserve">
     <value>Thông Báo</value>
   </data>
-  <data name="Settings_Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
   <data name="Settings_App" xml:space="preserve">
     <value>Ứng Dụng</value>
   </data>
@@ -185,5 +182,146 @@
   </data>
   <data name="Settings_Question" xml:space="preserve">
     <value>Câu Hỏi Thường Gặp</value>
+  </data>
+  <data name="Alert_SaveSuccess" xml:space="preserve">
+    <value>Đã Lưu Cài Đặt Thành Công!</value>
+  </data>
+  <data name="Alert_SaveError" xml:space="preserve">
+    <value>Lỗi Khi Lưu Cài Đặt:</value>
+  </data>
+  <data name="Alert_LoadLanguageError" xml:space="preserve">
+    <value>Lỗi khi tải tài nguyên ngôn ngữ:</value>
+  </data>
+  <data name="Employee_Title" xml:space="preserve">
+    <value>Quản lý nhân viên</value>
+  </data>
+  <data name="Employee_AddButton" xml:space="preserve">
+    <value>Thêm nhân viên</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="EmployeeID" xml:space="preserve">
+    <value>Mã nhân viên</value>
+  </data>
+  <data name="BirthYear" xml:space="preserve">
+    <value>Năm sinh</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Phòng ban</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Điện thoại</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Vai trò</value>
+  </data>
+  <data name="Pagination_Page" xml:space="preserve">
+    <value>Trang</value>
+  </data>
+  <data name="Alert_DeleteError_InUse" xml:space="preserve">
+    <value>Không thể xóa! Dữ liệu này đang được sử dụng ở bảng khác.</value>
+  </data>
+  <data name="Alert_DeleteConfirm_Title" xml:space="preserve">
+    <value>Xác nhận xóa</value>
+  </data>
+  <data name="Alert_DeleteConfirm_Message" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn XÓA nhân viên có Mã: {0}?</value>
+  </data>
+  <data name="Alert_DeleteSuccess" xml:space="preserve">
+    <value>Xóa nhân viên thành công.</value>
+  </data>
+  <data name="Form_AddEmployee_Title" xml:space="preserve">
+    <value>Thêm nhân viên</value>
+  </data>
+  <data name="Form_UpdateEmployee_Title" xml:space="preserve">
+    <value>Cập nhật nhân viên</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Họ tên</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="Placeholder_EmployeeCode" xml:space="preserve">
+    <value>Nhập Mã NV</value>
+  </data>
+  <data name="Placeholder_FullName" xml:space="preserve">
+    <value>Nhập Họ Và Tên</value>
+  </data>
+  <data name="Placeholder_Address" xml:space="preserve">
+    <value>Nhập Địa Chỉ</value>
+  </data>
+  <data name="Placeholder_Email" xml:space="preserve">
+    <value>Nhập Email</value>
+  </data>
+  <data name="Placeholder_Password" xml:space="preserve">
+    <value>Nhập Mật Khẩu</value>
+  </data>
+  <data name="Placeholder_BirthYear" xml:space="preserve">
+    <value>Nhập Năm Sinh</value>
+  </data>
+  <data name="Placeholder_Department" xml:space="preserve">
+    <value>Nhập Phòng Ban</value>
+  </data>
+  <data name="Placeholder_Phone" xml:space="preserve">
+    <value>Nhập Số Điện Thoại</value>
+  </data>
+  <data name="Validation_Title" xml:space="preserve">
+    <value>Lỗi xác thực</value>
+  </data>
+  <data name="Validation_EmployeeCodeRequired" xml:space="preserve">
+    <value>Vui lòng nhập Mã nhân viên.</value>
+  </data>
+  <data name="Validation_FullNameRequired" xml:space="preserve">
+    <value>Vui lòng nhập Họ tên.</value>
+  </data>
+  <data name="Validation_RoleRequired" xml:space="preserve">
+    <value>Vui lòng chọn một Vai trò.</value>
+  </data>
+  <data name="Validation_BirthYearRequired" xml:space="preserve">
+    <value>Vui lòng nhập Năm sinh.</value>
+  </data>
+  <data name="Validation_BirthYearInvalid" xml:space="preserve">
+    <value>Năm sinh phải là một con số (ví dụ: 1990).</value>
+  </data>
+  <data name="Validation_BirthYearRange" xml:space="preserve">
+    <value>Năm sinh không hợp lệ.</value>
+  </data>
+  <data name="Validation_EmailRequired" xml:space="preserve">
+    <value>Vui lòng nhập Email.</value>
+  </data>
+  <data name="Validation_EmailFormat" xml:space="preserve">
+    <value>Định dạng Email không hợp lệ.</value>
+  </data>
+  <data name="Validation_DepartmentRequired" xml:space="preserve">
+    <value>Vui lòng nhập Phòng ban.</value>
+  </data>
+  <data name="Validation_AddressRequired" xml:space="preserve">
+    <value>Vui lòng nhập Địa chỉ.</value>
+  </data>
+  <data name="Validation_PhoneRequired" xml:space="preserve">
+    <value>Vui lòng nhập Số điện thoại.</value>
+  </data>
+  <data name="Validation_PasswordRequired" xml:space="preserve">
+    <value>Vui lòng nhập Mật khẩu.</value>
+  </data>
+  <data name="Validation_PasswordLength" xml:space="preserve">
+    <value>Mật khẩu phải có ít nhất 6 ký tự.</value>
+  </data>
+  <data name="Validation_EmployeeCodeExists" xml:space="preserve">
+    <value>Mã nhân viên này đã tồn tại.</value>
   </data>
 </root>
