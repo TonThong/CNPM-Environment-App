@@ -238,5 +238,10 @@ namespace Environmental_Monitoring.View.ContractContent
                 MessageBox.Show("Đã xảy ra lỗi khi tải danh sách hợp đồng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnMail_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

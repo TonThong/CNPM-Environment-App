@@ -73,6 +73,7 @@
             btnMail.TabIndex = 63;
             btnMail.Text = "Lưu";
             btnMail.UseVisualStyleBackColor = false;
+            btnMail.Click += btnMail_Click_1;
             // 
             // btnSearch
             // 

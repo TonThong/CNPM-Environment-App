@@ -73,7 +73,7 @@
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(280, 64);
             btnCancel.TabIndex = 69;
-            btnCancel.Text = "Hủy";
+            btnCancel.Text = "Yêu Cầu";
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
             // 
@@ -94,7 +94,7 @@
             btnMail.Name = "btnMail";
             btnMail.Size = new Size(277, 64);
             btnMail.TabIndex = 68;
-            btnMail.Text = "Lưu";
+            btnMail.Text = "Mail";
             btnMail.UseVisualStyleBackColor = false;
             btnMail.Click += btnMail_Click;
             // 
@@ -157,7 +157,7 @@
             roundedButton1.Name = "roundedButton1";
             roundedButton1.Size = new Size(277, 64);
             roundedButton1.TabIndex = 72;
-            roundedButton1.Text = "Hủy";
+            roundedButton1.Text = "PDF";
             roundedButton1.UseVisualStyleBackColor = false;
             roundedButton1.Click += roundedButton1_Click;
             // 
@@ -178,7 +178,7 @@
             roundedButton2.Name = "roundedButton2";
             roundedButton2.Size = new Size(239, 70);
             roundedButton2.TabIndex = 71;
-            roundedButton2.Text = "Lưu";
+            roundedButton2.Text = "Duyệt";
             roundedButton2.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel1

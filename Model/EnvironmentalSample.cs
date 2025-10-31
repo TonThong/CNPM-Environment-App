@@ -35,7 +35,7 @@ namespace Environmental_Monitoring.Model
         public int? AssignedToPTN { get; set; }
         [ForeignKey("AssignedToPTN")]
         public virtual Employee EmployeePTN { get; set; }
-
+        public int? ONhiem { get; set; }
         // Navigation property
         public virtual ICollection<Result> Results { get; set; }
 
