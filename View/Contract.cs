@@ -108,6 +108,7 @@ namespace Environmental_Monitoring.View
             roundedButton1.TabIndex = 31;
             roundedButton1.Text = "Phòng Thí Nghiệm";
             roundedButton1.UseVisualStyleBackColor = false;
+            roundedButton1.Click += roundedButton1_Click;
             // 
             // btnReal
             // 
@@ -312,6 +313,11 @@ namespace Environmental_Monitoring.View
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void roundedButton1_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ExperimentContent());
         }
     }
 }
