@@ -25,6 +25,7 @@ namespace Environmental_Monitoring
 
         private void Setting_Load(object sender, EventArgs e)
         {
+            // (Code này đã đúng)
             string savedLanguage = Properties.Settings.Default.Language;
             string cultureName = "vi";
             if (savedLanguage == "English")
@@ -40,6 +41,7 @@ namespace Environmental_Monitoring
 
         private void LoadSettings()
         {
+            // (Code này đã đúng)
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
             cmbNgonNgu.Items.Clear();
@@ -66,10 +68,10 @@ namespace Environmental_Monitoring
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // (Code này đã đúng)
             Mainlayout mainForm = this.ParentForm as Mainlayout;
-
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
-            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
             try
             {
@@ -81,15 +83,15 @@ namespace Environmental_Monitoring
                 {
                     Properties.Settings.Default.Language = "Tiếng Việt";
                 }
+
+                string themeToSave = "light";
                 string darkThemeText = rm.GetString("Theme_Dark", culture);
                 if (cmbGiaoDien.SelectedItem != null && cmbGiaoDien.SelectedItem.ToString() == darkThemeText)
                 {
-                    Properties.Settings.Default.Theme = "dark";
+                    themeToSave = "dark";
                 }
-                else
-                {
-                    Properties.Settings.Default.Theme = "light";
-                }
+                Properties.Settings.Default.Theme = themeToSave;
+
                 Properties.Settings.Default.NotifyByEmail = cbEmail.Checked;
                 Properties.Settings.Default.NotifyInApp = cbUngDung.Checked;
 
@@ -113,6 +115,8 @@ namespace Environmental_Monitoring
 
                 culture = newCulture;
 
+                ThemeManager.ApplyTheme(themeToSave);
+
                 if (mainForm != null)
                 {
                     mainForm.UpdateAllChildLanguages();
@@ -121,7 +125,6 @@ namespace Environmental_Monitoring
                 {
                     this.UpdateUIText();
                 }
-
             }
             catch (Exception ex)
             {
@@ -133,6 +136,7 @@ namespace Environmental_Monitoring
             }
         }
 
+        // --- ĐÃ CẬP NHẬT (Hoàn thiện logic áp dụng Giao diện) ---
         public void UpdateUIText()
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
@@ -140,8 +144,10 @@ namespace Environmental_Monitoring
 
             try
             {
+                // 1. TẢI COMBOBOX (Code này đã đúng)
                 LoadSettings();
 
+                // 2. TẢI NGÔN NGỮ (Code này đã đúng)
                 lblBaoCao.Text = rm.GetString("Settings_Title", culture);
                 lblUserSupport.Text = rm.GetString("Settings_UserSupport", culture);
                 lblSystemSettings.Text = rm.GetString("Settings_SystemSettings", culture);
@@ -154,7 +160,47 @@ namespace Environmental_Monitoring
                 lblUserManual.Text = rm.GetString("Settings_UserManual", culture);
                 lblViewDocument.Text = rm.GetString("Settings_ViewDocument", culture);
                 lblQuestion.Text = rm.GetString("Settings_Question", culture);
-                txtSearch.Text = rm.GetString("Search_Placeholder", culture);
+                txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
+
+                // --- 3. ÁP DỤNG MÀU GIAO DIỆN (Đã hoàn thiện) ---
+
+                // Áp dụng màu nền chính của UserControl (hòa vào nền MainLayout)
+                this.BackColor = ThemeManager.BackgroundColor;
+
+                // (Giả sử tên 2 panel "card" của bạn là panelUserSupport và panelSystemSettings)
+                // (Nếu tên khác, bạn hãy sửa lại 2 dòng dưới)
+                roundedPanel2.BackColor = ThemeManager.PanelColor;
+                roundedPanel3.BackColor = ThemeManager.PanelColor;
+
+                // Áp dụng màu chữ (cho tất cả Label và CheckBox)
+                lblBaoCao.ForeColor = ThemeManager.TextColor;
+                lblUserSupport.ForeColor = ThemeManager.TextColor;
+                lblSystemSettings.ForeColor = ThemeManager.TextColor;
+                lblLanguage.ForeColor = ThemeManager.TextColor;
+                lblTheme.ForeColor = ThemeManager.TextColor;
+                lblNotification.ForeColor = ThemeManager.TextColor;
+                cbEmail.ForeColor = ThemeManager.TextColor;
+                cbUngDung.ForeColor = ThemeManager.TextColor;
+                lblUserManual.ForeColor = ThemeManager.TextColor;
+
+                // (Giả sử 2 control này là LinkLabel nên sẽ có màu riêng,
+                // nhưng nếu là Label, chúng cũng sẽ được đổi màu)
+                lblViewDocument.ForeColor = ThemeManager.TextColor;
+                lblQuestion.ForeColor = ThemeManager.TextColor;
+
+                // Áp dụng màu cho ComboBox
+                cmbNgonNgu.BackColor = ThemeManager.PanelColor; // Màu nền của ô
+                cmbNgonNgu.ForeColor = ThemeManager.TextColor; // Màu chữ
+                cmbGiaoDien.BackColor = ThemeManager.PanelColor;
+                cmbGiaoDien.ForeColor = ThemeManager.TextColor;
+
+                // Áp dụng màu cho TextBox
+                txtSearch.BackColor = ThemeManager.PanelColor;
+                txtSearch.ForeColor = ThemeManager.TextColor;
+
+                // Áp dụng màu cho Nút bấm
+                btnSave.BackColor = ThemeManager.AccentColor;
+                btnSave.ForeColor = Color.White;
             }
             catch (Exception ex)
             {
@@ -170,5 +216,10 @@ namespace Environmental_Monitoring
         private void label1_Click(object sender, EventArgs e) { }
         private void label3_Click(object sender, EventArgs e) { }
         private void label10_Click(object sender, EventArgs e) { }
+
+        private void lblViewDocument_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

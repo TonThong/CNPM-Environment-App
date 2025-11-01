@@ -284,6 +284,7 @@ namespace Environmental_Monitoring
             lblViewDocument.Size = new Size(119, 25);
             lblViewDocument.TabIndex = 2;
             lblViewDocument.Text = "Xem Tài Liệu";
+            lblViewDocument.Click += lblViewDocument_Click;
             // 
             // lblUserManual
             // 

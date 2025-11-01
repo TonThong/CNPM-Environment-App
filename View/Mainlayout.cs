@@ -1,6 +1,6 @@
 ﻿using Environmental_Monitoring;
 using Environmental_Monitoring.View;
-using Environmental_Monitoring.View.Components; // <-- THÊM MỚI
+using Environmental_Monitoring.View.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,7 +45,47 @@ namespace Environmental_Monitoring.View
             panelMenu.Width = menuCollapsedWidth;
 
             SetMenuState(isMenuCollapsed);
+
+            // --- THÊM MỚI: Áp dụng giao diện ngay khi khởi động ---
+            ApplyTheme();
         }
+
+        // --- HÀM ĐÃ CẬP NHẬT: Thêm ảnh nền và set màu nút bằng vòng lặp ---
+        private void ApplyTheme()
+        {
+            // Áp dụng màu cho nền Form
+            this.BackColor = ThemeManager.BackgroundColor;
+
+            // --- CẬP NHẬT: Thêm ảnh nền ---
+            this.BackgroundImage = ThemeManager.BackgroundImage;
+            this.BackgroundImageLayout = ImageLayout.Stretch; // Hoặc Zoom, Center...
+
+            // Áp dụng màu cho thanh Header (Nơi có chữ GREEN FLOW)
+            //panelHeadder.BackColor = ThemeManager.PanelColor;
+            // (Bạn cần thêm code để đổi màu chữ 'GREEN FLOW' nếu nó là Label)
+            // lblAppName.ForeColor = ThemeManager.TextColor; 
+            // (Nếu logo cũng đổi theo Theme, giả sử tên là picLogo)
+            // picLogo.Image = ThemeManager.MainMenuLogo;
+
+            // Áp dụng màu cho thanh Menu (Bên trái)
+            panelMenu.BackColor = ThemeManager.PanelColor;
+
+            // --- CẬP NHẬT: Áp dụng màu cho các nút menu bằng vòng lặp ---
+            foreach (Control ctrl in panelMenu.Controls)
+            {
+                if (ctrl is MenuButton btn)
+                {
+                    // Màu chữ mặc định (khi không được chọn)
+                    btn.ForeColor = ThemeManager.SecondaryTextColor;
+                    btn.BackColor = ThemeManager.PanelColor;
+                }
+            }
+
+            // Áp dụng màu nền cho khu vực nội dung (phía sau các trang)
+            // Đây là code SỬA LỖI CÓ Ô MÀU TRẮNG Ở BACKGROUND
+            panelContent.BackColor = ThemeManager.BackgroundColor;
+        }
+
 
         private bool isMenuCollapsed = true;
         private int menuCollapsedWidth = 90;
@@ -53,7 +93,7 @@ namespace Environmental_Monitoring.View
 
         private void btnToggleMenu_Click(object sender, EventArgs e)
         {
-            // ... (Code của bạn đã đúng) ...
+            // (Code của bạn đã đúng)
             isMenuCollapsed = !isMenuCollapsed;
             int oldMenuWidth = panelMenu.Width;
             int newMenuWidth = isMenuCollapsed ? menuCollapsedWidth : menuExpandedWidth;
@@ -68,7 +108,7 @@ namespace Environmental_Monitoring.View
 
         private void SetMenuState(bool collapsed)
         {
-            // ... (Code của bạn đã đúng) ...
+            // (Code của bạn đã đúng)
             try
             {
                 ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Mainlayout).Assembly);
@@ -97,7 +137,7 @@ namespace Environmental_Monitoring.View
 
         private void MenuButton_Click(object sender, EventArgs e)
         {
-            // ... (Code của bạn đã đúng) ...
+            // (Code của bạn đã đúng)
             MenuButton oldActiveButton = currentActiveButton;
             ResetAllButtons();
             if (oldActiveButton != null)
@@ -137,14 +177,14 @@ namespace Environmental_Monitoring.View
         }
         private void HighlightButton(MenuButton selectedButton)
         {
-            // ... (Code của bạn đã đúng) ...
+            // (Code của bạn đã đúng)
             currentActiveButton = selectedButton;
             selectedButton.IsSelected = true;
         }
 
         private void ResetAllButtons()
         {
-            // ... (Code của bạn đã đúng) ...
+            // (Code của bạn đã đúng)
             foreach (Control ctrl in panelMenu.Controls)
             {
                 if (ctrl is MenuButton btn)
@@ -156,21 +196,26 @@ namespace Environmental_Monitoring.View
 
         private void LoadPage(UserControl pageToLoad)
         {
-            // ... (Code của bạn đã đúng) ...
+            // (Code của bạn đã đúng)
             panelContent.Controls.Clear();
             pageToLoad.Dock = DockStyle.Fill;
             panelContent.Controls.Add(pageToLoad);
         }
 
+        // --- ĐÃ CẬP NHẬT (Thêm logic áp dụng Theme) ---
         public void UpdateUIText()
         {
-            // ... (Code của bạn đã đúng) ...
+            // 1. TẢI NGÔN NGỮ (Code này bạn đã có)
             SetMenuState(isMenuCollapsed);
+
+            // 2. ÁP DỤNG GIAO DIỆN (Code mới)
+            ApplyTheme();
         }
+
         public void UpdateAllChildLanguages()
         {
-            // ... (Code của bạn đã đúng) ...
-            this.UpdateUIText();
+            // (Code của bạn đã đúng)
+            this.UpdateUIText(); // Hàm này giờ đã bao gồm cả Ngôn ngữ VÀ Giao diện
             if (panelContent.Controls.Count > 0)
             {
                 var currentPage = panelContent.Controls[0];
@@ -180,24 +225,20 @@ namespace Environmental_Monitoring.View
                 }
                 catch (Exception ex)
                 {
-                    // <-- THAY ĐỔI: Sử dụng AlertPanel thay vì MessageBox -->
-                    ShowGlobalAlert("Không thể cập nhật ngôn ngữ cho trang con: " + ex.Message, AlertPanel.AlertType.Error);
+                    ShowGlobalAlert("Không thể cập nhật ngôn ngữ/giao diện cho trang con: " + ex.Message, AlertPanel.AlertType.Error);
                 }
             }
         }
 
-        // <-- HÀM MỚI: Dùng để gọi AlertPanel từ bất kỳ đâu -->
         public void ShowGlobalAlert(string message, AlertPanel.AlertType type)
         {
-            // 'globalAlertPanel' là tên bạn đã đặt cho AlertPanel
-            // khi kéo nó vào MainLayout.cs [Design]
+            // (Code của bạn đã đúng)
             if (globalAlertPanel != null)
             {
                 globalAlertPanel.ShowAlert(message, type);
             }
             else
             {
-                // Phương án dự phòng nếu 'globalAlertPanel' bị null
                 MessageBox.Show(message);
             }
         }

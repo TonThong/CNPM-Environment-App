@@ -143,9 +143,9 @@ namespace Environmental_Monitoring.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ca7af95a0a6ef742275e971b4cf43ad79d9b4ea4 {
+        internal static System.Drawing.Bitmap d39e375b17e2b47022e116931a9df1af13e4f774 {
             get {
-                object obj = ResourceManager.GetObject("ca7af95a0a6ef742275e971b4cf43ad79d9b4ea4", resourceCulture);
+                object obj = ResourceManager.GetObject("d39e375b17e2b47022e116931a9df1af13e4f774", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace Environmental_Monitoring.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap d39e375b17e2b47022e116931a9df1af13e4f774 {
+        internal static System.Drawing.Bitmap darkmode {
             get {
-                object obj = ResourceManager.GetObject("d39e375b17e2b47022e116931a9df1af13e4f774", resourceCulture);
+                object obj = ResourceManager.GetObject("darkmode", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -216,6 +216,16 @@ namespace Environmental_Monitoring.Properties {
         internal static System.Drawing.Bitmap f716d755f0d3ae5ce1a83c18bafc9f61d54f23d5 {
             get {
                 object obj = ResourceManager.GetObject("f716d755f0d3ae5ce1a83c18bafc9f61d54f23d5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap lightmode {
+            get {
+                object obj = ResourceManager.GetObject("lightmode", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
