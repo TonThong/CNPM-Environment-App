@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             roundedDataGridView2 = new Environmental_Monitoring.View.Components.RoundedDataGridView();
-            btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnRequest = new Environmental_Monitoring.View.Components.RoundedButton();
             btnMail = new Environmental_Monitoring.View.Components.RoundedButton();
             btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
-            btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
-            roundedButton1 = new Environmental_Monitoring.View.Components.RoundedButton();
-            roundedButton2 = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnPDF = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnDuyet = new Environmental_Monitoring.View.Components.RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
+            btnContract = new Environmental_Monitoring.View.Components.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView2).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -56,26 +56,26 @@
             roundedDataGridView2.Size = new Size(852, 247);
             roundedDataGridView2.TabIndex = 70;
             // 
-            // btnCancel
+            // btnRequest
             // 
-            btnCancel.BackColor = Color.FromArgb(217, 217, 217);
-            btnCancel.BaseColor = Color.FromArgb(217, 217, 217);
-            btnCancel.BorderColor = Color.Transparent;
-            btnCancel.BorderRadius = 25;
-            btnCancel.BorderSize = 0;
-            btnCancel.Dock = DockStyle.Fill;
-            btnCancel.FlatAppearance.BorderSize = 0;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            btnCancel.ForeColor = Color.Black;
-            btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
-            btnCancel.Location = new Point(569, 3);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(280, 64);
-            btnCancel.TabIndex = 69;
-            btnCancel.Text = "Yêu Cầu";
-            btnCancel.UseVisualStyleBackColor = false;
-            btnCancel.Click += btnCancel_Click;
+            btnRequest.BackColor = Color.FromArgb(217, 217, 217);
+            btnRequest.BaseColor = Color.FromArgb(217, 217, 217);
+            btnRequest.BorderColor = Color.Transparent;
+            btnRequest.BorderRadius = 25;
+            btnRequest.BorderSize = 0;
+            btnRequest.Dock = DockStyle.Fill;
+            btnRequest.FlatAppearance.BorderSize = 0;
+            btnRequest.FlatStyle = FlatStyle.Flat;
+            btnRequest.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnRequest.ForeColor = Color.Black;
+            btnRequest.HoverColor = Color.FromArgb(34, 139, 34);
+            btnRequest.Location = new Point(569, 3);
+            btnRequest.Name = "btnRequest";
+            btnRequest.Size = new Size(280, 64);
+            btnRequest.TabIndex = 69;
+            btnRequest.Text = "Yêu Cầu";
+            btnRequest.UseVisualStyleBackColor = false;
+            btnRequest.Click += btnCancel_Click;
             // 
             // btnMail
             // 
@@ -118,68 +118,49 @@
             btnSearch.TabIndex = 67;
             btnSearch.Text = "Mã Hợp Đồng: ";
             btnSearch.UseVisualStyleBackColor = false;
-            btnSearch.Click += btnSearch_Click;
+            btnSearch.Click += btnSearch_Click_1;
             // 
-            // btnSave
+            // btnPDF
             // 
-            btnSave.BackColor = Color.SeaGreen;
-            btnSave.BaseColor = Color.SeaGreen;
-            btnSave.BorderColor = Color.Transparent;
-            btnSave.BorderRadius = 25;
-            btnSave.BorderSize = 0;
-            btnSave.Enabled = false;
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            btnSave.ForeColor = Color.White;
-            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSave.Location = new Point(64, 28);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(239, 70);
-            btnSave.TabIndex = 66;
-            btnSave.Text = "Danh Sách Hợp Đồng";
-            btnSave.UseVisualStyleBackColor = false;
+            btnPDF.BackColor = Color.FromArgb(217, 217, 217);
+            btnPDF.BaseColor = Color.FromArgb(217, 217, 217);
+            btnPDF.BorderColor = Color.Transparent;
+            btnPDF.BorderRadius = 25;
+            btnPDF.BorderSize = 0;
+            btnPDF.Dock = DockStyle.Fill;
+            btnPDF.FlatAppearance.BorderSize = 0;
+            btnPDF.FlatStyle = FlatStyle.Flat;
+            btnPDF.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnPDF.ForeColor = Color.Black;
+            btnPDF.HoverColor = Color.FromArgb(34, 139, 34);
+            btnPDF.Location = new Point(3, 3);
+            btnPDF.Name = "btnPDF";
+            btnPDF.Size = new Size(277, 64);
+            btnPDF.TabIndex = 72;
+            btnPDF.Text = "PDF";
+            btnPDF.UseVisualStyleBackColor = false;
+            btnPDF.Click += roundedButton1_Click;
             // 
-            // roundedButton1
+            // btnDuyet
             // 
-            roundedButton1.BackColor = Color.FromArgb(217, 217, 217);
-            roundedButton1.BaseColor = Color.FromArgb(217, 217, 217);
-            roundedButton1.BorderColor = Color.Transparent;
-            roundedButton1.BorderRadius = 25;
-            roundedButton1.BorderSize = 0;
-            roundedButton1.Dock = DockStyle.Fill;
-            roundedButton1.FlatAppearance.BorderSize = 0;
-            roundedButton1.FlatStyle = FlatStyle.Flat;
-            roundedButton1.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            roundedButton1.ForeColor = Color.Black;
-            roundedButton1.HoverColor = Color.FromArgb(34, 139, 34);
-            roundedButton1.Location = new Point(3, 3);
-            roundedButton1.Name = "roundedButton1";
-            roundedButton1.Size = new Size(277, 64);
-            roundedButton1.TabIndex = 72;
-            roundedButton1.Text = "PDF";
-            roundedButton1.UseVisualStyleBackColor = false;
-            roundedButton1.Click += roundedButton1_Click;
-            // 
-            // roundedButton2
-            // 
-            roundedButton2.BackColor = Color.SeaGreen;
-            roundedButton2.BaseColor = Color.SeaGreen;
-            roundedButton2.BorderColor = Color.Transparent;
-            roundedButton2.BorderRadius = 25;
-            roundedButton2.BorderSize = 0;
-            roundedButton2.Dock = DockStyle.Fill;
-            roundedButton2.FlatAppearance.BorderSize = 0;
-            roundedButton2.FlatStyle = FlatStyle.Flat;
-            roundedButton2.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            roundedButton2.ForeColor = Color.White;
-            roundedButton2.HoverColor = Color.FromArgb(34, 139, 34);
-            roundedButton2.Location = new Point(64, 407);
-            roundedButton2.Name = "roundedButton2";
-            roundedButton2.Size = new Size(239, 70);
-            roundedButton2.TabIndex = 71;
-            roundedButton2.Text = "Duyệt";
-            roundedButton2.UseVisualStyleBackColor = false;
+            btnDuyet.BackColor = Color.SeaGreen;
+            btnDuyet.BaseColor = Color.SeaGreen;
+            btnDuyet.BorderColor = Color.Transparent;
+            btnDuyet.BorderRadius = 25;
+            btnDuyet.BorderSize = 0;
+            btnDuyet.Dock = DockStyle.Fill;
+            btnDuyet.FlatAppearance.BorderSize = 0;
+            btnDuyet.FlatStyle = FlatStyle.Flat;
+            btnDuyet.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnDuyet.ForeColor = Color.White;
+            btnDuyet.HoverColor = Color.FromArgb(34, 139, 34);
+            btnDuyet.Location = new Point(64, 407);
+            btnDuyet.Name = "btnDuyet";
+            btnDuyet.Size = new Size(239, 70);
+            btnDuyet.TabIndex = 71;
+            btnDuyet.Text = "Duyệt";
+            btnDuyet.UseVisualStyleBackColor = false;
+            btnDuyet.Click += roundedButton2_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -188,11 +169,11 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.Controls.Add(btnSave, 1, 1);
-            tableLayoutPanel1.Controls.Add(btnSearch, 2, 1);
             tableLayoutPanel1.Controls.Add(roundedDataGridView2, 2, 3);
-            tableLayoutPanel1.Controls.Add(roundedButton2, 1, 5);
+            tableLayoutPanel1.Controls.Add(btnDuyet, 1, 5);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 2, 5);
+            tableLayoutPanel1.Controls.Add(btnSearch, 2, 1);
+            tableLayoutPanel1.Controls.Add(btnContract, 1, 1);
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 7;
@@ -212,9 +193,9 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel2.Controls.Add(roundedButton1, 0, 0);
+            tableLayoutPanel2.Controls.Add(btnPDF, 0, 0);
             tableLayoutPanel2.Controls.Add(btnMail, 1, 0);
-            tableLayoutPanel2.Controls.Add(btnCancel, 2, 0);
+            tableLayoutPanel2.Controls.Add(btnRequest, 2, 0);
             tableLayoutPanel2.Location = new Point(309, 407);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
@@ -222,6 +203,26 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel2.Size = new Size(852, 70);
             tableLayoutPanel2.TabIndex = 73;
+            // 
+            // btnContract
+            // 
+            btnContract.BackColor = Color.SeaGreen;
+            btnContract.BaseColor = Color.SeaGreen;
+            btnContract.BorderColor = Color.Transparent;
+            btnContract.BorderRadius = 25;
+            btnContract.BorderSize = 0;
+            btnContract.FlatAppearance.BorderSize = 0;
+            btnContract.FlatStyle = FlatStyle.Flat;
+            btnContract.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnContract.ForeColor = Color.White;
+            btnContract.HoverColor = Color.FromArgb(34, 139, 34);
+            btnContract.Location = new Point(64, 28);
+            btnContract.Name = "btnContract";
+            btnContract.Size = new Size(239, 70);
+            btnContract.TabIndex = 74;
+            btnContract.Text = "Danh Sách Hợp Đồng";
+            btnContract.UseVisualStyleBackColor = false;
+            btnContract.Click += btnContract_Click;
             // 
             // ResultContent
             // 
@@ -239,12 +240,12 @@
         #endregion
 
         private Components.RoundedDataGridView roundedDataGridView2;
-        private Components.RoundedButton btnCancel;
+        private Components.RoundedButton btnRequest;
         private Components.RoundedButton btnMail;
         private Components.RoundedButton btnSearch;
-        private Components.RoundedButton btnSave;
-        private Components.RoundedButton roundedButton1;
-        private Components.RoundedButton roundedButton2;
+        private Components.RoundedButton btnContract;
+        private Components.RoundedButton btnPDF;
+        private Components.RoundedButton btnDuyet;
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel2;
     }

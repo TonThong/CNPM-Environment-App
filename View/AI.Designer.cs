@@ -31,43 +31,43 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
-            lblAI = new Label();
-            lblTaiKy = new Label();
+            lblTitle = new Label();
+            lblPanelResign = new Label();
             roundedPanel5 = new RoundedPanel();
-            btnGuess2 = new RoundedButton();
-            lblMucDoONhiem = new Label();
-            lblONhiem = new Label();
-            roundedPanel6 = new RoundedPanel();
-            roundedTextBox2 = new RoundedTextBox();
-            btnGuess1 = new RoundedButton();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            roundedTextBox1 = new RoundedTextBox();
-            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             customComboBox1 = new CustomComboBox();
+            btnPredictPollution = new RoundedButton();
+            lblPollutionLevel = new Label();
+            lblPanelPollution = new Label();
+            roundedPanel6 = new RoundedPanel();
+            txtCustomerName = new RoundedTextBox();
+            btnPredictResign = new RoundedButton();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            txtSearch = new RoundedTextBox();
+            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             roundedPanel5.SuspendLayout();
             roundedPanel6.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
-            // lblAI
+            // lblTitle
             // 
-            lblAI.AutoSize = true;
-            lblAI.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lblAI.Location = new Point(64, 21);
-            lblAI.Name = "lblAI";
-            lblAI.Size = new Size(224, 50);
-            lblAI.TabIndex = 5;
-            lblAI.Text = "AI Dự Đoán";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblTitle.Location = new Point(64, 21);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(224, 50);
+            lblTitle.TabIndex = 5;
+            lblTitle.Text = "AI Dự Đoán";
             // 
-            // lblTaiKy
+            // lblPanelResign
             // 
-            lblTaiKy.AutoSize = true;
-            lblTaiKy.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            lblTaiKy.Location = new Point(30, 9);
-            lblTaiKy.Name = "lblTaiKy";
-            lblTaiKy.Size = new Size(94, 38);
-            lblTaiKy.TabIndex = 0;
-            lblTaiKy.Text = "Tái Ký";
+            lblPanelResign.AutoSize = true;
+            lblPanelResign.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
+            lblPanelResign.Location = new Point(30, 9);
+            lblPanelResign.Name = "lblPanelResign";
+            lblPanelResign.Size = new Size(94, 38);
+            lblPanelResign.TabIndex = 0;
+            lblPanelResign.Text = "Tái Ký";
             // 
             // roundedPanel5
             // 
@@ -76,153 +76,14 @@ namespace Environmental_Monitoring.View
             roundedPanel5.BorderRadius = 20;
             roundedPanel5.BorderSize = 0;
             roundedPanel5.Controls.Add(customComboBox1);
-            roundedPanel5.Controls.Add(btnGuess2);
-            roundedPanel5.Controls.Add(lblMucDoONhiem);
-            roundedPanel5.Controls.Add(lblONhiem);
+            roundedPanel5.Controls.Add(btnPredictPollution);
+            roundedPanel5.Controls.Add(lblPollutionLevel);
+            roundedPanel5.Controls.Add(lblPanelPollution);
             roundedPanel5.Dock = DockStyle.Fill;
             roundedPanel5.Location = new Point(625, 115);
             roundedPanel5.Name = "roundedPanel5";
             roundedPanel5.Size = new Size(531, 554);
             roundedPanel5.TabIndex = 9;
-            // 
-            // btnGuess2
-            // 
-            btnGuess2.BackColor = Color.FromArgb(0, 113, 0);
-            btnGuess2.BaseColor = Color.FromArgb(0, 113, 0);
-            btnGuess2.BorderColor = Color.Transparent;
-            btnGuess2.BorderRadius = 15;
-            btnGuess2.BorderSize = 0;
-            btnGuess2.FlatAppearance.BorderSize = 0;
-            btnGuess2.FlatStyle = FlatStyle.Flat;
-            btnGuess2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnGuess2.ForeColor = Color.White;
-            btnGuess2.HoverColor = Color.FromArgb(34, 139, 34);
-            btnGuess2.Location = new Point(369, 66);
-            btnGuess2.Name = "btnGuess2";
-            btnGuess2.Size = new Size(120, 40);
-            btnGuess2.TabIndex = 18;
-            btnGuess2.Text = "Dự Đoán";
-            btnGuess2.UseVisualStyleBackColor = false;
-            // 
-            // lblMucDoONhiem
-            // 
-            lblMucDoONhiem.AutoSize = true;
-            lblMucDoONhiem.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lblMucDoONhiem.Location = new Point(40, 117);
-            lblMucDoONhiem.Name = "lblMucDoONhiem";
-            lblMucDoONhiem.Size = new Size(159, 25);
-            lblMucDoONhiem.TabIndex = 8;
-            lblMucDoONhiem.Text = "Mức Độ Ô Nhiễm";
-            // 
-            // lblONhiem
-            // 
-            lblONhiem.AutoSize = true;
-            lblONhiem.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            lblONhiem.Location = new Point(30, 14);
-            lblONhiem.Name = "lblONhiem";
-            lblONhiem.Size = new Size(134, 38);
-            lblONhiem.TabIndex = 1;
-            lblONhiem.Text = "Ô Nhiễm";
-            // 
-            // roundedPanel6
-            // 
-            roundedPanel6.BackColor = Color.White;
-            roundedPanel6.BorderColor = Color.Transparent;
-            roundedPanel6.BorderRadius = 20;
-            roundedPanel6.BorderSize = 0;
-            roundedPanel6.Controls.Add(roundedTextBox2);
-            roundedPanel6.Controls.Add(btnGuess1);
-            roundedPanel6.Controls.Add(lblTaiKy);
-            roundedPanel6.Dock = DockStyle.Fill;
-            roundedPanel6.Location = new Point(64, 115);
-            roundedPanel6.Name = "roundedPanel6";
-            roundedPanel6.Size = new Size(531, 554);
-            roundedPanel6.TabIndex = 8;
-            // 
-            // roundedTextBox2
-            // 
-            roundedTextBox2.BorderRadius = 15;
-            roundedTextBox2.BorderThickness = 2;
-            roundedTextBox2.FocusBorderColor = Color.DimGray;
-            roundedTextBox2.HoverBorderColor = Color.DarkGray;
-            roundedTextBox2.Location = new Point(30, 60);
-            roundedTextBox2.Multiline = false;
-            roundedTextBox2.Name = "roundedTextBox2";
-            roundedTextBox2.NormalBorderColor = Color.Gray;
-            roundedTextBox2.Padding = new Padding(10);
-            roundedTextBox2.PasswordChar = '\0';
-            roundedTextBox2.PlaceholderText = "Nhập Tên Khách Hàng";
-            roundedTextBox2.ReadOnly = false;
-            roundedTextBox2.Size = new Size(323, 40);
-            roundedTextBox2.TabIndex = 21;
-            roundedTextBox2.UseSystemPasswordChar = false;
-            // 
-            // btnGuess1
-            // 
-            btnGuess1.BackColor = Color.FromArgb(0, 113, 0);
-            btnGuess1.BaseColor = Color.FromArgb(0, 113, 0);
-            btnGuess1.BorderColor = Color.Transparent;
-            btnGuess1.BorderRadius = 15;
-            btnGuess1.BorderSize = 0;
-            btnGuess1.FlatAppearance.BorderSize = 0;
-            btnGuess1.FlatStyle = FlatStyle.Flat;
-            btnGuess1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnGuess1.ForeColor = Color.White;
-            btnGuess1.HoverColor = Color.FromArgb(34, 139, 34);
-            btnGuess1.Location = new Point(389, 60);
-            btnGuess1.Name = "btnGuess1";
-            btnGuess1.Size = new Size(105, 40);
-            btnGuess1.TabIndex = 20;
-            btnGuess1.Text = "Dự Đoán";
-            btnGuess1.UseVisualStyleBackColor = false;
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.BackColor = Color.FromArgb(217, 244, 227);
-            tableLayoutPanel1.ColumnCount = 5;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.Controls.Add(lblAI, 1, 1);
-            tableLayoutPanel1.Controls.Add(roundedPanel5, 3, 3);
-            tableLayoutPanel1.Controls.Add(roundedPanel6, 1, 3);
-            tableLayoutPanel1.Controls.Add(roundedTextBox1, 3, 1);
-            tableLayoutPanel1.Location = new Point(3, 3);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 5;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 79F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.Size = new Size(1221, 709);
-            tableLayoutPanel1.TabIndex = 10;
-            // 
-            // roundedTextBox1
-            // 
-            roundedTextBox1.BackColor = Color.White;
-            roundedTextBox1.BorderRadius = 15;
-            roundedTextBox1.BorderThickness = 1;
-            roundedTextBox1.FocusBorderColor = SystemColors.ControlDark;
-            roundedTextBox1.HoverBorderColor = Color.DarkGray;
-            roundedTextBox1.Location = new Point(625, 24);
-            roundedTextBox1.Multiline = false;
-            roundedTextBox1.Name = "roundedTextBox1";
-            roundedTextBox1.NormalBorderColor = Color.DarkGray;
-            roundedTextBox1.Padding = new Padding(9, 12, 9, 9);
-            roundedTextBox1.PasswordChar = '\0';
-            roundedTextBox1.PlaceholderText = "Tìm Kiếm...";
-            roundedTextBox1.ReadOnly = false;
-            roundedTextBox1.Size = new Size(531, 45);
-            roundedTextBox1.TabIndex = 21;
-            roundedTextBox1.UseSystemPasswordChar = false;
-            // 
-            // sqlCommand1
-            // 
-            sqlCommand1.CommandTimeout = 30;
-            sqlCommand1.EnableOptimizedParameterBinding = false;
             // 
             // customComboBox1
             // 
@@ -247,6 +108,145 @@ namespace Environmental_Monitoring.View
             customComboBox1.Size = new Size(278, 38);
             customComboBox1.TabIndex = 19;
             // 
+            // btnPredictPollution
+            // 
+            btnPredictPollution.BackColor = Color.FromArgb(0, 113, 0);
+            btnPredictPollution.BaseColor = Color.FromArgb(0, 113, 0);
+            btnPredictPollution.BorderColor = Color.Transparent;
+            btnPredictPollution.BorderRadius = 15;
+            btnPredictPollution.BorderSize = 0;
+            btnPredictPollution.FlatAppearance.BorderSize = 0;
+            btnPredictPollution.FlatStyle = FlatStyle.Flat;
+            btnPredictPollution.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            btnPredictPollution.ForeColor = Color.White;
+            btnPredictPollution.HoverColor = Color.FromArgb(34, 139, 34);
+            btnPredictPollution.Location = new Point(369, 66);
+            btnPredictPollution.Name = "btnPredictPollution";
+            btnPredictPollution.Size = new Size(120, 40);
+            btnPredictPollution.TabIndex = 18;
+            btnPredictPollution.Text = "Dự Đoán";
+            btnPredictPollution.UseVisualStyleBackColor = false;
+            // 
+            // lblPollutionLevel
+            // 
+            lblPollutionLevel.AutoSize = true;
+            lblPollutionLevel.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblPollutionLevel.Location = new Point(40, 117);
+            lblPollutionLevel.Name = "lblPollutionLevel";
+            lblPollutionLevel.Size = new Size(159, 25);
+            lblPollutionLevel.TabIndex = 8;
+            lblPollutionLevel.Text = "Mức Độ Ô Nhiễm";
+            // 
+            // lblPanelPollution
+            // 
+            lblPanelPollution.AutoSize = true;
+            lblPanelPollution.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
+            lblPanelPollution.Location = new Point(30, 14);
+            lblPanelPollution.Name = "lblPanelPollution";
+            lblPanelPollution.Size = new Size(134, 38);
+            lblPanelPollution.TabIndex = 1;
+            lblPanelPollution.Text = "Ô Nhiễm";
+            // 
+            // roundedPanel6
+            // 
+            roundedPanel6.BackColor = Color.White;
+            roundedPanel6.BorderColor = Color.Transparent;
+            roundedPanel6.BorderRadius = 20;
+            roundedPanel6.BorderSize = 0;
+            roundedPanel6.Controls.Add(txtCustomerName);
+            roundedPanel6.Controls.Add(btnPredictResign);
+            roundedPanel6.Controls.Add(lblPanelResign);
+            roundedPanel6.Dock = DockStyle.Fill;
+            roundedPanel6.Location = new Point(64, 115);
+            roundedPanel6.Name = "roundedPanel6";
+            roundedPanel6.Size = new Size(531, 554);
+            roundedPanel6.TabIndex = 8;
+            // 
+            // txtCustomerName
+            // 
+            txtCustomerName.BorderRadius = 15;
+            txtCustomerName.BorderThickness = 2;
+            txtCustomerName.FocusBorderColor = Color.DimGray;
+            txtCustomerName.HoverBorderColor = Color.DarkGray;
+            txtCustomerName.Location = new Point(30, 60);
+            txtCustomerName.Multiline = false;
+            txtCustomerName.Name = "txtCustomerName";
+            txtCustomerName.NormalBorderColor = Color.Gray;
+            txtCustomerName.Padding = new Padding(10);
+            txtCustomerName.PasswordChar = '\0';
+            txtCustomerName.PlaceholderText = "Nhập Tên Khách Hàng";
+            txtCustomerName.ReadOnly = false;
+            txtCustomerName.Size = new Size(323, 40);
+            txtCustomerName.TabIndex = 21;
+            txtCustomerName.UseSystemPasswordChar = false;
+            // 
+            // btnPredictResign
+            // 
+            btnPredictResign.BackColor = Color.FromArgb(0, 113, 0);
+            btnPredictResign.BaseColor = Color.FromArgb(0, 113, 0);
+            btnPredictResign.BorderColor = Color.Transparent;
+            btnPredictResign.BorderRadius = 15;
+            btnPredictResign.BorderSize = 0;
+            btnPredictResign.FlatAppearance.BorderSize = 0;
+            btnPredictResign.FlatStyle = FlatStyle.Flat;
+            btnPredictResign.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            btnPredictResign.ForeColor = Color.White;
+            btnPredictResign.HoverColor = Color.FromArgb(34, 139, 34);
+            btnPredictResign.Location = new Point(389, 60);
+            btnPredictResign.Name = "btnPredictResign";
+            btnPredictResign.Size = new Size(105, 40);
+            btnPredictResign.TabIndex = 20;
+            btnPredictResign.Text = "Dự Đoán";
+            btnPredictResign.UseVisualStyleBackColor = false;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.BackColor = Color.FromArgb(217, 244, 227);
+            tableLayoutPanel1.ColumnCount = 5;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Controls.Add(lblTitle, 1, 1);
+            tableLayoutPanel1.Controls.Add(roundedPanel5, 3, 3);
+            tableLayoutPanel1.Controls.Add(roundedPanel6, 1, 3);
+            tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
+            tableLayoutPanel1.Location = new Point(3, 3);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 5;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 79F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Size = new Size(1221, 709);
+            tableLayoutPanel1.TabIndex = 10;
+            // 
+            // txtSearch
+            // 
+            txtSearch.BackColor = Color.White;
+            txtSearch.BorderRadius = 15;
+            txtSearch.BorderThickness = 1;
+            txtSearch.FocusBorderColor = SystemColors.ControlDark;
+            txtSearch.HoverBorderColor = Color.DarkGray;
+            txtSearch.Location = new Point(625, 24);
+            txtSearch.Multiline = false;
+            txtSearch.Name = "txtSearch";
+            txtSearch.NormalBorderColor = Color.DarkGray;
+            txtSearch.Padding = new Padding(9, 12, 9, 9);
+            txtSearch.PasswordChar = '\0';
+            txtSearch.PlaceholderText = "Tìm Kiếm...";
+            txtSearch.ReadOnly = false;
+            txtSearch.Size = new Size(531, 45);
+            txtSearch.TabIndex = 21;
+            txtSearch.UseSystemPasswordChar = false;
+            // 
+            // sqlCommand1
+            // 
+            sqlCommand1.CommandTimeout = 30;
+            sqlCommand1.EnableOptimizedParameterBinding = false;
+            // 
             // AI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -254,7 +254,6 @@ namespace Environmental_Monitoring.View
             Controls.Add(tableLayoutPanel1);
             Name = "AI";
             Size = new Size(1227, 715);
-            Load += AIguess_Load;
             roundedPanel5.ResumeLayout(false);
             roundedPanel5.PerformLayout();
             roundedPanel6.ResumeLayout(false);
@@ -265,20 +264,20 @@ namespace Environmental_Monitoring.View
         }
 
         #endregion
-        private Label lblAI;
+        private Label lblTitle;
 
-        private Label lblTaiKy;
+        private Label lblPanelResign;
         private RoundedPanel roundedPanel5;
     
-        private RoundedButton btnGuess2;
-        private Label lblMucDoONhiem;
-        private Label lblONhiem;
+        private RoundedButton btnPredictPollution;
+        private Label lblPollutionLevel;
+        private Label lblPanelPollution;
         private RoundedPanel roundedPanel6;
-        private RoundedButton btnGuess1;
+        private RoundedButton btnPredictResign;
 
         private TableLayoutPanel tableLayoutPanel1;
-        private RoundedTextBox roundedTextBox1;
-        private RoundedTextBox roundedTextBox2;
+        private RoundedTextBox txtSearch;
+        private RoundedTextBox txtCustomerName;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
         private CustomComboBox customComboBox1;
     }

@@ -106,14 +106,20 @@ namespace Environmental_Monitoring.View
         {
             if (txtMatKhau.UseSystemPasswordChar == true)
             {
-                txtMatKhau.UseSystemPasswordChar = false;             
-                picShowPass.Image = Properties.Resources.eye; 
+                txtMatKhau.UseSystemPasswordChar = false;
+                picShowPass.Image = Properties.Resources.eye;
             }
             else
             {
                 txtMatKhau.UseSystemPasswordChar = true;
                 picShowPass.Image = Properties.Resources.eyeclose;
             }
+        }
+
+        private void linkForgot_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ForgotPasswordForm forgotForm = new ForgotPasswordForm(this.alertPanel);
+            forgotForm.ShowDialog();
         }
     }
 }

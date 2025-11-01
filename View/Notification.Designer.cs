@@ -30,18 +30,18 @@ namespace Environmental_Monitoring
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
             dgvSapQuaHan = new RoundedDataGridView();
-            roundedTextBox1 = new RoundedTextBox();
-            label3 = new Label();
-            btnSapQuaHan = new RoundedButton();
+            txtSearch = new RoundedTextBox();
+            lblTitle = new Label();
+            lblPanelSoon = new RoundedButton();
             dgvQuaHan = new RoundedDataGridView();
-            btnQuaHan = new RoundedButton();
+            lblPanelOverdue = new RoundedButton();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSapQuaHan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvQuaHan).BeginInit();
@@ -57,11 +57,11 @@ namespace Environmental_Monitoring
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(dgvSapQuaHan, 1, 3);
-            tableLayoutPanel1.Controls.Add(roundedTextBox1, 3, 1);
-            tableLayoutPanel1.Controls.Add(label3, 1, 1);
-            tableLayoutPanel1.Controls.Add(btnSapQuaHan, 1, 2);
+            tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
+            tableLayoutPanel1.Controls.Add(lblTitle, 1, 1);
+            tableLayoutPanel1.Controls.Add(lblPanelSoon, 1, 2);
             tableLayoutPanel1.Controls.Add(dgvQuaHan, 3, 3);
-            tableLayoutPanel1.Controls.Add(btnQuaHan, 3, 2);
+            tableLayoutPanel1.Controls.Add(lblPanelOverdue, 3, 2);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 5;
@@ -79,84 +79,84 @@ namespace Environmental_Monitoring
             dgvSapQuaHan.BorderRadius = 20;
             dgvSapQuaHan.BorderStyle = BorderStyle.None;
             dgvSapQuaHan.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(229, 227, 109);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.ButtonShadow;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvSapQuaHan.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.FromArgb(229, 227, 109);
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            dataGridViewCellStyle6.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.ButtonShadow;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dgvSapQuaHan.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             dgvSapQuaHan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSapQuaHan.Dock = DockStyle.Fill;
             dgvSapQuaHan.EnableHeadersVisualStyles = false;
             dgvSapQuaHan.Location = new Point(64, 164);
             dgvSapQuaHan.Name = "dgvSapQuaHan";
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(237, 230, 147);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = Color.Goldenrod;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvSapQuaHan.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = Color.FromArgb(237, 230, 147);
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = Color.Goldenrod;
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dgvSapQuaHan.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             dgvSapQuaHan.RowHeadersVisible = false;
             dgvSapQuaHan.RowHeadersWidth = 51;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(237, 230, 147);
-            dataGridViewCellStyle3.SelectionBackColor = Color.Goldenrod;
-            dgvSapQuaHan.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.BackColor = Color.FromArgb(237, 230, 147);
+            dataGridViewCellStyle8.SelectionBackColor = Color.Goldenrod;
+            dgvSapQuaHan.RowsDefaultCellStyle = dataGridViewCellStyle8;
             dgvSapQuaHan.Size = new Size(531, 504);
             dgvSapQuaHan.TabIndex = 15;
             // 
-            // roundedTextBox1
+            // txtSearch
             // 
-            roundedTextBox1.BackColor = Color.White;
-            roundedTextBox1.BorderRadius = 15;
-            roundedTextBox1.BorderThickness = 1;
-            roundedTextBox1.FocusBorderColor = SystemColors.ControlDark;
-            roundedTextBox1.HoverBorderColor = Color.DarkGray;
-            roundedTextBox1.Location = new Point(625, 24);
-            roundedTextBox1.Multiline = false;
-            roundedTextBox1.Name = "roundedTextBox1";
-            roundedTextBox1.NormalBorderColor = Color.DarkGray;
-            roundedTextBox1.Padding = new Padding(9, 12, 9, 9);
-            roundedTextBox1.PasswordChar = '\0';
-            roundedTextBox1.PlaceholderText = "Tìm Kiếm...";
-            roundedTextBox1.ReadOnly = false;
-            roundedTextBox1.Size = new Size(531, 45);
-            roundedTextBox1.TabIndex = 19;
-            roundedTextBox1.UseSystemPasswordChar = false;
+            txtSearch.BackColor = Color.White;
+            txtSearch.BorderRadius = 15;
+            txtSearch.BorderThickness = 1;
+            txtSearch.FocusBorderColor = SystemColors.ControlDark;
+            txtSearch.HoverBorderColor = Color.DarkGray;
+            txtSearch.Location = new Point(625, 24);
+            txtSearch.Multiline = false;
+            txtSearch.Name = "txtSearch";
+            txtSearch.NormalBorderColor = Color.DarkGray;
+            txtSearch.Padding = new Padding(9, 12, 9, 9);
+            txtSearch.PasswordChar = '\0';
+            txtSearch.PlaceholderText = "Tìm Kiếm...";
+            txtSearch.ReadOnly = false;
+            txtSearch.Size = new Size(531, 45);
+            txtSearch.TabIndex = 19;
+            txtSearch.UseSystemPasswordChar = false;
             // 
-            // label3
+            // lblTitle
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            label3.Location = new Point(64, 21);
-            label3.Name = "label3";
-            label3.Size = new Size(211, 50);
-            label3.TabIndex = 20;
-            label3.Text = "Thông Báo";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblTitle.Location = new Point(64, 21);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(211, 50);
+            lblTitle.TabIndex = 20;
+            lblTitle.Text = "Thông Báo";
             // 
-            // btnSapQuaHan
+            // lblPanelSoon
             // 
-            btnSapQuaHan.Anchor = AnchorStyles.None;
-            btnSapQuaHan.BackColor = Color.SeaGreen;
-            btnSapQuaHan.BaseColor = Color.SeaGreen;
-            btnSapQuaHan.BorderColor = Color.Transparent;
-            btnSapQuaHan.BorderRadius = 18;
-            btnSapQuaHan.BorderSize = 0;
-            btnSapQuaHan.FlatAppearance.BorderSize = 0;
-            btnSapQuaHan.FlatStyle = FlatStyle.Flat;
-            btnSapQuaHan.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            btnSapQuaHan.ForeColor = Color.Black;
-            btnSapQuaHan.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSapQuaHan.Location = new Point(179, 101);
-            btnSapQuaHan.Name = "btnSapQuaHan";
-            btnSapQuaHan.Size = new Size(300, 50);
-            btnSapQuaHan.TabIndex = 13;
-            btnSapQuaHan.Text = "Hợp Đồng Sắp Quá Hạn";
-            btnSapQuaHan.UseVisualStyleBackColor = false;
-            btnSapQuaHan.Click += btnSapQuaHan_Click_1;
+            lblPanelSoon.Anchor = AnchorStyles.None;
+            lblPanelSoon.BackColor = Color.SeaGreen;
+            lblPanelSoon.BaseColor = Color.SeaGreen;
+            lblPanelSoon.BorderColor = Color.Transparent;
+            lblPanelSoon.BorderRadius = 18;
+            lblPanelSoon.BorderSize = 0;
+            lblPanelSoon.FlatAppearance.BorderSize = 0;
+            lblPanelSoon.FlatStyle = FlatStyle.Flat;
+            lblPanelSoon.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblPanelSoon.ForeColor = Color.Black;
+            lblPanelSoon.HoverColor = Color.FromArgb(34, 139, 34);
+            lblPanelSoon.Location = new Point(179, 101);
+            lblPanelSoon.Name = "lblPanelSoon";
+            lblPanelSoon.Size = new Size(300, 50);
+            lblPanelSoon.TabIndex = 13;
+            lblPanelSoon.Text = "Hợp Đồng Sắp Quá Hạn";
+            lblPanelSoon.UseVisualStyleBackColor = false;
+            lblPanelSoon.Click += btnSapQuaHan_Click_1;
             // 
             // dgvQuaHan
             // 
@@ -164,14 +164,14 @@ namespace Environmental_Monitoring
             dgvQuaHan.BorderRadius = 20;
             dgvQuaHan.BorderStyle = BorderStyle.None;
             dgvQuaHan.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.FromArgb(239, 69, 69);
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.ButtonShadow;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dgvQuaHan.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = Color.FromArgb(239, 69, 69);
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = SystemColors.ButtonShadow;
+            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+            dgvQuaHan.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             dgvQuaHan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvQuaHan.Dock = DockStyle.Fill;
             dgvQuaHan.EnableHeadersVisualStyles = false;
@@ -179,32 +179,32 @@ namespace Environmental_Monitoring
             dgvQuaHan.Name = "dgvQuaHan";
             dgvQuaHan.RowHeadersVisible = false;
             dgvQuaHan.RowHeadersWidth = 51;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(230, 101, 101);
-            dataGridViewCellStyle5.SelectionBackColor = Color.Maroon;
-            dgvQuaHan.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.BackColor = Color.FromArgb(230, 101, 101);
+            dataGridViewCellStyle10.SelectionBackColor = Color.Maroon;
+            dgvQuaHan.RowsDefaultCellStyle = dataGridViewCellStyle10;
             dgvQuaHan.Size = new Size(531, 504);
             dgvQuaHan.TabIndex = 17;
             // 
-            // btnQuaHan
+            // lblPanelOverdue
             // 
-            btnQuaHan.Anchor = AnchorStyles.None;
-            btnQuaHan.BackColor = Color.SeaGreen;
-            btnQuaHan.BaseColor = Color.SeaGreen;
-            btnQuaHan.BorderColor = Color.Transparent;
-            btnQuaHan.BorderRadius = 18;
-            btnQuaHan.BorderSize = 0;
-            btnQuaHan.FlatAppearance.BorderSize = 0;
-            btnQuaHan.FlatStyle = FlatStyle.Flat;
-            btnQuaHan.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            btnQuaHan.ForeColor = Color.Black;
-            btnQuaHan.HoverColor = Color.FromArgb(34, 139, 34);
-            btnQuaHan.Location = new Point(740, 101);
-            btnQuaHan.Name = "btnQuaHan";
-            btnQuaHan.Size = new Size(300, 50);
-            btnQuaHan.TabIndex = 14;
-            btnQuaHan.Text = "Hợp Đồng Quá Hạn";
-            btnQuaHan.UseVisualStyleBackColor = false;
-            btnQuaHan.Click += btnQuaHan_Click;
+            lblPanelOverdue.Anchor = AnchorStyles.None;
+            lblPanelOverdue.BackColor = Color.SeaGreen;
+            lblPanelOverdue.BaseColor = Color.SeaGreen;
+            lblPanelOverdue.BorderColor = Color.Transparent;
+            lblPanelOverdue.BorderRadius = 18;
+            lblPanelOverdue.BorderSize = 0;
+            lblPanelOverdue.FlatAppearance.BorderSize = 0;
+            lblPanelOverdue.FlatStyle = FlatStyle.Flat;
+            lblPanelOverdue.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblPanelOverdue.ForeColor = Color.Black;
+            lblPanelOverdue.HoverColor = Color.FromArgb(34, 139, 34);
+            lblPanelOverdue.Location = new Point(740, 101);
+            lblPanelOverdue.Name = "lblPanelOverdue";
+            lblPanelOverdue.Size = new Size(300, 50);
+            lblPanelOverdue.TabIndex = 14;
+            lblPanelOverdue.Text = "Hợp Đồng Quá Hạn";
+            lblPanelOverdue.UseVisualStyleBackColor = false;
+            lblPanelOverdue.Click += btnQuaHan_Click;
             // 
             // Notification
             // 
@@ -226,9 +226,9 @@ namespace Environmental_Monitoring
         private TableLayoutPanel tableLayoutPanel1;
         private RoundedDataGridView dgvQuaHan;
         private RoundedDataGridView dgvSapQuaHan;
-        private RoundedButton btnQuaHan;
-        private RoundedButton btnSapQuaHan;
-        private RoundedTextBox roundedTextBox1;
-        private Label label3;
+        private RoundedButton lblPanelOverdue;
+        private RoundedButton lblPanelSoon;
+        private RoundedTextBox txtSearch;
+        private Label lblTitle;
     }
 }

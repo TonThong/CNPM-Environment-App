@@ -36,15 +36,15 @@ namespace Environmental_Monitoring.View
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            label2 = new Label();
-            label4 = new Label();
+            lblOrderCountTitle = new Label();
+            lblOnTimeRateTitle = new Label();
             txtSearch = new RoundedTextBox();
             roundedPanel4 = new RoundedPanel();
             cmbNam = new CustomComboBox();
             cmbQuy = new CustomComboBox();
             btnApply = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
-            label3 = new Label();
+            lblTitle = new Label();
             chartOrderQuantity = new System.Windows.Forms.DataVisualization.Charting.Chart();
             chartOnTimeRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
             roundedPanel4.SuspendLayout();
@@ -53,41 +53,41 @@ namespace Environmental_Monitoring.View
             ((System.ComponentModel.ISupportInitialize)chartOnTimeRate).BeginInit();
             SuspendLayout();
             // 
-            // label2
+            // lblOrderCountTitle
             // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label2.Location = new Point(64, 182);
-            label2.Name = "label2";
-            label2.Size = new Size(531, 70);
-            label2.TabIndex = 16;
-            label2.Text = "Số Lượng Đơn Hàng";
-            label2.TextAlign = ContentAlignment.MiddleLeft;
+            lblOrderCountTitle.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblOrderCountTitle.AutoSize = true;
+            lblOrderCountTitle.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
+            lblOrderCountTitle.Location = new Point(64, 182);
+            lblOrderCountTitle.Name = "lblOrderCountTitle";
+            lblOrderCountTitle.Size = new Size(531, 70);
+            lblOrderCountTitle.TabIndex = 16;
+            lblOrderCountTitle.Text = "Số Lượng Đơn Hàng";
+            lblOrderCountTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // label4
+            // lblOnTimeRateTitle
             // 
-            label4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label4.Location = new Point(625, 182);
-            label4.Name = "label4";
-            label4.Size = new Size(531, 70);
-            label4.TabIndex = 19;
-            label4.Text = "Tỷ Lệ Đúng/Trễ Hẹn";
-            label4.TextAlign = ContentAlignment.MiddleLeft;
+            lblOnTimeRateTitle.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblOnTimeRateTitle.AutoSize = true;
+            lblOnTimeRateTitle.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
+            lblOnTimeRateTitle.Location = new Point(625, 182);
+            lblOnTimeRateTitle.Name = "lblOnTimeRateTitle";
+            lblOnTimeRateTitle.Size = new Size(531, 70);
+            lblOnTimeRateTitle.TabIndex = 19;
+            lblOnTimeRateTitle.Text = "Tỷ Lệ Đúng/Trễ Hẹn";
+            lblOnTimeRateTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // txtSearch
             // 
             txtSearch.BackColor = Color.White;
             txtSearch.BorderRadius = 15;
             txtSearch.BorderThickness = 1;
-            txtSearch.FocusBorderColor = SystemColors.ControlDark;
+            txtSearch.FocusBorderColor = Color.DimGray;
             txtSearch.HoverBorderColor = Color.DarkGray;
             txtSearch.Location = new Point(625, 24);
             txtSearch.Multiline = false;
             txtSearch.Name = "txtSearch";
-            txtSearch.NormalBorderColor = Color.DarkGray;
+            txtSearch.NormalBorderColor = Color.LightGray;
             txtSearch.Padding = new Padding(9, 12, 9, 9);
             txtSearch.PasswordChar = '\0';
             txtSearch.PlaceholderText = "Tìm Kiếm...";
@@ -98,6 +98,7 @@ namespace Environmental_Monitoring.View
             // 
             // roundedPanel4
             // 
+            roundedPanel4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             roundedPanel4.BackColor = Color.White;
             roundedPanel4.BorderColor = Color.Transparent;
             roundedPanel4.BorderRadius = 20;
@@ -105,7 +106,6 @@ namespace Environmental_Monitoring.View
             roundedPanel4.Controls.Add(cmbNam);
             roundedPanel4.Controls.Add(cmbQuy);
             roundedPanel4.Controls.Add(btnApply);
-            roundedPanel4.Dock = DockStyle.Fill;
             roundedPanel4.Location = new Point(64, 115);
             roundedPanel4.Name = "roundedPanel4";
             roundedPanel4.Size = new Size(531, 64);
@@ -119,14 +119,14 @@ namespace Environmental_Monitoring.View
             cmbNam.BorderThickness = 2;
             cmbNam.DropDownBackColor = Color.White;
             cmbNam.DropDownHeight = 150;
-            cmbNam.DropDownHoverColor = Color.DodgerBlue;
-            cmbNam.FocusBorderColor = Color.HotPink;
+            cmbNam.DropDownHoverColor = Color.Gainsboro;
+            cmbNam.FocusBorderColor = Color.DimGray;
             cmbNam.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cmbNam.ForeColor = Color.Black;
-            cmbNam.HoverBorderColor = Color.DodgerBlue;
+            cmbNam.HoverBorderColor = Color.DarkGray;
             cmbNam.Location = new Point(199, 9);
             cmbNam.Name = "cmbNam";
-            cmbNam.NormalBorderColor = Color.Gray;
+            cmbNam.NormalBorderColor = Color.LightGray;
             cmbNam.SelectedIndex = -1;
             cmbNam.SelectedItem = null;
             cmbNam.SelectedValue = null;
@@ -141,14 +141,14 @@ namespace Environmental_Monitoring.View
             cmbQuy.BorderThickness = 2;
             cmbQuy.DropDownBackColor = Color.White;
             cmbQuy.DropDownHeight = 150;
-            cmbQuy.DropDownHoverColor = SystemColors.Control;
-            cmbQuy.FocusBorderColor = Color.FromArgb(64, 64, 64);
+            cmbQuy.DropDownHoverColor = Color.Gainsboro;
+            cmbQuy.FocusBorderColor = Color.DimGray;
             cmbQuy.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cmbQuy.ForeColor = Color.Black;
-            cmbQuy.HoverBorderColor = Color.Black;
+            cmbQuy.HoverBorderColor = Color.DarkGray;
             cmbQuy.Location = new Point(28, 9);
             cmbQuy.Name = "cmbQuy";
-            cmbQuy.NormalBorderColor = Color.Gray;
+            cmbQuy.NormalBorderColor = Color.LightGray;
             cmbQuy.SelectedIndex = -1;
             cmbQuy.SelectedItem = null;
             cmbQuy.SelectedValue = null;
@@ -184,11 +184,11 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.Controls.Add(label3, 1, 1);
+            tableLayoutPanel1.Controls.Add(lblTitle, 1, 1);
             tableLayoutPanel1.Controls.Add(roundedPanel4, 1, 3);
             tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
-            tableLayoutPanel1.Controls.Add(label4, 3, 4);
-            tableLayoutPanel1.Controls.Add(label2, 1, 4);
+            tableLayoutPanel1.Controls.Add(lblOnTimeRateTitle, 3, 4);
+            tableLayoutPanel1.Controls.Add(lblOrderCountTitle, 1, 4);
             tableLayoutPanel1.Controls.Add(chartOrderQuantity, 1, 5);
             tableLayoutPanel1.Controls.Add(chartOnTimeRate, 3, 5);
             tableLayoutPanel1.Location = new Point(3, 3);
@@ -204,16 +204,16 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.Size = new Size(1221, 709);
             tableLayoutPanel1.TabIndex = 26;
             // 
-            // label3
+            // lblTitle
             // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            label3.Location = new Point(64, 21);
-            label3.Name = "label3";
-            label3.Size = new Size(531, 70);
-            label3.TabIndex = 5;
-            label3.Text = "Báo Cáo Và Thống Kê";
+            lblTitle.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblTitle.Location = new Point(64, 21);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(531, 70);
+            lblTitle.TabIndex = 5;
+            lblTitle.Text = "Báo Cáo Và Thống Kê";
             // 
             // chartOrderQuantity
             // 
@@ -266,15 +266,15 @@ namespace Environmental_Monitoring.View
 
         #endregion
 
-        private Label label2;
-        private Label label4;
+        private Label lblOrderCountTitle;
+        private Label lblOnTimeRateTitle;
         private RoundedTextBox txtSearch;
         private RoundedPanel roundedPanel4;
         private CustomComboBox cmbNam;
         private CustomComboBox cmbQuy;
         private RoundedButton btnApply;
         private TableLayoutPanel tableLayoutPanel1;
-        private Label label3;
+        private Label lblTitle;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartOrderQuantity;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartOnTimeRate;
     }

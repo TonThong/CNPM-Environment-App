@@ -36,7 +36,7 @@
             label2 = new Label();
             txtTaiKhoan = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtMatKhau = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            linkLabel1 = new LinkLabel();
+            linkForgot = new LinkLabel();
             btnDangNhap = new Environmental_Monitoring.View.Components.RoundedButton();
             label3 = new Label();
             label1 = new Label();
@@ -50,6 +50,7 @@
             // 
             // roundedPanel1
             // 
+            roundedPanel1.Anchor = AnchorStyles.None;
             roundedPanel1.BackColor = Color.Honeydew;
             roundedPanel1.BorderColor = Color.Transparent;
             roundedPanel1.BorderRadius = 20;
@@ -71,7 +72,7 @@
             tableLayoutPanel1.Controls.Add(label2, 1, 3);
             tableLayoutPanel1.Controls.Add(txtTaiKhoan, 1, 5);
             tableLayoutPanel1.Controls.Add(txtMatKhau, 1, 7);
-            tableLayoutPanel1.Controls.Add(linkLabel1, 1, 9);
+            tableLayoutPanel1.Controls.Add(linkForgot, 1, 9);
             tableLayoutPanel1.Controls.Add(btnDangNhap, 1, 11);
             tableLayoutPanel1.Controls.Add(label3, 1, 13);
             tableLayoutPanel1.Location = new Point(6, 3);
@@ -167,21 +168,22 @@
             txtMatKhau.TabIndex = 3;
             txtMatKhau.UseSystemPasswordChar = false;
             // 
-            // linkLabel1
+            // linkForgot
             // 
-            linkLabel1.ActiveLinkColor = SystemColors.ActiveCaptionText;
-            linkLabel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            linkLabel1.AutoSize = true;
-            linkLabel1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            linkLabel1.LinkBehavior = LinkBehavior.HoverUnderline;
-            linkLabel1.LinkColor = Color.FromArgb(1, 42, 7);
-            linkLabel1.Location = new Point(44, 426);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(322, 34);
-            linkLabel1.TabIndex = 4;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "Quên Mật Khẩu";
-            linkLabel1.TextAlign = ContentAlignment.MiddleRight;
+            linkForgot.ActiveLinkColor = SystemColors.ActiveCaptionText;
+            linkForgot.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            linkForgot.AutoSize = true;
+            linkForgot.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            linkForgot.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkForgot.LinkColor = Color.FromArgb(1, 42, 7);
+            linkForgot.Location = new Point(44, 426);
+            linkForgot.Name = "linkForgot";
+            linkForgot.Size = new Size(322, 34);
+            linkForgot.TabIndex = 4;
+            linkForgot.TabStop = true;
+            linkForgot.Text = "Quên Mật Khẩu";
+            linkForgot.TextAlign = ContentAlignment.MiddleRight;
+            linkForgot.LinkClicked += linkForgot_LinkClicked;
             // 
             // btnDangNhap
             // 
@@ -218,6 +220,7 @@
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point, 163);
@@ -273,7 +276,7 @@
         private Label label2;
         private Components.RoundedTextBox txtTaiKhoan;
         private Components.RoundedTextBox txtMatKhau;
-        private LinkLabel linkLabel1;
+        private LinkLabel linkForgot;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
         private Components.RoundedButton btnDangNhap;
         private Label label3;

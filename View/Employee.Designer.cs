@@ -42,8 +42,8 @@ namespace Environmental_Monitoring.View
             btnLast = new Button();
             headerPanel = new Panel();
             tableLayoutPanel2 = new TableLayoutPanel();
-            txbSearch = new RoundedTextBox();
-            labelTitle = new Label();
+            txtSearch = new RoundedTextBox();
+            lblTitle = new Label();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvEmployee).BeginInit();
             pnlPagination.SuspendLayout();
@@ -106,7 +106,9 @@ namespace Environmental_Monitoring.View
             dgvEmployee.Location = new Point(79, 111);
             dgvEmployee.Margin = new Padding(3, 4, 3, 4);
             dgvEmployee.Name = "dgvEmployee";
+            dgvEmployee.RowHeadersVisible = false;
             dgvEmployee.RowHeadersWidth = 51;
+            dgvEmployee.RowTemplate.Height = 35;
             dgvEmployee.Size = new Size(1051, 447);
             dgvEmployee.TabIndex = 24;
             dgvEmployee.CellContentClick += dgvEmployee_CellContentClick;
@@ -193,8 +195,8 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel2.ColumnCount = 2;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 57.95699F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42.04301F));
-            tableLayoutPanel2.Controls.Add(txbSearch, 1, 0);
-            tableLayoutPanel2.Controls.Add(labelTitle, 0, 0);
+            tableLayoutPanel2.Controls.Add(txtSearch, 1, 0);
+            tableLayoutPanel2.Controls.Add(lblTitle, 0, 0);
             tableLayoutPanel2.Location = new Point(73, 17);
             tableLayoutPanel2.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -203,35 +205,36 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel2.Size = new Size(1063, 52);
             tableLayoutPanel2.TabIndex = 2;
             // 
-            // txbSearch
+            // txtSearch
             // 
-            txbSearch.BackColor = Color.White;
-            txbSearch.BorderRadius = 15;
-            txbSearch.BorderThickness = 1;
-            txbSearch.FocusBorderColor = SystemColors.ControlDark;
-            txbSearch.HoverBorderColor = Color.DarkGray;
-            txbSearch.Location = new Point(619, 3);
-            txbSearch.Multiline = false;
-            txbSearch.Name = "txbSearch";
-            txbSearch.NormalBorderColor = Color.DarkGray;
-            txbSearch.Padding = new Padding(9, 12, 9, 9);
-            txbSearch.PasswordChar = '\0';
-            txbSearch.PlaceholderText = "Tìm Kiếm...";
-            txbSearch.ReadOnly = false;
-            txbSearch.Size = new Size(440, 45);
-            txbSearch.TabIndex = 21;
-            txbSearch.TextChanged += txbSearch_TextChanged;
+            txtSearch.BackColor = Color.White;
+            txtSearch.BorderRadius = 15;
+            txtSearch.BorderThickness = 1;
+            txtSearch.FocusBorderColor = Color.DimGray;
+            txtSearch.HoverBorderColor = Color.DarkGray;
+            txtSearch.Location = new Point(619, 3);
+            txtSearch.Multiline = false;
+            txtSearch.Name = "txtSearch";
+            txtSearch.NormalBorderColor = Color.LightGray;
+            txtSearch.Padding = new Padding(9, 12, 9, 9);
+            txtSearch.PasswordChar = '\0';
+            txtSearch.PlaceholderText = "Tìm Kiếm...";
+            txtSearch.ReadOnly = false;
+            txtSearch.Size = new Size(440, 45);
+            txtSearch.TabIndex = 21;
+            txtSearch.UseSystemPasswordChar = false;
+            txtSearch.TextChanged += txbSearch_TextChanged;
             // 
-            // labelTitle
+            // lblTitle
             // 
-            labelTitle.AutoSize = true;
-            labelTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            labelTitle.ForeColor = Color.Black;
-            labelTitle.Location = new Point(3, 0);
-            labelTitle.Name = "labelTitle";
-            labelTitle.Size = new Size(308, 46);
-            labelTitle.TabIndex = 0;
-            labelTitle.Text = "Quản lý nhân viên";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.Black;
+            lblTitle.Location = new Point(3, 0);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(308, 46);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Quản lý nhân viên";
             // 
             // Employee
             // 
@@ -256,11 +259,11 @@ namespace Environmental_Monitoring.View
 
         private TableLayoutPanel tableLayoutPanel1;
         private Panel headerPanel;
-        private Label labelTitle;
+        private Label lblTitle;
         private RoundedButton btnAdd;
         private RoundedDataGridView dgvEmployee;
         private TableLayoutPanel tableLayoutPanel2;
-        private RoundedTextBox txbSearch;
+        private RoundedTextBox txtSearch;
 
         private FlowLayoutPanel pnlPagination;
         private Button btnFirst;

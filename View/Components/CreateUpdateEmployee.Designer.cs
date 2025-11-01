@@ -28,78 +28,68 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateUpdateEmployee));
-            label1 = new Label();
-            txbMaNV = new TextBox();
-            txbNamSinh = new TextBox();
-            label2 = new Label();
+            lblMaNV = new Label();
+            lblYear = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
-            txbPhong = new TextBox();
-            label7 = new Label();
-            txbHoTen = new TextBox();
-            label8 = new Label();
+            lblDepartment = new Label();
+            lblHoTen = new Label();
             label9 = new Label();
             label10 = new Label();
-            label11 = new Label();
-            txbSDT = new TextBox();
-            label12 = new Label();
+            lblRole = new Label();
+            lblSDT = new Label();
             label13 = new Label();
             label14 = new Label();
-            txbEmail = new TextBox();
-            label15 = new Label();
-            txbDiaChi = new TextBox();
-            label16 = new Label();
+            lblEmail = new Label();
+            lblAddress = new Label();
             label17 = new Label();
-            txbPass = new TextBox();
-            label18 = new Label();
+            lblPass = new Label();
             btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
-            cbbRole = new ComboBox();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            txtMaNV = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtNamSinh = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtDiaChi = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            txtSDT = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtPhong = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtHoTen = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtMatKhau = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtEmail = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            cbbRole = new Environmental_Monitoring.View.Components.RoundedComboBox();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // lblMaNV
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(40, 41);
-            label1.Name = "label1";
-            label1.Size = new Size(97, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Mã nhân viên";
+            lblMaNV.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblMaNV.AutoSize = true;
+            lblMaNV.Location = new Point(49, 26);
+            lblMaNV.Name = "lblMaNV";
+            lblMaNV.Size = new Size(104, 47);
+            lblMaNV.TabIndex = 0;
+            lblMaNV.Text = "Mã nhân viên";
+            lblMaNV.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // txbMaNV
+            // lblYear
             // 
-            txbMaNV.Location = new Point(168, 37);
-            txbMaNV.Margin = new Padding(3, 4, 3, 4);
-            txbMaNV.Name = "txbMaNV";
-            txbMaNV.Size = new Size(226, 27);
-            txbMaNV.TabIndex = 1;
-            // 
-            // txbNamSinh
-            // 
-            txbNamSinh.Location = new Point(168, 107);
-            txbNamSinh.Margin = new Padding(3, 4, 3, 4);
-            txbNamSinh.Name = "txbNamSinh";
-            txbNamSinh.Size = new Size(226, 27);
-            txbNamSinh.TabIndex = 3;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(40, 111);
-            label2.Name = "label2";
-            label2.Size = new Size(71, 20);
-            label2.TabIndex = 2;
-            label2.Text = "Năm sinh";
+            lblYear.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblYear.AutoSize = true;
+            lblYear.Location = new Point(508, 26);
+            lblYear.Name = "lblYear";
+            lblYear.Size = new Size(104, 47);
+            lblYear.TabIndex = 2;
+            lblYear.Text = "Năm sinh";
+            lblYear.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.Red;
-            label3.Location = new Point(137, 35);
+            label3.Location = new Point(159, 26);
             label3.Name = "label3";
             label3.Size = new Size(21, 28);
             label3.TabIndex = 4;
@@ -110,7 +100,7 @@
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.Red;
-            label4.Location = new Point(137, 103);
+            label4.Location = new Point(159, 120);
             label4.Name = "label4";
             label4.Size = new Size(21, 28);
             label4.TabIndex = 5;
@@ -121,7 +111,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.Red;
-            label5.Location = new Point(593, 107);
+            label5.Location = new Point(618, 120);
             label5.Name = "label5";
             label5.Size = new Size(21, 28);
             label5.TabIndex = 11;
@@ -132,52 +122,40 @@
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.Red;
-            label6.Location = new Point(593, 39);
+            label6.Location = new Point(618, 26);
             label6.Name = "label6";
             label6.Size = new Size(21, 28);
             label6.TabIndex = 10;
             label6.Text = "*";
             // 
-            // txbPhong
+            // lblDepartment
             // 
-            txbPhong.Location = new Point(624, 111);
-            txbPhong.Margin = new Padding(3, 4, 3, 4);
-            txbPhong.Name = "txbPhong";
-            txbPhong.Size = new Size(226, 27);
-            txbPhong.TabIndex = 9;
+            lblDepartment.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblDepartment.AutoSize = true;
+            lblDepartment.Location = new Point(508, 120);
+            lblDepartment.Name = "lblDepartment";
+            lblDepartment.Size = new Size(104, 47);
+            lblDepartment.TabIndex = 8;
+            lblDepartment.Text = "Phòng ban";
+            lblDepartment.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label7
+            // lblHoTen
             // 
-            label7.AutoSize = true;
-            label7.Location = new Point(496, 115);
-            label7.Name = "label7";
-            label7.Size = new Size(80, 20);
-            label7.TabIndex = 8;
-            label7.Text = "Phòng ban";
-            // 
-            // txbHoTen
-            // 
-            txbHoTen.Location = new Point(624, 41);
-            txbHoTen.Margin = new Padding(3, 4, 3, 4);
-            txbHoTen.Name = "txbHoTen";
-            txbHoTen.Size = new Size(226, 27);
-            txbHoTen.TabIndex = 7;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(496, 45);
-            label8.Name = "label8";
-            label8.Size = new Size(54, 20);
-            label8.TabIndex = 6;
-            label8.Text = "Họ tên";
+            lblHoTen.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblHoTen.AutoSize = true;
+            lblHoTen.Location = new Point(49, 120);
+            lblHoTen.Name = "lblHoTen";
+            lblHoTen.Size = new Size(104, 47);
+            lblHoTen.TabIndex = 6;
+            lblHoTen.Text = "Họ tên";
+            lblHoTen.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label9
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.ForeColor = Color.Red;
-            label9.Location = new Point(593, 236);
+            label9.Location = new Point(618, 308);
             label9.Name = "label9";
             label9.Size = new Size(21, 28);
             label9.TabIndex = 23;
@@ -188,44 +166,40 @@
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label10.ForeColor = Color.Red;
-            label10.Location = new Point(593, 168);
+            label10.Location = new Point(618, 214);
             label10.Name = "label10";
             label10.Size = new Size(21, 28);
             label10.TabIndex = 22;
             label10.Text = "*";
             // 
-            // label11
+            // lblRole
             // 
-            label11.AutoSize = true;
-            label11.Location = new Point(496, 244);
-            label11.Name = "label11";
-            label11.Size = new Size(52, 20);
-            label11.TabIndex = 20;
-            label11.Text = "Vai trò";
+            lblRole.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblRole.AutoSize = true;
+            lblRole.Location = new Point(508, 308);
+            lblRole.Name = "lblRole";
+            lblRole.Size = new Size(104, 47);
+            lblRole.TabIndex = 20;
+            lblRole.Text = "Vai trò";
+            lblRole.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // txbSDT
+            // lblSDT
             // 
-            txbSDT.Location = new Point(624, 171);
-            txbSDT.Margin = new Padding(3, 4, 3, 4);
-            txbSDT.Name = "txbSDT";
-            txbSDT.Size = new Size(226, 27);
-            txbSDT.TabIndex = 19;
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(496, 175);
-            label12.Name = "label12";
-            label12.Size = new Size(97, 20);
-            label12.TabIndex = 18;
-            label12.Text = "Số điện thoại";
+            lblSDT.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblSDT.AutoSize = true;
+            lblSDT.Location = new Point(508, 214);
+            lblSDT.Name = "lblSDT";
+            lblSDT.Size = new Size(104, 47);
+            lblSDT.TabIndex = 18;
+            lblSDT.Text = "Số điện thoại";
+            lblSDT.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label13
             // 
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label13.ForeColor = Color.Red;
-            label13.Location = new Point(137, 232);
+            label13.Location = new Point(159, 308);
             label13.Name = "label13";
             label13.Size = new Size(21, 28);
             label13.TabIndex = 17;
@@ -236,105 +210,322 @@
             label14.AutoSize = true;
             label14.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label14.ForeColor = Color.Red;
-            label14.Location = new Point(137, 164);
+            label14.Location = new Point(159, 214);
             label14.Name = "label14";
             label14.Size = new Size(21, 28);
             label14.TabIndex = 16;
             label14.Text = "*";
             // 
-            // txbEmail
+            // lblEmail
             // 
-            txbEmail.Location = new Point(168, 236);
-            txbEmail.Margin = new Padding(3, 4, 3, 4);
-            txbEmail.Name = "txbEmail";
-            txbEmail.Size = new Size(226, 27);
-            txbEmail.TabIndex = 15;
+            lblEmail.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblEmail.AutoSize = true;
+            lblEmail.Location = new Point(49, 308);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(104, 47);
+            lblEmail.TabIndex = 14;
+            lblEmail.Text = "Email";
+            lblEmail.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label15
+            // lblAddress
             // 
-            label15.AutoSize = true;
-            label15.Location = new Point(40, 240);
-            label15.Name = "label15";
-            label15.Size = new Size(46, 20);
-            label15.TabIndex = 14;
-            label15.Text = "Email";
-            // 
-            // txbDiaChi
-            // 
-            txbDiaChi.Location = new Point(168, 167);
-            txbDiaChi.Margin = new Padding(3, 4, 3, 4);
-            txbDiaChi.Name = "txbDiaChi";
-            txbDiaChi.Size = new Size(226, 27);
-            txbDiaChi.TabIndex = 13;
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Location = new Point(40, 171);
-            label16.Name = "label16";
-            label16.Size = new Size(55, 20);
-            label16.TabIndex = 12;
-            label16.Text = "Địa chỉ";
+            lblAddress.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblAddress.AutoSize = true;
+            lblAddress.Location = new Point(49, 214);
+            lblAddress.Name = "lblAddress";
+            lblAddress.Size = new Size(104, 47);
+            lblAddress.TabIndex = 12;
+            lblAddress.Text = "Địa chỉ";
+            lblAddress.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label17
             // 
             label17.AutoSize = true;
             label17.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label17.ForeColor = Color.Red;
-            label17.Location = new Point(137, 307);
+            label17.Location = new Point(159, 402);
             label17.Name = "label17";
             label17.Size = new Size(21, 28);
             label17.TabIndex = 26;
             label17.Text = "*";
             // 
-            // txbPass
+            // lblPass
             // 
-            txbPass.Location = new Point(168, 311);
-            txbPass.Margin = new Padding(3, 4, 3, 4);
-            txbPass.Name = "txbPass";
-            txbPass.Size = new Size(226, 27);
-            txbPass.TabIndex = 25;
-            // 
-            // label18
-            // 
-            label18.AutoSize = true;
-            label18.Location = new Point(40, 315);
-            label18.Name = "label18";
-            label18.Size = new Size(70, 20);
-            label18.TabIndex = 24;
-            label18.Text = "Mật khẩu";
+            lblPass.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblPass.AutoSize = true;
+            lblPass.Location = new Point(49, 402);
+            lblPass.Name = "lblPass";
+            lblPass.Size = new Size(104, 47);
+            lblPass.TabIndex = 24;
+            lblPass.Text = "Mật khẩu";
+            lblPass.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnSave
             // 
             btnSave.BackColor = Color.SeaGreen;
             btnSave.BaseColor = Color.SeaGreen;
             btnSave.BorderColor = Color.Transparent;
-            btnSave.BorderRadius = 15;
+            btnSave.BorderRadius = 10;
             btnSave.BorderSize = 0;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
             btnSave.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSave.Image = (Image)resources.GetObject("btnSave.Image");
             btnSave.ImageAlign = ContentAlignment.MiddleLeft;
-            btnSave.Location = new Point(684, 400);
+            btnSave.Location = new Point(645, 406);
             btnSave.Margin = new Padding(3, 4, 3, 4);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(166, 72);
+            btnSave.Size = new Size(224, 39);
             btnSave.TabIndex = 28;
             btnSave.Text = "Lưu";
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += btnSave_Click;
             // 
+            // txtMaNV
+            // 
+            txtMaNV.BackColor = Color.White;
+            txtMaNV.BorderRadius = 15;
+            txtMaNV.BorderThickness = 2;
+            txtMaNV.Dock = DockStyle.Fill;
+            txtMaNV.FocusBorderColor = Color.DimGray;
+            txtMaNV.HoverBorderColor = Color.DarkGray;
+            txtMaNV.Location = new Point(186, 29);
+            txtMaNV.Multiline = false;
+            txtMaNV.Name = "txtMaNV";
+            txtMaNV.NormalBorderColor = Color.LightGray;
+            txtMaNV.Padding = new Padding(10);
+            txtMaNV.PasswordChar = '\0';
+            txtMaNV.PlaceholderText = "Nhập Mã NV";
+            txtMaNV.ReadOnly = false;
+            txtMaNV.Size = new Size(224, 41);
+            txtMaNV.TabIndex = 30;
+            txtMaNV.UseSystemPasswordChar = false;
+            // 
+            // txtNamSinh
+            // 
+            txtNamSinh.BackColor = Color.White;
+            txtNamSinh.BorderRadius = 15;
+            txtNamSinh.BorderThickness = 2;
+            txtNamSinh.Dock = DockStyle.Fill;
+            txtNamSinh.FocusBorderColor = Color.DimGray;
+            txtNamSinh.HoverBorderColor = Color.DarkGray;
+            txtNamSinh.Location = new Point(645, 29);
+            txtNamSinh.Multiline = false;
+            txtNamSinh.Name = "txtNamSinh";
+            txtNamSinh.NormalBorderColor = Color.LightGray;
+            txtNamSinh.Padding = new Padding(10);
+            txtNamSinh.PasswordChar = '\0';
+            txtNamSinh.PlaceholderText = "Nhập Năm Sinh";
+            txtNamSinh.ReadOnly = false;
+            txtNamSinh.Size = new Size(224, 41);
+            txtNamSinh.TabIndex = 31;
+            txtNamSinh.UseSystemPasswordChar = false;
+            // 
+            // txtDiaChi
+            // 
+            txtDiaChi.BackColor = Color.White;
+            txtDiaChi.BorderRadius = 15;
+            txtDiaChi.BorderThickness = 2;
+            txtDiaChi.Dock = DockStyle.Fill;
+            txtDiaChi.FocusBorderColor = Color.DimGray;
+            txtDiaChi.HoverBorderColor = Color.DarkGray;
+            txtDiaChi.Location = new Point(186, 217);
+            txtDiaChi.Multiline = false;
+            txtDiaChi.Name = "txtDiaChi";
+            txtDiaChi.NormalBorderColor = Color.LightGray;
+            txtDiaChi.Padding = new Padding(10);
+            txtDiaChi.PasswordChar = '\0';
+            txtDiaChi.PlaceholderText = "Nhập Địa Chỉ";
+            txtDiaChi.ReadOnly = false;
+            txtDiaChi.Size = new Size(224, 41);
+            txtDiaChi.TabIndex = 32;
+            txtDiaChi.UseSystemPasswordChar = false;
+            // 
+            // sqlCommand1
+            // 
+            sqlCommand1.CommandTimeout = 30;
+            sqlCommand1.EnableOptimizedParameterBinding = false;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 9;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Controls.Add(txtSDT, 7, 5);
+            tableLayoutPanel1.Controls.Add(txtPhong, 7, 3);
+            tableLayoutPanel1.Controls.Add(txtHoTen, 3, 3);
+            tableLayoutPanel1.Controls.Add(txtMatKhau, 3, 9);
+            tableLayoutPanel1.Controls.Add(txtEmail, 3, 7);
+            tableLayoutPanel1.Controls.Add(lblMaNV, 1, 1);
+            tableLayoutPanel1.Controls.Add(txtDiaChi, 3, 5);
+            tableLayoutPanel1.Controls.Add(label3, 2, 1);
+            tableLayoutPanel1.Controls.Add(label10, 6, 5);
+            tableLayoutPanel1.Controls.Add(txtNamSinh, 7, 1);
+            tableLayoutPanel1.Controls.Add(lblRole, 5, 7);
+            tableLayoutPanel1.Controls.Add(label5, 6, 3);
+            tableLayoutPanel1.Controls.Add(txtMaNV, 3, 1);
+            tableLayoutPanel1.Controls.Add(label6, 6, 1);
+            tableLayoutPanel1.Controls.Add(lblAddress, 1, 5);
+            tableLayoutPanel1.Controls.Add(lblSDT, 5, 5);
+            tableLayoutPanel1.Controls.Add(label17, 2, 9);
+            tableLayoutPanel1.Controls.Add(label4, 2, 3);
+            tableLayoutPanel1.Controls.Add(label14, 2, 5);
+            tableLayoutPanel1.Controls.Add(lblDepartment, 5, 3);
+            tableLayoutPanel1.Controls.Add(label13, 2, 7);
+            tableLayoutPanel1.Controls.Add(lblEmail, 1, 7);
+            tableLayoutPanel1.Controls.Add(lblPass, 1, 9);
+            tableLayoutPanel1.Controls.Add(label9, 6, 7);
+            tableLayoutPanel1.Controls.Add(btnSave, 7, 9);
+            tableLayoutPanel1.Controls.Add(lblHoTen, 1, 3);
+            tableLayoutPanel1.Controls.Add(lblYear, 5, 1);
+            tableLayoutPanel1.Controls.Add(cbbRole, 7, 7);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 12;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Size = new Size(922, 523);
+            tableLayoutPanel1.TabIndex = 33;
+            // 
+            // txtSDT
+            // 
+            txtSDT.BackColor = Color.White;
+            txtSDT.BorderRadius = 15;
+            txtSDT.BorderThickness = 2;
+            txtSDT.Dock = DockStyle.Fill;
+            txtSDT.FocusBorderColor = Color.DimGray;
+            txtSDT.HoverBorderColor = Color.DarkGray;
+            txtSDT.Location = new Point(645, 217);
+            txtSDT.Multiline = false;
+            txtSDT.Name = "txtSDT";
+            txtSDT.NormalBorderColor = Color.LightGray;
+            txtSDT.Padding = new Padding(10);
+            txtSDT.PasswordChar = '\0';
+            txtSDT.PlaceholderText = "Nhập Số Điện Thoại";
+            txtSDT.ReadOnly = false;
+            txtSDT.Size = new Size(224, 41);
+            txtSDT.TabIndex = 37;
+            txtSDT.UseSystemPasswordChar = false;
+            // 
+            // txtPhong
+            // 
+            txtPhong.BackColor = Color.White;
+            txtPhong.BorderRadius = 15;
+            txtPhong.BorderThickness = 2;
+            txtPhong.Dock = DockStyle.Fill;
+            txtPhong.FocusBorderColor = Color.DimGray;
+            txtPhong.HoverBorderColor = Color.DarkGray;
+            txtPhong.Location = new Point(645, 123);
+            txtPhong.Multiline = false;
+            txtPhong.Name = "txtPhong";
+            txtPhong.NormalBorderColor = Color.LightGray;
+            txtPhong.Padding = new Padding(10);
+            txtPhong.PasswordChar = '\0';
+            txtPhong.PlaceholderText = "Nhập Phòng Ban";
+            txtPhong.ReadOnly = false;
+            txtPhong.Size = new Size(224, 41);
+            txtPhong.TabIndex = 36;
+            txtPhong.UseSystemPasswordChar = false;
+            // 
+            // txtHoTen
+            // 
+            txtHoTen.BackColor = Color.White;
+            txtHoTen.BorderRadius = 15;
+            txtHoTen.BorderThickness = 2;
+            txtHoTen.Dock = DockStyle.Fill;
+            txtHoTen.FocusBorderColor = Color.DimGray;
+            txtHoTen.HoverBorderColor = Color.DarkGray;
+            txtHoTen.Location = new Point(186, 123);
+            txtHoTen.Multiline = false;
+            txtHoTen.Name = "txtHoTen";
+            txtHoTen.NormalBorderColor = Color.LightGray;
+            txtHoTen.Padding = new Padding(10);
+            txtHoTen.PasswordChar = '\0';
+            txtHoTen.PlaceholderText = "Nhập Họ Và Tên";
+            txtHoTen.ReadOnly = false;
+            txtHoTen.Size = new Size(224, 41);
+            txtHoTen.TabIndex = 35;
+            txtHoTen.UseSystemPasswordChar = false;
+            // 
+            // txtMatKhau
+            // 
+            txtMatKhau.BackColor = Color.White;
+            txtMatKhau.BorderRadius = 15;
+            txtMatKhau.BorderThickness = 2;
+            txtMatKhau.Dock = DockStyle.Fill;
+            txtMatKhau.FocusBorderColor = Color.DimGray;
+            txtMatKhau.HoverBorderColor = Color.DarkGray;
+            txtMatKhau.Location = new Point(186, 405);
+            txtMatKhau.Multiline = false;
+            txtMatKhau.Name = "txtMatKhau";
+            txtMatKhau.NormalBorderColor = Color.LightGray;
+            txtMatKhau.Padding = new Padding(10);
+            txtMatKhau.PasswordChar = '\0';
+            txtMatKhau.PlaceholderText = "Nhập Mật Khẩu";
+            txtMatKhau.ReadOnly = false;
+            txtMatKhau.Size = new Size(224, 41);
+            txtMatKhau.TabIndex = 34;
+            txtMatKhau.UseSystemPasswordChar = false;
+            // 
+            // txtEmail
+            // 
+            txtEmail.BackColor = Color.White;
+            txtEmail.BorderRadius = 15;
+            txtEmail.BorderThickness = 2;
+            txtEmail.Dock = DockStyle.Fill;
+            txtEmail.FocusBorderColor = Color.DimGray;
+            txtEmail.HoverBorderColor = Color.DarkGray;
+            txtEmail.Location = new Point(186, 311);
+            txtEmail.Multiline = false;
+            txtEmail.Name = "txtEmail";
+            txtEmail.NormalBorderColor = Color.LightGray;
+            txtEmail.Padding = new Padding(10);
+            txtEmail.PasswordChar = '\0';
+            txtEmail.PlaceholderText = "Nhập Email";
+            txtEmail.ReadOnly = false;
+            txtEmail.Size = new Size(224, 41);
+            txtEmail.TabIndex = 33;
+            txtEmail.UseSystemPasswordChar = false;
+            // 
             // cbbRole
             // 
-            cbbRole.FormattingEnabled = true;
-            cbbRole.Location = new Point(624, 236);
-            cbbRole.Margin = new Padding(3, 4, 3, 4);
+            cbbRole.BackColor = Color.White;
+            cbbRole.BorderRadius = 15;
+            cbbRole.BorderThickness = 2;
+            cbbRole.DataSource = null;
+            cbbRole.DisplayMember = "";
+            cbbRole.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbRole.FocusBorderColor = Color.DimGray;
+            cbbRole.HoverBorderColor = Color.DarkGray;
+            cbbRole.Location = new Point(645, 311);
             cbbRole.Name = "cbbRole";
-            cbbRole.Size = new Size(226, 28);
-            cbbRole.TabIndex = 29;
+            cbbRole.NormalBorderColor = Color.LightGray;
+            cbbRole.Padding = new Padding(10, 4, 10, 4);
+            cbbRole.SelectedIndex = -1;
+            cbbRole.SelectedItem = null;
+            cbbRole.SelectedValue = null;
+            cbbRole.Size = new Size(224, 41);
+            cbbRole.TabIndex = 39;
+            cbbRole.ValueMember = "";
             // 
             // CreateUpdateEmployee
             // 
@@ -342,73 +533,49 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(217, 244, 227);
             ClientSize = new Size(922, 523);
-            Controls.Add(cbbRole);
-            Controls.Add(btnSave);
-            Controls.Add(label17);
-            Controls.Add(txbPass);
-            Controls.Add(label18);
-            Controls.Add(label9);
-            Controls.Add(label10);
-            Controls.Add(label11);
-            Controls.Add(txbSDT);
-            Controls.Add(label12);
-            Controls.Add(label13);
-            Controls.Add(label14);
-            Controls.Add(txbEmail);
-            Controls.Add(label15);
-            Controls.Add(txbDiaChi);
-            Controls.Add(label16);
-            Controls.Add(label5);
-            Controls.Add(label6);
-            Controls.Add(txbPhong);
-            Controls.Add(label7);
-            Controls.Add(txbHoTen);
-            Controls.Add(label8);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(txbNamSinh);
-            Controls.Add(label2);
-            Controls.Add(txbMaNV);
-            Controls.Add(label1);
+            Controls.Add(tableLayoutPanel1);
             Margin = new Padding(3, 4, 3, 4);
             Name = "CreateUpdateEmployee";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CreateUpdateEmployee";
             Load += CreateUpdateEmployee_Load;
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
-        private TextBox txbMaNV;
-        private TextBox txbNamSinh;
-        private Label label2;
+        private Label lblMaNV;
+        private Label lblYear;
         private Label label3;
         private Label label4;
         private Label label5;
         private Label label6;
-        private TextBox txbPhong;
-        private Label label7;
-        private TextBox txbHoTen;
-        private Label label8;
+        private Label lblDepartment;
+        private Label lblHoTen;
         private Label label9;
         private Label label10;
-        private Label label11;
-        private TextBox txbSDT;
-        private Label label12;
+        private Label lblRole;
+        private Label lblSDT;
         private Label label13;
         private Label label14;
-        private TextBox txbEmail;
-        private Label label15;
-        private TextBox txbDiaChi;
-        private Label label16;
+        private Label lblEmail;
+        private Label lblAddress;
         private Label label17;
-        private TextBox txbPass;
-        private Label label18;
+        private Label lblPass;
         private Components.RoundedButton btnSave;
-        private ComboBox cbbRole;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private Components.RoundedTextBox txtMaNV;
+        private Components.RoundedTextBox txtNamSinh;
+        private Components.RoundedTextBox txtDiaChi;
+        private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Components.RoundedTextBox txtEmail;
+        private Components.RoundedTextBox txtMatKhau;
+        private Components.RoundedTextBox txtHoTen;
+        private Components.RoundedTextBox txtPhong;
+        private Components.RoundedTextBox txtSDT;
+        private Components.RoundedComboBox cbbRole;
     }
 }

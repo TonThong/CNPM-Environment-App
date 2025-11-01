@@ -16,5 +16,10 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             InitializeComponent();
         }
+
+        private void txtboxIDContract_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

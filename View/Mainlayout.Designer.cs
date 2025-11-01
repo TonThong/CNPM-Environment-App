@@ -45,8 +45,8 @@ namespace Environmental_Monitoring.View
             btnMenu = new MenuButton();
             panelContent = new RoundedPanel();
             pictureBox1 = new PictureBox();
-            btnBell = new MenuButton();
             panelHeadder = new Panel();
+            globalAlertPanel = new AlertPanel();
             panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panelHeadder.SuspendLayout();
@@ -325,39 +325,23 @@ namespace Environmental_Monitoring.View
             pictureBox1.TabIndex = 20;
             pictureBox1.TabStop = false;
             // 
-            // btnBell
-            // 
-            btnBell.ActiveBackColor = Color.FromArgb(220, 240, 220);
-            btnBell.ActiveBorderColor = Color.FromArgb(0, 100, 0);
-            btnBell.Anchor = AnchorStyles.Right;
-            btnBell.BackColor = Color.Transparent;
-            btnBell.BackgroundImage = (Image)resources.GetObject("btnBell.BackgroundImage");
-            btnBell.BackgroundImageLayout = ImageLayout.Stretch;
-            btnBell.BorderLeftSize = 5;
-            btnBell.FlatAppearance.BorderSize = 0;
-            btnBell.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            btnBell.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            btnBell.FlatStyle = FlatStyle.Flat;
-            btnBell.HoverBackColor = Color.LightGray;
-            btnBell.InactiveBackColor = Color.Transparent;
-            btnBell.IsSelected = false;
-            btnBell.Location = new Point(1137, 25);
-            btnBell.Name = "btnBell";
-            btnBell.PressedBackColor = Color.Silver;
-            btnBell.Size = new Size(90, 90);
-            btnBell.TabIndex = 9;
-            btnBell.UseVisualStyleBackColor = false;
-            // 
             // panelHeadder
             // 
             panelHeadder.BackColor = Color.Transparent;
             panelHeadder.Controls.Add(lblBigName);
             panelHeadder.Controls.Add(pictureBox1);
-            panelHeadder.Controls.Add(btnBell);
             panelHeadder.Location = new Point(90, 0);
             panelHeadder.Name = "panelHeadder";
-            panelHeadder.Size = new Size(1230, 140);
+            panelHeadder.Size = new Size(537, 140);
             panelHeadder.TabIndex = 21;
+            // 
+            // globalAlertPanel
+            // 
+            globalAlertPanel.Location = new Point(1012, 10);
+            globalAlertPanel.Name = "globalAlertPanel";
+            globalAlertPanel.Size = new Size(400, 100);
+            globalAlertPanel.TabIndex = 22;
+            globalAlertPanel.Visible = false;
             // 
             // Mainlayout
             // 
@@ -367,6 +351,7 @@ namespace Environmental_Monitoring.View
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1421, 853);
+            Controls.Add(globalAlertPanel);
             Controls.Add(panelHeadder);
             Controls.Add(panelContent);
             Controls.Add(panelMenu);
@@ -394,9 +379,9 @@ namespace Environmental_Monitoring.View
         private MenuButton btnHome;
         private MenuButton btnIntroduce;
         private PictureBox pictureBox1;
-        private MenuButton btnBell;
         private MenuButton btnNotification;
         private MenuButton btnToggleMenu;
         private Panel panelHeadder;
+        private AlertPanel globalAlertPanel;
     }
 }

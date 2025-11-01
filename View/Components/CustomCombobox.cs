@@ -4,16 +4,17 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Drawing.Design;      
+using System.Drawing.Design;
+using System.Collections;
 
-namespace Environmental_Monitoring.View.Components 
+namespace Environmental_Monitoring.View.Components
 {
     [DefaultEvent("SelectedIndexChanged")]
     public partial class CustomComboBox : UserControl
     {
-        
+
         #region Members & Properties
-        
+
         private ListBox _internalListBox;
         private Form _dropDownForm;
         private ListBox _dropDownListBox;
@@ -189,7 +190,8 @@ namespace Environmental_Monitoring.View.Components
             _dropDownForm.FormBorderStyle = FormBorderStyle.None;
             _dropDownForm.StartPosition = FormStartPosition.Manual;
             _dropDownForm.ShowInTaskbar = false;
-            _dropDownForm.Deactivate += _dropDownForm_Deactivate; 
+            _dropDownForm.TopMost = true;
+            _dropDownForm.Deactivate += _dropDownForm_Deactivate;
             _dropDownForm.VisibleChanged += _dropDownForm_VisibleChanged;
 
 
@@ -211,7 +213,15 @@ namespace Environmental_Monitoring.View.Components
 
         private void _internalListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _displayText = _internalListBox.Text;
+            if (_internalListBox.SelectedItem != null)
+            {
+                _displayText = _internalListBox.GetItemText(_internalListBox.SelectedItem);
+            }
+            else
+            {
+                _displayText = "";
+            }
+
             SelectedIndexChanged?.Invoke(this, e);
             Invalidate();
         }
@@ -221,8 +231,13 @@ namespace Environmental_Monitoring.View.Components
             int index = _dropDownListBox.IndexFromPoint(e.Location);
             if (index >= 0)
             {
-                _internalListBox.SelectedIndex = index;
+                // Dòng này bây giờ sẽ an toàn, vì _internalListBox vẫn
+                // giữ DataSource của nó và có Items.Count > 0
+                _internalListBox.SelectedIndex = _dropDownListBox.SelectedIndex;
+
                 CloseDropDown();
+                isFocused = true;
+                Invalidate();
             }
         }
 
@@ -230,16 +245,19 @@ namespace Environmental_Monitoring.View.Components
         {
             if (e.Index < 0) return;
 
+            // Sửa lỗi: Phải dùng GetItemText trên chính _dropDownListBox
+            string itemText = _dropDownListBox.GetItemText(_dropDownListBox.Items[e.Index]);
+
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected ||
                 (e.State & DrawItemState.Focus) == DrawItemState.Focus)
             {
                 e.Graphics.FillRectangle(new SolidBrush(_dropDownHoverColor), e.Bounds);
-                e.Graphics.DrawString(_dropDownListBox.Items[e.Index].ToString(), e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
+                e.Graphics.DrawString(itemText, e.Font, Brushes.White, e.Bounds, StringFormat.GenericDefault);
             }
             else
             {
                 e.Graphics.FillRectangle(new SolidBrush(_dropDownBackColor), e.Bounds);
-                e.Graphics.DrawString(_dropDownListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(this.ForeColor), e.Bounds, StringFormat.GenericDefault);
+                e.Graphics.DrawString(itemText, e.Font, new SolidBrush(this.ForeColor), e.Bounds, StringFormat.GenericDefault);
             }
             e.DrawFocusRectangle();
         }
@@ -247,6 +265,8 @@ namespace Environmental_Monitoring.View.Components
         private void _dropDownForm_Deactivate(object sender, EventArgs e)
         {
             CloseDropDown();
+            isFocused = false;
+            Invalidate();
         }
 
         private void _dropDownForm_VisibleChanged(object sender, EventArgs e)
@@ -254,8 +274,7 @@ namespace Environmental_Monitoring.View.Components
             if (!_dropDownForm.Visible)
             {
                 isDroppedDown = false;
-                isFocused = false;
-                Invalidate(); 
+                Invalidate();
             }
         }
 
@@ -290,7 +309,7 @@ namespace Environmental_Monitoring.View.Components
         protected override void OnLeave(EventArgs e)
         {
             base.OnLeave(e);
-            if (!_dropDownForm.Focused)
+            if (!isDroppedDown)
             {
                 isFocused = false;
                 Invalidate();
@@ -350,19 +369,19 @@ namespace Environmental_Monitoring.View.Components
 
             DrawArrow(g, _arrowColor);
 
-            int textPaddingLeft = (int)Math.Ceiling((double)_borderRadius / 2) + _borderThickness + 2; // Thêm 2px cho dễ nhìn
+            int textPaddingLeft = (int)Math.Ceiling((double)_borderRadius / 2) + _borderThickness + 2;
 
             int arrowSpaceRight = _arrowWidth + textPaddingLeft + _borderThickness;
 
             Rectangle textBounds = new Rectangle(
-                this.ClientRectangle.X + textPaddingLeft, 
+                this.ClientRectangle.X + textPaddingLeft,
                 this.ClientRectangle.Y,
-                this.ClientRectangle.Width - textPaddingLeft - arrowSpaceRight, 
+                this.ClientRectangle.Width - textPaddingLeft - arrowSpaceRight,
                 this.ClientRectangle.Height
             );
 
             TextRenderer.DrawText(g, _displayText, this.Font,
-                textBounds, 
+                textBounds,
                 this.ForeColor,
                 TextFormatFlags.VerticalCenter | TextFormatFlags.Left | TextFormatFlags.EndEllipsis | TextFormatFlags.SingleLine | TextFormatFlags.NoPadding);
         }
@@ -387,21 +406,45 @@ namespace Environmental_Monitoring.View.Components
             isFocused = true;
             Invalidate();
 
+            _dropDownListBox.DataSource = null;
             _dropDownListBox.Items.Clear();
             _dropDownListBox.DisplayMember = _internalListBox.DisplayMember;
+            _dropDownListBox.ValueMember = _internalListBox.ValueMember;
+
+            // <--- BẮT ĐẦU SỬA LỖI ---
+            // Luôn sao chép các Items từ _internalListBox
+            // Collection này vẫn hoạt động ngay cả khi _internalListBox có DataSource
             foreach (var item in _internalListBox.Items)
             {
                 _dropDownListBox.Items.Add(item);
             }
-            _dropDownListBox.SelectedIndex = _internalListBox.SelectedIndex;
+            // <--- KẾT THÚC SỬA LỖI ---
+
+
+            if (this.FindForm() != null)
+            {
+                _dropDownForm.Owner = this.FindForm();
+            }
 
             Point screenLocation = this.PointToScreen(Point.Empty);
             _dropDownForm.Location = new Point(screenLocation.X, screenLocation.Y + this.Height);
             _dropDownForm.Width = this.Width;
-            _dropDownForm.Height = DropDownHeight;
+
+            // Chúng ta luôn dùng _internalListBox.Items.Count
+            int itemCount = _internalListBox.Items.Count;
+
+            if (itemCount > 0)
+            {
+                int totalHeight = itemCount * _dropDownListBox.ItemHeight + 2;
+                _dropDownForm.Height = Math.Min(DropDownHeight, totalHeight);
+                _dropDownListBox.SelectedIndex = _internalListBox.SelectedIndex;
+            }
+            else
+            {
+                _dropDownForm.Height = 1;
+            }
 
             _dropDownForm.Show();
-            _dropDownForm.Activate(); 
         }
 
         private void CloseDropDown()
