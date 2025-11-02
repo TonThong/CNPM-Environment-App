@@ -14,7 +14,7 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View.Components;
-using Environmental_Monitoring.View; 
+using Environmental_Monitoring.View;
 
 namespace Environmental_Monitoring.View
 {
@@ -102,7 +102,7 @@ namespace Environmental_Monitoring.View
             }
             else
             {
-                dgvEmployee.Columns["colDelete"].HeaderText = rm.GetString("GDelete", culture);
+                dgvEmployee.Columns["colDelete"].HeaderText = rm.GetString("Delete", culture);
             }
         }
 
@@ -161,7 +161,7 @@ namespace Environmental_Monitoring.View
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
-            string pageText = rm.GetString("Pagination_Page", culture); 
+            string pageText = rm.GetString("Pagination_Page", culture);
 
             lblPageInfo.Text = $"{pageText} {currentPage} / {totalPages}";
 
@@ -171,6 +171,7 @@ namespace Environmental_Monitoring.View
             btnLast.Enabled = (currentPage < totalPages);
         }
 
+        // === HÀM NÀY ĐÃ ĐƯỢC CẬP NHẬT ===
         private void Form_AddedEmployee(object sender, EventArgs e)
         {
             LoadData();
@@ -179,10 +180,20 @@ namespace Environmental_Monitoring.View
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
-            string successMsg = rm.GetString("Alert_SaveSuccess", culture);
+            // Kiểm tra xem form gửi sự kiện là form nào
+            bool isAdd = false;
+            if (sender is CreateUpdateEmployee addEditForm)
+            {
+                isAdd = addEditForm.IsAddMode;
+            }
+
+            // Chọn chuỗi resource phù hợp
+            string resourceKey = isAdd ? "Alert_AddEmployee_Success" : "Alert_AddEmployee_Edit";
+            string successMsg = rm.GetString(resourceKey, culture);
 
             mainForm?.ShowGlobalAlert(successMsg, AlertPanel.AlertType.Success);
         }
+        // ===================================
 
         private void Employee_Load(object sender, EventArgs e)
         {
@@ -200,7 +211,7 @@ namespace Environmental_Monitoring.View
 
             UpdateUIText();
 
-            btnFirst.Click -= btnFirst_Click; 
+            btnFirst.Click -= btnFirst_Click;
             btnFirst.Click += btnFirst_Click;
 
             btnPrevious.Click -= btnPrevious_Click;
@@ -218,7 +229,7 @@ namespace Environmental_Monitoring.View
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
-            lblTitle.Text = rm.GetString("Employee_Title", culture); 
+            lblTitle.Text = rm.GetString("Employee_Title", culture);
             btnAdd.Text = rm.GetString("Employee_AddButton", culture);
             txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
@@ -240,7 +251,7 @@ namespace Environmental_Monitoring.View
             if (e.KeyCode == Keys.Enter)
             {
                 string keySearch = txtSearch.Text;
-                PagedResult result = EmployeeRepo.Instance.GetEmployees(1, 1000, keySearch); 
+                PagedResult result = EmployeeRepo.Instance.GetEmployees(1, 1000, keySearch);
                 dgvEmployee.DataSource = result.Data;
                 e.SuppressKeyPress = true;
             }

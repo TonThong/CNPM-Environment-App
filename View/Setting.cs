@@ -136,7 +136,6 @@ namespace Environmental_Monitoring
             }
         }
 
-        // --- ĐÃ CẬP NHẬT (Hoàn thiện logic áp dụng Giao diện) ---
         public void UpdateUIText()
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
@@ -144,10 +143,8 @@ namespace Environmental_Monitoring
 
             try
             {
-                // 1. TẢI COMBOBOX (Code này đã đúng)
                 LoadSettings();
 
-                // 2. TẢI NGÔN NGỮ (Code này đã đúng)
                 lblBaoCao.Text = rm.GetString("Settings_Title", culture);
                 lblUserSupport.Text = rm.GetString("Settings_UserSupport", culture);
                 lblSystemSettings.Text = rm.GetString("Settings_SystemSettings", culture);
@@ -162,17 +159,11 @@ namespace Environmental_Monitoring
                 lblQuestion.Text = rm.GetString("Settings_Question", culture);
                 txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
-                // --- 3. ÁP DỤNG MÀU GIAO DIỆN (Đã hoàn thiện) ---
-
-                // Áp dụng màu nền chính của UserControl (hòa vào nền MainLayout)
                 this.BackColor = ThemeManager.BackgroundColor;
 
-                // (Giả sử tên 2 panel "card" của bạn là panelUserSupport và panelSystemSettings)
-                // (Nếu tên khác, bạn hãy sửa lại 2 dòng dưới)
                 roundedPanel2.BackColor = ThemeManager.PanelColor;
                 roundedPanel3.BackColor = ThemeManager.PanelColor;
 
-                // Áp dụng màu chữ (cho tất cả Label và CheckBox)
                 lblBaoCao.ForeColor = ThemeManager.TextColor;
                 lblUserSupport.ForeColor = ThemeManager.TextColor;
                 lblSystemSettings.ForeColor = ThemeManager.TextColor;
@@ -183,22 +174,17 @@ namespace Environmental_Monitoring
                 cbUngDung.ForeColor = ThemeManager.TextColor;
                 lblUserManual.ForeColor = ThemeManager.TextColor;
 
-                // (Giả sử 2 control này là LinkLabel nên sẽ có màu riêng,
-                // nhưng nếu là Label, chúng cũng sẽ được đổi màu)
                 lblViewDocument.ForeColor = ThemeManager.TextColor;
                 lblQuestion.ForeColor = ThemeManager.TextColor;
 
-                // Áp dụng màu cho ComboBox
-                cmbNgonNgu.BackColor = ThemeManager.PanelColor; // Màu nền của ô
-                cmbNgonNgu.ForeColor = ThemeManager.TextColor; // Màu chữ
+                cmbNgonNgu.BackColor = ThemeManager.PanelColor; 
+                cmbNgonNgu.ForeColor = ThemeManager.TextColor; 
                 cmbGiaoDien.BackColor = ThemeManager.PanelColor;
                 cmbGiaoDien.ForeColor = ThemeManager.TextColor;
 
-                // Áp dụng màu cho TextBox
                 txtSearch.BackColor = ThemeManager.PanelColor;
                 txtSearch.ForeColor = ThemeManager.TextColor;
 
-                // Áp dụng màu cho Nút bấm
                 btnSave.BackColor = ThemeManager.AccentColor;
                 btnSave.ForeColor = Color.White;
             }

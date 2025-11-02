@@ -124,6 +124,24 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đã cập nhật thông tin nhân viên thành công..
+        /// </summary>
+        internal static string Alert_AddEmployee_Edit {
+            get {
+                return ResourceManager.GetString("Alert_AddEmployee_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã thêm nhân viên mới thành công..
+        /// </summary>
+        internal static string Alert_AddEmployee_Success {
+            get {
+                return ResourceManager.GetString("Alert_AddEmployee_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn có chắc chắn muốn XÓA nhân viên có Mã: {0}?.
         /// </summary>
         internal static string Alert_DeleteConfirm_Message {
@@ -210,6 +228,15 @@ namespace Environmental_Monitoring {
         internal static string BirthYear {
             get {
                 return ResourceManager.GetString("BirthYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hủy.
+        /// </summary>
+        internal static string Button_Cancel {
+            get {
+                return ResourceManager.GetString("Button_Cancel", resourceCulture);
             }
         }
         
@@ -903,6 +930,15 @@ namespace Environmental_Monitoring {
         internal static string Validation_DepartmentRequired {
             get {
                 return ResourceManager.GetString("Validation_DepartmentRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email này đã tồn tại. Vui lòng sử dụng email khác..
+        /// </summary>
+        internal static string Validation_EmailExists {
+            get {
+                return ResourceManager.GetString("Validation_EmailExists", resourceCulture);
             }
         }
         

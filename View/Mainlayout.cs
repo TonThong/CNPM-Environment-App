@@ -14,18 +14,25 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 
-
 namespace Environmental_Monitoring.View
 {
-
     public partial class Mainlayout : Form
     {
-
         private MenuButton currentActiveButton;
+
+        // === BIẾN MỚI ĐỂ XỬ LÝ KÉO-THẢ CỬA SỔ ===
+        private bool isDragging = false;
+        private Point lastLocation;
+        // ======================================
 
         public Mainlayout()
         {
             InitializeComponent();
+
+            // === CẬP NHẬT ĐỂ XÓA TITLE BAR ===
+            //this.AutoSize = false; // Giữ lại từ lần sửa trước
+            //this.FormBorderStyle = FormBorderStyle.None; // Xóa title bar
+            // ================================
 
             this.DoubleBuffered = true;
 
@@ -39,6 +46,17 @@ namespace Environmental_Monitoring.View
             btnAI.Click += new EventHandler(MenuButton_Click);
             btnIntroduce.Click += new EventHandler(MenuButton_Click);
 
+            // === GẮN SỰ KIỆN KÉO-THẢ CHO HEADER ===
+            // (Giả sử panel header của bạn tên là 'panelHeadder')
+            panel.MouseDown += new MouseEventHandler(panelHeadder_MouseDown);
+            panel.MouseMove += new MouseEventHandler(panelHeadder_MouseMove);
+            panel.MouseUp += new MouseEventHandler(panelHeadder_MouseUp);
+
+            // LƯU Ý: Bạn cũng nên vào Designer và gán sự kiện 
+            // MouseDown, MouseMove, MouseUp của logo và label "GREEN FLOW"
+            // trỏ vào 3 hàm này, để kéo-thả mượt hơn.
+            // =====================================
+
             HighlightButton(btnNotification);
             LoadPage(new Notification());
 
@@ -46,19 +64,43 @@ namespace Environmental_Monitoring.View
 
             SetMenuState(isMenuCollapsed);
 
-            // --- THÊM MỚI: Áp dụng giao diện ngay khi khởi động ---
             ApplyTheme();
         }
 
-        // --- HÀM ĐÃ CẬP NHẬT: Thêm ảnh nền và set màu nút bằng vòng lặp ---
+        // === CÁC HÀM MỚI ĐỂ KÉO-THẢ CỬA SỔ ===
+        private void panelHeadder_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                lastLocation = e.Location;
+            }
+        }
+
+        private void panelHeadder_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X,
+                    (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void panelHeadder_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragging = false;
+        }
+        // =====================================
+
         private void ApplyTheme()
         {
-            // Áp dụng màu cho nền Form
             this.BackColor = ThemeManager.BackgroundColor;
 
-            // --- CẬP NHẬT: Thêm ảnh nền ---
             this.BackgroundImage = ThemeManager.BackgroundImage;
-            this.BackgroundImageLayout = ImageLayout.Stretch; // Hoặc Zoom, Center...
+            this.BackgroundImageLayout = ImageLayout.Stretch;
 
             // Áp dụng màu cho thanh Header (Nơi có chữ GREEN FLOW)
             //panelHeadder.BackColor = ThemeManager.PanelColor;
@@ -67,22 +109,17 @@ namespace Environmental_Monitoring.View
             // (Nếu logo cũng đổi theo Theme, giả sử tên là picLogo)
             // picLogo.Image = ThemeManager.MainMenuLogo;
 
-            // Áp dụng màu cho thanh Menu (Bên trái)
             panelMenu.BackColor = ThemeManager.PanelColor;
 
-            // --- CẬP NHẬT: Áp dụng màu cho các nút menu bằng vòng lặp ---
             foreach (Control ctrl in panelMenu.Controls)
             {
                 if (ctrl is MenuButton btn)
                 {
-                    // Màu chữ mặc định (khi không được chọn)
                     btn.ForeColor = ThemeManager.SecondaryTextColor;
                     btn.BackColor = ThemeManager.PanelColor;
                 }
             }
 
-            // Áp dụng màu nền cho khu vực nội dung (phía sau các trang)
-            // Đây là code SỬA LỖI CÓ Ô MÀU TRẮNG Ở BACKGROUND
             panelContent.BackColor = ThemeManager.BackgroundColor;
         }
 
@@ -91,24 +128,39 @@ namespace Environmental_Monitoring.View
         private int menuCollapsedWidth = 90;
         private int menuExpandedWidth = 190;
 
+        // === HÀM NÀY GIỮ NGUYÊN NHƯ LẦN TRƯỚC ===
         private void btnToggleMenu_Click(object sender, EventArgs e)
         {
-            // (Code của bạn đã đúng)
             isMenuCollapsed = !isMenuCollapsed;
-            int oldMenuWidth = panelMenu.Width;
             int newMenuWidth = isMenuCollapsed ? menuCollapsedWidth : menuExpandedWidth;
-            int widthDifference = newMenuWidth - oldMenuWidth;
+
             this.SuspendLayout();
+
+            // 1. Cập nhật Menu Panel
             panelMenu.Width = newMenuWidth;
-            panelContent.Left += widthDifference;
-            panelHeadder.Left += widthDifference;
+
+            // 2. Cập nhật Header Panel (panelHeadder)
+            panel.Left = newMenuWidth;
+            panel.Width = this.ClientSize.Width - newMenuWidth;
+            // panelHeadder.Top = 0; // Đã giả định Top = 0
+
+            // 3. Cập nhật Content Panel (panelContent)
+            panelContent.Left = newMenuWidth;
+            // DÒNG QUAN TRỌNG NHẤT ĐỂ SỬA LỖI:
+            panelContent.Top = panel.Height; // Reset Top về vị trí cố định
+
+            panelContent.Width = this.ClientSize.Width - newMenuWidth;
+            panelContent.Height = this.ClientSize.Height - panel.Height;
+
+            // 4. Cập nhật trạng thái text
             SetMenuState(isMenuCollapsed);
-            this.ResumeLayout();
+
+            this.ResumeLayout(true); // Dùng true để áp dụng layout ngay
         }
+        // ===============================================
 
         private void SetMenuState(bool collapsed)
         {
-            // (Code của bạn đã đúng)
             try
             {
                 ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Mainlayout).Assembly);
@@ -137,7 +189,6 @@ namespace Environmental_Monitoring.View
 
         private void MenuButton_Click(object sender, EventArgs e)
         {
-            // (Code của bạn đã đúng)
             MenuButton oldActiveButton = currentActiveButton;
             ResetAllButtons();
             if (oldActiveButton != null)
@@ -177,14 +228,12 @@ namespace Environmental_Monitoring.View
         }
         private void HighlightButton(MenuButton selectedButton)
         {
-            // (Code của bạn đã đúng)
             currentActiveButton = selectedButton;
             selectedButton.IsSelected = true;
         }
 
         private void ResetAllButtons()
         {
-            // (Code của bạn đã đúng)
             foreach (Control ctrl in panelMenu.Controls)
             {
                 if (ctrl is MenuButton btn)
@@ -196,26 +245,20 @@ namespace Environmental_Monitoring.View
 
         private void LoadPage(UserControl pageToLoad)
         {
-            // (Code của bạn đã đúng)
             panelContent.Controls.Clear();
             pageToLoad.Dock = DockStyle.Fill;
             panelContent.Controls.Add(pageToLoad);
         }
-
-        // --- ĐÃ CẬP NHẬT (Thêm logic áp dụng Theme) ---
         public void UpdateUIText()
         {
-            // 1. TẢI NGÔN NGỮ (Code này bạn đã có)
             SetMenuState(isMenuCollapsed);
 
-            // 2. ÁP DỤNG GIAO DIỆN (Code mới)
             ApplyTheme();
         }
 
         public void UpdateAllChildLanguages()
         {
-            // (Code của bạn đã đúng)
-            this.UpdateUIText(); // Hàm này giờ đã bao gồm cả Ngôn ngữ VÀ Giao diện
+            this.UpdateUIText();
             if (panelContent.Controls.Count > 0)
             {
                 var currentPage = panelContent.Controls[0];
@@ -232,7 +275,6 @@ namespace Environmental_Monitoring.View
 
         public void ShowGlobalAlert(string message, AlertPanel.AlertType type)
         {
-            // (Code của bạn đã đúng)
             if (globalAlertPanel != null)
             {
                 globalAlertPanel.ShowAlert(message, type);
@@ -241,6 +283,11 @@ namespace Environmental_Monitoring.View
             {
                 MessageBox.Show(message);
             }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

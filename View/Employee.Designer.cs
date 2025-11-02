@@ -101,7 +101,6 @@ namespace Environmental_Monitoring.View
             dgvEmployee.BorderStyle = BorderStyle.None;
             dgvEmployee.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvEmployee.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEmployee.Dock = DockStyle.Fill;
             dgvEmployee.EnableHeadersVisualStyles = false;
             dgvEmployee.Location = new Point(79, 111);
             dgvEmployee.Margin = new Padding(3, 4, 3, 4);

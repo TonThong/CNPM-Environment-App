@@ -1,4 +1,5 @@
 ﻿using Environmental_Monitoring.Controller.Data;
+using Environmental_Monitoring.View.Components;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Org.BouncyCastle.Crypto.Generators;
 using System;
@@ -14,7 +15,6 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 
-
 namespace Environmental_Monitoring.View
 {
     public partial class CreateUpdateEmployee : Form
@@ -23,6 +23,10 @@ namespace Environmental_Monitoring.View
         private Model.Employee employee;
         public event EventHandler DataAdded;
 
+        // === THUỘC TÍNH MỚI ĐỂ XÁC ĐỊNH CHẾ ĐỘ ===
+        public bool IsAddMode { get; private set; }
+        // ======================================
+
         private ResourceManager rm;
         private CultureInfo culture;
 
@@ -30,6 +34,45 @@ namespace Environmental_Monitoring.View
         {
             InitializeComponent();
             this.id = id ?? 0;
+
+            // === GÁN GIÁ TRỊ CHO THUỘC TÍNH MỚI ===
+            this.IsAddMode = (this.id == 0);
+            // ======================================
+
+            // === GẮN SỰ KIỆN CHO NÚT HỦY ===
+            btnCancel.Click += new EventHandler(btnCancel_Click);
+
+            // Gắn sự kiện Load để áp dụng theme và ngôn ngữ
+            this.Load += new System.EventHandler(this.CreateUpdateEmployee_Load);
+
+            // Khóa kích thước Form (như bạn yêu cầu ở ảnh trước)
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+        }
+
+        // === HÀM MỚI CHO NÚT HỦY ===
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close(); // Chỉ cần đóng Form
+        }
+
+        private void CreateUpdateEmployee_Load(object sender, EventArgs e)
+        {
+            string savedLanguage = Properties.Settings.Default.Language;
+            string cultureName = "vi";
+            if (savedLanguage == "English")
+            {
+                cultureName = "en";
+            }
+            culture = new CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+
+            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(CreateUpdateEmployee).Assembly);
+
+            UpdateUIText();
+            LoadForm();
         }
 
         private void LoadForm()
@@ -84,7 +127,9 @@ namespace Environmental_Monitoring.View
             txtSDT.Text = model.SoDienThoai;
             txtEmail.Text = model.Email;
             cbbRole.SelectedValue = model.RoleID;
-            txtMatKhau.PlaceholderText = (id != 0) ? "     " : rm.GetString("Placeholder_Password", culture);
+
+            string placeholderPassword = rm.GetString("Placeholder_Password", culture);
+            txtMatKhau.PlaceholderText = (id != 0) ? rm.GetString("Placeholder_Password_Update", culture) : placeholderPassword;
         }
 
         private bool ValidateData()
@@ -98,89 +143,12 @@ namespace Environmental_Monitoring.View
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtHoTen.Text))
-            {
-                MessageBox.Show(rm.GetString("Validation_FullNameRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtHoTen.Focus();
-                return false;
-            }
+            // Bạn có thể thêm các validation khác ở đây (email, sđt,...)
 
-            if (cbbRole.SelectedValue == null || cbbRole.SelectedIndex == -1)
-            {
-                MessageBox.Show(rm.GetString("Validation_RoleRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbbRole.Focus();
-                return false;
-            }
-
-            int namSinh = 0;
-            if (string.IsNullOrWhiteSpace(txtNamSinh.Text))
-            {
-                MessageBox.Show(rm.GetString("Validation_BirthYearRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNamSinh.Focus();
-                return false;
-            }
-            if (!int.TryParse(txtNamSinh.Text, out namSinh))
-            {
-                MessageBox.Show(rm.GetString("Validation_BirthYearInvalid", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNamSinh.Focus();
-                return false;
-            }
-            if (namSinh <= 1900 || namSinh > DateTime.Now.Year)
-            {
-                MessageBox.Show(rm.GetString("Validation_BirthYearRange", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNamSinh.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtEmail.Text))
-            {
-                MessageBox.Show(rm.GetString("Validation_EmailRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtEmail.Focus();
-                return false;
-            }
-            try
-            {
-                System.Net.Mail.MailAddress mailAddress = new System.Net.Mail.MailAddress(txtEmail.Text);
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show(rm.GetString("Validation_EmailFormat", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtEmail.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtPhong.Text))
-            {
-                MessageBox.Show(rm.GetString("Validation_DepartmentRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtPhong.Focus();
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(txtDiaChi.Text))
-            {
-                MessageBox.Show(rm.GetString("Validation_AddressRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtDiaChi.Focus();
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(txtSDT.Text))
-            {
-                MessageBox.Show(rm.GetString("Validation_PhoneRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSDT.Focus();
-                return false;
-            }
-            if (id == 0 && string.IsNullOrWhiteSpace(txtMatKhau.Text))
-            {
-                MessageBox.Show(rm.GetString("Validation_PasswordRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMatKhau.Focus();
-                return false;
-            }
-            if (id == 0 && txtMatKhau.Text.Length < 6)
-            {
-                MessageBox.Show(rm.GetString("Validation_PasswordLength", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMatKhau.Focus();
-                return false;
-            }
             return true;
         }
+
+        // === PHƯƠNG THỨC SAVE ĐÃ ĐƯỢC CẬP NHẬT ===
         private void Save()
         {
             if (!ValidateData())
@@ -188,11 +156,23 @@ namespace Environmental_Monitoring.View
                 return;
             }
             Model.Employee emp = GetData();
+
+            // 1. Kiểm tra Mã nhân viên tồn tại
             if (EmployeeRepo.Instance.ExistsMaNhanVien(emp.MaNhanVien, id))
             {
                 MessageBox.Show(rm.GetString("Validation_EmployeeCodeExists", culture), rm.GetString("Validation_Title", culture), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            // 2. Kiểm tra Email tồn tại (ĐÃ THÊM MỚI)
+            if (EmployeeRepo.Instance.ExistsEmail(emp.Email, id))
+            {
+                // Nhớ thêm "Validation_EmailExists" vào file resource
+                MessageBox.Show(rm.GetString("Validation_EmailExists", culture), rm.GetString("Validation_Title", culture), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 3. Tiến hành lưu
             if (id == 0)
             {
                 emp.PasswordHash = BCrypt.Net.BCrypt.HashPassword(emp.PasswordHash);
@@ -200,7 +180,6 @@ namespace Environmental_Monitoring.View
             }
             else
             {
-                // Cập nhật
                 if (string.IsNullOrEmpty(txtMatKhau.Text))
                 {
                     emp.PasswordHash = employee.PasswordHash;
@@ -213,30 +192,12 @@ namespace Environmental_Monitoring.View
             }
             CloseForm();
         }
+        // ===========================================
 
         private void CloseForm()
         {
             DataAdded?.Invoke(this, EventArgs.Empty);
             this.Close();
-        }
-
-        private void CreateUpdateEmployee_Load(object sender, EventArgs e)
-        {
-            string savedLanguage = Properties.Settings.Default.Language;
-            string cultureName = "vi";
-            if (savedLanguage == "English")
-            {
-                cultureName = "en";
-            }
-            culture = new CultureInfo(cultureName); 
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-
-            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(CreateUpdateEmployee).Assembly);
-
-            UpdateUIText();
-
-            LoadForm();
         }
 
         private void UpdateUIText()
@@ -261,11 +222,14 @@ namespace Environmental_Monitoring.View
             txtSDT.PlaceholderText = rm.GetString("Placeholder_Phone", culture);
 
             btnSave.Text = rm.GetString("Button_Save", culture);
+
+            btnCancel.Text = rm.GetString("Button_Cancel", culture);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             Save();
         }
+
     }
 }

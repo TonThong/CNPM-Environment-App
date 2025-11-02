@@ -432,4 +432,16 @@
   <data name="Introduce_Notice" xml:space="preserve">
     <value>Chú Ý</value>
   </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="Alert_AddEmployee_Edit" xml:space="preserve">
+    <value>Đã cập nhật thông tin nhân viên thành công.</value>
+  </data>
+  <data name="Validation_EmailExists" xml:space="preserve">
+    <value>Email này đã tồn tại. Vui lòng sử dụng email khác.</value>
+  </data>
+  <data name="Alert_AddEmployee_Success" xml:space="preserve">
+    <value>Đã thêm nhân viên mới thành công.</value>
+  </data>
 </root>
