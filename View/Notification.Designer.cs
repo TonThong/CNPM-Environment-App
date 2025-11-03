@@ -75,7 +75,7 @@ namespace Environmental_Monitoring
             // 
             // dgvSapQuaHan
             // 
-            dgvSapQuaHan.BackgroundColor = Color.FromArgb(237, 230, 147);
+            dgvSapQuaHan.BackgroundColor = Color.FromArgb(255, 255, 192);
             dgvSapQuaHan.BorderRadius = 20;
             dgvSapQuaHan.BorderStyle = BorderStyle.None;
             dgvSapQuaHan.CellBorderStyle = DataGridViewCellBorderStyle.None;
@@ -102,7 +102,7 @@ namespace Environmental_Monitoring
             dgvSapQuaHan.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvSapQuaHan.RowHeadersVisible = false;
             dgvSapQuaHan.RowHeadersWidth = 51;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(237, 230, 147);
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(255, 255, 192);
             dataGridViewCellStyle3.SelectionBackColor = Color.Goldenrod;
             dgvSapQuaHan.RowsDefaultCellStyle = dataGridViewCellStyle3;
             dgvSapQuaHan.Size = new Size(531, 504);
@@ -160,7 +160,7 @@ namespace Environmental_Monitoring
             // 
             // dgvQuaHan
             // 
-            dgvQuaHan.BackgroundColor = Color.FromArgb(230, 101, 101);
+            dgvQuaHan.BackgroundColor = Color.FromArgb(255, 192, 192);
             dgvQuaHan.BorderRadius = 20;
             dgvQuaHan.BorderStyle = BorderStyle.None;
             dgvQuaHan.CellBorderStyle = DataGridViewCellBorderStyle.None;
@@ -179,7 +179,7 @@ namespace Environmental_Monitoring
             dgvQuaHan.Name = "dgvQuaHan";
             dgvQuaHan.RowHeadersVisible = false;
             dgvQuaHan.RowHeadersWidth = 51;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(230, 101, 101);
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(255, 192, 192);
             dataGridViewCellStyle5.SelectionBackColor = Color.Maroon;
             dgvQuaHan.RowsDefaultCellStyle = dataGridViewCellStyle5;
             dgvQuaHan.Size = new Size(531, 504);

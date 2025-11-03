@@ -18,14 +18,12 @@ namespace Environmental_Monitoring
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            // --- CẬP NHẬT NGÔN NGỮ (Code gốc của bạn) ---
             string cultureName = "vi";
             string savedLanguage = Properties.Settings.Default.Language;
-            bool settingsNeedSave = false; // Biến cờ để chỉ Save 1 lần
+            bool settingsNeedSave = false;
 
             if (string.IsNullOrEmpty(savedLanguage))
             {
@@ -46,27 +44,21 @@ namespace Environmental_Monitoring
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
-            // --- THÊM MỚI: ÁP DỤNG GIAO DIỆN KHI KHỞI ĐỘNG ---
             string savedTheme = Properties.Settings.Default.Theme;
             if (string.IsNullOrEmpty(savedTheme))
             {
-                savedTheme = "light"; // Đặt Sáng ("light") làm mặc định
+                savedTheme = "light"; 
                 Properties.Settings.Default.Theme = savedTheme;
                 settingsNeedSave = true;
             }
 
-            // Lưu lại các thay đổi mặc định (nếu có)
             if (settingsNeedSave)
             {
                 Properties.Settings.Default.Save();
             }
 
-            // Gọi hàm từ class ThemeManager để set màu
             ThemeManager.ApplyTheme(savedTheme);
-            // -----------------------------------------------
-
-            // Chạy Mainlayout (Code gốc của bạn)
-            Application.Run(new Mainlayout());
+            Application.Run(new Login());
         }
     }
 }

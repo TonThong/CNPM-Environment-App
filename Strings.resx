@@ -447,4 +447,22 @@
   <data name="IsDepartmentHead" xml:space="preserve">
     <value>Trưởng Bộ Phận</value>
   </data>
+  <data name="Contract_Title" xml:space="preserve">
+    <value>QUẢN LÍ HỢP ĐỒNG</value>
+  </data>
+  <data name="Contract_Tab_Business" xml:space="preserve">
+    <value>Kinh Doanh</value>
+  </data>
+  <data name="Contract_Tab_Plan" xml:space="preserve">
+    <value>Kế Hoạch</value>
+  </data>
+  <data name="Contract_Tab_Scene" xml:space="preserve">
+    <value>Hiện Trường</value>
+  </data>
+  <data name="Contract_Tab_Lab" xml:space="preserve">
+    <value>Phòng Thí Nghiệm</value>
+  </data>
+  <data name="Contract_Tab_Result" xml:space="preserve">
+    <value>Kết Quả</value>
+  </data>
 </root>

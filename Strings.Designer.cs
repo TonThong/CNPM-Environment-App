@@ -250,6 +250,60 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kinh Doanh.
+        /// </summary>
+        internal static string Contract_Tab_Business {
+            get {
+                return ResourceManager.GetString("Contract_Tab_Business", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phòng Thí Nghiệm.
+        /// </summary>
+        internal static string Contract_Tab_Lab {
+            get {
+                return ResourceManager.GetString("Contract_Tab_Lab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kế Hoạch.
+        /// </summary>
+        internal static string Contract_Tab_Plan {
+            get {
+                return ResourceManager.GetString("Contract_Tab_Plan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kết Quả.
+        /// </summary>
+        internal static string Contract_Tab_Result {
+            get {
+                return ResourceManager.GetString("Contract_Tab_Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hiện Trường.
+        /// </summary>
+        internal static string Contract_Tab_Scene {
+            get {
+                return ResourceManager.GetString("Contract_Tab_Scene", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QUẢN LÍ HỢP ĐỒNG.
+        /// </summary>
+        internal static string Contract_Title {
+            get {
+                return ResourceManager.GetString("Contract_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xóa.
         /// </summary>
         internal static string Delete {

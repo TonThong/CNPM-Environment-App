@@ -464,8 +464,8 @@
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = SystemColors.ButtonShadow;
-            btnCancel.BaseColor = SystemColors.ButtonShadow;
+            btnCancel.BackColor = Color.DarkGray;
+            btnCancel.BaseColor = Color.DarkGray;
             btnCancel.BorderColor = Color.Transparent;
             btnCancel.BorderRadius = 10;
             btnCancel.BorderSize = 0;
@@ -473,7 +473,7 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.White;
-            btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
+            btnCancel.HoverColor = Color.DimGray;
             btnCancel.ImageAlign = ContentAlignment.MiddleLeft;
             btnCancel.Location = new Point(3, 4);
             btnCancel.Margin = new Padding(3, 4, 3, 4);

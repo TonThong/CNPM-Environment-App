@@ -447,4 +447,22 @@
   <data name="IsDepartmentHead" xml:space="preserve">
     <value>Manager</value>
   </data>
+  <data name="Contract_Title" xml:space="preserve">
+    <value>CONTRACT MANAGEMENT</value>
+  </data>
+  <data name="Contract_Tab_Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="Contract_Tab_Plan" xml:space="preserve">
+    <value>Planning</value>
+  </data>
+  <data name="Contract_Tab_Scene" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="Contract_Tab_Lab" xml:space="preserve">
+    <value>Laboratory</value>
+  </data>
+  <data name="Contract_Tab_Result" xml:space="preserve">
+    <value>Results</value>
+  </data>
 </root>
