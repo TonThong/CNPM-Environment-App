@@ -24,7 +24,7 @@ namespace Environmental_Monitoring.Model
         public int? NamSinh { get; set; } 
 
         [StringLength(100)]
-        public string PhongBan { get; set; }
+        public int TruongBoPhan { get; set; }
 
         [StringLength(255)]
         public string DiaChi { get; set; }
@@ -71,7 +71,7 @@ namespace Environmental_Monitoring.Model
             else
                 NamSinh = null;
 
-            PhongBan = row["PhongBan"].ToString();
+            TruongBoPhan = row["TruongBoPhan"].ToString();
             DiaChi = row["DiaChi"].ToString();
             SoDienThoai = row["SoDienThoai"].ToString();
             Email = row["Email"].ToString();
