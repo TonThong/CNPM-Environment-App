@@ -439,6 +439,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trưởng Bộ Phận.
+        /// </summary>
+        internal static string IsDepartmentHead {
+            get {
+                return ResourceManager.GetString("IsDepartmentHead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AI.
         /// </summary>
         internal static string Menu_AI {

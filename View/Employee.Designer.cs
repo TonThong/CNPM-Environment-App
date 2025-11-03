@@ -222,7 +222,7 @@ namespace Environmental_Monitoring.View
             txtSearch.Size = new Size(440, 45);
             txtSearch.TabIndex = 21;
             txtSearch.UseSystemPasswordChar = false;
-            txtSearch.TextChanged += txbSearch_TextChanged;
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
             // lblTitle
             // 

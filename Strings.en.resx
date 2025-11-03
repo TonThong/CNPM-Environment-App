@@ -444,4 +444,7 @@
   <data name="Alert_AddEmployee_Success" xml:space="preserve">
     <value>New employee added successfully.</value>
   </data>
+  <data name="IsDepartmentHead" xml:space="preserve">
+    <value>Manager</value>
+  </data>
 </root>

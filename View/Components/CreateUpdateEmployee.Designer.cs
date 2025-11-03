@@ -34,9 +34,7 @@
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
-            lblDepartment = new Label();
             lblHoTen = new Label();
-            label9 = new Label();
             label10 = new Label();
             lblRole = new Label();
             lblSDT = new Label();
@@ -56,11 +54,11 @@
             txtHoTen = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtEmail = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtMatKhau = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            cbbRole = new Environmental_Monitoring.View.Components.RoundedComboBox();
-            txtSDT = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtPhong = new Environmental_Monitoring.View.Components.RoundedTextBox();
             tableLayoutPanel2 = new TableLayoutPanel();
             btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
+            txtSDT = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            cbbRole = new Environmental_Monitoring.View.Components.RoundedComboBox();
+            chkTruongBoPhan = new CheckBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -131,17 +129,6 @@
             label6.TabIndex = 10;
             label6.Text = "*";
             // 
-            // lblDepartment
-            // 
-            lblDepartment.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            lblDepartment.AutoSize = true;
-            lblDepartment.Location = new Point(508, 120);
-            lblDepartment.Name = "lblDepartment";
-            lblDepartment.Size = new Size(104, 47);
-            lblDepartment.TabIndex = 8;
-            lblDepartment.Text = "Phòng ban";
-            lblDepartment.TextAlign = ContentAlignment.MiddleCenter;
-            // 
             // lblHoTen
             // 
             lblHoTen.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -152,17 +139,6 @@
             lblHoTen.TabIndex = 6;
             lblHoTen.Text = "Họ tên";
             lblHoTen.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label9.ForeColor = Color.Red;
-            label9.Location = new Point(848, 308);
-            label9.Name = "label9";
-            label9.Size = new Size(21, 28);
-            label9.TabIndex = 23;
-            label9.Text = "*";
             // 
             // label10
             // 
@@ -179,7 +155,7 @@
             // 
             lblRole.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lblRole.AutoSize = true;
-            lblRole.Location = new Point(508, 308);
+            lblRole.Location = new Point(508, 214);
             lblRole.Name = "lblRole";
             lblRole.Size = new Size(104, 47);
             lblRole.TabIndex = 20;
@@ -190,7 +166,7 @@
             // 
             lblSDT.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lblSDT.AutoSize = true;
-            lblSDT.Location = new Point(508, 214);
+            lblSDT.Location = new Point(508, 120);
             lblSDT.Name = "lblSDT";
             lblSDT.Size = new Size(104, 47);
             lblSDT.TabIndex = 18;
@@ -298,7 +274,7 @@
             txtMaNV.Multiline = false;
             txtMaNV.Name = "txtMaNV";
             txtMaNV.NormalBorderColor = Color.LightGray;
-            txtMaNV.Padding = new Padding(5);
+            txtMaNV.Padding = new Padding(7, 10, 5, 5);
             txtMaNV.PasswordChar = '\0';
             txtMaNV.PlaceholderText = "Nhập Mã NV";
             txtMaNV.ReadOnly = false;
@@ -318,7 +294,7 @@
             txtNamSinh.Multiline = false;
             txtNamSinh.Name = "txtNamSinh";
             txtNamSinh.NormalBorderColor = Color.LightGray;
-            txtNamSinh.Padding = new Padding(5);
+            txtNamSinh.Padding = new Padding(7, 10, 5, 5);
             txtNamSinh.PasswordChar = '\0';
             txtNamSinh.PlaceholderText = "Nhập Năm Sinh";
             txtNamSinh.ReadOnly = false;
@@ -338,7 +314,7 @@
             txtDiaChi.Multiline = false;
             txtDiaChi.Name = "txtDiaChi";
             txtDiaChi.NormalBorderColor = Color.LightGray;
-            txtDiaChi.Padding = new Padding(5);
+            txtDiaChi.Padding = new Padding(7, 10, 5, 5);
             txtDiaChi.PasswordChar = '\0';
             txtDiaChi.PlaceholderText = "Nhập Địa Chỉ";
             txtDiaChi.ReadOnly = false;
@@ -365,11 +341,8 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(txtHoTen, 2, 3);
             tableLayoutPanel1.Controls.Add(txtDiaChi, 2, 5);
-            tableLayoutPanel1.Controls.Add(lblRole, 5, 7);
             tableLayoutPanel1.Controls.Add(txtMaNV, 2, 1);
             tableLayoutPanel1.Controls.Add(lblAddress, 1, 5);
-            tableLayoutPanel1.Controls.Add(lblSDT, 5, 5);
-            tableLayoutPanel1.Controls.Add(lblDepartment, 5, 3);
             tableLayoutPanel1.Controls.Add(lblEmail, 1, 7);
             tableLayoutPanel1.Controls.Add(lblPass, 1, 9);
             tableLayoutPanel1.Controls.Add(lblHoTen, 1, 3);
@@ -382,15 +355,16 @@
             tableLayoutPanel1.Controls.Add(label13, 3, 7);
             tableLayoutPanel1.Controls.Add(txtMatKhau, 2, 9);
             tableLayoutPanel1.Controls.Add(label17, 3, 9);
-            tableLayoutPanel1.Controls.Add(label9, 7, 7);
-            tableLayoutPanel1.Controls.Add(cbbRole, 6, 7);
-            tableLayoutPanel1.Controls.Add(txtSDT, 6, 5);
             tableLayoutPanel1.Controls.Add(label10, 7, 5);
-            tableLayoutPanel1.Controls.Add(txtPhong, 6, 3);
             tableLayoutPanel1.Controls.Add(label5, 7, 3);
             tableLayoutPanel1.Controls.Add(txtNamSinh, 6, 1);
             tableLayoutPanel1.Controls.Add(label6, 7, 1);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 5, 9);
+            tableLayoutPanel1.Controls.Add(txtSDT, 6, 3);
+            tableLayoutPanel1.Controls.Add(lblSDT, 5, 3);
+            tableLayoutPanel1.Controls.Add(cbbRole, 6, 5);
+            tableLayoutPanel1.Controls.Add(lblRole, 5, 5);
+            tableLayoutPanel1.Controls.Add(chkTruongBoPhan, 5, 7);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -422,7 +396,7 @@
             txtHoTen.Multiline = false;
             txtHoTen.Name = "txtHoTen";
             txtHoTen.NormalBorderColor = Color.LightGray;
-            txtHoTen.Padding = new Padding(5);
+            txtHoTen.Padding = new Padding(7, 10, 5, 5);
             txtHoTen.PasswordChar = '\0';
             txtHoTen.PlaceholderText = "Nhập Họ Và Tên";
             txtHoTen.ReadOnly = false;
@@ -442,7 +416,7 @@
             txtEmail.Multiline = false;
             txtEmail.Name = "txtEmail";
             txtEmail.NormalBorderColor = Color.LightGray;
-            txtEmail.Padding = new Padding(5);
+            txtEmail.Padding = new Padding(7, 10, 5, 5);
             txtEmail.PasswordChar = '\0';
             txtEmail.PlaceholderText = "Nhập Email";
             txtEmail.ReadOnly = false;
@@ -462,74 +436,13 @@
             txtMatKhau.Multiline = false;
             txtMatKhau.Name = "txtMatKhau";
             txtMatKhau.NormalBorderColor = Color.LightGray;
-            txtMatKhau.Padding = new Padding(5);
+            txtMatKhau.Padding = new Padding(7, 10, 5, 5);
             txtMatKhau.PasswordChar = '\0';
             txtMatKhau.PlaceholderText = "Nhập Mật Khẩu";
             txtMatKhau.ReadOnly = false;
             txtMatKhau.Size = new Size(224, 41);
             txtMatKhau.TabIndex = 34;
             txtMatKhau.UseSystemPasswordChar = false;
-            // 
-            // cbbRole
-            // 
-            cbbRole.BackColor = Color.White;
-            cbbRole.BorderRadius = 5;
-            cbbRole.BorderThickness = 2;
-            cbbRole.DataSource = null;
-            cbbRole.DisplayMember = "";
-            cbbRole.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbbRole.FocusBorderColor = Color.DimGray;
-            cbbRole.HoverBorderColor = Color.DarkGray;
-            cbbRole.Location = new Point(618, 311);
-            cbbRole.Name = "cbbRole";
-            cbbRole.NormalBorderColor = Color.LightGray;
-            cbbRole.Padding = new Padding(5, 10, 5, 10);
-            cbbRole.SelectedIndex = -1;
-            cbbRole.SelectedItem = null;
-            cbbRole.SelectedValue = null;
-            cbbRole.Size = new Size(224, 41);
-            cbbRole.TabIndex = 39;
-            cbbRole.ValueMember = "";
-            // 
-            // txtSDT
-            // 
-            txtSDT.BackColor = Color.White;
-            txtSDT.BorderRadius = 5;
-            txtSDT.BorderThickness = 2;
-            txtSDT.Dock = DockStyle.Fill;
-            txtSDT.FocusBorderColor = Color.DimGray;
-            txtSDT.HoverBorderColor = Color.DarkGray;
-            txtSDT.Location = new Point(618, 217);
-            txtSDT.Multiline = false;
-            txtSDT.Name = "txtSDT";
-            txtSDT.NormalBorderColor = Color.LightGray;
-            txtSDT.Padding = new Padding(5);
-            txtSDT.PasswordChar = '\0';
-            txtSDT.PlaceholderText = "Nhập Số Điện Thoại";
-            txtSDT.ReadOnly = false;
-            txtSDT.Size = new Size(224, 41);
-            txtSDT.TabIndex = 37;
-            txtSDT.UseSystemPasswordChar = false;
-            // 
-            // txtPhong
-            // 
-            txtPhong.BackColor = Color.White;
-            txtPhong.BorderRadius = 5;
-            txtPhong.BorderThickness = 2;
-            txtPhong.Dock = DockStyle.Fill;
-            txtPhong.FocusBorderColor = Color.DimGray;
-            txtPhong.HoverBorderColor = Color.DarkGray;
-            txtPhong.Location = new Point(618, 123);
-            txtPhong.Multiline = false;
-            txtPhong.Name = "txtPhong";
-            txtPhong.NormalBorderColor = Color.LightGray;
-            txtPhong.Padding = new Padding(5);
-            txtPhong.PasswordChar = '\0';
-            txtPhong.PlaceholderText = "Nhập Phòng Ban";
-            txtPhong.ReadOnly = false;
-            txtPhong.Size = new Size(224, 41);
-            txtPhong.TabIndex = 36;
-            txtPhong.UseSystemPasswordChar = false;
             // 
             // tableLayoutPanel2
             // 
@@ -571,6 +484,62 @@
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
             // 
+            // txtSDT
+            // 
+            txtSDT.BackColor = Color.White;
+            txtSDT.BorderRadius = 5;
+            txtSDT.BorderThickness = 2;
+            txtSDT.Dock = DockStyle.Fill;
+            txtSDT.FocusBorderColor = Color.DimGray;
+            txtSDT.HoverBorderColor = Color.DarkGray;
+            txtSDT.Location = new Point(618, 123);
+            txtSDT.Multiline = false;
+            txtSDT.Name = "txtSDT";
+            txtSDT.NormalBorderColor = Color.LightGray;
+            txtSDT.Padding = new Padding(7, 10, 5, 5);
+            txtSDT.PasswordChar = '\0';
+            txtSDT.PlaceholderText = "Nhập Số Điện Thoại";
+            txtSDT.ReadOnly = false;
+            txtSDT.Size = new Size(224, 41);
+            txtSDT.TabIndex = 37;
+            txtSDT.UseSystemPasswordChar = false;
+            // 
+            // cbbRole
+            // 
+            cbbRole.BackColor = Color.White;
+            cbbRole.BorderRadius = 5;
+            cbbRole.BorderThickness = 2;
+            cbbRole.DataSource = null;
+            cbbRole.DisplayMember = "";
+            cbbRole.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbRole.FocusBorderColor = Color.DimGray;
+            cbbRole.HoverBorderColor = Color.DarkGray;
+            cbbRole.Location = new Point(618, 217);
+            cbbRole.Name = "cbbRole";
+            cbbRole.NormalBorderColor = Color.LightGray;
+            cbbRole.Padding = new Padding(5, 10, 5, 10);
+            cbbRole.SelectedIndex = -1;
+            cbbRole.SelectedItem = null;
+            cbbRole.SelectedValue = null;
+            cbbRole.Size = new Size(224, 41);
+            cbbRole.TabIndex = 39;
+            cbbRole.ValueMember = "";
+            // 
+            // chkTruongBoPhan
+            // 
+            chkTruongBoPhan.Anchor = AnchorStyles.None;
+            chkTruongBoPhan.AutoSize = true;
+            chkTruongBoPhan.CheckAlign = ContentAlignment.MiddleRight;
+            tableLayoutPanel1.SetColumnSpan(chkTruongBoPhan, 2);
+            chkTruongBoPhan.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            chkTruongBoPhan.Location = new Point(607, 319);
+            chkTruongBoPhan.Name = "chkTruongBoPhan";
+            chkTruongBoPhan.RightToLeft = RightToLeft.Yes;
+            chkTruongBoPhan.Size = new Size(136, 24);
+            chkTruongBoPhan.TabIndex = 42;
+            chkTruongBoPhan.Text = "Trưởng Bộ Phận";
+            chkTruongBoPhan.UseVisualStyleBackColor = true;
+            // 
             // CreateUpdateEmployee
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -598,9 +567,7 @@
         private Label label4;
         private Label label5;
         private Label label6;
-        private Label lblDepartment;
         private Label lblHoTen;
-        private Label label9;
         private Label label10;
         private Label lblRole;
         private Label lblSDT;
@@ -620,10 +587,10 @@
         private Components.RoundedTextBox txtEmail;
         private Components.RoundedTextBox txtMatKhau;
         private Components.RoundedTextBox txtHoTen;
-        private Components.RoundedTextBox txtPhong;
         private Components.RoundedTextBox txtSDT;
         private Components.RoundedComboBox cbbRole;
         private Components.RoundedButton btnCancel;
         private TableLayoutPanel tableLayoutPanel2;
+        private CheckBox chkTruongBoPhan;
     }
 }

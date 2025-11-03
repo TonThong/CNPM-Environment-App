@@ -23,9 +23,7 @@ namespace Environmental_Monitoring.View
         private Model.Employee employee;
         public event EventHandler DataAdded;
 
-        // === THUỘC TÍNH MỚI ĐỂ XÁC ĐỊNH CHẾ ĐỘ ===
         public bool IsAddMode { get; private set; }
-        // ======================================
 
         private ResourceManager rm;
         private CultureInfo culture;
@@ -35,26 +33,19 @@ namespace Environmental_Monitoring.View
             InitializeComponent();
             this.id = id ?? 0;
 
-            // === GÁN GIÁ TRỊ CHO THUỘC TÍNH MỚI ===
             this.IsAddMode = (this.id == 0);
-            // ======================================
-
-            // === GẮN SỰ KIỆN CHO NÚT HỦY ===
             btnCancel.Click += new EventHandler(btnCancel_Click);
 
-            // Gắn sự kiện Load để áp dụng theme và ngôn ngữ
             this.Load += new System.EventHandler(this.CreateUpdateEmployee_Load);
 
-            // Khóa kích thước Form (như bạn yêu cầu ở ảnh trước)
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
         }
 
-        // === HÀM MỚI CHO NÚT HỦY ===
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Close(); // Chỉ cần đóng Form
+            this.Close(); 
         }
 
         private void CreateUpdateEmployee_Load(object sender, EventArgs e)
@@ -104,7 +95,7 @@ namespace Environmental_Monitoring.View
             emp.EmployeeID = id;
             emp.MaNhanVien = txtMaNV.Text;
             emp.HoTen = txtHoTen.Text;
-            emp.PhongBan = txtPhong.Text;
+            emp.TruongBoPhan = chkTruongBoPhan.Checked ? 1 : 0; 
             emp.DiaChi = txtDiaChi.Text;
             emp.SoDienThoai = txtSDT.Text;
             emp.Email = txtEmail.Text;
@@ -122,7 +113,7 @@ namespace Environmental_Monitoring.View
             txtMaNV.Text = model.MaNhanVien;
             txtHoTen.Text = model.HoTen;
             txtNamSinh.Text = model.NamSinh.ToString();
-            txtPhong.Text = model.PhongBan;
+            chkTruongBoPhan.Checked = (model.TruongBoPhan == 1); 
             txtDiaChi.Text = model.DiaChi;
             txtSDT.Text = model.SoDienThoai;
             txtEmail.Text = model.Email;
@@ -143,12 +134,10 @@ namespace Environmental_Monitoring.View
                 return false;
             }
 
-            // Bạn có thể thêm các validation khác ở đây (email, sđt,...)
 
             return true;
         }
 
-        // === PHƯƠNG THỨC SAVE ĐÃ ĐƯỢC CẬP NHẬT ===
         private void Save()
         {
             if (!ValidateData())
@@ -157,22 +146,18 @@ namespace Environmental_Monitoring.View
             }
             Model.Employee emp = GetData();
 
-            // 1. Kiểm tra Mã nhân viên tồn tại
             if (EmployeeRepo.Instance.ExistsMaNhanVien(emp.MaNhanVien, id))
             {
                 MessageBox.Show(rm.GetString("Validation_EmployeeCodeExists", culture), rm.GetString("Validation_Title", culture), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. Kiểm tra Email tồn tại (ĐÃ THÊM MỚI)
             if (EmployeeRepo.Instance.ExistsEmail(emp.Email, id))
             {
-                // Nhớ thêm "Validation_EmailExists" vào file resource
                 MessageBox.Show(rm.GetString("Validation_EmailExists", culture), rm.GetString("Validation_Title", culture), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 3. Tiến hành lưu
             if (id == 0)
             {
                 emp.PasswordHash = BCrypt.Net.BCrypt.HashPassword(emp.PasswordHash);
@@ -192,7 +177,6 @@ namespace Environmental_Monitoring.View
             }
             CloseForm();
         }
-        // ===========================================
 
         private void CloseForm()
         {
@@ -208,7 +192,7 @@ namespace Environmental_Monitoring.View
             lblEmail.Text = rm.GetString("Email", culture);
             lblPass.Text = rm.GetString("Password", culture);
             lblYear.Text = rm.GetString("BirthYear", culture);
-            lblDepartment.Text = rm.GetString("Department", culture);
+            chkTruongBoPhan.Text = rm.GetString("IsDepartmentHead", culture);
             lblSDT.Text = rm.GetString("Phone", culture);
             lblRole.Text = rm.GetString("Role", culture);
 
@@ -218,7 +202,6 @@ namespace Environmental_Monitoring.View
             txtEmail.PlaceholderText = rm.GetString("Placeholder_Email", culture);
             txtMatKhau.PlaceholderText = rm.GetString("Placeholder_Password", culture);
             txtNamSinh.PlaceholderText = rm.GetString("Placeholder_BirthYear", culture);
-            txtPhong.PlaceholderText = rm.GetString("Placeholder_Department", culture);
             txtSDT.PlaceholderText = rm.GetString("Placeholder_Phone", culture);
 
             btnSave.Text = rm.GetString("Button_Save", culture);

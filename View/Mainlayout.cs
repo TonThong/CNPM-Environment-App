@@ -20,19 +20,15 @@ namespace Environmental_Monitoring.View
     {
         private MenuButton currentActiveButton;
 
-        // === BIẾN MỚI ĐỂ XỬ LÝ KÉO-THẢ CỬA SỔ ===
         private bool isDragging = false;
         private Point lastLocation;
-        // ======================================
 
         public Mainlayout()
         {
             InitializeComponent();
 
-            // === CẬP NHẬT ĐỂ XÓA TITLE BAR ===
-            //this.AutoSize = false; // Giữ lại từ lần sửa trước
-            //this.FormBorderStyle = FormBorderStyle.None; // Xóa title bar
-            // ================================
+            this.MaximumSize = this.Size;
+            this.MinimumSize = this.Size;
 
             this.DoubleBuffered = true;
 
@@ -46,16 +42,10 @@ namespace Environmental_Monitoring.View
             btnAI.Click += new EventHandler(MenuButton_Click);
             btnIntroduce.Click += new EventHandler(MenuButton_Click);
 
-            // === GẮN SỰ KIỆN KÉO-THẢ CHO HEADER ===
-            // (Giả sử panel header của bạn tên là 'panelHeadder')
             panel.MouseDown += new MouseEventHandler(panelHeadder_MouseDown);
             panel.MouseMove += new MouseEventHandler(panelHeadder_MouseMove);
             panel.MouseUp += new MouseEventHandler(panelHeadder_MouseUp);
 
-            // LƯU Ý: Bạn cũng nên vào Designer và gán sự kiện 
-            // MouseDown, MouseMove, MouseUp của logo và label "GREEN FLOW"
-            // trỏ vào 3 hàm này, để kéo-thả mượt hơn.
-            // =====================================
 
             HighlightButton(btnNotification);
             LoadPage(new Notification());
@@ -67,7 +57,6 @@ namespace Environmental_Monitoring.View
             ApplyTheme();
         }
 
-        // === CÁC HÀM MỚI ĐỂ KÉO-THẢ CỬA SỔ ===
         private void panelHeadder_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -93,7 +82,6 @@ namespace Environmental_Monitoring.View
         {
             isDragging = false;
         }
-        // =====================================
 
         private void ApplyTheme()
         {
@@ -101,13 +89,6 @@ namespace Environmental_Monitoring.View
 
             this.BackgroundImage = ThemeManager.BackgroundImage;
             this.BackgroundImageLayout = ImageLayout.Stretch;
-
-            // Áp dụng màu cho thanh Header (Nơi có chữ GREEN FLOW)
-            //panelHeadder.BackColor = ThemeManager.PanelColor;
-            // (Bạn cần thêm code để đổi màu chữ 'GREEN FLOW' nếu nó là Label)
-            // lblAppName.ForeColor = ThemeManager.TextColor; 
-            // (Nếu logo cũng đổi theo Theme, giả sử tên là picLogo)
-            // picLogo.Image = ThemeManager.MainMenuLogo;
 
             panelMenu.BackColor = ThemeManager.PanelColor;
 
@@ -128,7 +109,6 @@ namespace Environmental_Monitoring.View
         private int menuCollapsedWidth = 90;
         private int menuExpandedWidth = 190;
 
-        // === HÀM NÀY GIỮ NGUYÊN NHƯ LẦN TRƯỚC ===
         private void btnToggleMenu_Click(object sender, EventArgs e)
         {
             isMenuCollapsed = !isMenuCollapsed;
@@ -136,28 +116,20 @@ namespace Environmental_Monitoring.View
 
             this.SuspendLayout();
 
-            // 1. Cập nhật Menu Panel
             panelMenu.Width = newMenuWidth;
 
-            // 2. Cập nhật Header Panel (panelHeadder)
             panel.Left = newMenuWidth;
             panel.Width = this.ClientSize.Width - newMenuWidth;
-            // panelHeadder.Top = 0; // Đã giả định Top = 0
-
-            // 3. Cập nhật Content Panel (panelContent)
             panelContent.Left = newMenuWidth;
-            // DÒNG QUAN TRỌNG NHẤT ĐỂ SỬA LỖI:
-            panelContent.Top = panel.Height; // Reset Top về vị trí cố định
+            panelContent.Top = panel.Height;
 
             panelContent.Width = this.ClientSize.Width - newMenuWidth;
             panelContent.Height = this.ClientSize.Height - panel.Height;
 
-            // 4. Cập nhật trạng thái text
             SetMenuState(isMenuCollapsed);
 
-            this.ResumeLayout(true); // Dùng true để áp dụng layout ngay
+            this.ResumeLayout(true);
         }
-        // ===============================================
 
         private void SetMenuState(bool collapsed)
         {
