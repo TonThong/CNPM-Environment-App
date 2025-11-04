@@ -11,18 +11,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BCrypt.Net;
-using Environmental_Monitoring.Controller.Data; 
-using Environmental_Monitoring.Controller;    
-using Environmental_Monitoring.Model;       
+using Environmental_Monitoring.Controller.Data;
+using Environmental_Monitoring.Controller;
+using Environmental_Monitoring.Model;
+using System.Resources;
+using System.Globalization; // Đảm bảo using này
+using System.Threading;     // Đảm bảo using này
 
 namespace Environmental_Monitoring.View
 {
     public partial class Login : Form
     {
+        private ResourceManager rm;
 
         public Login()
         {
+            // LoadSavedLanguage(); // <-- Đã xóa, vì Program.cs đã làm việc này
             InitializeComponent();
+            InitializeLocalization();
+
+            panelLanguage.Visible = false;
 
             txtMatKhau.UseSystemPasswordChar = true;
             picShowPass.Image = Properties.Resources.eyeclose;
@@ -34,8 +42,98 @@ namespace Environmental_Monitoring.View
 
         private void Login_Load(object sender, EventArgs e)
         {
-
+            // Thêm dòng này để tải ngôn ngữ khi form load
+            // (Vì LoadSavedLanguage() đã bị xóa khỏi constructor)
+            LoadSavedLanguage();
+            UpdateUIText();
         }
+
+        #region Language Selection Logic
+
+        // Hàm này vẫn cần thiết để UpdateUIText() chạy đúng khi form load
+        private void LoadSavedLanguage()
+        {
+            string savedLanguage = Properties.Settings.Default.Language;
+            if (string.IsNullOrEmpty(savedLanguage))
+            {
+                savedLanguage = "vi-VN";
+            }
+
+            try
+            {
+                CultureInfo culture = new CultureInfo(savedLanguage);
+                Thread.CurrentThread.CurrentUICulture = culture;
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
+            catch (Exception)
+            {
+                CultureInfo culture = new CultureInfo("vi-VN");
+                Thread.CurrentThread.CurrentUICulture = culture;
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
+        }
+
+        private void InitializeLocalization()
+        {
+            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Login).Assembly);
+        }
+
+        private void SetLanguage(string cultureName)
+        {
+            CultureInfo newCulture = new CultureInfo(cultureName);
+
+            Thread.CurrentThread.CurrentUICulture = newCulture;
+            Thread.CurrentThread.CurrentCulture = newCulture;
+
+            Properties.Settings.Default.Language = newCulture.Name;
+            Properties.Settings.Default.Save();
+
+            UpdateUIText();
+        }
+
+        public void UpdateUIText()
+        {
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
+
+            this.Text = rm.GetString("Login_Title", culture);
+            lbTaiKhoan.Text = rm.GetString("Login_Username", culture);
+            txtTaiKhoan.PlaceholderText = rm.GetString("Login_Username", culture);
+            txtMatKhau.PlaceholderText = rm.GetString("Login_Password", culture);
+            linkForgot.Text = rm.GetString("Login_ForgotPassword", culture);
+            btnDangNhap.Text = rm.GetString("Login_LoginButton", culture);
+            lbDangNhapFaceID.Text = rm.GetString("Login_FaceID", culture);
+
+            if (culture.Name == "vi-VN")
+            {
+                pbFlag.Image = Properties.Resources.flag_vi;
+            }
+            else
+            {
+                pbFlag.Image = Properties.Resources.flag_en;
+            }
+        }
+
+        private void pbFlag_Click(object sender, EventArgs e)
+        {
+            panelLanguage.BringToFront();
+            panelLanguage.Visible = !panelLanguage.Visible;
+        }
+
+        private void btnVietnamese_Click(object sender, EventArgs e)
+        {
+            SetLanguage("vi-VN");
+            panelLanguage.Visible = false;
+        }
+
+        private void btnEnglish_Click(object sender, EventArgs e)
+        {
+            SetLanguage("en");
+            panelLanguage.Visible = false;
+        }
+
+        #endregion
+
+        #region Login & Form Logic
 
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
@@ -76,6 +174,24 @@ namespace Environmental_Monitoring.View
         {
             alertPanel.OnClose -= AlertPanel_Success_OnClose;
 
+            string savedLanguage = Properties.Settings.Default.Language;
+            if (string.IsNullOrEmpty(savedLanguage))
+            {
+                savedLanguage = "vi-VN"; 
+            }
+
+            try
+            {
+                CultureInfo culture = new CultureInfo(savedLanguage);
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+            }
+            catch (Exception)
+            {
+                CultureInfo culture = new CultureInfo("vi-VN");
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+            }
             Mainlayout mainForm = new Mainlayout();
             mainForm.Show();
             this.Hide();
@@ -100,5 +216,7 @@ namespace Environmental_Monitoring.View
             ForgotPasswordForm forgotForm = new ForgotPasswordForm(this.alertPanel);
             forgotForm.ShowDialog();
         }
+
+        #endregion
     }
 }

@@ -183,7 +183,7 @@ namespace Environmental_Monitoring
             lblNotification.Size = new Size(130, 31);
             lblNotification.TabIndex = 5;
             lblNotification.Text = "Thông Báo";
-            lblNotification.Click += label10_Click;
+        
             // 
             // lblTheme
             // 
@@ -295,7 +295,7 @@ namespace Environmental_Monitoring
             lblUserManual.Size = new Size(237, 31);
             lblUserManual.TabIndex = 1;
             lblUserManual.Text = "Hướng Dẫn Sử Dụng";
-            lblUserManual.Click += label3_Click;
+ 
             // 
             // lblBaoCao
             // 
@@ -316,7 +316,7 @@ namespace Environmental_Monitoring
             label1.Size = new Size(127, 38);
             label1.TabIndex = 0;
             label1.Text = "Trợ giúp";
-            label1.Click += label1_Click;
+       
             // 
             // tableLayoutPanel1
             // 

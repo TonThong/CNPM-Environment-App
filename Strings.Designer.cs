@@ -295,7 +295,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QUẢN LÍ HỢP ĐỒNG.
+        ///   Looks up a localized string similar to Quản Lý Hợp Đồng.
         /// </summary>
         internal static string Contract_Title {
             get {
@@ -498,6 +498,51 @@ namespace Environmental_Monitoring {
         internal static string IsDepartmentHead {
             get {
                 return ResourceManager.GetString("IsDepartmentHead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng Nhập Bằng Face ID.
+        /// </summary>
+        internal static string Login_FaceID {
+            get {
+                return ResourceManager.GetString("Login_FaceID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quên Mật Khẩu.
+        /// </summary>
+        internal static string Login_ForgotPassword {
+            get {
+                return ResourceManager.GetString("Login_ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng Nhập.
+        /// </summary>
+        internal static string Login_LoginButton {
+            get {
+                return ResourceManager.GetString("Login_LoginButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mật Khẩu.
+        /// </summary>
+        internal static string Login_Password {
+            get {
+                return ResourceManager.GetString("Login_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tài Khoản.
+        /// </summary>
+        internal static string Login_Username {
+            get {
+                return ResourceManager.GetString("Login_Username", resourceCulture);
             }
         }
         

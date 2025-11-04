@@ -448,7 +448,7 @@
     <value>Manager</value>
   </data>
   <data name="Contract_Title" xml:space="preserve">
-    <value>CONTRACT MANAGEMENT</value>
+    <value>Contract Management</value>
   </data>
   <data name="Contract_Tab_Business" xml:space="preserve">
     <value>Business</value>
@@ -464,5 +464,20 @@
   </data>
   <data name="Contract_Tab_Result" xml:space="preserve">
     <value>Results</value>
+  </data>
+  <data name="Login_Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Login_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Login_ForgotPassword" xml:space="preserve">
+    <value>ForgotPassword</value>
+  </data>
+  <data name="Login_LoginButton" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Login_FaceID" xml:space="preserve">
+    <value>Sign In With Face ID</value>
   </data>
 </root>

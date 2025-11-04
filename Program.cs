@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Globalization;
-
-using Environmental_Monitoring.View;
+using Environmental_Monitoring.View; // Đảm bảo using này
+using Environmental_Monitoring.Controller; // Thêm using này cho ThemeManager
 
 namespace Environmental_Monitoring
 {
@@ -18,46 +18,56 @@ namespace Environmental_Monitoring
         [STAThread]
         static void Main()
         {
-            https://aka.ms/applicationconfiguration.
+            // Dòng này dành cho .NET 6+
             ApplicationConfiguration.Initialize();
 
-            string cultureName = "vi";
+            // === LOGIC NGÔN NGỮ ===
+            string cultureName;
             string savedLanguage = Properties.Settings.Default.Language;
             bool settingsNeedSave = false;
 
             if (string.IsNullOrEmpty(savedLanguage))
             {
-                Properties.Settings.Default.Language = "Tiếng Việt";
                 cultureName = "vi";
+                Properties.Settings.Default.Language = cultureName;
                 settingsNeedSave = true;
             }
-            else if (savedLanguage == "English")
+            else if (savedLanguage == "en" || savedLanguage == "vi")
             {
-                cultureName = "en";
+                cultureName = savedLanguage;
             }
             else
             {
                 cultureName = "vi";
-            }
-
-            CultureInfo culture = new CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-
-            string savedTheme = Properties.Settings.Default.Theme;
-            if (string.IsNullOrEmpty(savedTheme))
-            {
-                savedTheme = "light"; 
-                Properties.Settings.Default.Theme = savedTheme;
+                Properties.Settings.Default.Language = cultureName;
                 settingsNeedSave = true;
             }
 
+            try
+            {
+                CultureInfo culture = new CultureInfo(cultureName);
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+            }
+            catch (Exception)
+            {
+                CultureInfo culture = new CultureInfo("vi");
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+            }
+            string savedTheme = Properties.Settings.Default.Theme;
+            if (string.IsNullOrEmpty(savedTheme))
+            {
+                savedTheme = "light";
+                Properties.Settings.Default.Theme = savedTheme;
+                settingsNeedSave = true;
+            }
+            ThemeManager.ApplyTheme(savedTheme);
             if (settingsNeedSave)
             {
                 Properties.Settings.Default.Save();
             }
 
-            ThemeManager.ApplyTheme(savedTheme);
             Application.Run(new Login());
         }
     }
