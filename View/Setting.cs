@@ -12,47 +12,61 @@ using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View;
 using Environmental_Monitoring.View.Components;
+// Thêm using này để gọi ThemeManager
+using Environmental_Monitoring.Controller;
 
 namespace Environmental_Monitoring
 {
     public partial class Setting : UserControl
     {
+        private ResourceManager rm;
+        private bool isLoading = false;
+
         public Setting()
         {
             InitializeComponent();
+            InitializeLocalization();
             this.Load += new System.EventHandler(this.Setting_Load);
+        }
+
+        private void InitializeLocalization()
+        {
+            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
         }
 
         private void Setting_Load(object sender, EventArgs e)
         {
-            // (Code này đã đúng)
-            string savedLanguage = Properties.Settings.Default.Language;
-            string cultureName = "vi";
-            if (savedLanguage == "English")
-            {
-                cultureName = "en";
-            }
-            CultureInfo culture = new CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-            LoadSettings();
             UpdateUIText();
         }
 
         private void LoadSettings()
         {
-            // (Code này đã đúng)
-            ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
+            isLoading = true;
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
+
             cmbNgonNgu.Items.Clear();
             cmbNgonNgu.Items.Add("Tiếng Việt");
             cmbNgonNgu.Items.Add("English");
-            cmbNgonNgu.SelectedItem = Properties.Settings.Default.Language;
+
+            // Đọc mã ngôn ngữ ("vi-VN" hoặc "en")
+            string savedLanguageCode = Properties.Settings.Default.Language;
+            if (savedLanguageCode == "en")
+            {
+                cmbNgonNgu.SelectedItem = "English";
+            }
+            else
+            {
+                cmbNgonNgu.SelectedItem = "Tiếng Việt";
+            }
+
+            // Lấy văn bản theme đã được dịch
             string lightThemeText = rm.GetString("Theme_Light", culture);
             string darkThemeText = rm.GetString("Theme_Dark", culture);
+
             cmbGiaoDien.Items.Clear();
             cmbGiaoDien.Items.Add(lightThemeText);
             cmbGiaoDien.Items.Add(darkThemeText);
+
             string savedTheme = Properties.Settings.Default.Theme;
             if (savedTheme == "dark")
             {
@@ -62,89 +76,88 @@ namespace Environmental_Monitoring
             {
                 cmbGiaoDien.SelectedItem = lightThemeText;
             }
+
             cbEmail.Checked = Properties.Settings.Default.NotifyByEmail;
             cbUngDung.Checked = Properties.Settings.Default.NotifyInApp;
+            isLoading = false;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // (Code này đã đúng)
+            if (isLoading) return;
+
             Mainlayout mainForm = this.ParentForm as Mainlayout;
-            ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
-            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
             try
             {
-                if (cmbNgonNgu.SelectedItem != null)
+                // 1. LƯU NGÔN NGỮ
+                string selectedLanguageCode = "vi-VN";
+                if (cmbNgonNgu.SelectedItem != null && cmbNgonNgu.SelectedItem.ToString() == "English")
                 {
-                    Properties.Settings.Default.Language = cmbNgonNgu.SelectedItem.ToString();
+                    selectedLanguageCode = "en";
                 }
-                else
-                {
-                    Properties.Settings.Default.Language = "Tiếng Việt";
-                }
+                Properties.Settings.Default.Language = selectedLanguageCode;
 
+                // 2. LƯU THEME (ĐÃ SỬA LỖI LOGIC)
                 string themeToSave = "light";
-                string darkThemeText = rm.GetString("Theme_Dark", culture);
-                if (cmbGiaoDien.SelectedItem != null && cmbGiaoDien.SelectedItem.ToString() == darkThemeText)
+
+                // Lấy chuỗi "Dark" ở cả 2 ngôn ngữ để so sánh
+                CultureInfo newCulture = new CultureInfo(selectedLanguageCode);
+                CultureInfo oldCulture = Thread.CurrentThread.CurrentUICulture;
+                string darkThemeText_New = rm.GetString("Theme_Dark", newCulture);
+                string darkThemeText_Old = rm.GetString("Theme_Dark", oldCulture);
+
+                string selectedThemeString = cmbGiaoDien.SelectedItem.ToString();
+
+                // Nếu chuỗi đang chọn khớp với "Dark" ở ngôn ngữ cũ HOẶC ngôn ngữ mới -> lưu "dark"
+                if (cmbGiaoDien.SelectedItem != null &&
+                   (selectedThemeString == darkThemeText_New || selectedThemeString == darkThemeText_Old))
                 {
                     themeToSave = "dark";
                 }
                 Properties.Settings.Default.Theme = themeToSave;
 
+                // 3. LƯU CÁC CÀI ĐẶT KHÁC
                 Properties.Settings.Default.NotifyByEmail = cbEmail.Checked;
                 Properties.Settings.Default.NotifyInApp = cbUngDung.Checked;
 
                 Properties.Settings.Default.Save();
 
-                string successMessage = rm.GetString("Alert_SaveSuccess", culture);
-                if (mainForm != null)
-                {
-                    mainForm.ShowGlobalAlert(successMessage, AlertPanel.AlertType.Success);
-                }
-
-                string selectedLanguage = Properties.Settings.Default.Language;
-                string cultureName = "vi";
-                if (selectedLanguage == "English")
-                {
-                    cultureName = "en";
-                }
-                CultureInfo newCulture = new CultureInfo(cultureName);
+                // 4. ÁP DỤNG CÀI ĐẶT
+                // Áp dụng ngôn ngữ mới cho thread hiện tại
                 Thread.CurrentThread.CurrentCulture = newCulture;
                 Thread.CurrentThread.CurrentUICulture = newCulture;
 
-                culture = newCulture;
-
+                // Áp dụng theme mới
                 ThemeManager.ApplyTheme(themeToSave);
 
-                if (mainForm != null)
-                {
-                    mainForm.UpdateAllChildLanguages();
-                }
-                else
-                {
-                    this.UpdateUIText();
-                }
+                // Yêu cầu Mainlayout cập nhật ngôn ngữ cho tất cả các trang
+                mainForm?.UpdateAllChildLanguages();
+
+                // Hiển thị thông báo thành công (bằng ngôn ngữ MỚI)
+                string successMessage = rm.GetString("Alert_SaveSuccess", newCulture);
+                mainForm?.ShowGlobalAlert(successMessage, AlertPanel.AlertType.Success);
             }
             catch (Exception ex)
             {
-                string errorMessage = rm.GetString("Alert_SaveError", culture);
-                if (mainForm != null)
-                {
-                    mainForm.ShowGlobalAlert(errorMessage + ex.Message, AlertPanel.AlertType.Error);
-                }
+                string errorMessage = rm.GetString("Alert_SaveError", Thread.CurrentThread.CurrentUICulture);
+                mainForm?.ShowGlobalAlert(errorMessage + ex.Message, AlertPanel.AlertType.Error);
             }
         }
 
         public void UpdateUIText()
         {
-            ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Setting).Assembly);
+            if (isLoading) return;
+
+            isLoading = true;
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
             try
             {
+                // Tải lại cài đặt để combobox hiển thị đúng
                 LoadSettings();
 
+                // Dịch các label
                 lblBaoCao.Text = rm.GetString("Settings_Title", culture);
                 lblUserSupport.Text = rm.GetString("Settings_UserSupport", culture);
                 lblSystemSettings.Text = rm.GetString("Settings_SystemSettings", culture);
@@ -159,8 +172,8 @@ namespace Environmental_Monitoring
                 lblQuestion.Text = rm.GetString("Settings_Question", culture);
                 txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
+                // Áp dụng theme
                 this.BackColor = ThemeManager.BackgroundColor;
-
                 roundedPanel2.BackColor = ThemeManager.PanelColor;
                 roundedPanel3.BackColor = ThemeManager.PanelColor;
 
@@ -173,12 +186,12 @@ namespace Environmental_Monitoring
                 cbEmail.ForeColor = ThemeManager.TextColor;
                 cbUngDung.ForeColor = ThemeManager.TextColor;
                 lblUserManual.ForeColor = ThemeManager.TextColor;
-
                 lblViewDocument.ForeColor = ThemeManager.TextColor;
                 lblQuestion.ForeColor = ThemeManager.TextColor;
 
-                cmbNgonNgu.BackColor = ThemeManager.PanelColor; 
-                cmbNgonNgu.ForeColor = ThemeManager.TextColor; 
+                cmbNgonNgu.BackColor = ThemeManager.PanelColor;
+                cmbNgonNgu.ForeColor = ThemeManager.TextColor;
+
                 cmbGiaoDien.BackColor = ThemeManager.PanelColor;
                 cmbGiaoDien.ForeColor = ThemeManager.TextColor;
 
@@ -192,20 +205,14 @@ namespace Environmental_Monitoring
             {
                 string errorMessage = rm.GetString("Alert_LoadLanguageError", culture);
                 Mainlayout mainForm = this.ParentForm as Mainlayout;
-                if (mainForm != null)
-                {
-                    mainForm.ShowGlobalAlert(errorMessage + ex.Message, AlertPanel.AlertType.Error);
-                }
+                mainForm?.ShowGlobalAlert(errorMessage + ex.Message, AlertPanel.AlertType.Error);
+            }
+            finally
+            {
+                isLoading = false;
             }
         }
 
-        private void label1_Click(object sender, EventArgs e) { }
-        private void label3_Click(object sender, EventArgs e) { }
-        private void label10_Click(object sender, EventArgs e) { }
-
-        private void lblViewDocument_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void lblViewDocument_Click(object sender, EventArgs e) { }
     }
 }

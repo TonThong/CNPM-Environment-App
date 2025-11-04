@@ -448,7 +448,7 @@
     <value>Trưởng Bộ Phận</value>
   </data>
   <data name="Contract_Title" xml:space="preserve">
-    <value>QUẢN LÍ HỢP ĐỒNG</value>
+    <value>Quản Lý Hợp Đồng</value>
   </data>
   <data name="Contract_Tab_Business" xml:space="preserve">
     <value>Kinh Doanh</value>
@@ -464,5 +464,20 @@
   </data>
   <data name="Contract_Tab_Result" xml:space="preserve">
     <value>Kết Quả</value>
+  </data>
+  <data name="Login_Username" xml:space="preserve">
+    <value>Tài Khoản</value>
+  </data>
+  <data name="Login_Password" xml:space="preserve">
+    <value>Mật Khẩu</value>
+  </data>
+  <data name="Login_ForgotPassword" xml:space="preserve">
+    <value>Quên Mật Khẩu</value>
+  </data>
+  <data name="Login_LoginButton" xml:space="preserve">
+    <value>Đăng Nhập</value>
+  </data>
+  <data name="Login_FaceID" xml:space="preserve">
+    <value>Đăng Nhập Bằng Face ID</value>
   </data>
 </root>

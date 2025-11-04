@@ -33,19 +33,25 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             picShowPass = new PictureBox();
             pictureBox1 = new PictureBox();
-            label2 = new Label();
+            lbTaiKhoan = new Label();
             txtTaiKhoan = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtMatKhau = new Environmental_Monitoring.View.Components.RoundedTextBox();
             linkForgot = new LinkLabel();
             btnDangNhap = new Environmental_Monitoring.View.Components.RoundedButton();
-            label3 = new Label();
+            lbDangNhapFaceID = new Label();
             label1 = new Label();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             alertPanel = new Environmental_Monitoring.View.Components.AlertPanel();
+            pbFlag = new PictureBox();
+            panelLanguage = new Panel();
+            btnEnglish = new Button();
+            btnVietnamese = new Button();
             roundedPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picShowPass).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbFlag).BeginInit();
+            panelLanguage.SuspendLayout();
             SuspendLayout();
             // 
             // roundedPanel1
@@ -69,12 +75,12 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel1.Controls.Add(picShowPass, 2, 7);
             tableLayoutPanel1.Controls.Add(pictureBox1, 1, 1);
-            tableLayoutPanel1.Controls.Add(label2, 1, 3);
+            tableLayoutPanel1.Controls.Add(lbTaiKhoan, 1, 3);
             tableLayoutPanel1.Controls.Add(txtTaiKhoan, 1, 5);
             tableLayoutPanel1.Controls.Add(txtMatKhau, 1, 7);
             tableLayoutPanel1.Controls.Add(linkForgot, 1, 9);
             tableLayoutPanel1.Controls.Add(btnDangNhap, 1, 11);
-            tableLayoutPanel1.Controls.Add(label3, 1, 13);
+            tableLayoutPanel1.Controls.Add(lbDangNhapFaceID, 1, 13);
             tableLayoutPanel1.Location = new Point(6, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 15;
@@ -120,17 +126,17 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // label2
+            // lbTaiKhoan
             // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            label2.Location = new Point(44, 210);
-            label2.Name = "label2";
-            label2.Size = new Size(322, 34);
-            label2.TabIndex = 1;
-            label2.Text = "Tài Khoản";
-            label2.TextAlign = ContentAlignment.MiddleLeft;
+            lbTaiKhoan.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lbTaiKhoan.AutoSize = true;
+            lbTaiKhoan.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lbTaiKhoan.Location = new Point(44, 210);
+            lbTaiKhoan.Name = "lbTaiKhoan";
+            lbTaiKhoan.Size = new Size(322, 34);
+            lbTaiKhoan.TabIndex = 1;
+            lbTaiKhoan.Text = "Tài Khoản";
+            lbTaiKhoan.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // txtTaiKhoan
             // 
@@ -205,18 +211,18 @@
             btnDangNhap.UseVisualStyleBackColor = false;
             btnDangNhap.Click += btnDangNhap_Click;
             // 
-            // label3
+            // lbDangNhapFaceID
             // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            label3.ForeColor = Color.FromArgb(2, 85, 9);
-            label3.Location = new Point(44, 554);
-            label3.Name = "label3";
-            label3.Size = new Size(322, 34);
-            label3.TabIndex = 6;
-            label3.Text = "Đăng Nhập Bằng Face ID";
-            label3.TextAlign = ContentAlignment.MiddleCenter;
+            lbDangNhapFaceID.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lbDangNhapFaceID.AutoSize = true;
+            lbDangNhapFaceID.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lbDangNhapFaceID.ForeColor = Color.FromArgb(2, 85, 9);
+            lbDangNhapFaceID.Location = new Point(44, 554);
+            lbDangNhapFaceID.Name = "lbDangNhapFaceID";
+            lbDangNhapFaceID.Size = new Size(322, 34);
+            lbDangNhapFaceID.TabIndex = 6;
+            lbDangNhapFaceID.Text = "Đăng Nhập Bằng Face ID";
+            lbDangNhapFaceID.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
@@ -244,6 +250,51 @@
             alertPanel.TabIndex = 2;
             alertPanel.Visible = false;
             // 
+            // pbFlag
+            // 
+            pbFlag.BorderStyle = BorderStyle.FixedSingle;
+            pbFlag.Cursor = Cursors.Hand;
+            pbFlag.Location = new Point(12, 12);
+            pbFlag.Name = "pbFlag";
+            pbFlag.Size = new Size(50, 34);
+            pbFlag.SizeMode = PictureBoxSizeMode.Zoom;
+            pbFlag.TabIndex = 3;
+            pbFlag.TabStop = false;
+            pbFlag.Click += pbFlag_Click;
+            // 
+            // panelLanguage
+            // 
+            panelLanguage.BorderStyle = BorderStyle.FixedSingle;
+            panelLanguage.Controls.Add(btnEnglish);
+            panelLanguage.Controls.Add(btnVietnamese);
+            panelLanguage.Location = new Point(71, 37);
+            panelLanguage.Name = "panelLanguage";
+            panelLanguage.Size = new Size(160, 73);
+            panelLanguage.TabIndex = 4;
+            panelLanguage.Visible = false;
+            // 
+            // btnEnglish
+            // 
+            btnEnglish.Dock = DockStyle.Top;
+            btnEnglish.Location = new Point(0, 35);
+            btnEnglish.Name = "btnEnglish";
+            btnEnglish.Size = new Size(158, 35);
+            btnEnglish.TabIndex = 6;
+            btnEnglish.Text = "English";
+            btnEnglish.UseVisualStyleBackColor = true;
+            btnEnglish.Click += btnEnglish_Click;
+            // 
+            // btnVietnamese
+            // 
+            btnVietnamese.Dock = DockStyle.Top;
+            btnVietnamese.Location = new Point(0, 0);
+            btnVietnamese.Name = "btnVietnamese";
+            btnVietnamese.Size = new Size(158, 35);
+            btnVietnamese.TabIndex = 5;
+            btnVietnamese.Text = "Tiếng Việt";
+            btnVietnamese.UseVisualStyleBackColor = true;
+            btnVietnamese.Click += btnVietnamese_Click;
+            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -251,6 +302,8 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1421, 853);
+            Controls.Add(panelLanguage);
+            Controls.Add(pbFlag);
             Controls.Add(alertPanel);
             Controls.Add(label1);
             Controls.Add(roundedPanel1);
@@ -263,6 +316,8 @@
             tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picShowPass).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbFlag).EndInit();
+            panelLanguage.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -273,14 +328,18 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Label label1;
         private PictureBox pictureBox1;
-        private Label label2;
+        private Label lbTaiKhoan;
         private Components.RoundedTextBox txtTaiKhoan;
         private Components.RoundedTextBox txtMatKhau;
         private LinkLabel linkForgot;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
         private Components.RoundedButton btnDangNhap;
-        private Label label3;
+        private Label lbDangNhapFaceID;
         private PictureBox picShowPass;
         private Components.AlertPanel alertPanel;
+        private PictureBox pbFlag;
+        private Panel panelLanguage;
+        private Button btnEnglish;
+        private Button btnVietnamese;
     }
 }

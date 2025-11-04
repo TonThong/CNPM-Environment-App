@@ -52,6 +52,7 @@ namespace Environmental_Monitoring.View
             ApplyTheme();
         }
 
+
         private void InitializeFormProperties()
         {
             this.Load += new System.EventHandler(this.Mainlayout_Load);
@@ -79,11 +80,15 @@ namespace Environmental_Monitoring.View
 
         private void Mainlayout_Load(object sender, EventArgs e)
         {
+            // LoadSavedLanguage(); // <-- ĐÃ XÓA DÒNG NÀY
             ApplyPermissions();
             LoadDefaultPageForRole();
+            UpdateUIText(); // Dòng này sẽ dịch menu bằng ngôn ngữ đã được Program.cs tải
         }
 
         #endregion
+
+        // === HÀM LoadSavedLanguage() ĐÃ ĐƯỢC XÓA HOÀN TOÀN ===
 
         #region Permissions and Role Logic
 
@@ -341,12 +346,10 @@ namespace Environmental_Monitoring.View
 
             if (panelContent.Controls.Count > 0)
             {
-                // Lặp qua TẤT CẢ các control (các trang) trong panelContent
                 foreach (Control ctl in panelContent.Controls)
                 {
                     try
                     {
-                        // Thử gọi hàm UpdateUIText của mỗi trang
                         var method = ctl.GetType().GetMethod("UpdateUIText");
                         if (method != null)
                         {
@@ -355,7 +358,6 @@ namespace Environmental_Monitoring.View
                     }
                     catch (Exception ex)
                     {
-                        // Hiển thị lỗi nếu không cập nhật được trang cụ thể
                         ShowGlobalAlert($"Không thể cập nhật ngôn ngữ cho trang {ctl.Name}: {ex.Message}", AlertPanel.AlertType.Error);
                     }
                 }
@@ -387,4 +389,3 @@ namespace Environmental_Monitoring.View
         #endregion
     }
 }
-
