@@ -40,6 +40,9 @@
     <Compile Update="View\Contract.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="View\ContractContent\AddEditParameterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="View\ContractContent\BusinessContent.cs">
       <SubType>UserControl</SubType>
     </Compile>

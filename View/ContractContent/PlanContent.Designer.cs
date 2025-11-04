@@ -37,6 +37,7 @@
             btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
             roundedButton2 = new Environmental_Monitoring.View.Components.RoundedButton();
             roundedDataGridView1 = new Environmental_Monitoring.View.Components.RoundedDataGridView();
+            btnAddParameter = new Environmental_Monitoring.View.Components.RoundedButton();
             lblParamNameValue = new Label();
             lblUnitValue = new Label();
             lblDeptValue = new Label();
@@ -75,6 +76,7 @@
             panel1.Controls.Add(roundedButton2);
             panel1.Controls.Add(roundedDataGridView1);
             panel1.Controls.Add(btnSearch);
+            panel1.Controls.Add(btnAddParameter);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(1227, 507);
@@ -88,8 +90,8 @@
             checkedListBox1.Name = "checkedListBox1";
             checkedListBox1.Size = new Size(150, 114);
             checkedListBox1.TabIndex = 68;
-            checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged_1;
             checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
+            checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged_1;
             // 
             // label1
             // 
@@ -143,7 +145,7 @@
             btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
-            btnCancel.Location = new Point(864, 381);
+            btnCancel.Location = new Point(888, 381);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(178, 50);
             btnCancel.TabIndex = 56;
@@ -162,7 +164,7 @@
             roundedButton2.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
             roundedButton2.ForeColor = Color.White;
             roundedButton2.HoverColor = Color.FromArgb(34, 139, 34);
-            roundedButton2.Location = new Point(572, 381);
+            roundedButton2.Location = new Point(520, 381);
             roundedButton2.Name = "roundedButton2";
             roundedButton2.Size = new Size(178, 50);
             roundedButton2.TabIndex = 55;
@@ -182,6 +184,25 @@
             roundedDataGridView1.RowHeadersWidth = 51;
             roundedDataGridView1.Size = new Size(674, 188);
             roundedDataGridView1.TabIndex = 67;
+            // 
+            // btnAddParameter
+            // 
+            btnAddParameter.BackColor = Color.SeaGreen;
+            btnAddParameter.BaseColor = Color.SteelBlue;
+            btnAddParameter.BorderColor = Color.Transparent;
+            btnAddParameter.BorderRadius = 25;
+            btnAddParameter.BorderSize = 0;
+            btnAddParameter.FlatAppearance.BorderSize = 0;
+            btnAddParameter.FlatStyle = FlatStyle.Flat;
+            btnAddParameter.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnAddParameter.ForeColor = Color.White;
+            btnAddParameter.HoverColor = Color.DodgerBlue;
+            btnAddParameter.Location = new Point(704, 381);
+            btnAddParameter.Name = "btnAddParameter";
+            btnAddParameter.Size = new Size(178, 50);
+            btnAddParameter.TabIndex = 70;
+            btnAddParameter.Text = "Thêm thông số";
+            btnAddParameter.UseVisualStyleBackColor = false;
             // 
             // lblParamNameValue
             // 
@@ -241,5 +262,6 @@
         private Label lblDeptTitle;
         private Label lblDeptValue;
         private CheckedListBox checkedListBox1;
+        private Components.RoundedButton btnAddParameter;
     }
 }

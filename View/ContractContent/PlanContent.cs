@@ -17,6 +17,8 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             InitializeComponent();
             roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            btnAddParameter.Click += btnAddParameter_Click;
+            roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
         }
 
         private void lbCustomer_Click(object sender, EventArgs e)
@@ -311,6 +313,62 @@ namespace Environmental_Monitoring.View.ContractContent
                     if (i != e.Index)
                     {
                         checkedListBox1.SetItemChecked(i, false);
+                    }
+                }
+            }
+        }
+
+        private void btnAddParameter_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new AddEditParameterForm())
+            {
+                dlg.SetPhuTrachOptions(new[] { "HienTruong", "ThiNghiem" });
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    // Lưu vào DB (giả sử có ParameterRepo)
+                    var repo = new Environmental_Monitoring.Controller.Data.ParameterRepo(DataProvider.Instance.GetConnectionString());
+                    repo.Add(dlg.Parameter);
+                    // Reload grid nếu cần
+                    if (checkedListBox1.SelectedItem != null)
+                    {
+                        var item = checkedListBox1.SelectedItem;
+                        var t = item.GetType();
+                        var templateIdProp = t.GetProperty("TemplateID");
+                        var sampleIdProp = t.GetProperty("SampleID");
+                        int? templateId = templateIdProp?.GetValue(item) as int?;
+                        int? sampleId = sampleIdProp?.GetValue(item) as int?;
+                        if (templateId.HasValue)
+                            LoadParametersForTemplate(templateId.Value, sampleId ?? 0);
+                    }
+                }
+            }
+        }
+
+        private void roundedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var row = roundedDataGridView1.Rows[e.RowIndex];
+            int? paramId = row.Cells["ParameterID"].Value as int?;
+            if (paramId == null) return;
+            var repo = new Environmental_Monitoring.Controller.Data.ParameterRepo(DataProvider.Instance.GetConnectionString());
+            var param = repo.GetByID(paramId.Value);
+            using (var dlg = new AddEditParameterForm(param))
+            {
+                dlg.SetPhuTrachOptions(new[] { "HienTruong", "ThiNghiem" });
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    repo.Update(dlg.Parameter);
+                    // Reload grid
+                    if (checkedListBox1.SelectedItem != null)
+                    {
+                        var item = checkedListBox1.SelectedItem;
+                        var t = item.GetType();
+                        var templateIdProp = t.GetProperty("TemplateID");
+                        var sampleIdProp = t.GetProperty("SampleID");
+                        int? templateId = templateIdProp?.GetValue(item) as int?;
+                        int? sampleId = sampleIdProp?.GetValue(item) as int?;
+                        if (templateId.HasValue)
+                            LoadParametersForTemplate(templateId.Value, sampleId ?? 0);
                     }
                 }
             }

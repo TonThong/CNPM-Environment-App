@@ -432,4 +432,19 @@
   <data name="Introduce_Notice" xml:space="preserve">
     <value>Notice</value>
   </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Alert_AddEmployee_Edit" xml:space="preserve">
+    <value>Employee Information Edited Successfully</value>
+  </data>
+  <data name="Validation_EmailExists" xml:space="preserve">
+    <value>This email already exists. Please use a different email.</value>
+  </data>
+  <data name="Alert_AddEmployee_Success" xml:space="preserve">
+    <value>New employee added successfully.</value>
+  </data>
+  <data name="IsDepartmentHead" xml:space="preserve">
+    <value>Manager</value>
+  </data>
 </root>

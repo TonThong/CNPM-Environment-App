@@ -1,6 +1,6 @@
 ﻿using Environmental_Monitoring;
 using Environmental_Monitoring.View;
-using Environmental_Monitoring.View.Components; // <-- THÊM MỚI
+using Environmental_Monitoring.View.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,18 +14,21 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 
-
 namespace Environmental_Monitoring.View
 {
-
     public partial class Mainlayout : Form
     {
-
         private MenuButton currentActiveButton;
+
+        private bool isDragging = false;
+        private Point lastLocation;
 
         public Mainlayout()
         {
             InitializeComponent();
+
+            this.MaximumSize = this.Size;
+            this.MinimumSize = this.Size;
 
             this.DoubleBuffered = true;
 
@@ -39,13 +42,68 @@ namespace Environmental_Monitoring.View
             btnAI.Click += new EventHandler(MenuButton_Click);
             btnIntroduce.Click += new EventHandler(MenuButton_Click);
 
+            panel.MouseDown += new MouseEventHandler(panelHeadder_MouseDown);
+            panel.MouseMove += new MouseEventHandler(panelHeadder_MouseMove);
+            panel.MouseUp += new MouseEventHandler(panelHeadder_MouseUp);
+
+
             HighlightButton(btnNotification);
             LoadPage(new Notification());
 
             panelMenu.Width = menuCollapsedWidth;
 
             SetMenuState(isMenuCollapsed);
+
+            ApplyTheme();
         }
+
+        private void panelHeadder_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                lastLocation = e.Location;
+            }
+        }
+
+        private void panelHeadder_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X,
+                    (this.Location.Y - lastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void panelHeadder_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragging = false;
+        }
+
+        private void ApplyTheme()
+        {
+            this.BackColor = ThemeManager.BackgroundColor;
+
+            this.BackgroundImage = ThemeManager.BackgroundImage;
+            this.BackgroundImageLayout = ImageLayout.Stretch;
+
+            panelMenu.BackColor = ThemeManager.PanelColor;
+
+            foreach (Control ctrl in panelMenu.Controls)
+            {
+                if (ctrl is MenuButton btn)
+                {
+                    btn.ForeColor = ThemeManager.SecondaryTextColor;
+                    btn.BackColor = ThemeManager.PanelColor;
+                }
+            }
+
+            panelContent.BackColor = ThemeManager.BackgroundColor;
+        }
+
 
         private bool isMenuCollapsed = true;
         private int menuCollapsedWidth = 90;
@@ -53,22 +111,28 @@ namespace Environmental_Monitoring.View
 
         private void btnToggleMenu_Click(object sender, EventArgs e)
         {
-            // ... (Code của bạn đã đúng) ...
             isMenuCollapsed = !isMenuCollapsed;
-            int oldMenuWidth = panelMenu.Width;
             int newMenuWidth = isMenuCollapsed ? menuCollapsedWidth : menuExpandedWidth;
-            int widthDifference = newMenuWidth - oldMenuWidth;
+
             this.SuspendLayout();
+
             panelMenu.Width = newMenuWidth;
-            panelContent.Left += widthDifference;
-            panelHeadder.Left += widthDifference;
+
+            panel.Left = newMenuWidth;
+            panel.Width = this.ClientSize.Width - newMenuWidth;
+            panelContent.Left = newMenuWidth;
+            panelContent.Top = panel.Height;
+
+            panelContent.Width = this.ClientSize.Width - newMenuWidth;
+            panelContent.Height = this.ClientSize.Height - panel.Height;
+
             SetMenuState(isMenuCollapsed);
-            this.ResumeLayout();
+
+            this.ResumeLayout(true);
         }
 
         private void SetMenuState(bool collapsed)
         {
-            // ... (Code của bạn đã đúng) ...
             try
             {
                 ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Mainlayout).Assembly);
@@ -97,7 +161,6 @@ namespace Environmental_Monitoring.View
 
         private void MenuButton_Click(object sender, EventArgs e)
         {
-            // ... (Code của bạn đã đúng) ...
             MenuButton oldActiveButton = currentActiveButton;
             ResetAllButtons();
             if (oldActiveButton != null)
@@ -137,14 +200,12 @@ namespace Environmental_Monitoring.View
         }
         private void HighlightButton(MenuButton selectedButton)
         {
-            // ... (Code của bạn đã đúng) ...
             currentActiveButton = selectedButton;
             selectedButton.IsSelected = true;
         }
 
         private void ResetAllButtons()
         {
-            // ... (Code của bạn đã đúng) ...
             foreach (Control ctrl in panelMenu.Controls)
             {
                 if (ctrl is MenuButton btn)
@@ -156,20 +217,19 @@ namespace Environmental_Monitoring.View
 
         private void LoadPage(UserControl pageToLoad)
         {
-            // ... (Code của bạn đã đúng) ...
             panelContent.Controls.Clear();
             pageToLoad.Dock = DockStyle.Fill;
             panelContent.Controls.Add(pageToLoad);
         }
-
         public void UpdateUIText()
         {
-            // ... (Code của bạn đã đúng) ...
             SetMenuState(isMenuCollapsed);
+
+            ApplyTheme();
         }
+
         public void UpdateAllChildLanguages()
         {
-            // ... (Code của bạn đã đúng) ...
             this.UpdateUIText();
             if (panelContent.Controls.Count > 0)
             {
@@ -180,26 +240,26 @@ namespace Environmental_Monitoring.View
                 }
                 catch (Exception ex)
                 {
-                    // <-- THAY ĐỔI: Sử dụng AlertPanel thay vì MessageBox -->
-                    ShowGlobalAlert("Không thể cập nhật ngôn ngữ cho trang con: " + ex.Message, AlertPanel.AlertType.Error);
+                    ShowGlobalAlert("Không thể cập nhật ngôn ngữ/giao diện cho trang con: " + ex.Message, AlertPanel.AlertType.Error);
                 }
             }
         }
 
-        // <-- HÀM MỚI: Dùng để gọi AlertPanel từ bất kỳ đâu -->
         public void ShowGlobalAlert(string message, AlertPanel.AlertType type)
         {
-            // 'globalAlertPanel' là tên bạn đã đặt cho AlertPanel
-            // khi kéo nó vào MainLayout.cs [Design]
             if (globalAlertPanel != null)
             {
                 globalAlertPanel.ShowAlert(message, type);
             }
             else
             {
-                // Phương án dự phòng nếu 'globalAlertPanel' bị null
                 MessageBox.Show(message);
             }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

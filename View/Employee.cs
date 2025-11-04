@@ -14,7 +14,7 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View.Components;
-using Environmental_Monitoring.View; 
+using Environmental_Monitoring.View;
 
 namespace Environmental_Monitoring.View
 {
@@ -28,7 +28,32 @@ namespace Environmental_Monitoring.View
         {
             InitializeComponent();
             this.Load += new System.EventHandler(this.Employee_Load);
+            this.dgvEmployee.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmployee_CellFormatting);
+            
+            // Không cần kết nối sự kiện KeyPress hay KeyDown ở đây nữa
         }
+
+        // === GIẢI PHÁP MỚI: GHI ĐÈ ProcessCmdKey ===
+        // Hàm này sẽ bắt phím Enter TRƯỚC KHI TextBox kịp xử lý
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Kiểm tra xem phím Enter có được nhấn KHÔNG
+            // VÀ kiểm tra xem control đang active (focus) có phải là txtSearch KHÔNG
+            if ((keyData == Keys.Enter) && (this.ActiveControl == txtSearch))
+            {
+                // Nếu đúng, chạy code tìm kiếm
+                currentPage = 1;
+                LoadData();
+                
+                // Trả về true để báo cho Windows biết "Tôi đã xử lý phím này, không cần làm gì thêm"
+                // (Điều này cũng ngăn tiếng "beep" khó chịu)
+                return true;
+            }
+            
+            // Đối với bất kỳ phím nào khác, hãy để hệ thống tự xử lý
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        // =============================================
 
         private void LoadData()
         {
@@ -57,7 +82,10 @@ namespace Environmental_Monitoring.View
             dgvEmployee.Columns["MaNhanVien"].HeaderText = rm.GetString("EmployeeID", culture);
             dgvEmployee.Columns["HoTen"].HeaderText = rm.GetString("FullName", culture);
             dgvEmployee.Columns["NamSinh"].HeaderText = rm.GetString("BirthYear", culture);
-            dgvEmployee.Columns["PhongBan"].HeaderText = rm.GetString("Department", culture);
+
+            string headerDeptHead = rm.GetString("IsDepartmentHead", culture);
+            dgvEmployee.Columns["TruongBoPhan"].HeaderText = (headerDeptHead == "IsDepartmentHead") ? "Dept. Head" : headerDeptHead;
+
             dgvEmployee.Columns["DiaChi"].HeaderText = rm.GetString("Address", culture);
             dgvEmployee.Columns["SoDienThoai"].HeaderText = rm.GetString("Phone", culture);
             dgvEmployee.Columns["Email"].HeaderText = rm.GetString("Email", culture);
@@ -102,7 +130,7 @@ namespace Environmental_Monitoring.View
             }
             else
             {
-                dgvEmployee.Columns["colDelete"].HeaderText = rm.GetString("GDelete", culture);
+                dgvEmployee.Columns["colDelete"].HeaderText = rm.GetString("Delete", culture);
             }
         }
 
@@ -161,7 +189,7 @@ namespace Environmental_Monitoring.View
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
-            string pageText = rm.GetString("Pagination_Page", culture); 
+            string pageText = rm.GetString("Pagination_Page", culture);
 
             lblPageInfo.Text = $"{pageText} {currentPage} / {totalPages}";
 
@@ -179,7 +207,14 @@ namespace Environmental_Monitoring.View
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
-            string successMsg = rm.GetString("Alert_SaveSuccess", culture);
+            bool isAdd = false;
+            if (sender is CreateUpdateEmployee addEditForm)
+            {
+                isAdd = addEditForm.IsAddMode;
+            }
+
+            string resourceKey = isAdd ? "Alert_AddEmployee_Success" : "Alert_AddEmployee_Edit";
+            string successMsg = rm.GetString(resourceKey, culture);
 
             mainForm?.ShowGlobalAlert(successMsg, AlertPanel.AlertType.Success);
         }
@@ -200,7 +235,7 @@ namespace Environmental_Monitoring.View
 
             UpdateUIText();
 
-            btnFirst.Click -= btnFirst_Click; 
+            btnFirst.Click -= btnFirst_Click;
             btnFirst.Click += btnFirst_Click;
 
             btnPrevious.Click -= btnPrevious_Click;
@@ -218,7 +253,7 @@ namespace Environmental_Monitoring.View
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
-            lblTitle.Text = rm.GetString("Employee_Title", culture); 
+            lblTitle.Text = rm.GetString("Employee_Title", culture);
             btnAdd.Text = rm.GetString("Employee_AddButton", culture);
             txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
@@ -235,21 +270,21 @@ namespace Environmental_Monitoring.View
             form.ShowDialog();
         }
 
-        private void txbSearch_KeyDown(object sender, KeyEventArgs e)
+        // Xóa các hàm KeyDown và KeyPress cũ
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                string keySearch = txtSearch.Text;
-                PagedResult result = EmployeeRepo.Instance.GetEmployees(1, 1000, keySearch); 
-                dgvEmployee.DataSource = result.Data;
-                e.SuppressKeyPress = true;
-            }
+            // Không dùng
+        }
+        private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Không dùng
         }
 
-        private void txbSearch_TextChanged(object sender, EventArgs e)
+        // Hàm này BẮT BUỘC phải giữ lại, dù nó rỗng
+        // vì file Designer.cs đang trỏ tới nó
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            currentPage = 1;
-            LoadData();
+            // Không làm gì ở đây
         }
 
         private void btnFirst_Click(object sender, EventArgs e)
@@ -285,6 +320,34 @@ namespace Environmental_Monitoring.View
             {
                 currentPage = totalPages;
                 LoadData();
+            }
+        }
+
+        private void dgvEmployee_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (this.dgvEmployee.Columns[e.ColumnIndex].DataPropertyName == "TruongBoPhan")
+            {
+                if (e.Value != null)
+                {
+                    try
+                    {
+                        int val = Convert.ToInt32(e.Value);
+                        if (val == 1)
+                        {
+                            e.Value = "✓";
+                        }
+                        else
+                        {
+                            e.Value = "";
+                        }
+                        e.FormattingApplied = true;
+                        e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    }
+                    catch (Exception)
+                    {
+                        e.Value = "";
+                    }
+                }
             }
         }
     }

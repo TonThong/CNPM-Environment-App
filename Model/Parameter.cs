@@ -7,5 +7,6 @@
         public string? DonVi { get; set; }
         public decimal? GioiHanMin { get; set; }
         public decimal? GioiHanMax { get; set; }
+        public string? PhuTrach { get; set; }
     }
 }

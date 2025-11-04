@@ -42,14 +42,13 @@ namespace Environmental_Monitoring.View
             btnHome = new MenuButton();
             btnSetting = new MenuButton();
             btnUser = new MenuButton();
-            btnMenu = new MenuButton();
             panelContent = new RoundedPanel();
             pictureBox1 = new PictureBox();
-            panelHeadder = new Panel();
+            panel = new Panel();
             globalAlertPanel = new AlertPanel();
             panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            panelHeadder.SuspendLayout();
+            panel.SuspendLayout();
             SuspendLayout();
             // 
             // lblBigName
@@ -59,7 +58,7 @@ namespace Environmental_Monitoring.View
             lblBigName.BackColor = Color.Transparent;
             lblBigName.Font = new Font("Times New Roman", 28.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lblBigName.ForeColor = Color.DarkGreen;
-            lblBigName.Location = new Point(140, 45);
+            lblBigName.Location = new Point(142, 46);
             lblBigName.Name = "lblBigName";
             lblBigName.Size = new Size(346, 53);
             lblBigName.TabIndex = 18;
@@ -80,7 +79,7 @@ namespace Environmental_Monitoring.View
             panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point(0, 0);
             panelMenu.Name = "panelMenu";
-            panelMenu.Size = new Size(190, 853);
+            panelMenu.Size = new Size(90, 853);
             panelMenu.TabIndex = 15;
             // 
             // btnToggleMenu
@@ -98,7 +97,7 @@ namespace Environmental_Monitoring.View
             btnToggleMenu.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnToggleMenu.InactiveBackColor = Color.Transparent;
             btnToggleMenu.IsSelected = false;
-            btnToggleMenu.Location = new Point(0, 0);
+            btnToggleMenu.Location = new Point(0, 3);
             btnToggleMenu.Name = "btnToggleMenu";
             btnToggleMenu.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnToggleMenu.Size = new Size(190, 90);
@@ -120,7 +119,7 @@ namespace Environmental_Monitoring.View
             btnNotification.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnNotification.InactiveBackColor = Color.Transparent;
             btnNotification.IsSelected = false;
-            btnNotification.Location = new Point(0, 360);
+            btnNotification.Location = new Point(0, 363);
             btnNotification.Name = "btnNotification";
             btnNotification.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnNotification.Size = new Size(190, 90);
@@ -142,7 +141,7 @@ namespace Environmental_Monitoring.View
             btnStats.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnStats.InactiveBackColor = Color.Transparent;
             btnStats.IsSelected = false;
-            btnStats.Location = new Point(0, 450);
+            btnStats.Location = new Point(0, 453);
             btnStats.Name = "btnStats";
             btnStats.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnStats.Size = new Size(190, 90);
@@ -164,7 +163,7 @@ namespace Environmental_Monitoring.View
             btnContracts.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnContracts.InactiveBackColor = Color.Transparent;
             btnContracts.IsSelected = false;
-            btnContracts.Location = new Point(0, 270);
+            btnContracts.Location = new Point(0, 273);
             btnContracts.Name = "btnContracts";
             btnContracts.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnContracts.Size = new Size(190, 90);
@@ -186,7 +185,7 @@ namespace Environmental_Monitoring.View
             btnIntroduce.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnIntroduce.InactiveBackColor = Color.Transparent;
             btnIntroduce.IsSelected = false;
-            btnIntroduce.Location = new Point(0, 720);
+            btnIntroduce.Location = new Point(0, 723);
             btnIntroduce.Name = "btnIntroduce";
             btnIntroduce.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnIntroduce.Size = new Size(190, 90);
@@ -208,7 +207,7 @@ namespace Environmental_Monitoring.View
             btnAI.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnAI.InactiveBackColor = Color.Transparent;
             btnAI.IsSelected = false;
-            btnAI.Location = new Point(0, 630);
+            btnAI.Location = new Point(0, 633);
             btnAI.Name = "btnAI";
             btnAI.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnAI.Size = new Size(190, 90);
@@ -230,7 +229,7 @@ namespace Environmental_Monitoring.View
             btnHome.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnHome.InactiveBackColor = Color.Transparent;
             btnHome.IsSelected = false;
-            btnHome.Location = new Point(0, 90);
+            btnHome.Location = new Point(0, 93);
             btnHome.Name = "btnHome";
             btnHome.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnHome.Size = new Size(190, 90);
@@ -252,7 +251,7 @@ namespace Environmental_Monitoring.View
             btnSetting.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnSetting.InactiveBackColor = Color.Transparent;
             btnSetting.IsSelected = false;
-            btnSetting.Location = new Point(0, 540);
+            btnSetting.Location = new Point(0, 543);
             btnSetting.Name = "btnSetting";
             btnSetting.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnSetting.Size = new Size(190, 90);
@@ -274,42 +273,20 @@ namespace Environmental_Monitoring.View
             btnUser.HoverBackColor = Color.FromArgb(230, 230, 230);
             btnUser.InactiveBackColor = Color.Transparent;
             btnUser.IsSelected = false;
-            btnUser.Location = new Point(0, 180);
+            btnUser.Location = new Point(0, 183);
             btnUser.Name = "btnUser";
             btnUser.PressedBackColor = Color.FromArgb(200, 200, 200);
             btnUser.Size = new Size(190, 90);
             btnUser.TabIndex = 2;
             btnUser.UseVisualStyleBackColor = false;
             // 
-            // btnMenu
-            // 
-            btnMenu.ActiveBackColor = Color.FromArgb(220, 240, 220);
-            btnMenu.ActiveBorderColor = Color.FromArgb(0, 100, 0);
-            btnMenu.BackColor = Color.Transparent;
-            btnMenu.BackgroundImageLayout = ImageLayout.Stretch;
-            btnMenu.BorderLeftSize = 5;
-            btnMenu.FlatAppearance.BorderSize = 0;
-            btnMenu.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            btnMenu.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            btnMenu.FlatStyle = FlatStyle.Flat;
-            btnMenu.HoverBackColor = Color.FromArgb(230, 230, 230);
-            btnMenu.InactiveBackColor = Color.Transparent;
-            btnMenu.IsSelected = false;
-            btnMenu.Location = new Point(90, 30);
-            btnMenu.Name = "btnMenu";
-            btnMenu.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnMenu.Size = new Size(90, 90);
-            btnMenu.TabIndex = 6;
-            btnMenu.UseVisualStyleBackColor = false;
-            // 
             // panelContent
             // 
-            panelContent.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelContent.BackColor = Color.FromArgb(217, 244, 227);
             panelContent.BorderColor = Color.Transparent;
             panelContent.BorderRadius = 20;
             panelContent.BorderSize = 0;
-            panelContent.Location = new Point(90, 140);
+            panelContent.Location = new Point(90, 143);
             panelContent.Name = "panelContent";
             panelContent.Size = new Size(1227, 715);
             panelContent.TabIndex = 19;
@@ -325,19 +302,19 @@ namespace Environmental_Monitoring.View
             pictureBox1.TabIndex = 20;
             pictureBox1.TabStop = false;
             // 
-            // panelHeadder
+            // panel
             // 
-            panelHeadder.BackColor = Color.Transparent;
-            panelHeadder.Controls.Add(lblBigName);
-            panelHeadder.Controls.Add(pictureBox1);
-            panelHeadder.Location = new Point(90, 0);
-            panelHeadder.Name = "panelHeadder";
-            panelHeadder.Size = new Size(537, 140);
-            panelHeadder.TabIndex = 21;
+            panel.BackColor = Color.Transparent;
+            panel.Controls.Add(pictureBox1);
+            panel.Controls.Add(lblBigName);
+            panel.Location = new Point(92, 3);
+            panel.Name = "panel";
+            panel.Size = new Size(537, 140);
+            panel.TabIndex = 21;
             // 
             // globalAlertPanel
             // 
-            globalAlertPanel.Location = new Point(1012, 10);
+            globalAlertPanel.Location = new Point(1012, 13);
             globalAlertPanel.Name = "globalAlertPanel";
             globalAlertPanel.Size = new Size(400, 100);
             globalAlertPanel.TabIndex = 22;
@@ -347,20 +324,19 @@ namespace Environmental_Monitoring.View
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1421, 853);
+            Controls.Add(panel);
             Controls.Add(globalAlertPanel);
-            Controls.Add(panelHeadder);
             Controls.Add(panelContent);
             Controls.Add(panelMenu);
-            Controls.Add(btnMenu);
+            FormBorderStyle = FormBorderStyle.SizableToolWindow;
             Name = "Mainlayout";
             panelMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            panelHeadder.ResumeLayout(false);
-            panelHeadder.PerformLayout();
+            panel.ResumeLayout(false);
+            panel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -375,13 +351,12 @@ namespace Environmental_Monitoring.View
         private MenuButton btnUser;
         private MenuButton btnSetting;
         private MenuButton btnAI;
-        private MenuButton btnMenu;
         private MenuButton btnHome;
         private MenuButton btnIntroduce;
         private PictureBox pictureBox1;
         private MenuButton btnNotification;
         private MenuButton btnToggleMenu;
-        private Panel panelHeadder;
+        private Panel panel;
         private AlertPanel globalAlertPanel;
     }
 }

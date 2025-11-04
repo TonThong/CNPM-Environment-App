@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Diagnostics.Contracts;
 
-namespace Environmental_Monitoring.Model 
+namespace Environmental_Monitoring.Model
 {
     [Table("Employees")]
     public class Employee
@@ -21,10 +21,9 @@ namespace Environmental_Monitoring.Model
         [StringLength(100)]
         public string HoTen { get; set; }
 
-        public int? NamSinh { get; set; } 
+        public int? NamSinh { get; set; }
 
-        [StringLength(100)]
-        public int TruongBoPhan { get; set; }
+        public int TruongBoPhan { get; set; } 
 
         [StringLength(255)]
         public string DiaChi { get; set; }
@@ -39,7 +38,7 @@ namespace Environmental_Monitoring.Model
         [StringLength(255)]
         public string PasswordHash { get; set; }
 
-        public byte[] FaceIDData { get; set; } 
+        public byte[] FaceIDData { get; set; }
 
         public int? RoleID { get; set; }
         [ForeignKey("RoleID")]
@@ -58,27 +57,32 @@ namespace Environmental_Monitoring.Model
             Contracts = new HashSet<Contract>();
             SamplesAssignedHT = new HashSet<EnvironmentalSample>();
             SamplesAssignedPTN = new HashSet<EnvironmentalSample>();
+            TruongBoPhan = 0;
         }
 
         public Employee(DataRow row)
         {
-            EmployeeID = Convert.ToInt32(row["EmployeeID"]); 
+            EmployeeID = Convert.ToInt32(row["EmployeeID"]);
             MaNhanVien = row["MaNhanVien"].ToString();
             HoTen = row["HoTen"].ToString();
 
             if (row["NamSinh"] != DBNull.Value)
-                NamSinh = Convert.ToInt32(row["NamSinh"]); 
+                NamSinh = Convert.ToInt32(row["NamSinh"]);
             else
                 NamSinh = null;
 
-            TruongBoPhan = row["TruongBoPhan"].ToString();
+            if (row.Table.Columns.Contains("TruongBoPhan") && row["TruongBoPhan"] != DBNull.Value)
+                TruongBoPhan = Convert.ToInt32(row["TruongBoPhan"]);
+            else
+                TruongBoPhan = 0;
+
             DiaChi = row["DiaChi"].ToString();
             SoDienThoai = row["SoDienThoai"].ToString();
             Email = row["Email"].ToString();
             PasswordHash = row["PasswordHash"].ToString();
 
             if (row["RoleID"] != DBNull.Value)
-                RoleID = Convert.ToInt32(row["RoleID"]); 
+                RoleID = Convert.ToInt32(row["RoleID"]);
             else
                 RoleID = null;
 
