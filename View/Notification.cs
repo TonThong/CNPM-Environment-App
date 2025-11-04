@@ -9,20 +9,33 @@ using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View.Components;
 using Environmental_Monitoring.View;
+using System.Collections.Generic; // <-- Thêm thư viện này
 
 namespace Environmental_Monitoring
 {
     public partial class Notification : UserControl
     {
-
         string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;Uid=sql12800882;Pwd=TMlsWFrPxZ;";
 
         public Notification()
         {
             InitializeComponent();
             this.Load += Notification_Load;
-
         }
+
+        // === THÊM HÀM NÀY ĐỂ BẮT PHÍM ENTER ===
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if ((keyData == Keys.Enter) && (this.ActiveControl == txtSearch))
+            {
+                // Khi nhấn Enter, tải lại cả 2 bảng với từ khóa tìm kiếm
+                LoadNotifications(dgvQuaHan, "QuaHan");
+                LoadNotifications(dgvSapQuaHan, "SapHetHan");
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        // =======================================
 
         private void Notification_Load(object sender, EventArgs e)
         {
@@ -80,6 +93,11 @@ namespace Environmental_Monitoring
             DataTable dataTable = new DataTable();
             string query = "";
 
+            // === Lấy từ khóa tìm kiếm từ TextBox ===
+            string keySearch = txtSearch.Text.Trim();
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+            // ======================================
+
             if (loaiThongBao == "SapHetHan")
             {
                 query = @"
@@ -95,7 +113,7 @@ namespace Environmental_Monitoring
                         DATEDIFF(c.NgayTraKetQua, CURDATE()) > 0
                         AND c.Status != 'Completed'";
             }
-            else 
+            else
             {
                 query = @"
                     SELECT 
@@ -111,6 +129,14 @@ namespace Environmental_Monitoring
                         AND c.Status != 'Completed'";
             }
 
+            // === Thêm điều kiện TÌM KIẾM vào câu SQL ===
+            if (!string.IsNullOrWhiteSpace(keySearch))
+            {
+                query += " AND (UPPER(c.MaDon) LIKE UPPER(@keySearch) OR UPPER(cust.TenNguoiDaiDien) LIKE UPPER(@keySearch))";
+                parameters.Add(new MySqlParameter("@keySearch", "%" + keySearch + "%"));
+            }
+            // ===========================================
+
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -119,6 +145,13 @@ namespace Environmental_Monitoring
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
+                        // === Thêm tham số (Parameters) vào Command để chống SQL Injection ===
+                        if (parameters.Count > 0)
+                        {
+                            command.Parameters.AddRange(parameters.ToArray());
+                        }
+                        // ===================================================================
+
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                         {
                             adapter.Fill(dataTable);
@@ -145,7 +178,6 @@ namespace Environmental_Monitoring
             }
             catch (Exception ex)
             {
-                // --- THAY THẾ MessageBox bằng AlertPanel ---
                 Mainlayout mainForm = this.ParentForm as Mainlayout;
                 string errorMsg = rm.GetString("Alert_LoadDataError", culture);
                 mainForm?.ShowGlobalAlert(errorMsg + ex.Message, AlertPanel.AlertType.Error);

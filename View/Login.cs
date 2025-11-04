@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Environmental_Monitoring.View.Components;
+using Environmental_Monitoring.View;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -10,14 +11,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BCrypt.Net;
-
+using Environmental_Monitoring.Controller.Data; 
+using Environmental_Monitoring.Controller;    
+using Environmental_Monitoring.Model;       
 
 namespace Environmental_Monitoring.View
 {
     public partial class Login : Form
     {
-
-        string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;Uid=sql12800882;Pwd=TMlsWFrPxZ;";
 
         public Login()
         {
@@ -49,42 +50,20 @@ namespace Environmental_Monitoring.View
 
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                Model.Employee user = EmployeeRepo.Instance.Login(taiKhoan);
+
+                if (user != null && BCrypt.Net.BCrypt.Verify(matKhau, user.PasswordHash))
                 {
-                    connection.Open();
+                    UserSession.StartSession(user);
 
-                    string query = "SELECT HoTen, PasswordHash, RoleID FROM Employees WHERE Email = @InputTaiKhoan";
+                    alertPanel.OnClose += AlertPanel_Success_OnClose;
+                    alertPanel.ShowAlert("Đăng nhập thành công!", AlertPanel.AlertType.Success);
 
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@InputTaiKhoan", taiKhoan);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                string passwordHashFromDb = reader["PasswordHash"].ToString();
-                                string hoTen = reader["HoTen"].ToString();
-                                bool isPasswordValid = BCrypt.Net.BCrypt.Verify(matKhau, passwordHashFromDb);
-
-                                if (isPasswordValid)
-                                {
-                                    alertPanel.OnClose += AlertPanel_Success_OnClose;
-                                    alertPanel.ShowAlert("Đăng nhập thành công!", AlertPanel.AlertType.Success);
-
-                                    this.Enabled = false;
-                                }
-                                else
-                                {
-                                    alertPanel.ShowAlert("Mật khẩu không chính xác. Vui lòng thử lại.", AlertPanel.AlertType.Error);
-                                }
-                            }
-                            else
-                            {
-                                alertPanel.ShowAlert("Tài khoản không tồn tại. Vui lòng kiểm tra lại Email.", AlertPanel.AlertType.Error);
-                            }
-                        }
-                    }
+                    this.Enabled = false;
+                }
+                else
+                {
+                    alertPanel.ShowAlert("Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.", AlertPanel.AlertType.Error);
                 }
             }
             catch (Exception ex)

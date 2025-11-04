@@ -23,7 +23,7 @@ namespace Environmental_Monitoring.Model
 
         public int? NamSinh { get; set; }
 
-        public int TruongBoPhan { get; set; } 
+        public int TruongBoPhan { get; set; }
 
         [StringLength(255)]
         public string DiaChi { get; set; }
@@ -85,6 +85,15 @@ namespace Environmental_Monitoring.Model
                 RoleID = Convert.ToInt32(row["RoleID"]);
             else
                 RoleID = null;
+
+            if (row.Table.Columns.Contains("RoleName") && row["RoleName"] != DBNull.Value)
+            {
+                this.Role = new Role
+                {
+                    RoleID = this.RoleID ?? 0,
+                    RoleName = row["RoleName"].ToString()
+                };
+            }
 
             Contracts = new HashSet<Contract>();
             SamplesAssignedHT = new HashSet<EnvironmentalSample>();

@@ -30,30 +30,20 @@ namespace Environmental_Monitoring.View
             this.Load += new System.EventHandler(this.Employee_Load);
             this.dgvEmployee.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmployee_CellFormatting);
             
-            // Không cần kết nối sự kiện KeyPress hay KeyDown ở đây nữa
         }
 
-        // === GIẢI PHÁP MỚI: GHI ĐÈ ProcessCmdKey ===
-        // Hàm này sẽ bắt phím Enter TRƯỚC KHI TextBox kịp xử lý
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            // Kiểm tra xem phím Enter có được nhấn KHÔNG
-            // VÀ kiểm tra xem control đang active (focus) có phải là txtSearch KHÔNG
             if ((keyData == Keys.Enter) && (this.ActiveControl == txtSearch))
             {
-                // Nếu đúng, chạy code tìm kiếm
                 currentPage = 1;
                 LoadData();
                 
-                // Trả về true để báo cho Windows biết "Tôi đã xử lý phím này, không cần làm gì thêm"
-                // (Điều này cũng ngăn tiếng "beep" khó chịu)
                 return true;
             }
             
-            // Đối với bất kỳ phím nào khác, hãy để hệ thống tự xử lý
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        // =============================================
 
         private void LoadData()
         {
@@ -270,21 +260,15 @@ namespace Environmental_Monitoring.View
             form.ShowDialog();
         }
 
-        // Xóa các hàm KeyDown và KeyPress cũ
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            // Không dùng
         }
         private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Không dùng
         }
 
-        // Hàm này BẮT BUỘC phải giữ lại, dù nó rỗng
-        // vì file Designer.cs đang trỏ tới nó
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            // Không làm gì ở đây
         }
 
         private void btnFirst_Click(object sender, EventArgs e)

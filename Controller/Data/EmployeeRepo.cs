@@ -39,14 +39,17 @@ namespace Environmental_Monitoring.Controller.Data
                                  e.SoDienThoai,
                                  e.Email,
                                  e.PasswordHash,
-                                 e.RoleID
-                                FROM Employees e
-                                WHERE e.Email = @username";
+                                 e.RoleID,
+                                 r.RoleName 
+                             FROM Employees e
+                             LEFT JOIN Roles r ON e.RoleID = r.RoleId 
+                             WHERE e.Email = @username";
+
             var data = DataProvider.Instance.ExecuteQuery(query, new object[] { username });
             if (data.Rows.Count > 0)
             {
                 DataRow row = data.Rows[0];
-                return new Employee(row);
+                return new Employee(row); 
             }
             return null;
         }
@@ -71,8 +74,6 @@ namespace Environmental_Monitoring.Controller.Data
 
         public Employee GetById(int employeeId)
         {
-            // "SELECT *" sẽ tự động lấy cột TruongBoPhan thay vì PhongBan (do Model/Employee đã đổi)
-            // và hàm khởi tạo Employee(DataRow) đã được cập nhật để xử lý
             string query = "SELECT * FROM Employees WHERE EmployeeID = @EmployeeID";
             DataTable dt = DataProvider.Instance.ExecuteQuery(query, new object[] { employeeId });
             if (dt.Rows.Count > 0)
@@ -92,7 +93,7 @@ namespace Environmental_Monitoring.Controller.Data
                 employee.MaNhanVien,
                 employee.HoTen,
                 employee.NamSinh,
-                employee.TruongBoPhan, // <-- ĐÃ THAY ĐỔI
+                employee.TruongBoPhan,
                 employee.DiaChi,
                 employee.SoDienThoai,
                 employee.Email,
@@ -117,7 +118,7 @@ namespace Environmental_Monitoring.Controller.Data
             {
                 employee.HoTen,
                 employee.NamSinh,
-                employee.TruongBoPhan, // <-- ĐÃ THAY ĐỔI
+                employee.TruongBoPhan,
                 employee.DiaChi,
                 employee.SoDienThoai,
                 employee.Email,
@@ -139,13 +140,11 @@ namespace Environmental_Monitoring.Controller.Data
             return DataProvider.Instance.ExecuteScalar("SELECT EmployeeId FROM Employees WHERE UPPER(MaNhanVien) = @code AND EmployeeId != @id", new object[] { code, id }) != null;
         }
 
-        // === PHƯƠNG THỨC MỚI ĐƯỢC THÊM VÀO ===
         public bool ExistsEmail(string email, int? id = 0)
         {
             email = email.Trim().ToUpper();
             return DataProvider.Instance.ExecuteScalar("SELECT EmployeeId FROM Employees WHERE UPPER(Email) = @email AND EmployeeId != @id", new object[] { email, id }) != null;
         }
-        // =====================================
 
         public bool ExistsAnotherTable(int id)
         {
@@ -183,7 +182,6 @@ namespace Environmental_Monitoring.Controller.Data
                                    OR UPPER(e.HoTen) LIKE UPPER(@keySearch2)
                                    OR UPPER(e.SoDienThoai) LIKE UPPER(@keySearch3)
                                    OR UPPER(e.Email) LIKE UPPER(@keySearch4)";
-            // Đã xóa tìm kiếm theo PhongBan, giảm số lượng tham số
             return DataProvider.Instance.ExecuteQuery(query, new object[] { searchPattern, searchPattern, searchPattern, searchPattern });
         }
 
@@ -194,48 +192,35 @@ namespace Environmental_Monitoring.Controller.Data
                                  INNER JOIN Roles r ON e.RoleID = r.RoleId";
             string whereClause = "";
             object[] parameters;
-
-            // Xử lý tìm kiếm
             if (!string.IsNullOrWhiteSpace(keySearch))
             {
                 string searchPattern = "%" + keySearch.Trim() + "%";
-                // Đã xóa "OR UPPER(e.PhongBan) LIKE UPPER(@keySearch3)"
                 whereClause = @"WHERE UPPER(e.MaNhanVien) LIKE UPPER(@keySearch1)
                                    OR UPPER(e.HoTen) LIKE UPPER(@keySearch2)
                                    OR UPPER(e.SoDienThoai) LIKE UPPER(@keySearch3)
                                    OR UPPER(e.Email) LIKE UPPER(@keySearch4)";
-                // Giảm số lượng tham số từ 5 xuống 4
                 parameters = new object[] { searchPattern, searchPattern, searchPattern, searchPattern };
             }
             else
             {
                 parameters = null;
             }
-
-            // 1. Lấy TỔNG SỐ bản ghi
             string countQuery = "SELECT COUNT(e.EmployeeID) " + baseQuery + " " + whereClause;
             result.TotalCount = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(countQuery, parameters));
-
-            // 2. Lấy DỮ LIỆU của trang
             int offset = (pageNumber - 1) * pageSize;
             string dataQuery = @"SELECT
                                      e.EmployeeID, e.MaNhanVien, e.HoTen, e.NamSinh,
                                      e.TruongBoPhan, e.DiaChi, e.SoDienThoai, e.Email, 
                                      e.RoleID, r.RoleName " +
                                      baseQuery + " " + whereClause +
-                                     " ORDER BY e.EmployeeID LIMIT @PageSize OFFSET @Offset"; // Thêm ORDER BY
-
-            // Tạo mảng tham số MỚI cho query này
+                                     " ORDER BY e.EmployeeID LIMIT @PageSize OFFSET @Offset";
             object[] dataParameters;
             if (!string.IsNullOrWhiteSpace(keySearch))
             {
-                // Gồm 4 @keySearch, @PageSize, @Offset
-                // Giảm số lượng tham số từ 5 xuống 4
                 dataParameters = new object[] { parameters[0], parameters[0], parameters[0], parameters[0], pageSize, offset };
             }
             else
             {
-                // Gồm @PageSize, @Offset
                 dataParameters = new object[] { pageSize, offset };
             }
 
