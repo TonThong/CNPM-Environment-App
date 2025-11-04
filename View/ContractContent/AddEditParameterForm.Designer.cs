@@ -1,4 +1,4 @@
-namespace Environmental_Monitoring.View.ContractContent
+﻿namespace Environmental_Monitoring.View.ContractContent
 {
     partial class AddEditParameterForm
     {
@@ -18,81 +18,165 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void InitializeComponent()
         {
-            this.txtTenThongSo = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            this.txtDonVi = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            this.numGioiHanMin = new NumericUpDown();
-            this.numGioiHanMax = new NumericUpDown();
-            this.cbbPhuTrach = new ComboBox();
-            this.btnOK = new Button();
-            this.btnCancel = new Button();
-            this.lblTenThongSo = new Label();
-            this.lblDonVi = new Label();
-            this.lblGioiHanMin = new Label();
-            this.lblGioiHanMax = new Label();
-            this.lblPhuTrach = new Label();
-            ((System.ComponentModel.ISupportInitialize)(this.numGioiHanMin)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGioiHanMax)).BeginInit();
-            this.SuspendLayout();
+            txtTenThongSo = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtDonVi = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            numGioiHanMin = new NumericUpDown();
+            numGioiHanMax = new NumericUpDown();
+            cbbPhuTrach = new ComboBox();
+            btnOK = new Button();
+            btnCancel = new Button();
+            lblTenThongSo = new Label();
+            lblDonVi = new Label();
+            lblGioiHanMin = new Label();
+            lblGioiHanMax = new Label();
+            lblPhuTrach = new Label();
+            ((System.ComponentModel.ISupportInitialize)numGioiHanMin).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numGioiHanMax).BeginInit();
+            SuspendLayout();
             // 
-            // Labels and controls
+            // txtTenThongSo
             // 
-            this.lblTenThongSo.Text = "T�n th�ng s?";
-            this.lblTenThongSo.Location = new System.Drawing.Point(20, 20);
-            this.txtTenThongSo.Location = new System.Drawing.Point(150, 20);
-            this.txtTenThongSo.Size = new System.Drawing.Size(200, 30);
-
-            this.lblDonVi.Text = "??n v?";
-            this.lblDonVi.Location = new System.Drawing.Point(20, 60);
-            this.txtDonVi.Location = new System.Drawing.Point(150, 60);
-            this.txtDonVi.Size = new System.Drawing.Size(200, 30);
-
-            this.lblGioiHanMin.Text = "Gi?i h?n Min";
-            this.lblGioiHanMin.Location = new System.Drawing.Point(20, 100);
-            this.numGioiHanMin.Location = new System.Drawing.Point(150, 100);
-            this.numGioiHanMin.Size = new System.Drawing.Size(200, 30);
-            this.numGioiHanMin.DecimalPlaces = 2;
-            this.numGioiHanMin.Maximum = 1000000;
-
-            this.lblGioiHanMax.Text = "Gi?i h?n Max";
-            this.lblGioiHanMax.Location = new System.Drawing.Point(20, 140);
-            this.numGioiHanMax.Location = new System.Drawing.Point(150, 140);
-            this.numGioiHanMax.Size = new System.Drawing.Size(200, 30);
-            this.numGioiHanMax.DecimalPlaces = 2;
-            this.numGioiHanMax.Maximum = 1000000;
-
-            this.lblPhuTrach.Text = "Ph? tr�ch";
-            this.lblPhuTrach.Location = new System.Drawing.Point(20, 180);
-            this.cbbPhuTrach.Location = new System.Drawing.Point(150, 180);
-            this.cbbPhuTrach.Size = new System.Drawing.Size(200, 30);
-            this.cbbPhuTrach.DropDownStyle = ComboBoxStyle.DropDownList;
-
-            this.btnOK.Text = "OK";
-            this.btnOK.Location = new System.Drawing.Point(80, 230);
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            this.btnCancel.Text = "H?y";
-            this.btnCancel.Location = new System.Drawing.Point(200, 230);
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-
-            this.ClientSize = new System.Drawing.Size(380, 280);
-            this.Controls.Add(this.lblTenThongSo);
-            this.Controls.Add(this.txtTenThongSo);
-            this.Controls.Add(this.lblDonVi);
-            this.Controls.Add(this.txtDonVi);
-            this.Controls.Add(this.lblGioiHanMin);
-            this.Controls.Add(this.numGioiHanMin);
-            this.Controls.Add(this.lblGioiHanMax);
-            this.Controls.Add(this.numGioiHanMax);
-            this.Controls.Add(this.lblPhuTrach);
-            this.Controls.Add(this.cbbPhuTrach);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.btnCancel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Th�m/Ch?nh s?a Th�ng S?";
-            ((System.ComponentModel.ISupportInitialize)(this.numGioiHanMin)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGioiHanMax)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            txtTenThongSo.BorderRadius = 15;
+            txtTenThongSo.BorderThickness = 2;
+            txtTenThongSo.FocusBorderColor = Color.HotPink;
+            txtTenThongSo.HoverBorderColor = Color.DodgerBlue;
+            txtTenThongSo.Location = new Point(150, 20);
+            txtTenThongSo.Multiline = false;
+            txtTenThongSo.Name = "txtTenThongSo";
+            txtTenThongSo.NormalBorderColor = Color.Gray;
+            txtTenThongSo.Padding = new Padding(10);
+            txtTenThongSo.PasswordChar = '\0';
+            txtTenThongSo.PlaceholderText = "";
+            txtTenThongSo.ReadOnly = false;
+            txtTenThongSo.Size = new Size(200, 30);
+            txtTenThongSo.TabIndex = 1;
+            txtTenThongSo.UseSystemPasswordChar = false;
+            // 
+            // txtDonVi
+            // 
+            txtDonVi.BorderRadius = 15;
+            txtDonVi.BorderThickness = 2;
+            txtDonVi.FocusBorderColor = Color.HotPink;
+            txtDonVi.HoverBorderColor = Color.DodgerBlue;
+            txtDonVi.Location = new Point(150, 60);
+            txtDonVi.Multiline = false;
+            txtDonVi.Name = "txtDonVi";
+            txtDonVi.NormalBorderColor = Color.Gray;
+            txtDonVi.Padding = new Padding(10);
+            txtDonVi.PasswordChar = '\0';
+            txtDonVi.PlaceholderText = "";
+            txtDonVi.ReadOnly = false;
+            txtDonVi.Size = new Size(200, 30);
+            txtDonVi.TabIndex = 3;
+            txtDonVi.UseSystemPasswordChar = false;
+            // 
+            // numGioiHanMin
+            // 
+            numGioiHanMin.DecimalPlaces = 2;
+            numGioiHanMin.Location = new Point(150, 100);
+            numGioiHanMin.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numGioiHanMin.Name = "numGioiHanMin";
+            numGioiHanMin.Size = new Size(200, 25);
+            numGioiHanMin.TabIndex = 5;
+            // 
+            // numGioiHanMax
+            // 
+            numGioiHanMax.DecimalPlaces = 2;
+            numGioiHanMax.Location = new Point(150, 140);
+            numGioiHanMax.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numGioiHanMax.Name = "numGioiHanMax";
+            numGioiHanMax.Size = new Size(200, 25);
+            numGioiHanMax.TabIndex = 7;
+            // 
+            // cbbPhuTrach
+            // 
+            cbbPhuTrach.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbPhuTrach.Location = new Point(150, 180);
+            cbbPhuTrach.Name = "cbbPhuTrach";
+            cbbPhuTrach.Size = new Size(200, 25);
+            cbbPhuTrach.TabIndex = 9;
+            // 
+            // btnOK
+            // 
+            btnOK.Location = new Point(80, 230);
+            btnOK.Name = "btnOK";
+            btnOK.Size = new Size(75, 23);
+            btnOK.TabIndex = 10;
+            btnOK.Text = "OK";
+            btnOK.Click += btnOK_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(200, 230);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 11;
+            btnCancel.Text = "Hủy";
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // lblTenThongSo
+            // 
+            lblTenThongSo.Location = new Point(20, 20);
+            lblTenThongSo.Name = "lblTenThongSo";
+            lblTenThongSo.Size = new Size(100, 23);
+            lblTenThongSo.TabIndex = 0;
+            lblTenThongSo.Text = "Tên thông số";
+            // 
+            // lblDonVi
+            // 
+            lblDonVi.Location = new Point(20, 60);
+            lblDonVi.Name = "lblDonVi";
+            lblDonVi.Size = new Size(100, 23);
+            lblDonVi.TabIndex = 2;
+            lblDonVi.Text = "Đơn vị";
+            // 
+            // lblGioiHanMin
+            // 
+            lblGioiHanMin.Location = new Point(20, 100);
+            lblGioiHanMin.Name = "lblGioiHanMin";
+            lblGioiHanMin.Size = new Size(100, 23);
+            lblGioiHanMin.TabIndex = 4;
+            lblGioiHanMin.Text = "Giới hạn Min";
+            // 
+            // lblGioiHanMax
+            // 
+            lblGioiHanMax.Location = new Point(20, 140);
+            lblGioiHanMax.Name = "lblGioiHanMax";
+            lblGioiHanMax.Size = new Size(100, 23);
+            lblGioiHanMax.TabIndex = 6;
+            lblGioiHanMax.Text = "Giới hạn Max";
+            // 
+            // lblPhuTrach
+            // 
+            lblPhuTrach.Location = new Point(20, 180);
+            lblPhuTrach.Name = "lblPhuTrach";
+            lblPhuTrach.Size = new Size(100, 23);
+            lblPhuTrach.TabIndex = 8;
+            lblPhuTrach.Text = "Phụ trách";
+            // 
+            // AddEditParameterForm
+            // 
+            ClientSize = new Size(380, 280);
+            Controls.Add(lblTenThongSo);
+            Controls.Add(txtTenThongSo);
+            Controls.Add(lblDonVi);
+            Controls.Add(txtDonVi);
+            Controls.Add(lblGioiHanMin);
+            Controls.Add(numGioiHanMin);
+            Controls.Add(lblGioiHanMax);
+            Controls.Add(numGioiHanMax);
+            Controls.Add(lblPhuTrach);
+            Controls.Add(cbbPhuTrach);
+            Controls.Add(btnOK);
+            Controls.Add(btnCancel);
+            Font = new Font("Times New Roman", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Name = "AddEditParameterForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Thêm/Chỉnh sửa Thông Số";
+            ((System.ComponentModel.ISupportInitialize)numGioiHanMin).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numGioiHanMax).EndInit();
+            ResumeLayout(false);
         }
     }
 }

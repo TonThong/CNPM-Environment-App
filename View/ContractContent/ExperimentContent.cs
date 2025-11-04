@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using Environmental_Monitoring.Controller;
+using Environmental_Monitoring.View.ContractContent;
 
 namespace Environmental_Monitoring.View
 {
@@ -19,6 +20,68 @@ namespace Environmental_Monitoring.View
             // ensure checkbox edits commit immediately
             roundedDataGridView2.CurrentCellDirtyStateChanged += RoundedDataGridView2_CurrentCellDirtyStateChanged;
             roundedDataGridView2.CellValueChanged += RoundedDataGridView2_CellValueChanged;
+
+            // wire create template button if present in designer
+            try
+            {
+                if (this.Controls.Find("btnCreateTemplate", true).Length > 0)
+                {
+                    btnCreateTemplate.Click += BtnCreateTemplate_Click;
+                }
+            }
+            catch { }
+        }
+
+        private void BtnCreateTemplate_Click(object? sender, EventArgs e)
+        {
+            if (currentContractId <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn hợp đồng trước khi tạo mẫu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // load parameters where PhuTrach IS NULL OR = 'ThiNghiem'
+            string q = "SELECT ParameterID, TenThongSo FROM Parameters WHERE PhuTrach IS NULL OR PhuTrach = 'ThiNghiem'";
+            DataTable dt = DataProvider.Instance.ExecuteQuery(q);
+
+            using (var dlg = new AddTemplateForm(dt))
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    // insert into SampleTemplates
+                    string insertTemplate = "INSERT INTO SampleTemplates (TenMau) VALUES (@tenmau)";
+                    DataProvider.Instance.ExecuteNonQuery(insertTemplate, new object[] { dlg.TemplateName });
+
+                    // get last inserted template id
+                    object last = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
+                    int templateId = 0;
+                    if (last != null && int.TryParse(last.ToString(), out int tmp)) templateId = tmp;
+
+                    if (templateId > 0)
+                    {
+                        // insert into TemplateParameters
+                        foreach (var pid in dlg.SelectedParameterIds)
+                        {
+                            string ins = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@t, @p)";
+                            DataProvider.Instance.ExecuteNonQuery(ins, new object[] { templateId, pid });
+                        }
+
+                        // create EnvironmentalSamples for this contract
+                        string insertSample = "INSERT INTO EnvironmentalSamples (MaMau, ContractID, TemplateID) VALUES (@mamau, @contractId, @templateId)";
+                        string sampleCode = $"M{currentContractId}_{templateId}_{DateTime.Now.Ticks % 10000}";
+                        DataProvider.Instance.ExecuteNonQuery(insertSample, new object[] { sampleCode, currentContractId, templateId });
+
+                        MessageBox.Show("Tạo mẫu thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadExperimentContract(currentContractId);
+                    }
+                }
+            }
+        }
+
+        private void btnCreateTemplate_Click(object? sender, EventArgs e)
+        {
+            // Designer-created event wiring calls this name; forward to implementation
+            BtnCreateTemplate_Click(sender, e);
         }
 
         private void RoundedDataGridView2_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
@@ -116,6 +179,7 @@ namespace Environmental_Monitoring.View
                              JOIN Parameters p ON tp.ParameterID = p.ParameterID
                              LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
                              WHERE s.ContractID = @contractId
+                               AND (p.PhuTrach IS NULL OR p.PhuTrach = 'ThiNghiem')
                              GROUP BY p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax";
 
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });

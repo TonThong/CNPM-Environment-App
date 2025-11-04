@@ -33,6 +33,7 @@
             btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
             btnContracts = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnCreateTemplate = new Environmental_Monitoring.View.Components.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView2).BeginInit();
             SuspendLayout();
             // 
@@ -129,11 +130,32 @@
             btnContracts.UseVisualStyleBackColor = false;
             btnContracts.Click += btnContracts_Click;
             // 
+            // btnCreateTemplate
+            // 
+            btnCreateTemplate.BackColor = Color.SteelBlue;
+            btnCreateTemplate.BaseColor = Color.SteelBlue;
+            btnCreateTemplate.BorderColor = Color.Transparent;
+            btnCreateTemplate.BorderRadius = 25;
+            btnCreateTemplate.BorderSize = 0;
+            btnCreateTemplate.FlatAppearance.BorderSize = 0;
+            btnCreateTemplate.FlatStyle = FlatStyle.Flat;
+            btnCreateTemplate.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCreateTemplate.ForeColor = Color.White;
+            btnCreateTemplate.HoverColor = Color.DodgerBlue;
+            btnCreateTemplate.Location = new Point(380, 15);
+            btnCreateTemplate.Name = "btnCreateTemplate";
+            btnCreateTemplate.Size = new Size(150, 50);
+            btnCreateTemplate.TabIndex = 72;
+            btnCreateTemplate.Text = "Tạo mẫu";
+            btnCreateTemplate.UseVisualStyleBackColor = false;
+            btnCreateTemplate.Click += btnCreateTemplate_Click;
+            // 
             // ExperimentContent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(btnContracts);
+            Controls.Add(btnCreateTemplate);
             Controls.Add(roundedDataGridView2);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
@@ -152,5 +174,6 @@
         private Components.RoundedButton btnSave;
         private Components.RoundedButton btnSearch;
         private Components.RoundedButton btnContracts;
+        private Components.RoundedButton btnCreateTemplate;
     }
 }

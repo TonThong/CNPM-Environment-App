@@ -34,6 +34,54 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
+        private void btnCreateTemplate_Click(object sender, EventArgs e)
+        {
+            if (currentContractId <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn hợp đồng trước khi tạo mẫu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // load parameters where PhuTrach IS NULL OR = 'HienTruong'
+            string q = "SELECT ParameterID, TenThongSo FROM Parameters WHERE PhuTrach IS NULL OR PhuTrach = 'HienTruong'";
+            DataTable dt = DataProvider.Instance.ExecuteQuery(q);
+
+            using (var dlg = new AddTemplateForm(dt))
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    // create new SampleTemplates entry linked to current contract via EnvironmentalSamples
+                    // 1) insert into SampleTemplates
+                    string insertTemplate = "INSERT INTO SampleTemplates (TenMau) VALUES (@tenmau)";
+                    DataProvider.Instance.ExecuteNonQuery(insertTemplate, new object[] { dlg.TemplateName });
+
+                    // get last inserted template id (MySQL LAST_INSERT_ID)
+                    object last = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
+                    int templateId = 0;
+                    if (last != null && int.TryParse(last.ToString(), out int tmp)) templateId = tmp;
+
+                    if (templateId > 0)
+                    {
+                        // 2) link selected parameters in TemplateParameters
+                        foreach (var pid in dlg.SelectedParameterIds)
+                        {
+                            string ins = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@t, @p)";
+                            DataProvider.Instance.ExecuteNonQuery(ins, new object[] { templateId, pid });
+                        }
+
+                        // 3) create an EnvironmentalSamples row for this contract using the new template
+                        string insertSample = "INSERT INTO EnvironmentalSamples (MaMau, ContractID, TemplateID) VALUES (@mamau, @contractId, @templateId)";
+                        string sampleCode = $"M{currentContractId}_{templateId}_{DateTime.Now.Ticks % 10000}";
+                        DataProvider.Instance.ExecuteNonQuery(insertSample, new object[] { sampleCode, currentContractId, templateId });
+
+                        MessageBox.Show("Tạo mẫu thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // reload
+                        LoadContract(currentContractId);
+                    }
+                }
+            }
+        }
+
         public void LoadContract(int contractId)
         {
             currentContractId = contractId;
