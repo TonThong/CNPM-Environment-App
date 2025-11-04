@@ -33,6 +33,7 @@
             btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
             roundedDataGridView2 = new Environmental_Monitoring.View.Components.RoundedDataGridView();
             btnContracts = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnCreateTemplate = new Environmental_Monitoring.View.Components.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView2).BeginInit();
             SuspendLayout();
             // 
@@ -48,7 +49,7 @@
             btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
-            btnCancel.Location = new Point(947, 355);
+            btnCancel.Location = new Point(1022, 355);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(178, 50);
             btnCancel.TabIndex = 64;
@@ -129,10 +130,31 @@
             btnContracts.UseVisualStyleBackColor = false;
             btnContracts.Click += btnContracts_Click;
             // 
+            // btnCreateTemplate
+            // 
+            btnCreateTemplate.BackColor = Color.SteelBlue;
+            btnCreateTemplate.BaseColor = Color.SteelBlue;
+            btnCreateTemplate.BorderColor = Color.Transparent;
+            btnCreateTemplate.BorderRadius = 25;
+            btnCreateTemplate.BorderSize = 0;
+            btnCreateTemplate.FlatAppearance.BorderSize = 0;
+            btnCreateTemplate.FlatStyle = FlatStyle.Flat;
+            btnCreateTemplate.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCreateTemplate.ForeColor = Color.White;
+            btnCreateTemplate.HoverColor = Color.DodgerBlue;
+            btnCreateTemplate.Location = new Point(866, 355);
+            btnCreateTemplate.Name = "btnCreateTemplate";
+            btnCreateTemplate.Size = new Size(150, 50);
+            btnCreateTemplate.TabIndex = 67;
+            btnCreateTemplate.Text = "Tạo mẫu";
+            btnCreateTemplate.UseVisualStyleBackColor = false;
+            btnCreateTemplate.Click += btnCreateTemplate_Click;
+            // 
             // RealContent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnCreateTemplate);
             Controls.Add(btnContracts);
             Controls.Add(roundedDataGridView2);
             Controls.Add(btnCancel);
@@ -151,5 +173,6 @@
         private Components.RoundedButton btnSearch;
         private Components.RoundedDataGridView roundedDataGridView2;
         private Components.RoundedButton btnContracts;
+        private Components.RoundedButton btnCreateTemplate;
     }
 }

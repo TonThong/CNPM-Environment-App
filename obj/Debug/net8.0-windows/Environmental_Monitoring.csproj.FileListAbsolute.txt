@@ -270,3 +270,5 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.Text.Encodings.Web.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.Text.Json.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.AddEditParameterForm.resources
+E:\TDTU\CNPM\Environmental_Monitoring\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.AddTemplateForm.resources
