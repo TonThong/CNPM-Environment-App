@@ -1,5 +1,5 @@
 ﻿using Environmental_Monitoring.Model;
-using Microsoft.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 
@@ -20,24 +20,25 @@ namespace Environmental_Monitoring.Controller.Data
         public List<Parameter> GetAll()
         {
             var list = new List<Parameter>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                string sql = @"SELECT ParameterID, TenThongSo, DonVi, GioiHanMin, GioiHanMax 
-                               FROM Parameters";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                string sql = @"SELECT ParameterID, TenThongSo, DonVi, GioiHanMin, GioiHanMax, PhuTrach FROM Parameters";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                using (var reader = cmd.ExecuteReader())
                 {
-                    list.Add(new Parameter
+                    while (reader.Read())
                     {
-                        ParameterID = Convert.ToInt32(reader["ParameterID"]),
-                        TenThongSo = reader["TenThongSo"].ToString(),
-                        DonVi = reader["DonVi"].ToString(),
-                        GioiHanMin = reader["GioiHanMin"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMin"]) : (decimal?)null,
-                        GioiHanMax = reader["GioiHanMax"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMax"]) : (decimal?)null
-                    });
+                        list.Add(new Parameter
+                        {
+                            ParameterID = reader["ParameterID"] != DBNull.Value ? Convert.ToInt32(reader["ParameterID"]) : (int?)null,
+                            TenThongSo = reader["TenThongSo"] != DBNull.Value ? reader["TenThongSo"].ToString() : null,
+                            DonVi = reader["DonVi"] != DBNull.Value ? reader["DonVi"].ToString() : null,
+                            GioiHanMin = reader["GioiHanMin"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMin"]) : (decimal?)null,
+                            GioiHanMax = reader["GioiHanMax"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMax"]) : (decimal?)null,
+                            PhuTrach = reader["PhuTrach"] != DBNull.Value ? reader["PhuTrach"].ToString() : null
+                        });
+                    }
                 }
             }
             return list;
@@ -48,17 +49,18 @@ namespace Environmental_Monitoring.Controller.Data
         /// </summary>
         public void Add(Parameter parameter)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                string sql = @"INSERT INTO Parameters (TenThongSo, DonVi, GioiHanMin, GioiHanMax)
-                               VALUES (@TenThongSo, @DonVi, @GioiHanMin, @GioiHanMax)";
-                SqlCommand cmd = new SqlCommand(sql, conn);
+                string sql = @"INSERT INTO Parameters (TenThongSo, DonVi, GioiHanMin, GioiHanMax, PhuTrach)
+                               VALUES (@TenThongSo, @DonVi, @GioiHanMin, @GioiHanMax, @PhuTrach)";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@TenThongSo", parameter.TenThongSo);
+                cmd.Parameters.AddWithValue("@TenThongSo", parameter.TenThongSo ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@DonVi", (object)parameter.DonVi ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@GioiHanMin", (object)parameter.GioiHanMin ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@GioiHanMax", (object)parameter.GioiHanMax ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@PhuTrach", (object)parameter.PhuTrach ?? DBNull.Value);
 
                 cmd.ExecuteNonQuery();
             }
@@ -69,22 +71,24 @@ namespace Environmental_Monitoring.Controller.Data
         /// </summary>
         public void Update(Parameter parameter)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
                 string sql = @"UPDATE Parameters 
                                SET TenThongSo = @TenThongSo,
                                    DonVi = @DonVi,
                                    GioiHanMin = @GioiHanMin,
-                                   GioiHanMax = @GioiHanMax
+                                   GioiHanMax = @GioiHanMax,
+                                   PhuTrach = @PhuTrach
                                WHERE ParameterID = @ParameterID";
-                SqlCommand cmd = new SqlCommand(sql, conn);
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@TenThongSo", parameter.TenThongSo);
+                cmd.Parameters.AddWithValue("@TenThongSo", parameter.TenThongSo ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@DonVi", (object)parameter.DonVi ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@GioiHanMin", (object)parameter.GioiHanMin ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@GioiHanMax", (object)parameter.GioiHanMax ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@ParameterID", parameter.ParameterID);
+                cmd.Parameters.AddWithValue("@PhuTrach", (object)parameter.PhuTrach ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@ParameterID", parameter.ParameterID ?? (object)DBNull.Value);
 
                 cmd.ExecuteNonQuery();
             }
@@ -95,11 +99,11 @@ namespace Environmental_Monitoring.Controller.Data
         /// </summary>
         public void Delete(int parameterID)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
                 string sql = "DELETE FROM Parameters WHERE ParameterID = @ParameterID";
-                SqlCommand cmd = new SqlCommand(sql, conn);
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@ParameterID", parameterID);
                 cmd.ExecuteNonQuery();
             }
@@ -110,25 +114,28 @@ namespace Environmental_Monitoring.Controller.Data
         /// </summary>
         public Parameter GetByID(int parameterID)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                string sql = @"SELECT ParameterID, TenThongSo, DonVi, GioiHanMin, GioiHanMax 
+                string sql = @"SELECT ParameterID, TenThongSo, DonVi, GioiHanMin, GioiHanMax, PhuTrach 
                                FROM Parameters WHERE ParameterID = @ParameterID";
-                SqlCommand cmd = new SqlCommand(sql, conn);
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@ParameterID", parameterID);
 
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                using (var reader = cmd.ExecuteReader())
                 {
-                    return new Parameter
+                    if (reader.Read())
                     {
-                        ParameterID = Convert.ToInt32(reader["ParameterID"]),
-                        TenThongSo = reader["TenThongSo"].ToString(),
-                        DonVi = reader["DonVi"].ToString(),
-                        GioiHanMin = reader["GioiHanMin"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMin"]) : (decimal?)null,
-                        GioiHanMax = reader["GioiHanMax"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMax"]) : (decimal?)null
-                    };
+                        return new Parameter
+                        {
+                            ParameterID = reader["ParameterID"] != DBNull.Value ? Convert.ToInt32(reader["ParameterID"]) : (int?)null,
+                            TenThongSo = reader["TenThongSo"] != DBNull.Value ? reader["TenThongSo"].ToString() : null,
+                            DonVi = reader["DonVi"] != DBNull.Value ? reader["DonVi"].ToString() : null,
+                            GioiHanMin = reader["GioiHanMin"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMin"]) : (decimal?)null,
+                            GioiHanMax = reader["GioiHanMax"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMax"]) : (decimal?)null,
+                            PhuTrach = reader["PhuTrach"] != DBNull.Value ? reader["PhuTrach"].ToString() : null
+                        };
+                    }
                 }
             }
             return null;

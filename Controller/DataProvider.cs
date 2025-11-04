@@ -23,7 +23,7 @@ namespace Environmental_Monitoring.Controller
 
         }
 
-        string connectionString = "Server=sql12.freesqldatabase.com;Port=3306;Database=sql12800882;User ID=sql12800882;Password=TMlsWFrPxZ;Charset=utf8;";
+        string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;User ID=sql12800882;Password=TMlsWFrPxZ";
 
         public DataTable ExecuteQuery(string query, object[] parameter = null)
         {
@@ -122,6 +122,11 @@ namespace Environmental_Monitoring.Controller
                     return result;
                 }
             }
+        }
+
+        public string GetConnectionString()
+        {
+            return connectionString;
         }
     }
 }
