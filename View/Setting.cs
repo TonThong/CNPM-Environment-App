@@ -11,8 +11,7 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View;
-using Environmental_Monitoring.View.Components;
-// Thêm using này để gọi ThemeManager
+using Environmental_Monitoring.View.Components; 
 using Environmental_Monitoring.Controller;
 
 namespace Environmental_Monitoring
@@ -27,6 +26,11 @@ namespace Environmental_Monitoring
             InitializeComponent();
             InitializeLocalization();
             this.Load += new System.EventHandler(this.Setting_Load);
+
+            if (this.btnRegisterFace != null)
+            {
+                this.btnRegisterFace.Click += new System.EventHandler(this.btnRegisterFace_Click);
+            }
         }
 
         private void InitializeLocalization()
@@ -48,7 +52,6 @@ namespace Environmental_Monitoring
             cmbNgonNgu.Items.Add("Tiếng Việt");
             cmbNgonNgu.Items.Add("English");
 
-            // Đọc mã ngôn ngữ ("vi-VN" hoặc "en")
             string savedLanguageCode = Properties.Settings.Default.Language;
             if (savedLanguageCode == "en")
             {
@@ -59,7 +62,6 @@ namespace Environmental_Monitoring
                 cmbNgonNgu.SelectedItem = "Tiếng Việt";
             }
 
-            // Lấy văn bản theme đã được dịch
             string lightThemeText = rm.GetString("Theme_Light", culture);
             string darkThemeText = rm.GetString("Theme_Dark", culture);
 
@@ -68,13 +70,14 @@ namespace Environmental_Monitoring
             cmbGiaoDien.Items.Add(darkThemeText);
 
             string savedTheme = Properties.Settings.Default.Theme;
+
             if (savedTheme == "dark")
             {
-                cmbGiaoDien.SelectedItem = darkThemeText;
+                cmbGiaoDien.SelectedIndex = 1;
             }
             else
             {
-                cmbGiaoDien.SelectedItem = lightThemeText;
+                cmbGiaoDien.SelectedIndex = 0;
             }
 
             cbEmail.Checked = Properties.Settings.Default.NotifyByEmail;
@@ -90,7 +93,6 @@ namespace Environmental_Monitoring
 
             try
             {
-                // 1. LƯU NGÔN NGỮ
                 string selectedLanguageCode = "vi-VN";
                 if (cmbNgonNgu.SelectedItem != null && cmbNgonNgu.SelectedItem.ToString() == "English")
                 {
@@ -98,43 +100,27 @@ namespace Environmental_Monitoring
                 }
                 Properties.Settings.Default.Language = selectedLanguageCode;
 
-                // 2. LƯU THEME (ĐÃ SỬA LỖI LOGIC)
                 string themeToSave = "light";
 
-                // Lấy chuỗi "Dark" ở cả 2 ngôn ngữ để so sánh
-                CultureInfo newCulture = new CultureInfo(selectedLanguageCode);
-                CultureInfo oldCulture = Thread.CurrentThread.CurrentUICulture;
-                string darkThemeText_New = rm.GetString("Theme_Dark", newCulture);
-                string darkThemeText_Old = rm.GetString("Theme_Dark", oldCulture);
-
-                string selectedThemeString = cmbGiaoDien.SelectedItem.ToString();
-
-                // Nếu chuỗi đang chọn khớp với "Dark" ở ngôn ngữ cũ HOẶC ngôn ngữ mới -> lưu "dark"
-                if (cmbGiaoDien.SelectedItem != null &&
-                   (selectedThemeString == darkThemeText_New || selectedThemeString == darkThemeText_Old))
+                if (cmbGiaoDien.SelectedIndex == 1)
                 {
                     themeToSave = "dark";
                 }
                 Properties.Settings.Default.Theme = themeToSave;
 
-                // 3. LƯU CÁC CÀI ĐẶT KHÁC
                 Properties.Settings.Default.NotifyByEmail = cbEmail.Checked;
                 Properties.Settings.Default.NotifyInApp = cbUngDung.Checked;
 
                 Properties.Settings.Default.Save();
 
-                // 4. ÁP DỤNG CÀI ĐẶT
-                // Áp dụng ngôn ngữ mới cho thread hiện tại
+                CultureInfo newCulture = new CultureInfo(selectedLanguageCode);
                 Thread.CurrentThread.CurrentCulture = newCulture;
                 Thread.CurrentThread.CurrentUICulture = newCulture;
 
-                // Áp dụng theme mới
                 ThemeManager.ApplyTheme(themeToSave);
 
-                // Yêu cầu Mainlayout cập nhật ngôn ngữ cho tất cả các trang
                 mainForm?.UpdateAllChildLanguages();
 
-                // Hiển thị thông báo thành công (bằng ngôn ngữ MỚI)
                 string successMessage = rm.GetString("Alert_SaveSuccess", newCulture);
                 mainForm?.ShowGlobalAlert(successMessage, AlertPanel.AlertType.Success);
             }
@@ -154,10 +140,8 @@ namespace Environmental_Monitoring
 
             try
             {
-                // Tải lại cài đặt để combobox hiển thị đúng
                 LoadSettings();
 
-                // Dịch các label
                 lblBaoCao.Text = rm.GetString("Settings_Title", culture);
                 lblUserSupport.Text = rm.GetString("Settings_UserSupport", culture);
                 lblSystemSettings.Text = rm.GetString("Settings_SystemSettings", culture);
@@ -172,7 +156,6 @@ namespace Environmental_Monitoring
                 lblQuestion.Text = rm.GetString("Settings_Question", culture);
                 txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
-                // Áp dụng theme
                 this.BackColor = ThemeManager.BackgroundColor;
                 roundedPanel2.BackColor = ThemeManager.PanelColor;
                 roundedPanel3.BackColor = ThemeManager.PanelColor;
@@ -200,6 +183,16 @@ namespace Environmental_Monitoring
 
                 btnSave.BackColor = ThemeManager.AccentColor;
                 btnSave.ForeColor = Color.White;
+
+                if (lblFaceID != null && btnRegisterFace != null)
+                {
+                    lblFaceID.Text = rm.GetString("Settings_FaceID", culture);
+                    btnRegisterFace.Text = rm.GetString("Settings_FaceID_Button", culture);
+
+                    lblFaceID.ForeColor = ThemeManager.TextColor;
+                    btnRegisterFace.BackColor = ThemeManager.SecondaryPanelColor; 
+                    btnRegisterFace.ForeColor = ThemeManager.TextColor;
+                }
             }
             catch (Exception ex)
             {
@@ -214,5 +207,18 @@ namespace Environmental_Monitoring
         }
 
         private void lblViewDocument_Click(object sender, EventArgs e) { }
+
+        private void btnRegisterFace_Click(object sender, EventArgs e)
+        {
+            Mainlayout mainForm = this.ParentForm as Mainlayout;
+            if (mainForm != null) mainForm.Hide();
+
+            using (FaceIDRegistrationForm registerForm = new FaceIDRegistrationForm())
+            {
+                registerForm.ShowDialog();
+            }
+
+            if (mainForm != null) mainForm.Show();
+        }
     }
 }

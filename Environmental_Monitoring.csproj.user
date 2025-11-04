@@ -13,6 +13,12 @@
     <Compile Update="View\Components\CustomCombobox.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="View\Components\FaceIDLoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Components\FaceIDRegistrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="View\Components\ForgotPasswordForm.cs">
       <SubType>Form</SubType>
     </Compile>

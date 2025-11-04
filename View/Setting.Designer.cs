@@ -53,6 +53,8 @@ namespace Environmental_Monitoring
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             txtSearch = new RoundedTextBox();
+            lblFaceID = new Label();
+            btnRegisterFace = new RoundedButton();
             roundedPanel3.SuspendLayout();
             roundedPanel2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -64,6 +66,8 @@ namespace Environmental_Monitoring
             roundedPanel3.BorderColor = Color.Transparent;
             roundedPanel3.BorderRadius = 20;
             roundedPanel3.BorderSize = 0;
+            roundedPanel3.Controls.Add(btnRegisterFace);
+            roundedPanel3.Controls.Add(lblFaceID);
             roundedPanel3.Controls.Add(cmbGiaoDien);
             roundedPanel3.Controls.Add(cmbNgonNgu);
             roundedPanel3.Controls.Add(btnSave);
@@ -136,7 +140,7 @@ namespace Environmental_Monitoring
             btnSave.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnSave.ForeColor = Color.White;
             btnSave.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSave.Location = new Point(307, 370);
+            btnSave.Location = new Point(328, 437);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(148, 37);
             btnSave.TabIndex = 21;
@@ -147,7 +151,7 @@ namespace Environmental_Monitoring
             // cbUngDung
             // 
             cbUngDung.AutoSize = true;
-            cbUngDung.Location = new Point(102, 380);
+            cbUngDung.Location = new Point(163, 426);
             cbUngDung.Name = "cbUngDung";
             cbUngDung.Size = new Size(99, 24);
             cbUngDung.TabIndex = 20;
@@ -157,7 +161,7 @@ namespace Environmental_Monitoring
             // cbEmail
             // 
             cbEmail.AutoSize = true;
-            cbEmail.Location = new Point(102, 336);
+            cbEmail.Location = new Point(60, 425);
             cbEmail.Name = "cbEmail";
             cbEmail.Size = new Size(68, 24);
             cbEmail.TabIndex = 19;
@@ -178,12 +182,11 @@ namespace Environmental_Monitoring
             // 
             lblNotification.AutoSize = true;
             lblNotification.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lblNotification.Location = new Point(60, 284);
+            lblNotification.Location = new Point(60, 377);
             lblNotification.Name = "lblNotification";
             lblNotification.Size = new Size(130, 31);
             lblNotification.TabIndex = 5;
             lblNotification.Text = "Thông Báo";
-        
             // 
             // lblTheme
             // 
@@ -237,7 +240,7 @@ namespace Environmental_Monitoring
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            label8.Location = new Point(60, 359);
+            label8.Location = new Point(60, 377);
             label8.Name = "label8";
             label8.Size = new Size(249, 31);
             label8.TabIndex = 6;
@@ -295,7 +298,6 @@ namespace Environmental_Monitoring
             lblUserManual.Size = new Size(237, 31);
             lblUserManual.TabIndex = 1;
             lblUserManual.Text = "Hướng Dẫn Sử Dụng";
- 
             // 
             // lblBaoCao
             // 
@@ -316,7 +318,6 @@ namespace Environmental_Monitoring
             label1.Size = new Size(127, 38);
             label1.TabIndex = 0;
             label1.Text = "Trợ giúp";
-       
             // 
             // tableLayoutPanel1
             // 
@@ -361,6 +362,35 @@ namespace Environmental_Monitoring
             txtSearch.TabIndex = 20;
             txtSearch.UseSystemPasswordChar = false;
             // 
+            // lblFaceID
+            // 
+            lblFaceID.AutoSize = true;
+            lblFaceID.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblFaceID.Location = new Point(60, 290);
+            lblFaceID.Name = "lblFaceID";
+            lblFaceID.Size = new Size(90, 31);
+            lblFaceID.TabIndex = 24;
+            lblFaceID.Text = "Face ID";
+            // 
+            // btnRegisterFace
+            // 
+            btnRegisterFace.BackColor = Color.DarkGray;
+            btnRegisterFace.BaseColor = Color.DarkGray;
+            btnRegisterFace.BorderColor = Color.Transparent;
+            btnRegisterFace.BorderRadius = 10;
+            btnRegisterFace.BorderSize = 0;
+            btnRegisterFace.FlatAppearance.BorderSize = 0;
+            btnRegisterFace.FlatStyle = FlatStyle.Flat;
+            btnRegisterFace.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnRegisterFace.ForeColor = Color.Black;
+            btnRegisterFace.HoverColor = Color.FromArgb(34, 139, 34);
+            btnRegisterFace.Location = new Point(94, 333);
+            btnRegisterFace.Name = "btnRegisterFace";
+            btnRegisterFace.Size = new Size(150, 40);
+            btnRegisterFace.TabIndex = 25;
+            btnRegisterFace.Text = "Cài Đặt Face ID";
+            btnRegisterFace.UseVisualStyleBackColor = false;
+            // 
             // Setting
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -401,5 +431,7 @@ namespace Environmental_Monitoring
         private RoundedTextBox txtSearch;
         private CustomComboBox cmbGiaoDien;
         private CustomComboBox cmbNgonNgu;
+        private Label lblFaceID;
+        private RoundedButton btnRegisterFace;
     }
 }

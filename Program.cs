@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Globalization;
-using Environmental_Monitoring.View; // Đảm bảo using này
-using Environmental_Monitoring.Controller; // Thêm using này cho ThemeManager
+using Environmental_Monitoring.View; 
+using Environmental_Monitoring.Controller;
 
 namespace Environmental_Monitoring
 {
@@ -18,10 +18,8 @@ namespace Environmental_Monitoring
         [STAThread]
         static void Main()
         {
-            // Dòng này dành cho .NET 6+
             ApplicationConfiguration.Initialize();
 
-            // === LOGIC NGÔN NGỮ ===
             string cultureName;
             string savedLanguage = Properties.Settings.Default.Language;
             bool settingsNeedSave = false;

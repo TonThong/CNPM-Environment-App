@@ -14,13 +14,11 @@ using System.Windows.Forms;
 
 namespace Environmental_Monitoring.View
 {
-    // Thêm từ khóa "partial" ở đây
     internal partial class Contract : UserControl
     {
         #region Fields and Properties
 
         private Color tabDefaultColor = Color.Transparent;
-        private Color tabSelectedColor = Color.FromArgb(192, 192, 192);
         private Components.RoundedButton currentActiveTab;
 
         private ResourceManager rm;
@@ -32,16 +30,26 @@ namespace Environmental_Monitoring.View
 
         public Contract()
         {
-            InitializeComponent(); // Hàm này giờ nằm trong file .Designer.cs
+            InitializeComponent();
             InitializeLocalization();
+
             this.Load += new System.EventHandler(this.Contract_Load);
+            this.VisibleChanged += new System.EventHandler(this.Contract_VisibleChanged);
         }
 
         private void Contract_Load(object sender, EventArgs e)
         {
-            ApplyRolePermissions();
             UpdateUIText();
         }
+
+        private void Contract_VisibleChanged(object sender, EventArgs e)
+        {
+            if (this.Visible)
+            {
+                ApplyRolePermissions();
+            }
+        }
+
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Contract).Assembly);
@@ -51,57 +59,86 @@ namespace Environmental_Monitoring.View
         #endregion
 
         #region Core Logic (Permissions, UI Updates, Page Loading)
+
+        private void ResetTabsForEmployee()
+        {
+            btnBusiness.Enabled = false;
+            btnPlan.Enabled = false;
+            btnReal.Enabled = false;
+            roundedButton1.Enabled = false; 
+            btnResult.Enabled = false;
+
+            btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
+            btnPlan.BackColor = btnPlan.BaseColor = tabDefaultColor;
+            btnReal.BackColor = btnReal.BaseColor = tabDefaultColor;
+            roundedButton1.BackColor = roundedButton1.BaseColor = tabDefaultColor;
+            btnResult.BackColor = btnResult.BaseColor = tabDefaultColor;
+
+            currentActiveTab = null;
+        }
+
+        private void ResetTabsForAdmin()
+        {
+            btnBusiness.Enabled = true;
+            btnPlan.Enabled = true;
+            btnReal.Enabled = true;
+            roundedButton1.Enabled = true; 
+            btnResult.Enabled = true;
+
+            btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
+            btnPlan.BackColor = btnPlan.BaseColor = tabDefaultColor;
+            btnReal.BackColor = btnReal.BaseColor = tabDefaultColor;
+            roundedButton1.BackColor = roundedButton1.BaseColor = tabDefaultColor;
+            btnResult.BackColor = btnResult.BaseColor = tabDefaultColor;
+
+            currentActiveTab = null;
+        }
+
         private void ApplyRolePermissions()
         {
             string userRole = UserSession.CurrentUser?.Role?.RoleName ?? "";
+         
+            string cleanRoleName = userRole.ToLowerInvariant().Trim();
 
             if (UserSession.IsAdmin())
             {
-                btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
-                btnPlan.BackColor = btnPlan.BaseColor = tabDefaultColor;
-                btnReal.BackColor = btnReal.BaseColor = tabDefaultColor;
-                roundedButton1.BackColor = roundedButton1.BaseColor = tabDefaultColor;
-                btnResult.BackColor = btnResult.BaseColor = tabDefaultColor;
-
+                ResetTabsForAdmin();
                 LoadPage(new BusinessContent());
                 HighlightTab(btnBusiness);
                 return;
             }
-            btnBusiness.Enabled = false;
-            btnPlan.Enabled = false;
-            btnReal.Enabled = false;
-            roundedButton1.Enabled = false;
-            btnResult.Enabled = false;
 
-            switch (userRole.ToLowerInvariant())
+            ResetTabsForEmployee();
+
+            switch (cleanRoleName)
             {
                 case "business":
-                    btnBusiness.Enabled = true;
+                    btnBusiness.Enabled = true; 
                     LoadPage(new BusinessContent());
                     HighlightTab(btnBusiness);
                     break;
-                case "plan":
+                case "plan": 
                     btnPlan.Enabled = true;
                     LoadPage(new PlanContent());
                     HighlightTab(btnPlan);
                     break;
-                case "scene":
+                case "field": 
                     btnReal.Enabled = true;
                     LoadPage(new RealContent());
                     HighlightTab(btnReal);
                     break;
-                case "lab":
+                case "lab": 
                     roundedButton1.Enabled = true;
                     LoadPage(new ExperimentContent());
                     HighlightTab(roundedButton1);
                     break;
-                case "result":
+                case "result": 
                     btnResult.Enabled = true;
                     LoadPage(new ResultContent());
                     HighlightTab(btnResult);
                     break;
                 default:
-                    LoadPage(new BusinessContent());
+                    pnContent.Controls.Clear();
                     break;
             }
         }
@@ -114,18 +151,16 @@ namespace Environmental_Monitoring.View
                 currentActiveTab.BaseColor = tabDefaultColor;
             }
 
-            selectedButton.BackColor = tabSelectedColor;
-            selectedButton.BaseColor = tabSelectedColor;
+            selectedButton.BackColor = ThemeManager.SecondaryPanelColor;
+            selectedButton.BaseColor = ThemeManager.SecondaryPanelColor;
 
             currentActiveTab = selectedButton;
         }
 
-        // SỬA HÀM NÀY
         public void UpdateUIText()
         {
             culture = Thread.CurrentThread.CurrentUICulture;
 
-            // 1. Cập nhật các text của trang Contract (Tiêu đề, các tab)
             lbContract.Text = rm.GetString("Contract_Title", culture);
             roundedTextBox1.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
@@ -135,24 +170,44 @@ namespace Environmental_Monitoring.View
             roundedButton1.Text = rm.GetString("Contract_Tab_Lab", culture);
             btnResult.Text = rm.GetString("Contract_Tab_Result", culture);
 
-            // 2. THÊM MỚI: Cập nhật luôn cho trang con đang được tải (ví dụ: PlanContent)
             if (pnContent.Controls.Count > 0)
             {
                 Control currentChildPage = pnContent.Controls[0];
                 try
                 {
-                    // Dùng reflection để gọi hàm "UpdateUIText" của trang con
                     var method = currentChildPage.GetType().GetMethod("UpdateUIText");
                     if (method != null)
                     {
                         method.Invoke(currentChildPage, null);
                     }
                 }
-                catch (Exception)
-                {
-                    // Bỏ qua nếu trang con không có hàm UpdateUIText
-                }
+                catch (Exception) { }
             }
+
+            try
+            {
+                this.BackColor = ThemeManager.BackgroundColor;
+                lbContract.ForeColor = ThemeManager.TextColor;
+
+
+                btnBusiness.ForeColor = ThemeManager.TextColor;
+                btnPlan.ForeColor = ThemeManager.TextColor;
+                btnReal.ForeColor = ThemeManager.TextColor;
+                roundedButton1.ForeColor = ThemeManager.TextColor;
+                btnResult.ForeColor = ThemeManager.TextColor;
+
+                if (currentActiveTab != null)
+                {
+                    currentActiveTab.BackColor = ThemeManager.SecondaryPanelColor;
+                    currentActiveTab.BaseColor = ThemeManager.SecondaryPanelColor;
+                }
+
+                roundedTextBox1.BackColor = ThemeManager.PanelColor;
+                roundedTextBox1.ForeColor = ThemeManager.TextColor;
+
+                pnContent.BackColor = ThemeManager.PanelColor;
+            }
+            catch (Exception) {}
         }
 
         private void LoadPage(UserControl pageToLoad)
@@ -161,7 +216,6 @@ namespace Environmental_Monitoring.View
             pageToLoad.Dock = DockStyle.Fill;
             pnContent.Controls.Add(pageToLoad);
 
-            // THÊM MỚI: Khi tải trang con mới, cũng cập nhật ngôn ngữ cho nó
             try
             {
                 var method = pageToLoad.GetType().GetMethod("UpdateUIText");

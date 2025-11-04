@@ -1,21 +1,25 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
-using MySql.Data.MySqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Threading;
 using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View.Components;
 using Environmental_Monitoring.View;
-using System.Collections.Generic; // <-- Thêm thư viện này
+using MySql.Data.MySqlClient; 
+using Environmental_Monitoring.Controller; 
+using Environmental_Monitoring.Controller.Data; 
 
 namespace Environmental_Monitoring
 {
     public partial class Notification : UserControl
     {
-        string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;Uid=sql12800882;Pwd=TMlsWFrPxZ;";
 
         public Notification()
         {
@@ -23,32 +27,20 @@ namespace Environmental_Monitoring
             this.Load += Notification_Load;
         }
 
-        // === THÊM HÀM NÀY ĐỂ BẮT PHÍM ENTER ===
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if ((keyData == Keys.Enter) && (this.ActiveControl == txtSearch))
             {
-                // Khi nhấn Enter, tải lại cả 2 bảng với từ khóa tìm kiếm
                 LoadNotifications(dgvQuaHan, "QuaHan");
                 LoadNotifications(dgvSapQuaHan, "SapHetHan");
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        // =======================================
 
         private void Notification_Load(object sender, EventArgs e)
         {
-            string savedLanguage = Properties.Settings.Default.Language;
-            string cultureName = "vi";
-            if (savedLanguage == "English")
-            {
-                cultureName = "en";
-            }
-            CultureInfo culture = new CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-
+           
             dgvSapQuaHan.DefaultCellStyle.Font = new Font("Segoe UI", 10);
             dgvSapQuaHan.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dgvQuaHan.DefaultCellStyle.Font = new Font("Segoe UI", 10);
@@ -68,7 +60,7 @@ namespace Environmental_Monitoring
             dgvQuaHan.RowTemplate.Height = 40;
             dgvQuaHan.DefaultCellStyle.Padding = new Padding(0, 5, 0, 5);
 
-            UpdateUIText();
+            UpdateUIText(); 
         }
         public void UpdateUIText()
         {
@@ -82,8 +74,33 @@ namespace Environmental_Monitoring
 
             LoadNotifications(dgvQuaHan, "QuaHan");
             LoadNotifications(dgvSapQuaHan, "SapHetHan");
-        }
 
+            try
+            {
+                this.BackColor = ThemeManager.BackgroundColor;
+                lblTitle.ForeColor = ThemeManager.TextColor;
+
+                txtSearch.BackColor = ThemeManager.PanelColor;
+                txtSearch.ForeColor = ThemeManager.TextColor;
+
+                lblPanelSoon.ForeColor = ThemeManager.TextColor;
+                dgvSapQuaHan.BackgroundColor = ThemeManager.PanelColor;
+                dgvSapQuaHan.GridColor = ThemeManager.BorderColor;
+                dgvSapQuaHan.DefaultCellStyle.BackColor = ThemeManager.PanelColor;
+                dgvSapQuaHan.DefaultCellStyle.ForeColor = ThemeManager.TextColor;
+                dgvSapQuaHan.ColumnHeadersDefaultCellStyle.BackColor = ThemeManager.SecondaryPanelColor;
+                dgvSapQuaHan.ColumnHeadersDefaultCellStyle.ForeColor = ThemeManager.TextColor;
+
+                lblPanelOverdue.ForeColor = ThemeManager.TextColor;
+                dgvQuaHan.BackgroundColor = ThemeManager.PanelColor;
+                dgvQuaHan.GridColor = ThemeManager.BorderColor;
+                dgvQuaHan.DefaultCellStyle.BackColor = ThemeManager.PanelColor;
+                dgvQuaHan.DefaultCellStyle.ForeColor = ThemeManager.TextColor;
+                dgvQuaHan.ColumnHeadersDefaultCellStyle.BackColor = ThemeManager.SecondaryPanelColor;
+                dgvQuaHan.ColumnHeadersDefaultCellStyle.ForeColor = ThemeManager.TextColor;
+            }
+            catch (Exception) {}
+        }
 
         private void LoadNotifications(DataGridView dgv, string loaiThongBao)
         {
@@ -93,10 +110,8 @@ namespace Environmental_Monitoring
             DataTable dataTable = new DataTable();
             string query = "";
 
-            // === Lấy từ khóa tìm kiếm từ TextBox ===
             string keySearch = txtSearch.Text.Trim();
             List<MySqlParameter> parameters = new List<MySqlParameter>();
-            // ======================================
 
             if (loaiThongBao == "SapHetHan")
             {
@@ -129,28 +144,24 @@ namespace Environmental_Monitoring
                         AND c.Status != 'Completed'";
             }
 
-            // === Thêm điều kiện TÌM KIẾM vào câu SQL ===
             if (!string.IsNullOrWhiteSpace(keySearch))
             {
                 query += " AND (UPPER(c.MaDon) LIKE UPPER(@keySearch) OR UPPER(cust.TenNguoiDaiDien) LIKE UPPER(@keySearch))";
                 parameters.Add(new MySqlParameter("@keySearch", "%" + keySearch + "%"));
             }
-            // ===========================================
 
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                using (MySqlConnection connection = DatabaseHelper.GetConnection())
                 {
                     connection.Open();
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        // === Thêm tham số (Parameters) vào Command để chống SQL Injection ===
                         if (parameters.Count > 0)
                         {
                             command.Parameters.AddRange(parameters.ToArray());
                         }
-                        // ===================================================================
 
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                         {

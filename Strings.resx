@@ -480,4 +480,70 @@
   <data name="Login_FaceID" xml:space="preserve">
     <value>Đăng Nhập Bằng Face ID</value>
   </data>
+  <data name="Alert_Login_ValidationEmpty" xml:space="preserve">
+    <value>Vui lòng nhập đầy đủ tài khoản và mật khẩu</value>
+  </data>
+  <data name="Alert_Login_Success" xml:space="preserve">
+    <value>Đăng nhập thành công!</value>
+  </data>
+  <data name="Alert_Login_InvalidCredentials" xml:space="preserve">
+    <value>Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.</value>
+  </data>
+  <data name="Alert_Login_DbError" xml:space="preserve">
+    <value>Lỗi kết nối dữ liệu hệ thống</value>
+  </data>
+  <data name="Forgot_Title" xml:space="preserve">
+    <value>Quên Mật Khẩu</value>
+  </data>
+  <data name="Forgot_Section_Verify" xml:space="preserve">
+    <value>Xác Thực Tài Khoản</value>
+  </data>
+  <data name="Forgot_Section_ChangePass" xml:space="preserve">
+    <value>Đổi Mật Khẩu</value>
+  </data>
+  <data name="Forgot_Button_Confirm" xml:space="preserve">
+    <value>Xác Nhận</value>
+  </data>
+  <data name="Forgot_Placeholder_Email" xml:space="preserve">
+    <value>Nhập Email (Tài khoản)</value>
+  </data>
+  <data name="Forgot_Placeholder_Phone" xml:space="preserve">
+    <value>Nhập Số Điện Thoại</value>
+  </data>
+  <data name="Forgot_Placeholder_NewPass" xml:space="preserve">
+    <value>Nhập Mật Khẩu Mới</value>
+  </data>
+  <data name="Forgot_Placeholder_ConfirmPass" xml:space="preserve">
+    <value>Xác Nhận Mật Khẩu Mới</value>
+  </data>
+  <data name="Alert_Forgot_ValidationEmpty" xml:space="preserve">
+    <value>Vui lòng nhập Email và Số điện thoại để xác minh.</value>
+  </data>
+  <data name="Alert_Forgot_PasswordLength" xml:space="preserve">
+    <value>Mật khẩu mới phải có ít nhất 6 ký tự.</value>
+  </data>
+  <data name="Alert_Forgot_PasswordMismatch" xml:space="preserve">
+    <value>Mật khẩu mới và mật khẩu xác nhận không khớp.</value>
+  </data>
+  <data name="Alert_Forgot_Success" xml:space="preserve">
+    <value>Đổi mật khẩu thành công! Bạn có thể đăng nhập bằng mật khẩu mới.</value>
+  </data>
+  <data name="Alert_Forgot_InvalidCredentials" xml:space="preserve">
+    <value>Email hoặc Số điện thoại không chính xác. Vui lòng thử lại.</value>
+  </data>
+  <data name="Alert_Forgot_DbError" xml:space="preserve">
+    <value>Lỗi kết nối CSDL</value>
+  </data>
+  <data name="Settings_FaceID_Button" xml:space="preserve">
+    <value>Đăng Kí Face ID</value>
+  </data>
+  <data name="Settings_FaceID" xml:space="preserve">
+    <value>Face ID</value>
+  </data>
+  <data name="Logout_Confirm_Title" xml:space="preserve">
+    <value>Xác nhận Đăng xuất</value>
+  </data>
+  <data name="Logout_Confirm_Message" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn đăng xuất?</value>
+  </data>
 </root>

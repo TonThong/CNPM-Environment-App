@@ -76,19 +76,33 @@ namespace Environmental_Monitoring.View
             panel.MouseDown += new MouseEventHandler(panelHeadder_MouseDown);
             panel.MouseMove += new MouseEventHandler(panelHeadder_MouseMove);
             panel.MouseUp += new MouseEventHandler(panelHeadder_MouseUp);
+
+            if (this.pbLogout != null)
+            {
+                this.pbLogout.Click += new System.EventHandler(this.pbLogout_Click);
+            }
         }
 
         private void Mainlayout_Load(object sender, EventArgs e)
         {
-            // LoadSavedLanguage(); // <-- ĐÃ XÓA DÒNG NÀY
             ApplyPermissions();
-            LoadDefaultPageForRole();
-            UpdateUIText(); // Dòng này sẽ dịch menu bằng ngôn ngữ đã được Program.cs tải
+
+            LoadHomePageForRole();
+
+            UpdateUIText();
+
+            if (UserSession.CurrentUser != null)
+            {
+                lblUserName.Text = UserSession.CurrentUser.HoTen;
+            }
+            else
+            {
+                lblUserName.Text = "Guest";
+            }
         }
 
         #endregion
 
-        // === HÀM LoadSavedLanguage() ĐÃ ĐƯỢC XÓA HOÀN TOÀN ===
 
         #region Permissions and Role Logic
 
@@ -117,8 +131,9 @@ namespace Environmental_Monitoring.View
             MenuButton homeButton;
 
             string roleName = UserSession.CurrentUser?.Role?.RoleName ?? "";
+            string cleanRoleName = roleName.ToLowerInvariant().Trim(); 
 
-            switch (roleName.ToLowerInvariant())
+            switch (cleanRoleName)
             {
                 case "admin":
                     homePage = GetOrCreatePage(ref notificationPage);
@@ -127,7 +142,7 @@ namespace Environmental_Monitoring.View
 
                 case "plan":
                 case "business":
-                case "scene":
+                case "field":
                 case "lab":
                 case "result":
                     homePage = GetOrCreatePage(ref contractPage);
@@ -142,9 +157,16 @@ namespace Environmental_Monitoring.View
 
             LoadPage(homePage);
             ResetAllButtons();
-            HighlightButton(homeButton);
+            HighlightButton(homeButton); 
         }
 
+        public void LoadContractPageForEmployee()
+        {
+            LoadPage(GetOrCreatePage(ref contractPage));
+
+            ResetAllButtons();
+            HighlightButton(btnContracts);
+        }
 
         #endregion
 
@@ -332,6 +354,11 @@ namespace Environmental_Monitoring.View
             }
 
             panelContent.BackColor = ThemeManager.BackgroundColor;
+
+            if (lblUserName != null)
+            {
+                lblUserName.ForeColor = ThemeManager.TextColor;
+            }
         }
 
         public void UpdateUIText()
@@ -384,6 +411,25 @@ namespace Environmental_Monitoring.View
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void pbLogout_Click(object sender, EventArgs e)
+        {
+            ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Mainlayout).Assembly);
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
+
+            string title = rm.GetString("Logout_Confirm_Title", culture);
+            string message = rm.GetString("Logout_Confirm_Message", culture);
+
+            DialogResult result = MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                UserSession.EndSession();
+                Login loginForm = new Login();
+                loginForm.Show();
+                this.Close();
+            }
         }
 
         #endregion

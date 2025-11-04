@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View.Components;
 using Environmental_Monitoring.View;
+using Environmental_Monitoring.Controller; 
 
 namespace Environmental_Monitoring.View
 {
@@ -29,7 +30,7 @@ namespace Environmental_Monitoring.View
             InitializeComponent();
             this.Load += new System.EventHandler(this.Employee_Load);
             this.dgvEmployee.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmployee_CellFormatting);
-            
+
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -38,10 +39,10 @@ namespace Environmental_Monitoring.View
             {
                 currentPage = 1;
                 LoadData();
-                
+
                 return true;
             }
-            
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -93,7 +94,7 @@ namespace Environmental_Monitoring.View
                 {
                     Name = "colEdit",
                     HeaderText = rm.GetString("Edit", culture),
-                    Image = Properties.Resources.edit,
+                    Image = Properties.Resources.edit, 
                     ImageLayout = DataGridViewImageCellLayout.Zoom,
                     DefaultCellStyle = { Padding = new Padding(5) },
                     Width = 40
@@ -111,7 +112,7 @@ namespace Environmental_Monitoring.View
                 {
                     Name = "colDelete",
                     HeaderText = rm.GetString("Delete", culture),
-                    Image = Properties.Resources.delete,
+                    Image = Properties.Resources.delete, 
                     ImageLayout = DataGridViewImageCellLayout.Zoom,
                     DefaultCellStyle = { Padding = new Padding(5) },
                     Width = 40
@@ -211,19 +212,10 @@ namespace Environmental_Monitoring.View
 
         private void Employee_Load(object sender, EventArgs e)
         {
-            string savedLanguage = Properties.Settings.Default.Language;
-            string cultureName = "vi";
-            if (savedLanguage == "English")
-            {
-                cultureName = "en";
-            }
-            CultureInfo culture = new CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
+           
 
             LoadData();
-
-            UpdateUIText();
+            UpdateUIText(); 
 
             btnFirst.Click -= btnFirst_Click;
             btnFirst.Click += btnFirst_Click;
@@ -250,6 +242,34 @@ namespace Environmental_Monitoring.View
             EditHeaderTitle();
             AddActionColumns();
             UpdatePaginationControls();
+
+            try
+            {
+                this.BackColor = ThemeManager.BackgroundColor;
+
+
+                lblTitle.ForeColor = ThemeManager.TextColor;
+                lblPageInfo.ForeColor = ThemeManager.TextColor;
+
+                txtSearch.BackColor = ThemeManager.PanelColor;
+                txtSearch.ForeColor = ThemeManager.TextColor;
+
+                btnAdd.BackColor = ThemeManager.AccentColor;
+                btnAdd.ForeColor = Color.White;
+
+                dgvEmployee.BackgroundColor = ThemeManager.PanelColor;
+                dgvEmployee.GridColor = ThemeManager.BorderColor;
+
+                dgvEmployee.DefaultCellStyle.BackColor = ThemeManager.PanelColor;
+                dgvEmployee.DefaultCellStyle.ForeColor = ThemeManager.TextColor;
+                dgvEmployee.DefaultCellStyle.SelectionBackColor = ThemeManager.AccentColor;
+                dgvEmployee.DefaultCellStyle.SelectionForeColor = Color.White;
+
+                dgvEmployee.ColumnHeadersDefaultCellStyle.BackColor = ThemeManager.SecondaryPanelColor;
+                dgvEmployee.ColumnHeadersDefaultCellStyle.ForeColor = ThemeManager.TextColor;
+            }
+            catch (Exception) {  }
+          
         }
 
 

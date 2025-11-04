@@ -187,6 +187,60 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lỗi kết nối CSDL.
+        /// </summary>
+        internal static string Alert_Forgot_DbError {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_DbError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email hoặc Số điện thoại không chính xác. Vui lòng thử lại..
+        /// </summary>
+        internal static string Alert_Forgot_InvalidCredentials {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mật khẩu mới phải có ít nhất 6 ký tự..
+        /// </summary>
+        internal static string Alert_Forgot_PasswordLength {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_PasswordLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mật khẩu mới và mật khẩu xác nhận không khớp..
+        /// </summary>
+        internal static string Alert_Forgot_PasswordMismatch {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_PasswordMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đổi mật khẩu thành công! Bạn có thể đăng nhập bằng mật khẩu mới..
+        /// </summary>
+        internal static string Alert_Forgot_Success {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vui lòng nhập Email và Số điện thoại để xác minh..
+        /// </summary>
+        internal static string Alert_Forgot_ValidationEmpty {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_ValidationEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đã xảy ra lỗi khi tải dữ liệu:.
         /// </summary>
         internal static string Alert_LoadDataError {
@@ -201,6 +255,42 @@ namespace Environmental_Monitoring {
         internal static string Alert_LoadLanguageError {
             get {
                 return ResourceManager.GetString("Alert_LoadLanguageError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lỗi kết nối dữ liệu hệ thống.
+        /// </summary>
+        internal static string Alert_Login_DbError {
+            get {
+                return ResourceManager.GetString("Alert_Login_DbError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại..
+        /// </summary>
+        internal static string Alert_Login_InvalidCredentials {
+            get {
+                return ResourceManager.GetString("Alert_Login_InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng nhập thành công!.
+        /// </summary>
+        internal static string Alert_Login_Success {
+            get {
+                return ResourceManager.GetString("Alert_Login_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vui lòng nhập đầy đủ tài khoản và mật khẩu.
+        /// </summary>
+        internal static string Alert_Login_ValidationEmpty {
+            get {
+                return ResourceManager.GetString("Alert_Login_ValidationEmpty", resourceCulture);
             }
         }
         
@@ -363,6 +453,78 @@ namespace Environmental_Monitoring {
         internal static string EmployeeID {
             get {
                 return ResourceManager.GetString("EmployeeID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác Nhận.
+        /// </summary>
+        internal static string Forgot_Button_Confirm {
+            get {
+                return ResourceManager.GetString("Forgot_Button_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác Nhận Mật Khẩu Mới.
+        /// </summary>
+        internal static string Forgot_Placeholder_ConfirmPass {
+            get {
+                return ResourceManager.GetString("Forgot_Placeholder_ConfirmPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhập Email (Tài khoản).
+        /// </summary>
+        internal static string Forgot_Placeholder_Email {
+            get {
+                return ResourceManager.GetString("Forgot_Placeholder_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhập Mật Khẩu Mới.
+        /// </summary>
+        internal static string Forgot_Placeholder_NewPass {
+            get {
+                return ResourceManager.GetString("Forgot_Placeholder_NewPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhập Số Điện Thoại.
+        /// </summary>
+        internal static string Forgot_Placeholder_Phone {
+            get {
+                return ResourceManager.GetString("Forgot_Placeholder_Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đổi Mật Khẩu.
+        /// </summary>
+        internal static string Forgot_Section_ChangePass {
+            get {
+                return ResourceManager.GetString("Forgot_Section_ChangePass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác Thực Tài Khoản.
+        /// </summary>
+        internal static string Forgot_Section_Verify {
+            get {
+                return ResourceManager.GetString("Forgot_Section_Verify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quên Mật Khẩu.
+        /// </summary>
+        internal static string Forgot_Title {
+            get {
+                return ResourceManager.GetString("Forgot_Title", resourceCulture);
             }
         }
         
@@ -543,6 +705,24 @@ namespace Environmental_Monitoring {
         internal static string Login_Username {
             get {
                 return ResourceManager.GetString("Login_Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bạn có chắc chắn muốn đăng xuất?.
+        /// </summary>
+        internal static string Logout_Confirm_Message {
+            get {
+                return ResourceManager.GetString("Logout_Confirm_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác nhận Đăng xuất.
+        /// </summary>
+        internal static string Logout_Confirm_Title {
+            get {
+                return ResourceManager.GetString("Logout_Confirm_Title", resourceCulture);
             }
         }
         
@@ -768,6 +948,24 @@ namespace Environmental_Monitoring {
         internal static string Settings_App {
             get {
                 return ResourceManager.GetString("Settings_App", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Face ID.
+        /// </summary>
+        internal static string Settings_FaceID {
+            get {
+                return ResourceManager.GetString("Settings_FaceID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng Kí Face ID.
+        /// </summary>
+        internal static string Settings_FaceID_Button {
+            get {
+                return ResourceManager.GetString("Settings_FaceID_Button", resourceCulture);
             }
         }
         
