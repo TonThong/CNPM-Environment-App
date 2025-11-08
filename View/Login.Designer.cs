@@ -142,6 +142,7 @@
             // 
             txtTaiKhoan.BorderRadius = 15;
             txtTaiKhoan.BorderThickness = 2;
+            txtTaiKhoan.Cursor = Cursors.IBeam;
             txtTaiKhoan.FocusBorderColor = Color.DimGray;
             txtTaiKhoan.HoverBorderColor = Color.DarkGray;
             txtTaiKhoan.Location = new Point(44, 267);
@@ -160,6 +161,7 @@
             // 
             txtMatKhau.BorderRadius = 15;
             txtMatKhau.BorderThickness = 2;
+            txtMatKhau.Cursor = Cursors.IBeam;
             txtMatKhau.FocusBorderColor = Color.DimGray;
             txtMatKhau.HoverBorderColor = Color.DarkGray;
             txtMatKhau.Location = new Point(44, 355);
@@ -179,6 +181,7 @@
             linkForgot.ActiveLinkColor = SystemColors.ActiveCaptionText;
             linkForgot.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkForgot.AutoSize = true;
+            linkForgot.Cursor = Cursors.Hand;
             linkForgot.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
             linkForgot.LinkBehavior = LinkBehavior.HoverUnderline;
             linkForgot.LinkColor = Color.FromArgb(1, 42, 7);
@@ -198,6 +201,7 @@
             btnDangNhap.BorderColor = Color.Transparent;
             btnDangNhap.BorderRadius = 15;
             btnDangNhap.BorderSize = 0;
+            btnDangNhap.Cursor = Cursors.Hand;
             btnDangNhap.FlatAppearance.BorderSize = 0;
             btnDangNhap.FlatStyle = FlatStyle.Flat;
             btnDangNhap.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
@@ -215,6 +219,7 @@
             // 
             lbDangNhapFaceID.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbDangNhapFaceID.AutoSize = true;
+            lbDangNhapFaceID.Cursor = Cursors.Hand;
             lbDangNhapFaceID.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lbDangNhapFaceID.ForeColor = Color.FromArgb(2, 85, 9);
             lbDangNhapFaceID.Location = new Point(44, 554);
@@ -223,6 +228,7 @@
             lbDangNhapFaceID.TabIndex = 6;
             lbDangNhapFaceID.Text = "Đăng Nhập Bằng Face ID";
             lbDangNhapFaceID.TextAlign = ContentAlignment.MiddleCenter;
+            lbDangNhapFaceID.Click += lbDangNhapFaceID_Click;
             // 
             // label1
             // 
@@ -275,6 +281,7 @@
             // 
             // btnEnglish
             // 
+            btnEnglish.Cursor = Cursors.Hand;
             btnEnglish.Dock = DockStyle.Top;
             btnEnglish.Location = new Point(0, 35);
             btnEnglish.Name = "btnEnglish";
@@ -286,6 +293,7 @@
             // 
             // btnVietnamese
             // 
+            btnVietnamese.Cursor = Cursors.Hand;
             btnVietnamese.Dock = DockStyle.Top;
             btnVietnamese.Location = new Point(0, 0);
             btnVietnamese.Name = "btnVietnamese";

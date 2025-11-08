@@ -1,19 +1,22 @@
-﻿using Environmental_Monitoring.Controller.Data;
-using Environmental_Monitoring.View.Components;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Org.BouncyCastle.Crypto.Generators;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Environmental_Monitoring.View.Components;
+using Environmental_Monitoring.View;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
-using System.Globalization;
+using BCrypt.Net; 
+using Environmental_Monitoring.Controller.Data;
+using Environmental_Monitoring.Controller;
+using Environmental_Monitoring.Model;
 using System.Resources;
+using System.Globalization;
+using System.Threading;
 
 namespace Environmental_Monitoring.View
 {
@@ -26,7 +29,6 @@ namespace Environmental_Monitoring.View
         public bool IsAddMode { get; private set; }
 
         private ResourceManager rm;
-        private CultureInfo culture;
 
         public CreateUpdateEmployee(int? id = 0)
         {
@@ -45,29 +47,21 @@ namespace Environmental_Monitoring.View
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Close(); 
+            this.Close();
         }
 
         private void CreateUpdateEmployee_Load(object sender, EventArgs e)
         {
-            string savedLanguage = Properties.Settings.Default.Language;
-            string cultureName = "vi";
-            if (savedLanguage == "English")
-            {
-                cultureName = "en";
-            }
-            culture = new CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
 
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(CreateUpdateEmployee).Assembly);
 
-            UpdateUIText();
+            UpdateUIText(); 
             LoadForm();
         }
 
         private void LoadForm()
         {
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
             LoadRole();
             if (id == 0)
             {
@@ -95,7 +89,7 @@ namespace Environmental_Monitoring.View
             emp.EmployeeID = id;
             emp.MaNhanVien = txtMaNV.Text;
             emp.HoTen = txtHoTen.Text;
-            emp.TruongBoPhan = chkTruongBoPhan.Checked ? 1 : 0; 
+            emp.TruongBoPhan = chkTruongBoPhan.Checked ? 1 : 0;
             emp.DiaChi = txtDiaChi.Text;
             emp.SoDienThoai = txtSDT.Text;
             emp.Email = txtEmail.Text;
@@ -110,10 +104,12 @@ namespace Environmental_Monitoring.View
 
         private void SetData(Model.Employee model)
         {
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
+
             txtMaNV.Text = model.MaNhanVien;
             txtHoTen.Text = model.HoTen;
             txtNamSinh.Text = model.NamSinh.ToString();
-            chkTruongBoPhan.Checked = (model.TruongBoPhan == 1); 
+            chkTruongBoPhan.Checked = (model.TruongBoPhan == 1);
             txtDiaChi.Text = model.DiaChi;
             txtSDT.Text = model.SoDienThoai;
             txtEmail.Text = model.Email;
@@ -125,6 +121,7 @@ namespace Environmental_Monitoring.View
 
         private bool ValidateData()
         {
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
             string validationTitle = rm.GetString("Validation_Title", culture);
 
             if (string.IsNullOrWhiteSpace(txtMaNV.Text))
@@ -140,6 +137,8 @@ namespace Environmental_Monitoring.View
 
         private void Save()
         {
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
+
             if (!ValidateData())
             {
                 return;
@@ -186,6 +185,8 @@ namespace Environmental_Monitoring.View
 
         private void UpdateUIText()
         {
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
+
             lblMaNV.Text = rm.GetString("EmployeeID", culture);
             lblHoTen.Text = rm.GetString("FullName", culture);
             lblAddress.Text = rm.GetString("Address", culture);
@@ -205,8 +206,48 @@ namespace Environmental_Monitoring.View
             txtSDT.PlaceholderText = rm.GetString("Placeholder_Phone", culture);
 
             btnSave.Text = rm.GetString("Button_Save", culture);
-
             btnCancel.Text = rm.GetString("Button_Cancel", culture);
+
+            try
+            {
+                this.BackColor = ThemeManager.BackgroundColor;
+
+                foreach (Control c in this.Controls)
+                {
+                    if (c is Label)
+                    {
+                        c.ForeColor = ThemeManager.TextColor;
+                    }
+                    if (c is CheckBox)
+                    {
+                        c.ForeColor = ThemeManager.TextColor;
+                    }
+                }
+
+                txtMaNV.BackColor = ThemeManager.PanelColor;
+                txtMaNV.ForeColor = ThemeManager.TextColor;
+                txtHoTen.BackColor = ThemeManager.PanelColor;
+                txtHoTen.ForeColor = ThemeManager.TextColor;
+                txtDiaChi.BackColor = ThemeManager.PanelColor;
+                txtDiaChi.ForeColor = ThemeManager.TextColor;
+                txtEmail.BackColor = ThemeManager.PanelColor;
+                txtEmail.ForeColor = ThemeManager.TextColor;
+                txtMatKhau.BackColor = ThemeManager.PanelColor;
+                txtMatKhau.ForeColor = ThemeManager.TextColor;
+                txtNamSinh.BackColor = ThemeManager.PanelColor;
+                txtNamSinh.ForeColor = ThemeManager.TextColor;
+                txtSDT.BackColor = ThemeManager.PanelColor;
+                txtSDT.ForeColor = ThemeManager.TextColor;
+                cbbRole.BackColor = ThemeManager.PanelColor;
+                cbbRole.ForeColor = ThemeManager.TextColor;
+
+                btnSave.BackColor = ThemeManager.AccentColor;
+                btnSave.ForeColor = Color.White;
+                btnCancel.BackColor = ThemeManager.SecondaryPanelColor;
+                btnCancel.ForeColor = ThemeManager.TextColor;
+            }
+            catch (Exception) {}
+            
         }
 
         private void btnSave_Click(object sender, EventArgs e)

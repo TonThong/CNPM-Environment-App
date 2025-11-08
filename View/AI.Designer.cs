@@ -33,19 +33,19 @@ namespace Environmental_Monitoring.View
         {
             lblTitle = new Label();
             lblPanelResign = new Label();
-            roundedPanel5 = new RoundedPanel();
+            panelPollution = new RoundedPanel();
             customComboBox1 = new CustomComboBox();
             btnPredictPollution = new RoundedButton();
             lblPollutionLevel = new Label();
             lblPanelPollution = new Label();
-            roundedPanel6 = new RoundedPanel();
+            panelResign = new RoundedPanel();
             txtCustomerName = new RoundedTextBox();
             btnPredictResign = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             txtSearch = new RoundedTextBox();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
-            roundedPanel5.SuspendLayout();
-            roundedPanel6.SuspendLayout();
+            panelPollution.SuspendLayout();
+            panelResign.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -69,21 +69,21 @@ namespace Environmental_Monitoring.View
             lblPanelResign.TabIndex = 0;
             lblPanelResign.Text = "Tái Ký";
             // 
-            // roundedPanel5
+            // panelPollution
             // 
-            roundedPanel5.BackColor = Color.White;
-            roundedPanel5.BorderColor = Color.Transparent;
-            roundedPanel5.BorderRadius = 20;
-            roundedPanel5.BorderSize = 0;
-            roundedPanel5.Controls.Add(customComboBox1);
-            roundedPanel5.Controls.Add(btnPredictPollution);
-            roundedPanel5.Controls.Add(lblPollutionLevel);
-            roundedPanel5.Controls.Add(lblPanelPollution);
-            roundedPanel5.Dock = DockStyle.Fill;
-            roundedPanel5.Location = new Point(625, 115);
-            roundedPanel5.Name = "roundedPanel5";
-            roundedPanel5.Size = new Size(531, 554);
-            roundedPanel5.TabIndex = 9;
+            panelPollution.BackColor = Color.White;
+            panelPollution.BorderColor = Color.Transparent;
+            panelPollution.BorderRadius = 20;
+            panelPollution.BorderSize = 0;
+            panelPollution.Controls.Add(customComboBox1);
+            panelPollution.Controls.Add(btnPredictPollution);
+            panelPollution.Controls.Add(lblPollutionLevel);
+            panelPollution.Controls.Add(lblPanelPollution);
+            panelPollution.Dock = DockStyle.Fill;
+            panelPollution.Location = new Point(625, 115);
+            panelPollution.Name = "panelPollution";
+            panelPollution.Size = new Size(531, 554);
+            panelPollution.TabIndex = 9;
             // 
             // customComboBox1
             // 
@@ -147,20 +147,20 @@ namespace Environmental_Monitoring.View
             lblPanelPollution.TabIndex = 1;
             lblPanelPollution.Text = "Ô Nhiễm";
             // 
-            // roundedPanel6
+            // panelResign
             // 
-            roundedPanel6.BackColor = Color.White;
-            roundedPanel6.BorderColor = Color.Transparent;
-            roundedPanel6.BorderRadius = 20;
-            roundedPanel6.BorderSize = 0;
-            roundedPanel6.Controls.Add(txtCustomerName);
-            roundedPanel6.Controls.Add(btnPredictResign);
-            roundedPanel6.Controls.Add(lblPanelResign);
-            roundedPanel6.Dock = DockStyle.Fill;
-            roundedPanel6.Location = new Point(64, 115);
-            roundedPanel6.Name = "roundedPanel6";
-            roundedPanel6.Size = new Size(531, 554);
-            roundedPanel6.TabIndex = 8;
+            panelResign.BackColor = Color.White;
+            panelResign.BorderColor = Color.Transparent;
+            panelResign.BorderRadius = 20;
+            panelResign.BorderSize = 0;
+            panelResign.Controls.Add(txtCustomerName);
+            panelResign.Controls.Add(btnPredictResign);
+            panelResign.Controls.Add(lblPanelResign);
+            panelResign.Dock = DockStyle.Fill;
+            panelResign.Location = new Point(64, 115);
+            panelResign.Name = "panelResign";
+            panelResign.Size = new Size(531, 554);
+            panelResign.TabIndex = 8;
             // 
             // txtCustomerName
             // 
@@ -209,8 +209,8 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(lblTitle, 1, 1);
-            tableLayoutPanel1.Controls.Add(roundedPanel5, 3, 3);
-            tableLayoutPanel1.Controls.Add(roundedPanel6, 1, 3);
+            tableLayoutPanel1.Controls.Add(panelPollution, 3, 3);
+            tableLayoutPanel1.Controls.Add(panelResign, 1, 3);
             tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -254,10 +254,10 @@ namespace Environmental_Monitoring.View
             Controls.Add(tableLayoutPanel1);
             Name = "AI";
             Size = new Size(1227, 715);
-            roundedPanel5.ResumeLayout(false);
-            roundedPanel5.PerformLayout();
-            roundedPanel6.ResumeLayout(false);
-            roundedPanel6.PerformLayout();
+            panelPollution.ResumeLayout(false);
+            panelPollution.PerformLayout();
+            panelResign.ResumeLayout(false);
+            panelResign.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
@@ -267,12 +267,12 @@ namespace Environmental_Monitoring.View
         private Label lblTitle;
 
         private Label lblPanelResign;
-        private RoundedPanel roundedPanel5;
+        private RoundedPanel panelPollution;
     
         private RoundedButton btnPredictPollution;
         private Label lblPollutionLevel;
         private Label lblPanelPollution;
-        private RoundedPanel roundedPanel6;
+        private RoundedPanel panelResign;
         private RoundedButton btnPredictResign;
 
         private TableLayoutPanel tableLayoutPanel1;

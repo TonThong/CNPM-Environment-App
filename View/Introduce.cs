@@ -11,7 +11,8 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View.Components;
-using Environmental_Monitoring.View; 
+using Environmental_Monitoring.View;
+using Environmental_Monitoring.Controller;
 
 namespace Environmental_Monitoring.View
 {
@@ -25,16 +26,6 @@ namespace Environmental_Monitoring.View
 
         private void Introduce_Load(object sender, EventArgs e)
         {
-            string savedLanguage = Properties.Settings.Default.Language;
-            string cultureName = "vi";
-            if (savedLanguage == "English")
-            {
-                cultureName = "en";
-            }
-            CultureInfo culture = new CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-
             UpdateUIText();
         }
 
@@ -46,17 +37,31 @@ namespace Environmental_Monitoring.View
 
             try
             {
-
                 lblTitle.Text = rm.GetString("Introduce_Title", culture);
                 lblAppVersion.Text = rm.GetString("Introduce_AppVersion", culture);
 
                 lblPrivacyPolicy.Text = rm.GetString("Introduce_PrivacyPolicy", culture);
-             
 
                 lblNotice.Text = rm.GetString("Introduce_Notice", culture);
                 lblNoticeText.Text = rm.GetString("Introduce_Notice_Text", culture);
 
                 lblContact.Text = rm.GetString("Introduce_Contact", culture);
+
+                this.BackColor = ThemeManager.BackgroundColor;
+
+
+                lblTitle.ForeColor = ThemeManager.TextColor;
+                lblAppVersion.ForeColor = ThemeManager.SecondaryTextColor;
+                lblPrivacyPolicy.ForeColor = ThemeManager.AccentColor;
+
+                lblNotice.ForeColor = ThemeManager.TextColor;
+                lblNoticeText.ForeColor = ThemeManager.SecondaryTextColor;
+
+                lblContact.ForeColor = ThemeManager.TextColor;
+              
+                // lblEmail.ForeColor = ThemeManager.SecondaryTextColor;
+                // lblPhone.ForeColor = ThemeManager.SecondaryTextColor;
+             
             }
             catch (Exception ex)
             {

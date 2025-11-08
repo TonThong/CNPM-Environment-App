@@ -15,9 +15,9 @@ using Environmental_Monitoring.Controller.Data;
 using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.Model;
 using System.Resources;
-using System.Globalization; // Đảm bảo using này
-using System.Threading;     // Đảm bảo using này
-    
+using System.Globalization;
+using System.Threading;
+
 namespace Environmental_Monitoring.View
 {
     public partial class Login : Form
@@ -26,7 +26,6 @@ namespace Environmental_Monitoring.View
 
         public Login()
         {
-            // LoadSavedLanguage(); // <-- Đã xóa, vì Program.cs đã làm việc này
             InitializeComponent();
             InitializeLocalization();
 
@@ -38,20 +37,16 @@ namespace Environmental_Monitoring.View
             picShowPass.BackColor = txtMatKhau.BackColor;
             picShowPass.Location = new Point(txtMatKhau.Width - picShowPass.Width - 8, (txtMatKhau.Height - picShowPass.Height) / 2);
             picShowPass.BringToFront();
-
         }
 
         private void Login_Load(object sender, EventArgs e)
         {
-            // Thêm dòng này để tải ngôn ngữ khi form load
-            // (Vì LoadSavedLanguage() đã bị xóa khỏi constructor)
             LoadSavedLanguage();
             UpdateUIText();
         }
 
         #region Language Selection Logic
 
-        // Hàm này vẫn cần thiết để UpdateUIText() chạy đúng khi form load
         private void LoadSavedLanguage()
         {
             string savedLanguage = Properties.Settings.Default.Language;
@@ -138,13 +133,16 @@ namespace Environmental_Monitoring.View
 
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
+
+
             string taiKhoan = txtTaiKhoan.Text.Trim();
             string matKhau = txtMatKhau.Text;
 
             if (string.IsNullOrEmpty(taiKhoan) || string.IsNullOrEmpty(matKhau))
             {
+                alertPanel.ShowAlert(rm.GetString("Alert_Login_ValidationEmpty", culture), AlertPanel.AlertType.Error);
 
-                alertPanel.ShowAlert("Vui lòng nhập đầy đủ tài khoản và mật khẩu.", AlertPanel.AlertType.Error);
                 return;
             }
 
@@ -157,18 +155,22 @@ namespace Environmental_Monitoring.View
                     UserSession.StartSession(user);
 
                     alertPanel.OnClose += AlertPanel_Success_OnClose;
-                    alertPanel.ShowAlert("Đăng nhập thành công!", AlertPanel.AlertType.Success);
+                    alertPanel.ShowAlert(rm.GetString("Alert_Login_Success", culture), AlertPanel.AlertType.Success);
+
 
                     this.Enabled = false;
                 }
                 else
                 {
-                    alertPanel.ShowAlert("Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.", AlertPanel.AlertType.Error);
+                    alertPanel.ShowAlert(rm.GetString("Alert_Login_InvalidCredentials", culture), AlertPanel.AlertType.Error);
+
                 }
             }
             catch (Exception ex)
             {
-                alertPanel.ShowAlert("Lỗi kết nối dữ liệu hệ thống: " + ex.Message, AlertPanel.AlertType.Error);
+                string errorMsg = rm.GetString("Alert_Login_DbError", culture);
+                alertPanel.ShowAlert(errorMsg + ": " + ex.Message, AlertPanel.AlertType.Error);
+
             }
         }
 
@@ -179,7 +181,7 @@ namespace Environmental_Monitoring.View
             string savedLanguage = Properties.Settings.Default.Language;
             if (string.IsNullOrEmpty(savedLanguage))
             {
-                savedLanguage = "vi-VN"; 
+                savedLanguage = "vi-VN";
             }
 
             try
@@ -220,5 +222,11 @@ namespace Environmental_Monitoring.View
         }
 
         #endregion
+
+        private void lbDangNhapFaceID_Click(object sender, EventArgs e)
+        {
+            FaceIDLoginForm faceLoginForm = new FaceIDLoginForm(this);
+            faceLoginForm.Show();
+        }
     }
 }

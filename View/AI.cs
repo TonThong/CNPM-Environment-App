@@ -7,14 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-// --- THÊM MỚI ---
 using System.Threading;
 using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View.Components;
-using Environmental_Monitoring.View; // Để tham chiếu đến Mainlayout
-// -----------------
+using Environmental_Monitoring.View;
+using Environmental_Monitoring.Controller;
 
 namespace Environmental_Monitoring.View
 {
@@ -28,15 +26,6 @@ namespace Environmental_Monitoring.View
 
         private void AI_Load(object sender, EventArgs e)
         {
-            string savedLanguage = Properties.Settings.Default.Language;
-            string cultureName = "vi";
-            if (savedLanguage == "English")
-            {
-                cultureName = "en";
-            }
-            CultureInfo culture = new CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
 
             UpdateUIText();
         }
@@ -49,7 +38,6 @@ namespace Environmental_Monitoring.View
 
             try
             {
-
                 lblTitle.Text = rm.GetString("AI_Title", culture);
                 txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
@@ -60,6 +48,26 @@ namespace Environmental_Monitoring.View
                 lblPanelPollution.Text = rm.GetString("AI_Panel_Pollution", culture);
                 lblPollutionLevel.Text = rm.GetString("AI_Label_PollutionLevel", culture);
                 btnPredictPollution.Text = rm.GetString("AI_Button_Predict", culture);
+
+                this.BackColor = ThemeManager.BackgroundColor;
+                lblTitle.ForeColor = ThemeManager.TextColor;
+
+                txtSearch.BackColor = ThemeManager.PanelColor;
+                txtSearch.ForeColor = ThemeManager.TextColor;
+
+                panelResign.BackColor = ThemeManager.PanelColor;
+                lblPanelResign.ForeColor = ThemeManager.TextColor;
+                txtCustomerName.BackColor = ThemeManager.BackgroundColor;
+                txtCustomerName.ForeColor = ThemeManager.TextColor;
+                btnPredictResign.BackColor = ThemeManager.AccentColor;
+                btnPredictResign.ForeColor = Color.White;
+
+                panelPollution.BackColor = ThemeManager.PanelColor;
+                lblPanelPollution.ForeColor = ThemeManager.TextColor;
+                lblPollutionLevel.ForeColor = ThemeManager.TextColor;
+                btnPredictPollution.BackColor = ThemeManager.AccentColor;
+                btnPredictPollution.ForeColor = Color.White;
+               
             }
             catch (Exception ex)
             {
