@@ -37,7 +37,7 @@
             btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             txtboxEndDate = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxCustomerName = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxContractType = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            cmbContractType = new ComboBox();
             txtboxPhone = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxIDContract = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxAddress = new Environmental_Monitoring.View.Components.RoundedTextBox();
@@ -72,7 +72,7 @@
             tableLayoutPanel1.Controls.Add(btnSave, 1, 13);
             tableLayoutPanel1.Controls.Add(txtboxEndDate, 3, 9);
             tableLayoutPanel1.Controls.Add(txtboxCustomerName, 1, 5);
-            tableLayoutPanel1.Controls.Add(txtboxContractType, 3, 7);
+            tableLayoutPanel1.Controls.Add(cmbContractType, 3, 7);
             tableLayoutPanel1.Controls.Add(txtboxPhone, 1, 7);
             tableLayoutPanel1.Controls.Add(txtboxIDContract, 3, 5);
             tableLayoutPanel1.Controls.Add(txtboxAddress, 1, 9);
@@ -147,6 +147,7 @@
             txtboxEmployee.BorderThickness = 2;
             txtboxEmployee.FocusBorderColor = Color.HotPink;
             txtboxEmployee.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxEmployee.ForeColor = SystemColors.ActiveCaptionText;
             txtboxEmployee.HoverBorderColor = Color.DodgerBlue;
             txtboxEmployee.Location = new Point(676, 358);
             txtboxEmployee.Multiline = false;
@@ -154,7 +155,7 @@
             txtboxEmployee.NormalBorderColor = Color.LightGray;
             txtboxEmployee.Padding = new Padding(20, 7, 10, 10);
             txtboxEmployee.PasswordChar = '\0';
-            txtboxEmployee.PlaceholderText = "Mã Nhân Viên Phụ Trách";
+            txtboxEmployee.PlaceholderText = "Nhân Viên Thụ Lý";
             txtboxEmployee.ReadOnly = false;
             txtboxEmployee.Size = new Size(384, 44);
             txtboxEmployee.TabIndex = 50;
@@ -185,6 +186,7 @@
             txtboxEndDate.BorderThickness = 2;
             txtboxEndDate.FocusBorderColor = Color.HotPink;
             txtboxEndDate.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxEndDate.ForeColor = SystemColors.ActiveCaptionText;
             txtboxEndDate.HoverBorderColor = Color.DodgerBlue;
             txtboxEndDate.Location = new Point(676, 288);
             txtboxEndDate.Multiline = false;
@@ -204,6 +206,7 @@
             txtboxCustomerName.BorderThickness = 2;
             txtboxCustomerName.FocusBorderColor = Color.HotPink;
             txtboxCustomerName.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxCustomerName.ForeColor = SystemColors.ActiveCaptionText;
             txtboxCustomerName.HoverBorderColor = Color.DodgerBlue;
             txtboxCustomerName.Location = new Point(64, 148);
             txtboxCustomerName.Multiline = false;
@@ -217,24 +220,18 @@
             txtboxCustomerName.TabIndex = 43;
             txtboxCustomerName.UseSystemPasswordChar = false;
             // 
-            // txtboxContractType
+            // cmbContractType
             // 
-            txtboxContractType.BorderRadius = 15;
-            txtboxContractType.BorderThickness = 2;
-            txtboxContractType.FocusBorderColor = Color.HotPink;
-            txtboxContractType.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            txtboxContractType.HoverBorderColor = Color.DodgerBlue;
-            txtboxContractType.Location = new Point(676, 218);
-            txtboxContractType.Multiline = false;
-            txtboxContractType.Name = "txtboxContractType";
-            txtboxContractType.NormalBorderColor = Color.LightGray;
-            txtboxContractType.Padding = new Padding(20, 7, 10, 10);
-            txtboxContractType.PasswordChar = '\0';
-            txtboxContractType.PlaceholderText = "Loại Hợp Đồng";
-            txtboxContractType.ReadOnly = false;
-            txtboxContractType.Size = new Size(384, 44);
-            txtboxContractType.TabIndex = 48;
-            txtboxContractType.UseSystemPasswordChar = false;
+            cmbContractType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbContractType.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            cmbContractType.FormattingEnabled = true;
+            cmbContractType.Items.AddRange(new object[] {
+            "Quy",
+            "6 Thang"});
+            cmbContractType.Location = new Point(676, 218);
+            cmbContractType.Name = "cmbContractType";
+            cmbContractType.Size = new Size(384, 44);
+            cmbContractType.TabIndex = 48;
             // 
             // txtboxPhone
             // 
@@ -242,6 +239,7 @@
             txtboxPhone.BorderThickness = 2;
             txtboxPhone.FocusBorderColor = Color.HotPink;
             txtboxPhone.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxPhone.ForeColor = SystemColors.ActiveCaptionText;
             txtboxPhone.HoverBorderColor = Color.DodgerBlue;
             txtboxPhone.Location = new Point(64, 218);
             txtboxPhone.Multiline = false;
@@ -249,7 +247,7 @@
             txtboxPhone.NormalBorderColor = Color.LightGray;
             txtboxPhone.Padding = new Padding(20, 7, 10, 10);
             txtboxPhone.PasswordChar = '\0';
-            txtboxPhone.PlaceholderText = "Số Điện Thoại";
+            txtboxPhone.PlaceholderText = "Ký hiệu doanh nghiệp";
             txtboxPhone.ReadOnly = false;
             txtboxPhone.Size = new Size(384, 44);
             txtboxPhone.TabIndex = 44;
@@ -261,6 +259,7 @@
             txtboxIDContract.BorderThickness = 2;
             txtboxIDContract.FocusBorderColor = Color.HotPink;
             txtboxIDContract.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxIDContract.ForeColor = SystemColors.ActiveCaptionText;
             txtboxIDContract.HoverBorderColor = Color.DodgerBlue;
             txtboxIDContract.Location = new Point(676, 148);
             txtboxIDContract.Multiline = false;
@@ -280,6 +279,7 @@
             txtboxAddress.BorderThickness = 2;
             txtboxAddress.FocusBorderColor = Color.HotPink;
             txtboxAddress.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxAddress.ForeColor = SystemColors.ActiveCaptionText;
             txtboxAddress.HoverBorderColor = Color.DodgerBlue;
             txtboxAddress.Location = new Point(64, 288);
             txtboxAddress.Multiline = false;
@@ -299,6 +299,7 @@
             txtboxOwner.BorderThickness = 2;
             txtboxOwner.FocusBorderColor = Color.HotPink;
             txtboxOwner.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxOwner.ForeColor = SystemColors.ActiveCaptionText;
             txtboxOwner.HoverBorderColor = Color.DodgerBlue;
             txtboxOwner.Location = new Point(64, 358);
             txtboxOwner.Multiline = false;
@@ -345,13 +346,13 @@
         private Components.RoundedTextBox txtboxPhone;
         private Components.RoundedTextBox txtboxAddress;
         private Components.RoundedTextBox txtboxOwner;
-        private Components.RoundedTextBox txtboxEmployee;
         private Components.RoundedTextBox txtboxEndDate;
-        private Components.RoundedTextBox txtboxContractType;
         private Components.RoundedTextBox txtboxIDContract;
         private Components.RoundedButton btnSave;
         private Components.RoundedButton btnCancel;
         private Panel panel1;
         private TableLayoutPanel tableLayoutPanel1;
+        private Components.RoundedTextBox txtboxEmployee;
+        private ComboBox cmbContractType;
     }
 }
