@@ -15,7 +15,7 @@ namespace Environmental_Monitoring.View
 {
     public partial class ForgotPasswordForm : Form
     {
-        string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;Uid=sql12800882;Pwd=TMlsWFrPxZ;";
+        string connectionString = "Server=taa37w.h.filess.io;Database=environment_setsobtain;Uid=environment_setsobtain;Pwd=2efaa3d12c08f988586f5b378f36d9e1c2a1a794;";
         private Label label1;
         private Label label2;
         private Label label3;

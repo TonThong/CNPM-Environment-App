@@ -15,7 +15,7 @@ namespace Environmental_Monitoring
 {
     public partial class Notification : UserControl
     {
-        string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;Uid=sql12800882;Pwd=TMlsWFrPxZ;";
+        string connectionString = "Server=taa37w.h.filess.io;Database=environment_setsobtain;Uid=environment_setsobtain;Pwd=2efaa3d12c08f988586f5b378f36d9e1c2a1a794;";
 
         public Notification()
         {

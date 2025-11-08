@@ -23,7 +23,7 @@ namespace Environmental_Monitoring.Controller
 
         }
 
-        string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;User ID=sql12800882;Password=TMlsWFrPxZ";
+        string connectionString = "Server=taa37w.h.filess.io;Database=environment_setsobtain;User ID=environment_setsobtain;Password=2efaa3d12c08f988586f5b378f36d9e1c2a1a794";
 
         public DataTable ExecuteQuery(string query, object[] parameter = null)
         {

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Globalization;
 using Environmental_Monitoring.View; // Đảm bảo using này
 using Environmental_Monitoring.Controller; // Thêm using này cho ThemeManager
+using BCrypt.Net;
 
 namespace Environmental_Monitoring
 {
@@ -67,7 +68,6 @@ namespace Environmental_Monitoring
             {
                 Properties.Settings.Default.Save();
             }
-
             Application.Run(new Login());
         }
     }

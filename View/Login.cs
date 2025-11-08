@@ -17,7 +17,7 @@ using Environmental_Monitoring.Model;
 using System.Resources;
 using System.Globalization; // Đảm bảo using này
 using System.Threading;     // Đảm bảo using này
-
+    
 namespace Environmental_Monitoring.View
 {
     public partial class Login : Form
@@ -38,6 +38,7 @@ namespace Environmental_Monitoring.View
             picShowPass.BackColor = txtMatKhau.BackColor;
             picShowPass.Location = new Point(txtMatKhau.Width - picShowPass.Width - 8, (txtMatKhau.Height - picShowPass.Height) / 2);
             picShowPass.BringToFront();
+
         }
 
         private void Login_Load(object sender, EventArgs e)
@@ -142,6 +143,7 @@ namespace Environmental_Monitoring.View
 
             if (string.IsNullOrEmpty(taiKhoan) || string.IsNullOrEmpty(matKhau))
             {
+
                 alertPanel.ShowAlert("Vui lòng nhập đầy đủ tài khoản và mật khẩu.", AlertPanel.AlertType.Error);
                 return;
             }

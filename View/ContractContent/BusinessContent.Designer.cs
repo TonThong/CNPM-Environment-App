@@ -31,13 +31,13 @@
             panel1 = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             lbNamePage = new Label();
-            btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
             lbCustomer = new Label();
             txtboxEmployee = new Environmental_Monitoring.View.Components.RoundedTextBox();
             btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             txtboxEndDate = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxCustomerName = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxStartDate = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtboxContractType = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxPhone = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxIDContract = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxAddress = new Environmental_Monitoring.View.Components.RoundedTextBox();
@@ -66,13 +66,13 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(lbNamePage, 1, 1);
-            tableLayoutPanel1.Controls.Add(btnSearch, 3, 13);
+            tableLayoutPanel1.Controls.Add(btnCancel, 3, 13);
             tableLayoutPanel1.Controls.Add(lbCustomer, 1, 3);
             tableLayoutPanel1.Controls.Add(txtboxEmployee, 3, 11);
             tableLayoutPanel1.Controls.Add(btnSave, 1, 13);
             tableLayoutPanel1.Controls.Add(txtboxEndDate, 3, 9);
             tableLayoutPanel1.Controls.Add(txtboxCustomerName, 1, 5);
-            tableLayoutPanel1.Controls.Add(txtboxStartDate, 3, 7);
+            tableLayoutPanel1.Controls.Add(txtboxContractType, 3, 7);
             tableLayoutPanel1.Controls.Add(txtboxPhone, 1, 7);
             tableLayoutPanel1.Controls.Add(txtboxIDContract, 3, 5);
             tableLayoutPanel1.Controls.Add(txtboxAddress, 1, 9);
@@ -112,24 +112,24 @@
             lbNamePage.TabIndex = 40;
             lbNamePage.Text = "THÔNG TIN KHÁCH HÀNG VÀ HỢP ĐỒNG";
             // 
-            // btnSearch
+            // btnCancel
             // 
-            btnSearch.BackColor = Color.FromArgb(217, 217, 217);
-            btnSearch.BaseColor = Color.FromArgb(217, 217, 217);
-            btnSearch.BorderColor = Color.Transparent;
-            btnSearch.BorderRadius = 20;
-            btnSearch.BorderSize = 0;
-            btnSearch.FlatAppearance.BorderSize = 0;
-            btnSearch.FlatStyle = FlatStyle.Flat;
-            btnSearch.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            btnSearch.ForeColor = Color.Black;
-            btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSearch.Location = new Point(676, 428);
-            btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(384, 44);
-            btnSearch.TabIndex = 52;
-            btnSearch.Text = "Trình Duyệt";
-            btnSearch.UseVisualStyleBackColor = false;
+            btnCancel.BackColor = Color.FromArgb(217, 217, 217);
+            btnCancel.BaseColor = Color.FromArgb(217, 217, 217);
+            btnCancel.BorderColor = Color.Transparent;
+            btnCancel.BorderRadius = 20;
+            btnCancel.BorderSize = 0;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCancel.ForeColor = Color.Black;
+            btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
+            btnCancel.Location = new Point(676, 428);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(384, 44);
+            btnCancel.TabIndex = 52;
+            btnCancel.Text = "Hủy";
+            btnCancel.UseVisualStyleBackColor = false;
             // 
             // lbCustomer
             // 
@@ -217,24 +217,24 @@
             txtboxCustomerName.TabIndex = 43;
             txtboxCustomerName.UseSystemPasswordChar = false;
             // 
-            // txtboxStartDate
+            // txtboxContractType
             // 
-            txtboxStartDate.BorderRadius = 15;
-            txtboxStartDate.BorderThickness = 2;
-            txtboxStartDate.FocusBorderColor = Color.HotPink;
-            txtboxStartDate.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            txtboxStartDate.HoverBorderColor = Color.DodgerBlue;
-            txtboxStartDate.Location = new Point(676, 218);
-            txtboxStartDate.Multiline = false;
-            txtboxStartDate.Name = "txtboxStartDate";
-            txtboxStartDate.NormalBorderColor = Color.LightGray;
-            txtboxStartDate.Padding = new Padding(20, 7, 10, 10);
-            txtboxStartDate.PasswordChar = '\0';
-            txtboxStartDate.PlaceholderText = "Ngày Lập Hợp Đồng";
-            txtboxStartDate.ReadOnly = false;
-            txtboxStartDate.Size = new Size(384, 44);
-            txtboxStartDate.TabIndex = 48;
-            txtboxStartDate.UseSystemPasswordChar = false;
+            txtboxContractType.BorderRadius = 15;
+            txtboxContractType.BorderThickness = 2;
+            txtboxContractType.FocusBorderColor = Color.HotPink;
+            txtboxContractType.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxContractType.HoverBorderColor = Color.DodgerBlue;
+            txtboxContractType.Location = new Point(676, 218);
+            txtboxContractType.Multiline = false;
+            txtboxContractType.Name = "txtboxContractType";
+            txtboxContractType.NormalBorderColor = Color.LightGray;
+            txtboxContractType.Padding = new Padding(20, 7, 10, 10);
+            txtboxContractType.PasswordChar = '\0';
+            txtboxContractType.PlaceholderText = "Loại Hợp Đồng";
+            txtboxContractType.ReadOnly = false;
+            txtboxContractType.Size = new Size(384, 44);
+            txtboxContractType.TabIndex = 48;
+            txtboxContractType.UseSystemPasswordChar = false;
             // 
             // txtboxPhone
             // 
@@ -273,7 +273,6 @@
             txtboxIDContract.Size = new Size(384, 44);
             txtboxIDContract.TabIndex = 47;
             txtboxIDContract.UseSystemPasswordChar = false;
-            txtboxIDContract.TextChanged += txtboxIDContract_TextChanged;
             // 
             // txtboxAddress
             // 
@@ -348,10 +347,10 @@
         private Components.RoundedTextBox txtboxOwner;
         private Components.RoundedTextBox txtboxEmployee;
         private Components.RoundedTextBox txtboxEndDate;
-        private Components.RoundedTextBox txtboxStartDate;
+        private Components.RoundedTextBox txtboxContractType;
         private Components.RoundedTextBox txtboxIDContract;
         private Components.RoundedButton btnSave;
-        private Components.RoundedButton btnSearch;
+        private Components.RoundedButton btnCancel;
         private Panel panel1;
         private TableLayoutPanel tableLayoutPanel1;
     }
