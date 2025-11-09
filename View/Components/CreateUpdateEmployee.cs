@@ -210,7 +210,7 @@ namespace Environmental_Monitoring.View
 
             try
             {
-                this.BackColor = ThemeManager.BackgroundColor;
+                this.BackColor = ThemeManager.BackgroundColor_Popup_QLNV;
 
                 foreach (Control c in this.Controls)
                 {

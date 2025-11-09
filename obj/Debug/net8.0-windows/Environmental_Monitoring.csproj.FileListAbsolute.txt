@@ -239,7 +239,6 @@ C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.AlertPanel.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.CreateUpdateEmployee.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.CustomComboBox.resources
-C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ForgotPasswordForm.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.RoundedComboBox.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.RoundedTextBox.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Contract.resources
@@ -308,3 +307,7 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x86\native\
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x86\native\msvcp140_codecvt_ids.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x86\native\vcruntime140.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.AddEditParameterForm.resources
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.AddTemplateForm.resources
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\Twilio.dll
+C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ForgotPasswordForm.resources

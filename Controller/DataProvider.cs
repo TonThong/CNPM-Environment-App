@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Configuration;
 
 namespace Environmental_Monitoring.Controller
 {
@@ -23,7 +24,7 @@ namespace Environmental_Monitoring.Controller
 
         }
 
-        string connectionString = "Server=sql12.freesqldatabase.com;Database=sql12800882;User ID=sql12800882;Password=TMlsWFrPxZ";
+        string connectionString = ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
 
         public DataTable ExecuteQuery(string query, object[] parameter = null)
         {

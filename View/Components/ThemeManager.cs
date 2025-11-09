@@ -9,6 +9,7 @@ namespace Environmental_Monitoring
         {
             // === Light Mode ===
             private static Color light_Background = Color.FromArgb(240, 245, 240); // Màu nền xanh lá rất nhạt
+            private static Color light_Background_Popup_QLNV = Color.FromArgb(217, 244, 227);
             private static Color light_Panel = Color.White; // Màu panel trắng
             private static Color light_SecondaryPanel = Color.FromArgb(230, 230, 230); // Màu xám nhạt cho header
             private static Color light_Text = Color.Black;
@@ -26,6 +27,7 @@ namespace Environmental_Monitoring
             private static Color dark_Border = Color.FromArgb(80, 80, 80);
 
             public static Color BackgroundColor { get; private set; }
+            public static Color BackgroundColor_Popup_QLNV { get; private set; }
             public static Color PanelColor { get; private set; }
             public static Color SecondaryPanelColor { get; private set; }
             public static Color TextColor { get; private set; }
@@ -53,6 +55,7 @@ namespace Environmental_Monitoring
                 }
                 else 
                 {
+                    BackgroundColor_Popup_QLNV = light_Background_Popup_QLNV;
                     BackgroundColor = light_Background;
                     PanelColor = light_Panel;
                     SecondaryPanelColor = light_SecondaryPanel;

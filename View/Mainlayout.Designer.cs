@@ -48,10 +48,12 @@ namespace Environmental_Monitoring.View
             globalAlertPanel = new AlertPanel();
             pbLogout = new PictureBox();
             lblUserName = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
             panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbLogout).BeginInit();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // lblBigName
@@ -93,6 +95,7 @@ namespace Environmental_Monitoring.View
             btnToggleMenu.BackgroundImage = (Image)resources.GetObject("btnToggleMenu.BackgroundImage");
             btnToggleMenu.BackgroundImageLayout = ImageLayout.Stretch;
             btnToggleMenu.BorderLeftSize = 5;
+            btnToggleMenu.Cursor = Cursors.Hand;
             btnToggleMenu.FlatAppearance.BorderSize = 0;
             btnToggleMenu.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnToggleMenu.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -115,6 +118,7 @@ namespace Environmental_Monitoring.View
             btnNotification.BackgroundImage = (Image)resources.GetObject("btnNotification.BackgroundImage");
             btnNotification.BackgroundImageLayout = ImageLayout.Stretch;
             btnNotification.BorderLeftSize = 5;
+            btnNotification.Cursor = Cursors.Hand;
             btnNotification.FlatAppearance.BorderSize = 0;
             btnNotification.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnNotification.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -137,6 +141,7 @@ namespace Environmental_Monitoring.View
             btnStats.BackgroundImage = (Image)resources.GetObject("btnStats.BackgroundImage");
             btnStats.BackgroundImageLayout = ImageLayout.Stretch;
             btnStats.BorderLeftSize = 5;
+            btnStats.Cursor = Cursors.Hand;
             btnStats.FlatAppearance.BorderSize = 0;
             btnStats.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnStats.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -159,6 +164,7 @@ namespace Environmental_Monitoring.View
             btnContracts.BackgroundImage = (Image)resources.GetObject("btnContracts.BackgroundImage");
             btnContracts.BackgroundImageLayout = ImageLayout.Stretch;
             btnContracts.BorderLeftSize = 5;
+            btnContracts.Cursor = Cursors.Hand;
             btnContracts.FlatAppearance.BorderSize = 0;
             btnContracts.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnContracts.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -181,6 +187,7 @@ namespace Environmental_Monitoring.View
             btnIntroduce.BackgroundImage = (Image)resources.GetObject("btnIntroduce.BackgroundImage");
             btnIntroduce.BackgroundImageLayout = ImageLayout.Stretch;
             btnIntroduce.BorderLeftSize = 5;
+            btnIntroduce.Cursor = Cursors.Hand;
             btnIntroduce.FlatAppearance.BorderSize = 0;
             btnIntroduce.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnIntroduce.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -203,6 +210,7 @@ namespace Environmental_Monitoring.View
             btnAI.BackgroundImage = (Image)resources.GetObject("btnAI.BackgroundImage");
             btnAI.BackgroundImageLayout = ImageLayout.Stretch;
             btnAI.BorderLeftSize = 5;
+            btnAI.Cursor = Cursors.Hand;
             btnAI.FlatAppearance.BorderSize = 0;
             btnAI.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnAI.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -225,6 +233,7 @@ namespace Environmental_Monitoring.View
             btnHome.BackgroundImage = (Image)resources.GetObject("btnHome.BackgroundImage");
             btnHome.BackgroundImageLayout = ImageLayout.Stretch;
             btnHome.BorderLeftSize = 5;
+            btnHome.Cursor = Cursors.Hand;
             btnHome.FlatAppearance.BorderSize = 0;
             btnHome.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnHome.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -247,6 +256,7 @@ namespace Environmental_Monitoring.View
             btnSetting.BackgroundImage = (Image)resources.GetObject("btnSetting.BackgroundImage");
             btnSetting.BackgroundImageLayout = ImageLayout.Stretch;
             btnSetting.BorderLeftSize = 5;
+            btnSetting.Cursor = Cursors.Hand;
             btnSetting.FlatAppearance.BorderSize = 0;
             btnSetting.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnSetting.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -269,6 +279,7 @@ namespace Environmental_Monitoring.View
             btnUser.BackgroundImage = (Image)resources.GetObject("btnUser.BackgroundImage");
             btnUser.BackgroundImageLayout = ImageLayout.Stretch;
             btnUser.BorderLeftSize = 5;
+            btnUser.Cursor = Cursors.Hand;
             btnUser.FlatAppearance.BorderSize = 0;
             btnUser.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnUser.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -329,25 +340,40 @@ namespace Environmental_Monitoring.View
             pbLogout.BackColor = Color.Transparent;
             pbLogout.Cursor = Cursors.Hand;
             pbLogout.Image = Properties.Resources.image_removebg_preview;
-            pbLogout.Location = new Point(1374, 12);
+            pbLogout.Location = new Point(151, 3);
             pbLogout.Name = "pbLogout";
-            pbLogout.Size = new Size(35, 35);
+            pbLogout.Size = new Size(32, 31);
             pbLogout.SizeMode = PictureBoxSizeMode.Zoom;
             pbLogout.TabIndex = 23;
             pbLogout.TabStop = false;
             // 
             // lblUserName
             // 
-            lblUserName.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblUserName.AutoSize = true;
             lblUserName.BackColor = Color.Transparent;
+            lblUserName.Dock = DockStyle.Fill;
             lblUserName.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lblUserName.Location = new Point(1257, 15);
+            lblUserName.Location = new Point(3, 0);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(116, 28);
+            lblUserName.Size = new Size(142, 37);
             lblUserName.TabIndex = 24;
             lblUserName.Text = "User Name";
             lblUserName.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.BackColor = Color.Transparent;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.Controls.Add(pbLogout, 1, 0);
+            tableLayoutPanel1.Controls.Add(lblUserName, 0, 0);
+            tableLayoutPanel1.Location = new Point(1223, 12);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Size = new Size(186, 37);
+            tableLayoutPanel1.TabIndex = 26;
             // 
             // Mainlayout
             // 
@@ -357,8 +383,7 @@ namespace Environmental_Monitoring.View
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1421, 853);
             Controls.Add(globalAlertPanel);
-            Controls.Add(lblUserName);
-            Controls.Add(pbLogout);
+            Controls.Add(tableLayoutPanel1);
             Controls.Add(panel);
             Controls.Add(panelContent);
             Controls.Add(panelMenu);
@@ -369,8 +394,9 @@ namespace Environmental_Monitoring.View
             panel.ResumeLayout(false);
             panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pbLogout).EndInit();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -393,5 +419,6 @@ namespace Environmental_Monitoring.View
         private AlertPanel globalAlertPanel;
         private PictureBox pbLogout;
         private Label lblUserName;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }

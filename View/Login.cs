@@ -92,7 +92,7 @@ namespace Environmental_Monitoring.View
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
             this.Text = rm.GetString("Login_Title", culture);
-            lbTaiKhoan.Text = rm.GetString("Login_Username", culture);
+            lbTaiKhoan.Text = rm.GetString("Login_Account", culture);
             txtTaiKhoan.PlaceholderText = rm.GetString("Login_Username", culture);
             txtMatKhau.PlaceholderText = rm.GetString("Login_Password", culture);
             linkForgot.Text = rm.GetString("Login_ForgotPassword", culture);
