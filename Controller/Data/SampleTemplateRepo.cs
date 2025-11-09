@@ -7,12 +7,7 @@ namespace Environmental_Monitoring.Controller.Data
 {
     internal class SampleTemplateRepo
     {
-        private readonly string _connectionString;
-
-        public SampleTemplateRepo(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
+        private readonly string _connectionString = "Server=taa37w.h.filess.io;Database=environment_setsobtain;Uid=environment_setsobtain;Pwd=2efaa3d12c08f988586f5b378f36d9e1c2a1a794;";
 
         /// <summary>
         /// Lấy tất cả mẫu chuẩn
