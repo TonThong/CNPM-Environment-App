@@ -328,7 +328,7 @@ namespace Environmental_Monitoring.View
             // 
             // globalAlertPanel
             // 
-            globalAlertPanel.Location = new Point(1009, 12);
+            globalAlertPanel.Location = new Point(1009, 28);
             globalAlertPanel.Name = "globalAlertPanel";
             globalAlertPanel.Size = new Size(400, 100);
             globalAlertPanel.TabIndex = 22;

@@ -225,12 +225,10 @@
             cmbContractType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbContractType.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             cmbContractType.FormattingEnabled = true;
-            cmbContractType.Items.AddRange(new object[] {
-            "Quy",
-            "6 Thang"});
+            cmbContractType.Items.AddRange(new object[] { "Quy", "6 Thang" });
             cmbContractType.Location = new Point(676, 218);
             cmbContractType.Name = "cmbContractType";
-            cmbContractType.Size = new Size(384, 44);
+            cmbContractType.Size = new Size(384, 36);
             cmbContractType.TabIndex = 48;
             // 
             // txtboxPhone

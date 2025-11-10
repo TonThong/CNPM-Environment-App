@@ -11,7 +11,6 @@ namespace Environmental_Monitoring.View.ContractContent
     public partial class RealContent : UserControl
     {
         private int currentContractId = 0;
-
         public RealContent()
         {
             InitializeComponent();
@@ -32,6 +31,44 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 ctl.Click += new EventHandler(btnContracts_Click);
             }
+        }
+
+        // Try parse decimal with culture-aware strategy: prefer Vietnamese (comma as decimal) when appropriate
+        private bool TryParseDecimalString(string s, out decimal result)
+        {
+            result = 0;
+            if (string.IsNullOrWhiteSpace(s)) return false;
+
+            // normalize
+            s = s.Trim();
+
+            // determine which culture to try first
+            bool hasComma = s.Contains(",");
+            bool hasDot = s.Contains(".");
+
+            NumberStyles styles = NumberStyles.Number;
+
+            if (hasComma && !hasDot)
+            {
+                // likely vi-VN decimal separator
+                if (decimal.TryParse(s, styles, new CultureInfo("vi-VN"), out result)) return true;
+                if (decimal.TryParse(s, styles, CultureInfo.InvariantCulture, out result)) return true;
+            }
+            else if (hasDot && !hasComma)
+            {
+                // likely invariant decimal separator
+                if (decimal.TryParse(s, styles, CultureInfo.InvariantCulture, out result)) return true;
+                if (decimal.TryParse(s, styles, new CultureInfo("vi-VN"), out result)) return true;
+            }
+            else
+            {
+                // ambiguous: try CurrentCulture, then vi-VN, then invariant
+                if (decimal.TryParse(s, styles, CultureInfo.CurrentCulture, out result)) return true;
+                if (decimal.TryParse(s, styles, new CultureInfo("vi-VN"), out result)) return true;
+                if (decimal.TryParse(s, styles, CultureInfo.InvariantCulture, out result)) return true;
+            }
+
+            return false;
         }
 
         private void btnCreateTemplate_Click(object sender, EventArgs e)
@@ -147,8 +184,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 return;
             }
 
-            if (!decimal.TryParse(gObj.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var g) &&
-                !decimal.TryParse(gObj.ToString(), out g))
+            if (!TryParseDecimalString(gObj.ToString(), out var g))
             {
                 row["Status"] = "Sai định dạng";
                 return;
@@ -233,7 +269,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 object gObj = row["GiaTri"];
                 if (gObj == DBNull.Value || gObj == null || string.IsNullOrWhiteSpace(gObj.ToString())) continue;
 
-                if (!decimal.TryParse(gObj.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var g) && !decimal.TryParse(gObj.ToString(), out g))
+                if (!TryParseDecimalString(gObj.ToString(), out var g))
                     continue;
 
                 int sampleId = Convert.ToInt32(row["SampleID"]);
@@ -253,7 +289,8 @@ namespace Environmental_Monitoring.View.ContractContent
                     DataProvider.Instance.ExecuteNonQuery(insertQ, new object[] { g, sampleId, parameterId });
                 }
             }
-
+            string query = @"UPDATE Contracts SET TienTrinh = 3 WHERE ContractID = @contractId;";
+            DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.currentContractId });
             MessageBox.Show("Lưu giá trị thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             // reload to refresh statuses
@@ -265,7 +302,7 @@ namespace Environmental_Monitoring.View.ContractContent
             try
             {
                 // Lấy danh sách hợp đồng cơ bản
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts";
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts where TienTrinh = 2";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
 
                 // Hiện popup với DataTable
@@ -287,9 +324,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        private void btnMail_Click_1(object sender, EventArgs e)
-        {
-
-        }
+        private void btnMail_Click_1(object sender, EventArgs e){}
     }
 }
