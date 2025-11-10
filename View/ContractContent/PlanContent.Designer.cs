@@ -170,6 +170,7 @@
             roundedButton2.TabIndex = 55;
             roundedButton2.Text = "Lưu";
             roundedButton2.UseVisualStyleBackColor = false;
+            roundedButton2.Click += roundedButton2_Click;
             // 
             // roundedDataGridView1
             // 
@@ -187,7 +188,7 @@
             // 
             // btnAddParameter
             // 
-            btnAddParameter.BackColor = Color.SeaGreen;
+            btnAddParameter.BackColor = Color.SteelBlue;
             btnAddParameter.BaseColor = Color.SteelBlue;
             btnAddParameter.BorderColor = Color.Transparent;
             btnAddParameter.BorderRadius = 25;
@@ -203,6 +204,7 @@
             btnAddParameter.TabIndex = 70;
             btnAddParameter.Text = "Thêm thông số";
             btnAddParameter.UseVisualStyleBackColor = false;
+            btnAddParameter.Click += btnAddParameter_Click_1;
             // 
             // lblParamNameValue
             // 

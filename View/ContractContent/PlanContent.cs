@@ -13,6 +13,7 @@ namespace Environmental_Monitoring.View.ContractContent
 {
     public partial class PlanContent : UserControl
     {
+        private int contractId;
         public PlanContent()
         {
             InitializeComponent();
@@ -62,7 +63,7 @@ namespace Environmental_Monitoring.View.ContractContent
             try
             {
                 // Lấy danh sách hợp đồng cơ bản
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts";
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts where TienTrinh = 1";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
 
                 // Hiện popup với DataTable
@@ -71,6 +72,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     // Khi người dùng chọn một hợp đồng trong popup
                     popup.ContractSelected += (contractId) =>
                     {
+                        this.contractId = contractId;
                         // Load mẫu môi trường liên quan và cập nhật CheckedListBox
                         LoadSamplesForContract(contractId);
                     };
@@ -372,6 +374,18 @@ namespace Environmental_Monitoring.View.ContractContent
                     }
                 }
             }
+        }
+
+        private void roundedButton2_Click(object sender, EventArgs e)
+        {
+            string query = @"UPDATE Contracts SET TienTrinh = 2 WHERE ContractID = @contractId;";
+            DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.contractId });
+            MessageBox.Show("Lưu giá trị thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnAddParameter_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

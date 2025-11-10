@@ -30,7 +30,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
 
                 // show as comma-separated list in the textbox for now
-                txtboxEmployee.Text = string.Join(", ", dt.AsEnumerable().Select(row => row["HoTen"].ToString()));
+                txtboxEmployee.Text = UserSession.CurrentUser.HoTen;
             }
             catch (Exception ex)
             {
