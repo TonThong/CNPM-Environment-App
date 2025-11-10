@@ -24,19 +24,17 @@ namespace Environmental_Monitoring.View
 {
     public partial class ForgotPasswordForm : Form
     {
-        // --- CẤU HÌNH TWILIO (Verify API) ---
         private string accountSid = "AC606500383bb02bb71bf5ecacdb6345c1";
         private string authToken = "0827bd67f891e76dad022dae2aa28cf3";
         private string verifyServiceSid = "VA960fe9cf0c028e40730898d8a2af5365";
 
-        // Biến logic
         private AlertPanel loginAlertPanel;
         private ResourceManager rm;
         private string _currentPhoneNumber;
 
         public ForgotPasswordForm(AlertPanel alertPanelFromLogin)
         {
-            InitializeComponent(); // <--- Hàm này gọi code từ file .Designer.cs
+            InitializeComponent();
             this.loginAlertPanel = alertPanelFromLogin;
             InitializeLocalization();
 
