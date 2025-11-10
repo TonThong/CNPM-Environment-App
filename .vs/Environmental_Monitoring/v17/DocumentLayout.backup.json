@@ -3,11 +3,12 @@
   "WorkspaceRootPath": "C:\\Github\\CNPM-Environment-App\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\components\\faceidloginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\components\\faceidloginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\components\\faceidloginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\components\\faceidloginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\chitu\\AppData\\Local\\SourceServer\\e2f7868fd9c83d34cae99dc8dd4b32f7677aa00859031c844097b5a5bd630ca2\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\CancellationTokenSource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\components\\faceidloginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\components\\faceidloginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\components\\faceidregistrationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -50,6 +51,18 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "FaceIDLoginForm.cs [Design]",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Components\\FaceIDLoginForm.cs",
+              "RelativeDocumentMoniker": "View\\Components\\FaceIDLoginForm.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Components\\FaceIDLoginForm.cs [Design]",
+              "RelativeToolTip": "View\\Components\\FaceIDLoginForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-09T05:26:38.22Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "FaceIDLoginForm.cs",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Components\\FaceIDLoginForm.cs",
               "RelativeDocumentMoniker": "View\\Components\\FaceIDLoginForm.cs",
@@ -59,19 +72,6 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-09T05:23:20.152Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CancellationTokenSource.cs",
-              "DocumentMoniker": "C:\\Users\\chitu\\AppData\\Local\\SourceServer\\e2f7868fd9c83d34cae99dc8dd4b32f7677aa00859031c844097b5a5bd630ca2\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\CancellationTokenSource.cs",
-              "RelativeDocumentMoniker": "..\\..\\Users\\chitu\\AppData\\Local\\SourceServer\\e2f7868fd9c83d34cae99dc8dd4b32f7677aa00859031c844097b5a5bd630ca2\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\CancellationTokenSource.cs",
-              "ToolTip": "C:\\Users\\chitu\\AppData\\Local\\SourceServer\\e2f7868fd9c83d34cae99dc8dd4b32f7677aa00859031c844097b5a5bd630ca2\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\CancellationTokenSource.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\Users\\chitu\\AppData\\Local\\SourceServer\\e2f7868fd9c83d34cae99dc8dd4b32f7677aa00859031c844097b5a5bd630ca2\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\CancellationTokenSource.cs [Read Only]",
-              "ViewState": "AgIAADADAAAAAAAAAADgvz4DAAAQAAAAAQAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T05:21:23.755Z",
-              "EditorCaption": " [Read Only]"
             },
             {
               "$type": "Document",
