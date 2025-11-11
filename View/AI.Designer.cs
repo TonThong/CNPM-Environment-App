@@ -31,21 +31,31 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblTitle = new Label();
             lblPanelResign = new Label();
             panelPollution = new RoundedPanel();
-            customComboBox1 = new CustomComboBox();
+            chartPollution = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            cmbLocation = new CustomComboBox();
             btnPredictPollution = new RoundedButton();
             lblPollutionLevel = new Label();
             lblPanelPollution = new Label();
             panelResign = new RoundedPanel();
+            chartResign = new System.Windows.Forms.DataVisualization.Charting.Chart();
             txtCustomerName = new RoundedTextBox();
             btnPredictResign = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             txtSearch = new RoundedTextBox();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             panelPollution.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chartPollution).BeginInit();
             panelResign.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chartResign).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -75,7 +85,8 @@ namespace Environmental_Monitoring.View
             panelPollution.BorderColor = Color.Transparent;
             panelPollution.BorderRadius = 20;
             panelPollution.BorderSize = 0;
-            panelPollution.Controls.Add(customComboBox1);
+            panelPollution.Controls.Add(chartPollution);
+            panelPollution.Controls.Add(cmbLocation);
             panelPollution.Controls.Add(btnPredictPollution);
             panelPollution.Controls.Add(lblPollutionLevel);
             panelPollution.Controls.Add(lblPanelPollution);
@@ -85,28 +96,45 @@ namespace Environmental_Monitoring.View
             panelPollution.Size = new Size(531, 554);
             panelPollution.TabIndex = 9;
             // 
-            // customComboBox1
+            // chartPollution
             // 
-            customComboBox1.ArrowColor = Color.DimGray;
-            customComboBox1.BackColor = Color.White;
-            customComboBox1.BorderRadius = 15;
-            customComboBox1.BorderThickness = 2;
-            customComboBox1.DropDownBackColor = Color.White;
-            customComboBox1.DropDownHeight = 150;
-            customComboBox1.DropDownHoverColor = Color.DodgerBlue;
-            customComboBox1.FocusBorderColor = Color.HotPink;
-            customComboBox1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            customComboBox1.ForeColor = Color.Black;
-            customComboBox1.HoverBorderColor = Color.DodgerBlue;
-            customComboBox1.Items.AddRange(new object[] { "Thành phố Hà Nội", "", "", "Thành phố Hải Phòng", "", "", "Thành phố Huế", "", "", "Thành phố Đà Nẵng", "", "", "Thành phố Hồ Chí Minh ", "Thành phố Cần Thơ ", "An Giang", "", "", "Bắc Ninh", "Cà Mau", "", "", "Cao Bằng", "", "", "Đắk Lắk", "", "", "Điện Biên", "", "", "Đồng Nai", "Đồng Tháp", "", "", "Gia Lai", "", "", "Hà Tĩnh", "", "", "Hưng Yên", "", "", "Khánh Hòa", "Lai Châu", "", "", "Lạng Sơn", "", "", "Lào Cai", "", "", "Lâm Đồng", "Nghệ An", "", "", "Ninh Bình", "", "", "Phú Thọ", "", "", "Quảng Ngãi ", "", "", "Quảng Ninh", "", "", "Quảng Trị", "", "", "Sơn La", "", "", "Tây Ninh", "Thái Nguyên", "", "", "Thanh Hóa", "", "", "Tuyên Quang", "Vĩnh Long" });
-            customComboBox1.Location = new Point(40, 66);
-            customComboBox1.Name = "customComboBox1";
-            customComboBox1.NormalBorderColor = Color.Gray;
-            customComboBox1.SelectedIndex = -1;
-            customComboBox1.SelectedItem = null;
-            customComboBox1.SelectedValue = null;
-            customComboBox1.Size = new Size(278, 38);
-            customComboBox1.TabIndex = 19;
+            chartArea1.Name = "ChartArea1";
+            chartPollution.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chartPollution.Legends.Add(legend1);
+            chartPollution.Location = new Point(3, 154);
+            chartPollution.Name = "chartPollution";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chartPollution.Series.Add(series1);
+            chartPollution.Size = new Size(525, 397);
+            chartPollution.TabIndex = 20;
+            chartPollution.Text = "chart1";
+            // 
+            // cmbLocation
+            // 
+            cmbLocation.ArrowColor = Color.DimGray;
+            cmbLocation.BackColor = Color.White;
+            cmbLocation.BorderRadius = 10;
+            cmbLocation.BorderThickness = 2;
+            cmbLocation.DropDownBackColor = Color.White;
+            cmbLocation.DropDownHeight = 150;
+            cmbLocation.DropDownHoverColor = Color.DodgerBlue;
+            cmbLocation.FocusBorderColor = Color.DimGray;
+            cmbLocation.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbLocation.ForeColor = Color.Black;
+            cmbLocation.HoverBorderColor = Color.DarkGray;
+            cmbLocation.Items.AddRange(new object[] { "Thành phố Hà Nội", "", "", "Thành phố Hải Phòng", "", "", "Thành phố Huế", "", "", "Thành phố Đà Nẵng", "", "", "Thành phố Hồ Chí Minh ", "Thành phố Cần Thơ ", "An Giang", "", "", "Bắc Ninh", "Cà Mau", "", "", "Cao Bằng", "", "", "Đắk Lắk", "", "", "Điện Biên", "", "", "Đồng Nai", "Đồng Tháp", "", "", "Gia Lai", "", "", "Hà Tĩnh", "", "", "Hưng Yên", "", "", "Khánh Hòa", "Lai Châu", "", "", "Lạng Sơn", "", "", "Lào Cai", "", "", "Lâm Đồng", "Nghệ An", "", "", "Ninh Bình", "", "", "Phú Thọ", "", "", "Quảng Ngãi ", "", "", "Quảng Ninh", "", "", "Quảng Trị", "", "", "Sơn La", "", "", "Tây Ninh", "Thái Nguyên", "", "", "Thanh Hóa", "", "", "Tuyên Quang", "Vĩnh Long" });
+            cmbLocation.Location = new Point(40, 66);
+            cmbLocation.Name = "cmbLocation";
+            cmbLocation.NormalBorderColor = Color.Gray;
+            cmbLocation.SelectedIndex = -1;
+            cmbLocation.SelectedItem = null;
+            cmbLocation.SelectedValue = null;
+            cmbLocation.Size = new Size(278, 38);
+            cmbLocation.TabIndex = 19;
             // 
             // btnPredictPollution
             // 
@@ -126,6 +154,7 @@ namespace Environmental_Monitoring.View
             btnPredictPollution.TabIndex = 18;
             btnPredictPollution.Text = "Dự Đoán";
             btnPredictPollution.UseVisualStyleBackColor = false;
+            btnPredictPollution.Click += btnPredictPollution_Click;
             // 
             // lblPollutionLevel
             // 
@@ -153,6 +182,7 @@ namespace Environmental_Monitoring.View
             panelResign.BorderColor = Color.Transparent;
             panelResign.BorderRadius = 20;
             panelResign.BorderSize = 0;
+            panelResign.Controls.Add(chartResign);
             panelResign.Controls.Add(txtCustomerName);
             panelResign.Controls.Add(btnPredictResign);
             panelResign.Controls.Add(lblPanelResign);
@@ -162,9 +192,26 @@ namespace Environmental_Monitoring.View
             panelResign.Size = new Size(531, 554);
             panelResign.TabIndex = 8;
             // 
+            // chartResign
+            // 
+            chartArea2.Name = "ChartArea1";
+            chartResign.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            chartResign.Legends.Add(legend2);
+            chartResign.Location = new Point(3, 117);
+            chartResign.Name = "chartResign";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            chartResign.Series.Add(series2);
+            chartResign.Size = new Size(525, 434);
+            chartResign.TabIndex = 22;
+            chartResign.Text = "chart1";
+            // 
             // txtCustomerName
             // 
-            txtCustomerName.BorderRadius = 15;
+            txtCustomerName.BorderRadius = 10;
             txtCustomerName.BorderThickness = 2;
             txtCustomerName.FocusBorderColor = Color.DimGray;
             txtCustomerName.HoverBorderColor = Color.DarkGray;
@@ -172,7 +219,7 @@ namespace Environmental_Monitoring.View
             txtCustomerName.Multiline = false;
             txtCustomerName.Name = "txtCustomerName";
             txtCustomerName.NormalBorderColor = Color.Gray;
-            txtCustomerName.Padding = new Padding(10);
+            txtCustomerName.Padding = new Padding(7, 10, 7, 7);
             txtCustomerName.PasswordChar = '\0';
             txtCustomerName.PlaceholderText = "Nhập Tên Khách Hàng";
             txtCustomerName.ReadOnly = false;
@@ -198,6 +245,7 @@ namespace Environmental_Monitoring.View
             btnPredictResign.TabIndex = 20;
             btnPredictResign.Text = "Dự Đoán";
             btnPredictResign.UseVisualStyleBackColor = false;
+            btnPredictResign.Click += btnPredictResign_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -256,8 +304,10 @@ namespace Environmental_Monitoring.View
             Size = new Size(1227, 715);
             panelPollution.ResumeLayout(false);
             panelPollution.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chartPollution).EndInit();
             panelResign.ResumeLayout(false);
             panelResign.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chartResign).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
@@ -279,6 +329,8 @@ namespace Environmental_Monitoring.View
         private RoundedTextBox txtSearch;
         private RoundedTextBox txtCustomerName;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
-        private CustomComboBox customComboBox1;
+        private CustomComboBox cmbLocation;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartPollution;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartResign;
     }
 }

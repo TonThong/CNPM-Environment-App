@@ -38,7 +38,6 @@ namespace Environmental_Monitoring.View
             this.loginAlertPanel = alertPanelFromLogin;
             InitializeLocalization();
 
-            // --- Khởi tạo PictureBox (đã được khai báo trong file Designer) ---
             picShowPassNew.Image = Properties.Resources.eyeclose;
             picShowPassNew.BackColor = txtMatKhauMoi.BackColor;
             picShowPassNew.Location = new Point(
@@ -61,18 +60,14 @@ namespace Environmental_Monitoring.View
 
         #region UI State & Language
 
-        // Bước 1: Chỉ hiện ô SĐT
         private void SetInitialState()
         {
-            // Phone
             txtSoDienThoai.Visible = true;
             btnSendCode.Visible = true;
 
-            // OTP
-            txtOTP.Visible = false; // Đây là ô OTP
+            txtOTP.Visible = false; 
             btnVerifyCode.Visible = false;
 
-            // Password
             label3.Visible = false;
             txtMatKhauMoi.Visible = false;
             txtXacNhanMatKhauMoi.Visible = false;
@@ -81,18 +76,14 @@ namespace Environmental_Monitoring.View
             picShowPassConfirm.Visible = false;
         }
 
-        // Bước 2: Hiện ô nhập OTP
         private void ShowOtpState()
         {
-            // Phone
             txtSoDienThoai.Visible = false;
             btnSendCode.Visible = false;
 
-            // OTP
-            txtOTP.Visible = true; // Hiện ô OTP
+            txtOTP.Visible = true; 
             btnVerifyCode.Visible = true;
 
-            // Password (vẫn ẩn)
             label3.Visible = false;
             txtMatKhauMoi.Visible = false;
             txtXacNhanMatKhauMoi.Visible = false;
@@ -101,18 +92,14 @@ namespace Environmental_Monitoring.View
             picShowPassConfirm.Visible = false;
         }
 
-        // Bước 3: Hiện ô nhập Mật Khẩu Mới
         private void ShowResetPasswordState()
         {
-            // Phone
             txtSoDienThoai.Visible = false;
             btnSendCode.Visible = false;
 
-            // OTP (bây giờ ẩn đi)
             txtOTP.Visible = false;
             btnVerifyCode.Visible = false;
 
-            // Password (bây giờ hiện ra)
             label2.Visible = false;
             label3.Visible = true;
             txtMatKhauMoi.Visible = true;
@@ -133,8 +120,6 @@ namespace Environmental_Monitoring.View
 
             this.Text = rm.GetString("Forgot_Title", culture);
             label1.Text = rm.GetString("Forgot_Title", culture);
-            // label2.Text = rm.GetString("Forgot_Section_Verify", culture); // Tạm ẩn vì không có trong file Designer
-            // label3.Text = rm.GetString("Forgot_Section_ChangePass", culture); // Tạm ẩn vì không có trong file Designer
 
             btnSave.Text = rm.GetString("Forgot_Button_Confirm", culture);
             btnSendCode.Text = rm.GetString("Forgot_Button_SendCode", culture);
@@ -238,10 +223,6 @@ namespace Environmental_Monitoring.View
 
             try
             {
-                // --- GIẢ LẬP ĐỂ TEST ---
-                // bool isOtpValid = (submittedOtp == "123456"); // <-- Dùng dòng này để test mà không cần Twilio
-
-                // --- CODE TWILIO THẬT ---
                 bool isOtpValid = CheckVerifySms(_currentPhoneNumber, submittedOtp);
 
                 if (isOtpValid)
@@ -312,7 +293,6 @@ namespace Environmental_Monitoring.View
         #region Twilio Helpers
         private bool SendVerifySms(string phoneNumber)
         {
-            // Bật chế độ giả lập nếu đang Debug (chạy thử)
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("--- MOCK SMS (GIẢ LẬP) ---");
             System.Diagnostics.Debug.WriteLine($"Đang giả lập gửi đến SĐT: {phoneNumber}");
@@ -320,8 +300,6 @@ namespace Environmental_Monitoring.View
             System.Diagnostics.Debug.WriteLine("--- HÃY DÙNG MÃ '123456' ĐỂ TEST ---");
             return true;
 #endif
-
-            // Code này chỉ chạy khi build Release
             if (string.IsNullOrEmpty(verifyServiceSid) || verifyServiceSid.StartsWith("VA..."))
             {
                 return false;
@@ -349,13 +327,10 @@ namespace Environmental_Monitoring.View
 
         private bool CheckVerifySms(string phoneNumber, string otpCode)
         {
-            // Bật chế độ giả lập nếu đang Debug (chạy thử)
 #if DEBUG
             System.Diagnostics.Debug.WriteLine($"--- MOCK SMS (GIẢ LẬP) --- Đang kiểm tra mã: {otpCode}");
-            return (otpCode == "123456"); // Chỉ chấp nhận mã 123456
+            return (otpCode == "123456"); 
 #endif
-
-            // Code này chỉ chạy khi build Release
             TwilioClient.Init(accountSid, authToken);
             try
             {
@@ -412,7 +387,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        // --- CÁC HÀM TRỐNG MÀ BẠN CÓ ---
         private void txtMatKhauMoi_TextChanged(object sender, EventArgs e)
         {
 

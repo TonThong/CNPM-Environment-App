@@ -14,7 +14,9 @@ namespace Environmental_Monitoring.View.ContractContent
             btnSave.Click += BtnSave_Click;
             LoadEmployees();
 
-            // If cmbContractType exists, set a default
+            cmbContractType.Items.Add("Quy");
+            cmbContractType.Items.Add("6 Thang");
+
             if (this.Controls.Find("cmbContractType", true).Length > 0)
             {
                 cmbContractType.SelectedIndex = 0;
@@ -25,11 +27,9 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                // Use HoTen column (full name) as Employees model uses HoTen
                 string query = "SELECT HoTen FROM Employees";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
 
-                // show as comma-separated list in the textbox for now
                 txtboxEmployee.Text = UserSession.CurrentUser.HoTen;
             }
             catch (Exception ex)
@@ -42,7 +42,6 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                // Validate required fields
                 if (string.IsNullOrWhiteSpace(txtboxCustomerName.Text) ||
                     (cmbContractType == null || string.IsNullOrWhiteSpace(cmbContractType.Text)) ||
                     string.IsNullOrWhiteSpace(txtboxEmployee.Text))
@@ -51,7 +50,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     return;
                 }
 
-                // Prepare contract data
                 string maDon = txtboxIDContract.Text.Trim();
                 string tenKhachHang = txtboxCustomerName.Text.Trim();
                 string kyHieuDoanhNghiep = txtboxPhone.Text.Trim();
@@ -66,13 +64,11 @@ namespace Environmental_Monitoring.View.ContractContent
                     ngayTraKetQua = parsedDate;
                 }
 
-                // Insert customer if not exists
                 string insertCustomer = @"INSERT INTO Customers (TenDoanhNghiep, KyHieuDoanhNghiep, DiaChi, TenNguoiDaiDien)
                                           VALUES (@ten, @kyhieu, @diaChi, @nguoiDaiDien) 
                                           ON DUPLICATE KEY UPDATE CustomerID=LAST_INSERT_ID(CustomerID);";
                 DataProvider.Instance.ExecuteNonQuery(insertCustomer, new object[] { tenKhachHang, kyHieuDoanhNghiep, diaChi, nguoiDaiDien });
 
-                // Get CustomerID
                 object customerIdObj = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
                 int customerId = customerIdObj != null && int.TryParse(customerIdObj.ToString(), out int cid) ? cid : 0;
 
@@ -82,16 +78,13 @@ namespace Environmental_Monitoring.View.ContractContent
                     return;
                 }
 
-                // Insert contract - match employee by HoTen
                 string insertContract = @"INSERT INTO Contracts (MaDon, NgayKy, NgayTraKetQua, ContractType, Status, CustomerID, EmployeeID)
                                           VALUES (@maDon, CURRENT_DATE, @ngayTra, @loaiHopDong, @status, @customerId, 
                                                   (SELECT EmployeeID FROM Employees WHERE HoTen = @employeeName LIMIT 1));";
-                // Use 'Active' as the default status (must match enum values in DB)
                 DataProvider.Instance.ExecuteNonQuery(insertContract, new object[] { maDon, ngayTraKetQua, loaiHopDong, "Active", customerId, employeeName });
 
                 MessageBox.Show("Tạo hợp đồng thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Clear fields
                 ClearFields();
             }
             catch (Exception ex)

@@ -72,6 +72,8 @@ namespace Environmental_Monitoring.View
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Login).Assembly);
+            this.MaximumSize = this.Size;
+            this.MinimumSize = this.Size;
         }
 
         private void SetLanguage(string cultureName)

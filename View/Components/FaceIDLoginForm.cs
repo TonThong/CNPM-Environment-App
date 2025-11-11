@@ -24,9 +24,8 @@ namespace Environmental_Monitoring.View.Components
 
         private Form _loginForm;
 
-        // --- CÁC BIẾN ĐƯỢC THÊM VÀO ---
-        private DateTime _lastRecognitionTime = DateTime.MinValue; // Lưu thời điểm nhận diện cuối
-        private const int RECOGNITION_DELAY_MS = 1000; // Độ trễ 1000ms (1 giây)
+        private DateTime _lastRecognitionTime = DateTime.MinValue; 
+        private const int RECOGNITION_DELAY_MS = 1000;
 
         public FaceIDLoginForm(Form loginForm)
         {
@@ -109,11 +108,8 @@ namespace Environmental_Monitoring.View.Components
                         image.Draw(face, new Bgr(Color.Red), 2);
                         Image<Gray, byte> testFace = grayImage.Copy(face).Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
 
-                        // --- LOGIC ĐƯỢC CẬP NHẬT ---
-                        // Chỉ thử nhận diện nếu đã qua 1 giây kể từ lần thử cuối
                         if (DateTime.Now - _lastRecognitionTime > TimeSpan.FromMilliseconds(RECOGNITION_DELAY_MS))
                         {
-                            // Đặt lại thời gian, chuẩn bị cho lần thử sau
                             _lastRecognitionTime = DateTime.Now;
 
                             foreach (var recognizer in _recognizers)

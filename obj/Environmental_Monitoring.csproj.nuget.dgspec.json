@@ -70,6 +70,18 @@
               "target": "Package",
               "version": "[7.0.0-preview2.25289.6, )"
             },
+            "Microsoft.ML": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "Microsoft.ML.FastTree": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "Microsoft.ML.TimeSeries": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
             "MySql.Data": {
               "target": "Package",
               "version": "[9.5.0, )"
