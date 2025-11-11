@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BCrypt.Net; 
+using BCrypt.Net;
 using Environmental_Monitoring.Controller.Data;
-using Environmental_Monitoring.Controller;
+using Environmental_Monitoring.Controller; 
 using Environmental_Monitoring.Model;
 using System.Resources;
 using System.Globalization;
@@ -52,16 +52,14 @@ namespace Environmental_Monitoring.View
 
         private void CreateUpdateEmployee_Load(object sender, EventArgs e)
         {
-
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(CreateUpdateEmployee).Assembly);
-
-            UpdateUIText(); 
+            UpdateUIText();
             LoadForm();
         }
 
         private void LoadForm()
         {
-            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
             LoadRole();
             if (id == 0)
             {
@@ -121,7 +119,7 @@ namespace Environmental_Monitoring.View
 
         private bool ValidateData()
         {
-            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
             string validationTitle = rm.GetString("Validation_Title", culture);
 
             if (string.IsNullOrWhiteSpace(txtMaNV.Text))
@@ -131,13 +129,28 @@ namespace Environmental_Monitoring.View
                 return false;
             }
 
+            string email = txtEmail.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(email) && !ValidationHelper.IsValidEmailFormat(email))
+            {
+                MessageBox.Show("Định dạng email không hợp lệ.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEmail.Focus();
+                return false;
+            }
+
+            string phone = txtSDT.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(phone) && !ValidationHelper.IsValidVietnamesePhone(phone))
+            {
+                MessageBox.Show("Số điện thoại không hợp lệ. (Phải là 10 số, bắt đầu bằng 0).", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSDT.Focus();
+                return false;
+            }
 
             return true;
         }
 
         private void Save()
         {
-            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
             if (!ValidateData())
             {
@@ -185,7 +198,7 @@ namespace Environmental_Monitoring.View
 
         private void UpdateUIText()
         {
-            CultureInfo culture = Thread.CurrentThread.CurrentUICulture; 
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
             lblMaNV.Text = rm.GetString("EmployeeID", culture);
             lblHoTen.Text = rm.GetString("FullName", culture);
@@ -246,14 +259,13 @@ namespace Environmental_Monitoring.View
                 btnCancel.BackColor = ThemeManager.SecondaryPanelColor;
                 btnCancel.ForeColor = ThemeManager.TextColor;
             }
-            catch (Exception) {}
-            
+            catch (Exception) { }
+
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             Save();
         }
-
     }
 }
