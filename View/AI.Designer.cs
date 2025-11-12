@@ -41,7 +41,6 @@ namespace Environmental_Monitoring.View
             lblPanelResign = new Label();
             panelPollution = new RoundedPanel();
             chartPollution = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            cmbLocation = new CustomComboBox();
             btnPredictPollution = new RoundedButton();
             lblPollutionLevel = new Label();
             lblPanelPollution = new Label();
@@ -52,6 +51,7 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1 = new TableLayoutPanel();
             txtSearch = new RoundedTextBox();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+            cmbLocation = new CustomComboBox();
             panelPollution.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartPollution).BeginInit();
             panelResign.SuspendLayout();
@@ -86,10 +86,10 @@ namespace Environmental_Monitoring.View
             panelPollution.BorderRadius = 20;
             panelPollution.BorderSize = 0;
             panelPollution.Controls.Add(chartPollution);
-            panelPollution.Controls.Add(cmbLocation);
             panelPollution.Controls.Add(btnPredictPollution);
             panelPollution.Controls.Add(lblPollutionLevel);
             panelPollution.Controls.Add(lblPanelPollution);
+            panelPollution.Controls.Add(cmbLocation);
             panelPollution.Dock = DockStyle.Fill;
             panelPollution.Location = new Point(625, 115);
             panelPollution.Name = "panelPollution";
@@ -112,29 +112,6 @@ namespace Environmental_Monitoring.View
             chartPollution.Size = new Size(525, 397);
             chartPollution.TabIndex = 20;
             chartPollution.Text = "chart1";
-            // 
-            // cmbLocation
-            // 
-            cmbLocation.ArrowColor = Color.DimGray;
-            cmbLocation.BackColor = Color.White;
-            cmbLocation.BorderRadius = 10;
-            cmbLocation.BorderThickness = 2;
-            cmbLocation.DropDownBackColor = Color.White;
-            cmbLocation.DropDownHeight = 150;
-            cmbLocation.DropDownHoverColor = Color.DodgerBlue;
-            cmbLocation.FocusBorderColor = Color.DimGray;
-            cmbLocation.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            cmbLocation.ForeColor = Color.Black;
-            cmbLocation.HoverBorderColor = Color.DarkGray;
-            cmbLocation.Items.AddRange(new object[] { "Thành phố Hà Nội", "", "", "Thành phố Hải Phòng", "", "", "Thành phố Huế", "", "", "Thành phố Đà Nẵng", "", "", "Thành phố Hồ Chí Minh ", "Thành phố Cần Thơ ", "An Giang", "", "", "Bắc Ninh", "Cà Mau", "", "", "Cao Bằng", "", "", "Đắk Lắk", "", "", "Điện Biên", "", "", "Đồng Nai", "Đồng Tháp", "", "", "Gia Lai", "", "", "Hà Tĩnh", "", "", "Hưng Yên", "", "", "Khánh Hòa", "Lai Châu", "", "", "Lạng Sơn", "", "", "Lào Cai", "", "", "Lâm Đồng", "Nghệ An", "", "", "Ninh Bình", "", "", "Phú Thọ", "", "", "Quảng Ngãi ", "", "", "Quảng Ninh", "", "", "Quảng Trị", "", "", "Sơn La", "", "", "Tây Ninh", "Thái Nguyên", "", "", "Thanh Hóa", "", "", "Tuyên Quang", "Vĩnh Long" });
-            cmbLocation.Location = new Point(40, 66);
-            cmbLocation.Name = "cmbLocation";
-            cmbLocation.NormalBorderColor = Color.Gray;
-            cmbLocation.SelectedIndex = -1;
-            cmbLocation.SelectedItem = null;
-            cmbLocation.SelectedValue = null;
-            cmbLocation.Size = new Size(278, 38);
-            cmbLocation.TabIndex = 19;
             // 
             // btnPredictPollution
             // 
@@ -295,6 +272,28 @@ namespace Environmental_Monitoring.View
             sqlCommand1.CommandTimeout = 30;
             sqlCommand1.EnableOptimizedParameterBinding = false;
             // 
+            // cmbLocation
+            // 
+            cmbLocation.ArrowColor = Color.DimGray;
+            cmbLocation.BackColor = Color.White;
+            cmbLocation.BorderRadius = 10;
+            cmbLocation.BorderThickness = 2;
+            cmbLocation.DropDownBackColor = Color.White;
+            cmbLocation.DropDownHeight = 150;
+            cmbLocation.DropDownHoverColor = Color.DodgerBlue;
+            cmbLocation.FocusBorderColor = Color.HotPink;
+            cmbLocation.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbLocation.ForeColor = Color.Black;
+            cmbLocation.HoverBorderColor = Color.DodgerBlue;
+            cmbLocation.Location = new Point(40, 66);
+            cmbLocation.Name = "cmbLocation";
+            cmbLocation.NormalBorderColor = Color.Gray;
+            cmbLocation.SelectedIndex = -1;
+            cmbLocation.SelectedItem = null;
+            cmbLocation.SelectedValue = null;
+            cmbLocation.Size = new Size(278, 40);
+            cmbLocation.TabIndex = 22;
+            // 
             // AI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -329,8 +328,8 @@ namespace Environmental_Monitoring.View
         private RoundedTextBox txtSearch;
         private RoundedTextBox txtCustomerName;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
-        private CustomComboBox cmbLocation;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartPollution;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartResign;
+        private CustomComboBox cmbLocation;
     }
 }

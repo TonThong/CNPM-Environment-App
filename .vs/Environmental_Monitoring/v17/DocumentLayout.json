@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Github\\CNPM-Environment-App\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\components\\createupdateemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\components\\createupdateemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,8 +22,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AI.cs [Design]",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\AI.cs",
+              "RelativeDocumentMoniker": "View\\AI.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\AI.cs [Design]",
+              "RelativeToolTip": "View\\AI.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-12T06:17:13.185Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -34,39 +50,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CreateUpdateEmployee.cs",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Components\\CreateUpdateEmployee.cs",
               "RelativeDocumentMoniker": "View\\Components\\CreateUpdateEmployee.cs",
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Components\\CreateUpdateEmployee.cs",
               "RelativeToolTip": "View\\Components\\CreateUpdateEmployee.cs",
-              "ViewState": "AgIAAOIAAAAAAAAAAAAYwPUAAAA9AAAAAAAAAA==",
+              "ViewState": "AgIAAPsAAAAAAAAAAAAYwBcBAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T16:04:26.604Z",
+              "WhenOpened": "2025-11-12T06:08:46.468Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Employee.cs",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Employee.cs",
-              "RelativeDocumentMoniker": "View\\Employee.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Employee.cs",
-              "RelativeToolTip": "View\\Employee.cs",
-              "ViewState": "AgIAAGEBAAAAAAAAAAAYwI0BAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T16:03:18.87Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "Login.cs",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Login.cs",
               "RelativeDocumentMoniker": "View\\Login.cs",
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Login.cs",
               "RelativeToolTip": "View\\Login.cs",
-              "ViewState": "AgIAAMAAAAAAAAAAAAAAwOoAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAMEAAAAAAAAAAAAAwOsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-11T16:03:15.356Z",
               "EditorCaption": ""
