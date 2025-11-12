@@ -30,27 +30,17 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblOrderCountTitle = new Label();
             lblOnTimeRateTitle = new Label();
-            txtSearch = new RoundedTextBox();
             roundedPanel4 = new RoundedPanel();
             cmbNam = new CustomComboBox();
             cmbQuy = new CustomComboBox();
             btnApply = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             lblTitle = new Label();
-            chartOrderQuantity = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            chartOnTimeRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            txtSearch = new RoundedTextBox();
             roundedPanel4.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)chartOrderQuantity).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chartOnTimeRate).BeginInit();
             SuspendLayout();
             // 
             // lblOrderCountTitle
@@ -76,25 +66,6 @@ namespace Environmental_Monitoring.View
             lblOnTimeRateTitle.TabIndex = 19;
             lblOnTimeRateTitle.Text = "Tỷ Lệ Đúng/Trễ Hẹn";
             lblOnTimeRateTitle.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // txtSearch
-            // 
-            txtSearch.BackColor = Color.White;
-            txtSearch.BorderRadius = 15;
-            txtSearch.BorderThickness = 1;
-            txtSearch.FocusBorderColor = Color.DimGray;
-            txtSearch.HoverBorderColor = Color.DarkGray;
-            txtSearch.Location = new Point(625, 24);
-            txtSearch.Multiline = false;
-            txtSearch.Name = "txtSearch";
-            txtSearch.NormalBorderColor = Color.LightGray;
-            txtSearch.Padding = new Padding(9, 12, 9, 9);
-            txtSearch.PasswordChar = '\0';
-            txtSearch.PlaceholderText = "Tìm Kiếm...";
-            txtSearch.ReadOnly = false;
-            txtSearch.Size = new Size(531, 45);
-            txtSearch.TabIndex = 20;
-            txtSearch.UseSystemPasswordChar = false;
             // 
             // roundedPanel4
             // 
@@ -186,11 +157,9 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(lblTitle, 1, 1);
             tableLayoutPanel1.Controls.Add(roundedPanel4, 1, 3);
-            tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
             tableLayoutPanel1.Controls.Add(lblOnTimeRateTitle, 3, 4);
             tableLayoutPanel1.Controls.Add(lblOrderCountTitle, 1, 4);
-            tableLayoutPanel1.Controls.Add(chartOrderQuantity, 1, 5);
-            tableLayoutPanel1.Controls.Add(chartOnTimeRate, 3, 5);
+            tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 7;
@@ -215,38 +184,24 @@ namespace Environmental_Monitoring.View
             lblTitle.TabIndex = 5;
             lblTitle.Text = "Báo Cáo Và Thống Kê";
             // 
-            // chartOrderQuantity
+            // txtSearch
             // 
-            chartArea3.Name = "ChartArea1";
-            chartOrderQuantity.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            chartOrderQuantity.Legends.Add(legend3);
-            chartOrderQuantity.Location = new Point(64, 255);
-            chartOrderQuantity.Name = "chartOrderQuantity";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            chartOrderQuantity.Series.Add(series3);
-            chartOrderQuantity.Size = new Size(531, 412);
-            chartOrderQuantity.TabIndex = 21;
-            chartOrderQuantity.Text = "chartOrderQuantity";
-            // 
-            // chartOnTimeRate
-            // 
-            chartArea4.Name = "ChartArea1";
-            chartOnTimeRate.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            chartOnTimeRate.Legends.Add(legend4);
-            chartOnTimeRate.Location = new Point(625, 255);
-            chartOnTimeRate.Name = "chartOnTimeRate";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            chartOnTimeRate.Series.Add(series4);
-            chartOnTimeRate.Size = new Size(531, 412);
-            chartOnTimeRate.TabIndex = 22;
-            chartOnTimeRate.Text = "chartOnTimeRate";
+            txtSearch.BackColor = Color.White;
+            txtSearch.BorderRadius = 15;
+            txtSearch.BorderThickness = 1;
+            txtSearch.FocusBorderColor = SystemColors.ControlDark;
+            txtSearch.HoverBorderColor = Color.DarkGray;
+            txtSearch.Location = new Point(625, 24);
+            txtSearch.Multiline = false;
+            txtSearch.Name = "txtSearch";
+            txtSearch.NormalBorderColor = Color.DarkGray;
+            txtSearch.Padding = new Padding(9, 12, 9, 9);
+            txtSearch.PasswordChar = '\0';
+            txtSearch.PlaceholderText = "Tìm Kiếm...";
+            txtSearch.ReadOnly = false;
+            txtSearch.Size = new Size(531, 45);
+            txtSearch.TabIndex = 21;
+            txtSearch.UseSystemPasswordChar = false;
             // 
             // Stats
             // 
@@ -259,8 +214,6 @@ namespace Environmental_Monitoring.View
             roundedPanel4.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)chartOrderQuantity).EndInit();
-            ((System.ComponentModel.ISupportInitialize)chartOnTimeRate).EndInit();
             ResumeLayout(false);
         }
 

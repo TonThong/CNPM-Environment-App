@@ -31,31 +31,20 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblTitle = new Label();
             lblPanelResign = new Label();
             panelPollution = new RoundedPanel();
-            chartPollution = new System.Windows.Forms.DataVisualization.Charting.Chart();
             btnPredictPollution = new RoundedButton();
             lblPollutionLevel = new Label();
             lblPanelPollution = new Label();
+            cmbLocation = new CustomComboBox();
             panelResign = new RoundedPanel();
-            chartResign = new System.Windows.Forms.DataVisualization.Charting.Chart();
             txtCustomerName = new RoundedTextBox();
             btnPredictResign = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             txtSearch = new RoundedTextBox();
-            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
-            cmbLocation = new CustomComboBox();
             panelPollution.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)chartPollution).BeginInit();
             panelResign.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)chartResign).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -85,7 +74,6 @@ namespace Environmental_Monitoring.View
             panelPollution.BorderColor = Color.Transparent;
             panelPollution.BorderRadius = 20;
             panelPollution.BorderSize = 0;
-            panelPollution.Controls.Add(chartPollution);
             panelPollution.Controls.Add(btnPredictPollution);
             panelPollution.Controls.Add(lblPollutionLevel);
             panelPollution.Controls.Add(lblPanelPollution);
@@ -95,23 +83,6 @@ namespace Environmental_Monitoring.View
             panelPollution.Name = "panelPollution";
             panelPollution.Size = new Size(531, 554);
             panelPollution.TabIndex = 9;
-            // 
-            // chartPollution
-            // 
-            chartArea1.Name = "ChartArea1";
-            chartPollution.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            chartPollution.Legends.Add(legend1);
-            chartPollution.Location = new Point(3, 154);
-            chartPollution.Name = "chartPollution";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            chartPollution.Series.Add(series1);
-            chartPollution.Size = new Size(525, 397);
-            chartPollution.TabIndex = 20;
-            chartPollution.Text = "chart1";
             // 
             // btnPredictPollution
             // 
@@ -153,13 +124,34 @@ namespace Environmental_Monitoring.View
             lblPanelPollution.TabIndex = 1;
             lblPanelPollution.Text = "Ô Nhiễm";
             // 
+            // cmbLocation
+            // 
+            cmbLocation.ArrowColor = Color.DimGray;
+            cmbLocation.BackColor = Color.White;
+            cmbLocation.BorderRadius = 10;
+            cmbLocation.BorderThickness = 2;
+            cmbLocation.DropDownBackColor = Color.White;
+            cmbLocation.DropDownHeight = 150;
+            cmbLocation.DropDownHoverColor = Color.DodgerBlue;
+            cmbLocation.FocusBorderColor = Color.HotPink;
+            cmbLocation.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbLocation.ForeColor = Color.Black;
+            cmbLocation.HoverBorderColor = Color.DodgerBlue;
+            cmbLocation.Location = new Point(40, 66);
+            cmbLocation.Name = "cmbLocation";
+            cmbLocation.NormalBorderColor = Color.Gray;
+            cmbLocation.SelectedIndex = -1;
+            cmbLocation.SelectedItem = null;
+            cmbLocation.SelectedValue = null;
+            cmbLocation.Size = new Size(278, 40);
+            cmbLocation.TabIndex = 22;
+            // 
             // panelResign
             // 
             panelResign.BackColor = Color.White;
             panelResign.BorderColor = Color.Transparent;
             panelResign.BorderRadius = 20;
             panelResign.BorderSize = 0;
-            panelResign.Controls.Add(chartResign);
             panelResign.Controls.Add(txtCustomerName);
             panelResign.Controls.Add(btnPredictResign);
             panelResign.Controls.Add(lblPanelResign);
@@ -168,23 +160,6 @@ namespace Environmental_Monitoring.View
             panelResign.Name = "panelResign";
             panelResign.Size = new Size(531, 554);
             panelResign.TabIndex = 8;
-            // 
-            // chartResign
-            // 
-            chartArea2.Name = "ChartArea1";
-            chartResign.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            chartResign.Legends.Add(legend2);
-            chartResign.Location = new Point(3, 117);
-            chartResign.Name = "chartResign";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            chartResign.Series.Add(series2);
-            chartResign.Size = new Size(525, 434);
-            chartResign.TabIndex = 22;
-            chartResign.Text = "chart1";
             // 
             // txtCustomerName
             // 
@@ -267,33 +242,6 @@ namespace Environmental_Monitoring.View
             txtSearch.TabIndex = 21;
             txtSearch.UseSystemPasswordChar = false;
             // 
-            // sqlCommand1
-            // 
-            sqlCommand1.CommandTimeout = 30;
-            sqlCommand1.EnableOptimizedParameterBinding = false;
-            // 
-            // cmbLocation
-            // 
-            cmbLocation.ArrowColor = Color.DimGray;
-            cmbLocation.BackColor = Color.White;
-            cmbLocation.BorderRadius = 10;
-            cmbLocation.BorderThickness = 2;
-            cmbLocation.DropDownBackColor = Color.White;
-            cmbLocation.DropDownHeight = 150;
-            cmbLocation.DropDownHoverColor = Color.DodgerBlue;
-            cmbLocation.FocusBorderColor = Color.HotPink;
-            cmbLocation.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            cmbLocation.ForeColor = Color.Black;
-            cmbLocation.HoverBorderColor = Color.DodgerBlue;
-            cmbLocation.Location = new Point(40, 66);
-            cmbLocation.Name = "cmbLocation";
-            cmbLocation.NormalBorderColor = Color.Gray;
-            cmbLocation.SelectedIndex = -1;
-            cmbLocation.SelectedItem = null;
-            cmbLocation.SelectedValue = null;
-            cmbLocation.Size = new Size(278, 40);
-            cmbLocation.TabIndex = 22;
-            // 
             // AI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -303,10 +251,8 @@ namespace Environmental_Monitoring.View
             Size = new Size(1227, 715);
             panelPollution.ResumeLayout(false);
             panelPollution.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)chartPollution).EndInit();
             panelResign.ResumeLayout(false);
             panelResign.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)chartResign).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
