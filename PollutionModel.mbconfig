@@ -1,0 +1,185 @@
+﻿{
+  "Scenario": "Forecasting",
+  "DataSource": {
+    "Version": 3,
+    "EscapeCharacter": "\"",
+    "ReadMultiLines": false,
+    "KeepDiacritics": false,
+    "KeepPunctuations": false,
+    "AllowQuoting": false,
+    "Type": "TabularFile",
+    "FilePath": "C:\\Github\\pollution_training.csv",
+    "Delimiter": ",",
+    "DecimalMarker": ".",
+    "HasHeader": true,
+    "ColumnProperties": [
+      {
+        "ColumnName": "Date",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Location",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Parameter",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Value",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      }
+    ]
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "ForecastBySsa",
+        "Score": 17.984928202206074,
+        "RuntimeInSeconds": 0.008,
+        "Parameter": {
+          "_SCHEMA_": "e0",
+          "e0": {
+            "WindowSize": 3,
+            "SeriesLength": 21,
+            "TrainSize": 72,
+            "Horizon": 6,
+            "OutputColumnName": "Value",
+            "InputColumnName": "Value",
+            "ConfidenceLowerBoundColumn": "Value_LB",
+            "ConfidenceUpperBoundColumn": "Value_UB"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "ForecastBySsa",
+        "Score": 17.984928202206074,
+        "RuntimeInSeconds": 0.007,
+        "Parameter": {
+          "_SCHEMA_": "e0",
+          "e0": {
+            "WindowSize": 3,
+            "SeriesLength": 16,
+            "TrainSize": 72,
+            "Horizon": 6,
+            "OutputColumnName": "Value",
+            "InputColumnName": "Value",
+            "ConfidenceLowerBoundColumn": "Value_LB",
+            "ConfidenceUpperBoundColumn": "Value_UB"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "ForecastBySsa",
+        "Score": 17.984928202206074,
+        "RuntimeInSeconds": 0.009,
+        "Parameter": {
+          "_SCHEMA_": "e0",
+          "e0": {
+            "WindowSize": 3,
+            "SeriesLength": 5,
+            "TrainSize": 72,
+            "Horizon": 6,
+            "OutputColumnName": "Value",
+            "InputColumnName": "Value",
+            "ConfidenceLowerBoundColumn": "Value_LB",
+            "ConfidenceUpperBoundColumn": "Value_UB"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "ForecastBySsa",
+        "Score": 17.984928202206074,
+        "RuntimeInSeconds": 0.005,
+        "Parameter": {
+          "_SCHEMA_": "e0",
+          "e0": {
+            "WindowSize": 3,
+            "SeriesLength": 13,
+            "TrainSize": 72,
+            "Horizon": 6,
+            "OutputColumnName": "Value",
+            "InputColumnName": "Value",
+            "ConfidenceLowerBoundColumn": "Value_LB",
+            "ConfidenceUpperBoundColumn": "Value_UB"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "ForecastBySsa",
+        "Score": 17.984928202206074,
+        "RuntimeInSeconds": 0.007,
+        "Parameter": {
+          "_SCHEMA_": "e0",
+          "e0": {
+            "WindowSize": 3,
+            "SeriesLength": 66,
+            "TrainSize": 72,
+            "Horizon": 6,
+            "OutputColumnName": "Value",
+            "InputColumnName": "Value",
+            "ConfidenceLowerBoundColumn": "Value_LB",
+            "ConfidenceUpperBoundColumn": "Value_UB"
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "ForecastBySsa"
+    },
+    "Schema": "e0",
+    "MetricName": "RMSE",
+    "ModelFilePath": "C:\\Github\\CNPM-Environment-App\\PollutionModel.mlnet"
+  },
+  "Type": "TrainingConfig",
+  "Version": 5,
+  "TrainingOption": {
+    "Version": 3,
+    "OptimizeMetric": "RMSE",
+    "Subsampling": false,
+    "Type": "ForecastingTrainingOption",
+    "TrainingTime": 60,
+    "UseCrossValidation": false,
+    "Horizon": 6,
+    "TimeColumn": "Date",
+    "LabelColumn": "Value",
+    "UseDefaultIndex": false,
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "CrossValidationValidationOption",
+      "NumberOfFolds": 5
+    }
+  }
+}

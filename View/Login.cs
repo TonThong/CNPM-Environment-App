@@ -72,6 +72,8 @@ namespace Environmental_Monitoring.View
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Login).Assembly);
+            this.MaximumSize = this.Size;
+            this.MinimumSize = this.Size;
         }
 
         private void SetLanguage(string cultureName)
@@ -92,7 +94,7 @@ namespace Environmental_Monitoring.View
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
             this.Text = rm.GetString("Login_Title", culture);
-            lbTaiKhoan.Text = rm.GetString("Login_Username", culture);
+            lbTaiKhoan.Text = rm.GetString("Login_Account", culture);
             txtTaiKhoan.PlaceholderText = rm.GetString("Login_Username", culture);
             txtMatKhau.PlaceholderText = rm.GetString("Login_Password", culture);
             linkForgot.Text = rm.GetString("Login_ForgotPassword", culture);
@@ -135,14 +137,18 @@ namespace Environmental_Monitoring.View
         {
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
-
             string taiKhoan = txtTaiKhoan.Text.Trim();
             string matKhau = txtMatKhau.Text;
+
+            if (!ValidationHelper.IsValidEmailFormat(taiKhoan))
+            {
+                alertPanel.ShowAlert("Định dạng email không hợp lệ.", AlertPanel.AlertType.Error);
+                return;
+            }
 
             if (string.IsNullOrEmpty(taiKhoan) || string.IsNullOrEmpty(matKhau))
             {
                 alertPanel.ShowAlert(rm.GetString("Alert_Login_ValidationEmpty", culture), AlertPanel.AlertType.Error);
-
                 return;
             }
 
@@ -157,20 +163,17 @@ namespace Environmental_Monitoring.View
                     alertPanel.OnClose += AlertPanel_Success_OnClose;
                     alertPanel.ShowAlert(rm.GetString("Alert_Login_Success", culture), AlertPanel.AlertType.Success);
 
-
                     this.Enabled = false;
                 }
                 else
                 {
                     alertPanel.ShowAlert(rm.GetString("Alert_Login_InvalidCredentials", culture), AlertPanel.AlertType.Error);
-
                 }
             }
             catch (Exception ex)
             {
                 string errorMsg = rm.GetString("Alert_Login_DbError", culture);
                 alertPanel.ShowAlert(errorMsg + ": " + ex.Message, AlertPanel.AlertType.Error);
-
             }
         }
 

@@ -1,0 +1,360 @@
+﻿{
+  "Scenario": "Classification",
+  "DataSource": {
+    "Version": 3,
+    "EscapeCharacter": "\"",
+    "ReadMultiLines": false,
+    "KeepDiacritics": false,
+    "KeepPunctuations": false,
+    "AllowQuoting": false,
+    "Type": "TabularFile",
+    "FilePath": "C:\\Github\\resign_training.csv",
+    "Delimiter": ",",
+    "DecimalMarker": ".",
+    "HasHeader": true,
+    "ColumnProperties": [
+      {
+        "ColumnName": "ContractType",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "WasOnTime",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "PollutionCount",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "WarningCount",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "TotalContracts",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Label",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "Boolean",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      }
+    ]
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestBinary",
+        "Score": 1.0,
+        "RuntimeInSeconds": 0.401,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e8 * e9",
+          "e0": {
+            "OutputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ],
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ]
+          },
+          "e1": {
+            "InputColumnName": "ContractType",
+            "OutputColumnName": "ContractType"
+          },
+          "e2": {
+            "InputColumnName": "WasOnTime",
+            "OutputColumnName": "WasOnTime"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts",
+              "ContractType",
+              "WasOnTime"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Label",
+            "FeatureColumnName": "Features"
+          },
+          "e9": {
+            "LabelColumnName": "Label",
+            "ScoreColumnName": "Score"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestBinary",
+        "Score": 1.0,
+        "RuntimeInSeconds": 0.283,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e8 * e9",
+          "e0": {
+            "OutputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ],
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ]
+          },
+          "e1": {
+            "InputColumnName": "ContractType",
+            "OutputColumnName": "ContractType"
+          },
+          "e2": {
+            "InputColumnName": "WasOnTime",
+            "OutputColumnName": "WasOnTime"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts",
+              "ContractType",
+              "WasOnTime"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfTrees": 6,
+            "NumberOfLeaves": 8,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Label",
+            "FeatureColumnName": "Features"
+          },
+          "e9": {
+            "LabelColumnName": "Label",
+            "ScoreColumnName": "Score"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestBinary",
+        "Score": 1.0,
+        "RuntimeInSeconds": 0.25,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e8 * e9",
+          "e0": {
+            "OutputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ],
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ]
+          },
+          "e1": {
+            "InputColumnName": "ContractType",
+            "OutputColumnName": "ContractType"
+          },
+          "e2": {
+            "InputColumnName": "WasOnTime",
+            "OutputColumnName": "WasOnTime"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts",
+              "ContractType",
+              "WasOnTime"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 0.985697,
+            "LabelColumnName": "Label",
+            "FeatureColumnName": "Features"
+          },
+          "e9": {
+            "LabelColumnName": "Label",
+            "ScoreColumnName": "Score"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestBinary",
+        "Score": 1.0,
+        "RuntimeInSeconds": 0.245,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e8 * e9",
+          "e0": {
+            "OutputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ],
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ]
+          },
+          "e1": {
+            "InputColumnName": "ContractType",
+            "OutputColumnName": "ContractType"
+          },
+          "e2": {
+            "InputColumnName": "WasOnTime",
+            "OutputColumnName": "WasOnTime"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts",
+              "ContractType",
+              "WasOnTime"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Label",
+            "FeatureColumnName": "Features"
+          },
+          "e9": {
+            "LabelColumnName": "Label",
+            "ScoreColumnName": "Score"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestBinary",
+        "Score": 1.0,
+        "RuntimeInSeconds": 0.352,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e8 * e9",
+          "e0": {
+            "OutputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ],
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts"
+            ]
+          },
+          "e1": {
+            "InputColumnName": "ContractType",
+            "OutputColumnName": "ContractType"
+          },
+          "e2": {
+            "InputColumnName": "WasOnTime",
+            "OutputColumnName": "WasOnTime"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PollutionCount",
+              "WarningCount",
+              "TotalContracts",
+              "ContractType",
+              "WasOnTime"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 6,
+            "FeatureFraction": 0.971499,
+            "LabelColumnName": "Label",
+            "FeatureColumnName": "Features"
+          },
+          "e9": {
+            "LabelColumnName": "Label",
+            "ScoreColumnName": "Score"
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "ReplaceMissingValues",
+      "e1": "FeaturizeText",
+      "e2": "FeaturizeText",
+      "e3": "Concatenate",
+      "e4": "FastTreeBinary",
+      "e5": "LightGbmBinary",
+      "e6": "LbfgsLogisticRegressionBinary",
+      "e7": "SdcaLogisticRegressionBinary",
+      "e8": "FastForestBinary",
+      "e9": "Naive"
+    },
+    "Schema": "e0 * e1 * e2 * e3 * (e4 + e5 + e6 + e7 + e8 * e9)",
+    "MetricName": "Accuracy",
+    "ModelFilePath": "C:\\Github\\CNPM-Environment-App\\ResignModel.mlnet"
+  },
+  "Type": "TrainingConfig",
+  "Version": 5,
+  "TrainingOption": {
+    "Version": 2,
+    "Subsampling": false,
+    "Type": "ClassificationTrainingOption",
+    "TrainingTime": 60,
+    "LabelColumn": "Label",
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "CrossValidationValidationOption",
+      "NumberOfFolds": 5
+    }
+  }
+}

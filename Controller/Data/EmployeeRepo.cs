@@ -30,17 +30,17 @@ namespace Environmental_Monitoring.Controller.Data
         public Employee Login(string username)
         {
             string query = @"SELECT
-                                 e.EmployeeID,
-                                 e.MaNhanVien,
-                                 e.HoTen,
-                                 e.NamSinh,
-                                 e.TruongBoPhan, 
-                                 e.DiaChi,
-                                 e.SoDienThoai,
-                                 e.Email,
-                                 e.PasswordHash,
-                                 e.RoleID,
-                                 r.RoleName 
+                                e.EmployeeID,
+                                e.MaNhanVien,
+                                e.HoTen,
+                                e.NamSinh,
+                                e.TruongBoPhan, 
+                                e.DiaChi,
+                                e.SoDienThoai,
+                                e.Email,
+                                e.PasswordHash,
+                                e.RoleID,
+                                r.RoleName 
                              FROM Employees e
                              LEFT JOIN Roles r ON e.RoleID = r.RoleId 
                              WHERE e.Email = @username";
@@ -49,7 +49,7 @@ namespace Environmental_Monitoring.Controller.Data
             if (data.Rows.Count > 0)
             {
                 DataRow row = data.Rows[0];
-                return new Employee(row); 
+                return new Employee(row);
             }
             return null;
         }
@@ -57,18 +57,18 @@ namespace Environmental_Monitoring.Controller.Data
         public DataTable GetAll()
         {
             string query = @"SELECT
-                                 e.EmployeeID,
-                                 e.MaNhanVien,
-                                 e.HoTen,
-                                 e.NamSinh,
-                                 e.TruongBoPhan, 
-                                 e.DiaChi,
-                                 e.SoDienThoai,
-                                 e.Email,
-                                 e.RoleID,
-                                 r.RoleName
-                                FROM Employees e
-                                INNER JOIN Roles r ON e.RoleID = r.RoleId";
+                                e.EmployeeID,
+                                e.MaNhanVien,
+                                e.HoTen,
+                                e.NamSinh,
+                                e.TruongBoPhan, 
+                                e.DiaChi,
+                                e.SoDienThoai,
+                                e.Email,
+                                e.RoleID,
+                                r.RoleName
+                               FROM Employees e
+                               INNER JOIN Roles r ON e.RoleID = r.RoleId";
             return DataProvider.Instance.ExecuteQuery(query);
         }
 
@@ -149,39 +149,39 @@ namespace Environmental_Monitoring.Controller.Data
         public bool ExistsAnotherTable(int id)
         {
             return DataProvider.Instance
-                    .ExecuteScalar(
-                    "SELECT ContractID FROM Contracts WHERE EmployeeId = @id",
-                    new object[] { id }) != null ||
-                DataProvider.Instance
-                    .ExecuteScalar(
-                    "SELECT AssignedToHT FROM EnvironmentalSamples WHERE AssignedToHT = @id",
-                    new object[] { id }) != null ||
-                DataProvider.Instance
-                    .ExecuteScalar(
-                    "SELECT AssignedToPTN FROM EnvironmentalSamples WHERE AssignedToPTN = @id",
-                    new object[] { id }) != null;
+                       .ExecuteScalar(
+                       "SELECT ContractID FROM Contracts WHERE EmployeeId = @id",
+                       new object[] { id }) != null ||
+                   DataProvider.Instance
+                       .ExecuteScalar(
+                       "SELECT AssignedToHT FROM EnvironmentalSamples WHERE AssignedToHT = @id",
+                       new object[] { id }) != null ||
+                   DataProvider.Instance
+                       .ExecuteScalar(
+                       "SELECT AssignedToPTN FROM EnvironmentalSamples WHERE AssignedToPTN = @id",
+                       new object[] { id }) != null;
         }
 
         public DataTable Filter(string keySearch)
         {
             string searchPattern = "%" + keySearch.Trim() + "%";
             string query = @"SELECT
-                                 e.EmployeeID,
-                                 e.MaNhanVien,
-                                 e.HoTen,
-                                 e.NamSinh,
-                                 e.TruongBoPhan, 
-                                 e.DiaChi,
-                                 e.SoDienThoai,
-                                 e.Email,
-                                 e.RoleID,
-                                 r.RoleName
-                                FROM Employees e
-                                INNER JOIN Roles r ON e.RoleID = r.RoleId
-                                WHERE UPPER(e.MaNhanVien) LIKE UPPER(@keySearch1)
-                                   OR UPPER(e.HoTen) LIKE UPPER(@keySearch2)
-                                   OR UPPER(e.SoDienThoai) LIKE UPPER(@keySearch3)
-                                   OR UPPER(e.Email) LIKE UPPER(@keySearch4)";
+                                e.EmployeeID,
+                                e.MaNhanVien,
+                                e.HoTen,
+                                e.NamSinh,
+                                e.TruongBoPhan, 
+                                e.DiaChi,
+                                e.SoDienThoai,
+                                e.Email,
+                                e.RoleID,
+                                r.RoleName
+                               FROM Employees e
+                               INNER JOIN Roles r ON e.RoleID = r.RoleId
+                               WHERE UPPER(e.MaNhanVien) LIKE UPPER(@keySearch1)
+                                 OR UPPER(e.HoTen) LIKE UPPER(@keySearch2)
+                                 OR UPPER(e.SoDienThoai) LIKE UPPER(@keySearch3)
+                                 OR UPPER(e.Email) LIKE UPPER(@keySearch4)";
             return DataProvider.Instance.ExecuteQuery(query, new object[] { searchPattern, searchPattern, searchPattern, searchPattern });
         }
 
@@ -189,16 +189,16 @@ namespace Environmental_Monitoring.Controller.Data
         {
             PagedResult result = new PagedResult();
             string baseQuery = @"FROM Employees e
-                                 INNER JOIN Roles r ON e.RoleID = r.RoleId";
+                               INNER JOIN Roles r ON e.RoleID = r.RoleId";
             string whereClause = "";
             object[] parameters;
             if (!string.IsNullOrWhiteSpace(keySearch))
             {
                 string searchPattern = "%" + keySearch.Trim() + "%";
                 whereClause = @"WHERE UPPER(e.MaNhanVien) LIKE UPPER(@keySearch1)
-                                   OR UPPER(e.HoTen) LIKE UPPER(@keySearch2)
-                                   OR UPPER(e.SoDienThoai) LIKE UPPER(@keySearch3)
-                                   OR UPPER(e.Email) LIKE UPPER(@keySearch4)";
+                                  OR UPPER(e.HoTen) LIKE UPPER(@keySearch2)
+                                  OR UPPER(e.SoDienThoai) LIKE UPPER(@keySearch3)
+                                  OR UPPER(e.Email) LIKE UPPER(@keySearch4)";
                 parameters = new object[] { searchPattern, searchPattern, searchPattern, searchPattern };
             }
             else
@@ -209,11 +209,11 @@ namespace Environmental_Monitoring.Controller.Data
             result.TotalCount = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(countQuery, parameters));
             int offset = (pageNumber - 1) * pageSize;
             string dataQuery = @"SELECT
-                                     e.EmployeeID, e.MaNhanVien, e.HoTen, e.NamSinh,
-                                     e.TruongBoPhan, e.DiaChi, e.SoDienThoai, e.Email, 
-                                     e.RoleID, r.RoleName " +
-                                     baseQuery + " " + whereClause +
-                                     " ORDER BY e.EmployeeID LIMIT @PageSize OFFSET @Offset";
+                                       e.EmployeeID, e.MaNhanVien, e.HoTen, e.NamSinh,
+                                       e.TruongBoPhan, e.DiaChi, e.SoDienThoai, e.Email, 
+                                       e.RoleID, r.RoleName " +
+                                       baseQuery + " " + whereClause +
+                                       " ORDER BY e.EmployeeID LIMIT @PageSize OFFSET @Offset";
             object[] dataParameters;
             if (!string.IsNullOrWhiteSpace(keySearch))
             {
@@ -227,6 +227,41 @@ namespace Environmental_Monitoring.Controller.Data
             result.Data = DataProvider.Instance.ExecuteQuery(dataQuery, dataParameters);
 
             return result;
+        }
+
+        // --- CÁC HÀM MỚI CHO CHỨC NĂNG QUÊN MẬT KHẨU ---
+
+        public bool PhoneNumberExists(string phoneNumber)
+        {
+            string query = "SELECT COUNT(*) FROM Employees WHERE SoDienThoai = @phone";
+            int count = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query, new object[] { phoneNumber }));
+            return count > 0;
+        }
+
+        public bool SetResetCode(string phoneNumber, string code, DateTime expiry)
+        {
+            string query = "UPDATE Employees SET ResetCode = @code , CodeExpiry = @expiry WHERE SoDienThoai = @phone";
+            int result = DataProvider.Instance.ExecuteNonQuery(query, new object[] { code, expiry, phoneNumber });
+            return result > 0;
+        }
+
+        public DataRow GetResetCodeData(string phoneNumber)
+        {
+            string query = "SELECT ResetCode, CodeExpiry FROM Employees WHERE SoDienThoai = @phone";
+            DataTable table = DataProvider.Instance.ExecuteQuery(query, new object[] { phoneNumber });
+            if (table.Rows.Count > 0)
+            {
+                return table.Rows[0];
+            }
+            return null;
+        }
+
+        public bool UpdatePasswordAndClearCode(string phoneNumber, string hashedPassword)
+        {
+            string query = "UPDATE Employees SET PasswordHash = @pass , ResetCode = NULL, CodeExpiry = NULL WHERE SoDienThoai = @phone";
+
+            int result = DataProvider.Instance.ExecuteNonQuery(query, new object[] { hashedPassword, phoneNumber });
+            return result > 0;
         }
     }
 }

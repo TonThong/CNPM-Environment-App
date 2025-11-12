@@ -13,6 +13,8 @@ using System.Resources;
 using Environmental_Monitoring.View.Components;
 using Environmental_Monitoring.View;
 using Environmental_Monitoring.Controller;
+using System.Windows.Forms.DataVisualization.Charting;
+using Environmental_Monitoring;
 
 namespace Environmental_Monitoring.View
 {
@@ -22,6 +24,11 @@ namespace Environmental_Monitoring.View
         {
             InitializeComponent();
             this.Load += new System.EventHandler(this.AI_Load);
+
+
+            cmbLocation.Items.Add("HaNoi");
+            cmbLocation.Items.Add("HCM");
+            cmbLocation.SelectedIndex = 0;
         }
 
         private void AI_Load(object sender, EventArgs e)
@@ -67,12 +74,98 @@ namespace Environmental_Monitoring.View
                 lblPollutionLevel.ForeColor = ThemeManager.TextColor;
                 btnPredictPollution.BackColor = ThemeManager.AccentColor;
                 btnPredictPollution.ForeColor = Color.White;
-               
+
             }
             catch (Exception ex)
             {
                 string errorMsg = rm.GetString("Alert_LoadLanguageError", culture);
                 mainForm?.ShowGlobalAlert(errorMsg + ex.Message, AlertPanel.AlertType.Error);
+            }
+        }
+
+        private void btnPredictResign_Click(object sender, EventArgs e)
+        {
+            var inputData = new ResignModel.ModelInput()
+            {
+                ContractType = "Quy",
+                WasOnTime = "Completed",
+                PollutionCount = 0,
+                WarningCount = 1,
+                TotalContracts = 3
+            };
+
+            ResignModel.ModelOutput prediction = ResignModel.Predict(inputData);
+
+
+            bool predictedLabel = prediction.PredictedLabel; 
+            float probability = prediction.Score; 
+
+            int percentTrue, percentFalse;
+
+            if (predictedLabel == true)
+            {
+                percentTrue = (int)(probability * 100);
+                percentFalse = 100 - percentTrue;
+            }
+            else
+            {
+                percentFalse = (int)(probability * 100);
+                percentTrue = 100 - percentFalse;
+            }
+
+            if (this.Controls.Find("chartResign", true).FirstOrDefault() is Chart chartResign)
+            {
+                chartResign.Series.Clear();
+                Series series = chartResign.Series.Add("ResignRate");
+                series.ChartType = SeriesChartType.Pie;
+
+                series.Points.Add(percentTrue);
+                series.Points.Add(percentFalse);
+
+                DataPoint dpTrue = series.Points[0];
+                dpTrue.LegendText = "Khả năng tái ký";
+                dpTrue.Label = $"{percentTrue}%";
+                dpTrue.Color = Color.FromArgb(106, 90, 205); 
+
+                DataPoint dpFalse = series.Points[1];
+                dpFalse.LegendText = "Khả năng không tái ký";
+                dpFalse.Label = $"{percentFalse}%";
+                dpFalse.Color = Color.FromArgb(250, 128, 114); 
+
+                if (chartResign.Legends.Count == 0) chartResign.Legends.Add("Default");
+                chartResign.Legends[0].Docking = Docking.Right;
+            }
+        }
+
+        private void btnPredictPollution_Click(object sender, EventArgs e)
+        {
+            PollutionModel.ModelOutput prediction = PollutionModel.Predict(horizon: 6);
+
+            float[] forecasts = prediction.Value;
+
+            if (this.Controls.Find("chartPollution", true).FirstOrDefault() is Chart chartPollution)
+            {
+                chartPollution.Series.Clear();
+                Series series = chartPollution.Series.Add("PollutionLevel");
+                series.ChartType = SeriesChartType.Line;
+                series.BorderWidth = 3;
+                series.Color = Color.FromArgb(106, 90, 205); 
+                series.MarkerStyle = MarkerStyle.Circle;
+                series.MarkerSize = 8;
+
+                DateTime currentDate = DateTime.Now;
+
+                for (int i = 0; i < forecasts.Length; i++)
+                {
+                    string monthLabel = $"Th {currentDate.AddMonths(i + 1).Month}";
+                    series.Points.AddXY(monthLabel, forecasts[i]);
+                }
+
+                chartPollution.ChartAreas[0].AxisY.Minimum = 0;
+                if (chartPollution.Legends.Count > 0)
+                {
+                    chartPollution.Legends[0].Enabled = false;
+                }
             }
         }
     }

@@ -117,6 +117,14 @@ namespace Environmental_Monitoring.View.Components
             set { cbb.SelectedItem = value; }
         }
 
+        [Category("Custom Data")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Localizable(true)]
+        public ComboBox.ObjectCollection Items
+        {
+            get { return cbb.Items; }
+        }
+
         [Category("Custom Appearance")]
         public ComboBoxStyle DropDownStyle
         {

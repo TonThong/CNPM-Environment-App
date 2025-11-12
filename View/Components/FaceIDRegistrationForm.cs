@@ -29,12 +29,15 @@ namespace Environmental_Monitoring.View.Components
         private const int TOTAL_IMAGES_TO_CAPTURE = 10;
         private int _currentUserId;
 
+        private DateTime _lastCaptureTime = DateTime.MinValue; 
+        private const int CAPTURE_DELAY_MS = 500; 
+
         public FaceIDRegistrationForm()
         {
             InitializeComponent();
-            _capture = new VideoCapture(0); 
+            _capture = new VideoCapture(0);
             _cascadeClassifier = new CascadeClassifier("haarcascade_frontalface_default.xml");
-            _currentUserId = UserSession.CurrentUser.EmployeeID; 
+            _currentUserId = UserSession.CurrentUser.EmployeeID;
 
             Application.Idle += ProcessFrame;
             this.Text = "Đăng ký khuôn mặt";
@@ -55,20 +58,24 @@ namespace Environmental_Monitoring.View.Components
                     {
                         image.Draw(face, new Bgr(Color.Green), 2);
 
-                        if (_captureCount < TOTAL_IMAGES_TO_CAPTURE)
+                        if (_captureCount < TOTAL_IMAGES_TO_CAPTURE &&
+                            DateTime.Now - _lastCaptureTime > TimeSpan.FromMilliseconds(CAPTURE_DELAY_MS))
                         {
                             Image<Gray, byte> capturedFace = grayImage.Copy(face).Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
                             _faceImages.Add(capturedFace);
                             _captureCount++;
+
+                            _lastCaptureTime = DateTime.Now;
+
                             lblStatus.Text = $"Đã chụp: {_captureCount}/{TOTAL_IMAGES_TO_CAPTURE} ảnh";
                         }
                     }
 
-                    pictureBox1.Image = image.ToBitmap(); 
+                    pictureBox1.Image = image.ToBitmap();
 
                     if (_captureCount >= TOTAL_IMAGES_TO_CAPTURE)
                     {
-                        Application.Idle -= ProcessFrame; 
+                        Application.Idle -= ProcessFrame;
                         _capture.Dispose();
                         TrainAndSaveFace();
                     }
@@ -87,7 +94,7 @@ namespace Environmental_Monitoring.View.Components
             var vectorOfImages = new Emgu.CV.Util.VectorOfMat();
             foreach (var img in _faceImages)
             {
-                vectorOfImages.Push(img.Mat); 
+                vectorOfImages.Push(img.Mat);
             }
 
             var vectorOfLabels = new Emgu.CV.Util.VectorOfInt(labels);
@@ -99,7 +106,6 @@ namespace Environmental_Monitoring.View.Components
             try
             {
                 recognizer.Write(tempFile);
-
                 modelData = File.ReadAllBytes(tempFile);
             }
             finally

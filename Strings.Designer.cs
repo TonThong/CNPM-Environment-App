@@ -205,6 +205,42 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vui lòng nhập mã OTP..
+        /// </summary>
+        internal static string Alert_Forgot_OTPEmpty {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_OTPEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã OTP đã hết hạn..
+        /// </summary>
+        internal static string Alert_Forgot_OTPExpired {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_OTPExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã OTP không chính xác..
+        /// </summary>
+        internal static string Alert_Forgot_OTPMismatch {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_OTPMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác thực OTP thành công!.
+        /// </summary>
+        internal static string Alert_Forgot_OTPValid {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_OTPValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mật khẩu mới phải có ít nhất 6 ký tự..
         /// </summary>
         internal static string Alert_Forgot_PasswordLength {
@@ -219,6 +255,42 @@ namespace Environmental_Monitoring {
         internal static string Alert_Forgot_PasswordMismatch {
             get {
                 return ResourceManager.GetString("Alert_Forgot_PasswordMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vui lòng nhập số điện thoại..
+        /// </summary>
+        internal static string Alert_Forgot_PhoneEmpty {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_PhoneEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số điện thoại không tồn tại..
+        /// </summary>
+        internal static string Alert_Forgot_PhoneNotFound {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_PhoneNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gửi SMS thất bại, vui lòng thử lại..
+        /// </summary>
+        internal static string Alert_Forgot_SendFail {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_SendFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã gửi mã OTP đến SĐT của bạn!.
+        /// </summary>
+        internal static string Alert_Forgot_SendSuccess {
+            get {
+                return ResourceManager.GetString("Alert_Forgot_SendSuccess", resourceCulture);
             }
         }
         
@@ -466,6 +538,24 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gửi Mã.
+        /// </summary>
+        internal static string Forgot_Button_SendCode {
+            get {
+                return ResourceManager.GetString("Forgot_Button_SendCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác Thực Mã.
+        /// </summary>
+        internal static string Forgot_Button_VerifyCode {
+            get {
+                return ResourceManager.GetString("Forgot_Button_VerifyCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xác Nhận Mật Khẩu Mới.
         /// </summary>
         internal static string Forgot_Placeholder_ConfirmPass {
@@ -489,6 +579,15 @@ namespace Environmental_Monitoring {
         internal static string Forgot_Placeholder_NewPass {
             get {
                 return ResourceManager.GetString("Forgot_Placeholder_NewPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhập mã OTP.
+        /// </summary>
+        internal static string Forgot_Placeholder_OTP {
+            get {
+                return ResourceManager.GetString("Forgot_Placeholder_OTP", resourceCulture);
             }
         }
         
@@ -664,6 +763,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tài Khoản.
+        /// </summary>
+        internal static string Login_Account {
+            get {
+                return ResourceManager.GetString("Login_Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đăng Nhập Bằng Face ID.
         /// </summary>
         internal static string Login_FaceID {
@@ -700,7 +808,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tài Khoản.
+        ///   Looks up a localized string similar to Tên Đăng Nhập(Email).
         /// </summary>
         internal static string Login_Username {
             get {

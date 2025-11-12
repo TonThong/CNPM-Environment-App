@@ -466,7 +466,7 @@
     <value>Kết Quả</value>
   </data>
   <data name="Login_Username" xml:space="preserve">
-    <value>Tài Khoản</value>
+    <value>Tên Đăng Nhập(Email)</value>
   </data>
   <data name="Login_Password" xml:space="preserve">
     <value>Mật Khẩu</value>
@@ -545,5 +545,41 @@
   </data>
   <data name="Logout_Confirm_Message" xml:space="preserve">
     <value>Bạn có chắc chắn muốn đăng xuất?</value>
+  </data>
+  <data name="Login_Account" xml:space="preserve">
+    <value>Tài Khoản</value>
+  </data>
+  <data name="Forgot_Button_SendCode" xml:space="preserve">
+    <value>Gửi Mã</value>
+  </data>
+  <data name="Forgot_Placeholder_OTP" xml:space="preserve">
+    <value>Nhập mã OTP</value>
+  </data>
+  <data name="Alert_Forgot_PhoneEmpty" xml:space="preserve">
+    <value>Vui lòng nhập số điện thoại.</value>
+  </data>
+  <data name="Alert_Forgot_PhoneNotFound" xml:space="preserve">
+    <value>Số điện thoại không tồn tại.</value>
+  </data>
+  <data name="Alert_Forgot_SendSuccess" xml:space="preserve">
+    <value>Đã gửi mã OTP đến SĐT của bạn!</value>
+  </data>
+  <data name="Alert_Forgot_SendFail" xml:space="preserve">
+    <value>Gửi SMS thất bại, vui lòng thử lại.</value>
+  </data>
+  <data name="Alert_Forgot_OTPEmpty" xml:space="preserve">
+    <value>Vui lòng nhập mã OTP.</value>
+  </data>
+  <data name="Alert_Forgot_OTPMismatch" xml:space="preserve">
+    <value>Mã OTP không chính xác.</value>
+  </data>
+  <data name="Alert_Forgot_OTPExpired" xml:space="preserve">
+    <value>Mã OTP đã hết hạn.</value>
+  </data>
+  <data name="Forgot_Button_VerifyCode" xml:space="preserve">
+    <value>Xác Thực Mã</value>
+  </data>
+  <data name="Alert_Forgot_OTPValid" xml:space="preserve">
+    <value>Xác thực OTP thành công!</value>
   </data>
 </root>

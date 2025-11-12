@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36429.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Environmental_Monitoring", "Environmental_Monitoring.csproj", "{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResignModel_ConsoleApp1", "..\ResignModel_ConsoleApp1\ResignModel_ConsoleApp1.csproj", "{98AEEA8E-209E-7785-3DA8-7EFFBB4A327D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PollutionModel_ConsoleApp1", "..\PollutionModel_ConsoleApp1\PollutionModel_ConsoleApp1.csproj", "{56F3E69C-830E-F4EA-B596-530C38B491B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98AEEA8E-209E-7785-3DA8-7EFFBB4A327D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98AEEA8E-209E-7785-3DA8-7EFFBB4A327D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98AEEA8E-209E-7785-3DA8-7EFFBB4A327D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98AEEA8E-209E-7785-3DA8-7EFFBB4A327D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56F3E69C-830E-F4EA-B596-530C38B491B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F3E69C-830E-F4EA-B596-530C38B491B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F3E69C-830E-F4EA-B596-530C38B491B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F3E69C-830E-F4EA-B596-530C38B491B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

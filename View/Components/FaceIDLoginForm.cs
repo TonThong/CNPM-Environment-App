@@ -4,7 +4,7 @@ using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.Controller.Data;
-using Environmental_Monitoring.Model; 
+using Environmental_Monitoring.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,9 @@ namespace Environmental_Monitoring.View.Components
         private int _recognizerIndex = 0;
 
         private Form _loginForm;
+
+        private DateTime _lastRecognitionTime = DateTime.MinValue; 
+        private const int RECOGNITION_DELAY_MS = 1000;
 
         public FaceIDLoginForm(Form loginForm)
         {
@@ -105,15 +108,20 @@ namespace Environmental_Monitoring.View.Components
                         image.Draw(face, new Bgr(Color.Red), 2);
                         Image<Gray, byte> testFace = grayImage.Copy(face).Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
 
-                        foreach (var recognizer in _recognizers)
+                        if (DateTime.Now - _lastRecognitionTime > TimeSpan.FromMilliseconds(RECOGNITION_DELAY_MS))
                         {
-                            var result = recognizer.Predict(testFace);
-                            if (result.Label > 0 && result.Distance < 90)
+                            _lastRecognitionTime = DateTime.Now;
+
+                            foreach (var recognizer in _recognizers)
                             {
-                                Application.Idle -= ProcessFrame;
-                                _capture.Dispose();
-                                LoginSuccess(result.Label);
-                                return;
+                                var result = recognizer.Predict(testFace);
+                                if (result.Label > 0 && result.Distance < 90)
+                                {
+                                    Application.Idle -= ProcessFrame;
+                                    _capture.Dispose();
+                                    LoginSuccess(result.Label);
+                                    return;
+                                }
                             }
                         }
                     }
@@ -133,7 +141,6 @@ namespace Environmental_Monitoring.View.Components
                     if (user.RoleID.HasValue && user.RoleID > 0 && RoleRepo.Instance != null)
                     {
                         user.Role = RoleRepo.Instance.GetById(user.RoleID.Value);
-                       
                     }
                     UserSession.StartSession(user);
 

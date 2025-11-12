@@ -15,7 +15,7 @@ using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.View.Components;
 using Environmental_Monitoring.View;
-using Environmental_Monitoring.Controller; 
+using Environmental_Monitoring.Controller;
 
 namespace Environmental_Monitoring.View
 {
@@ -31,6 +31,24 @@ namespace Environmental_Monitoring.View
             this.Load += new System.EventHandler(this.Employee_Load);
             this.dgvEmployee.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmployee_CellFormatting);
 
+            // <--- THÊM VÀO: Dòng này sẽ đăng ký sự kiện DataError
+            this.dgvEmployee.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvEmployee_DataError);
+        }
+
+        // <--- HÀM MỚI: Hàm này sẽ được gọi khi có lỗi xảy ra
+        private void dgvEmployee_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Ghi log lỗi ra cửa sổ Output của Visual Studio (View -> Output)
+            string errorInfo = $"LỖI DATAERROR:\n" +
+                               $"- Cột Index: {e.ColumnIndex}\n" +
+                               $"- Tên Cột: {dgvEmployee.Columns[e.ColumnIndex].Name}\n" +
+                               $"- Dòng Index: {e.RowIndex}\n" +
+                               $"- Lỗi: {e.Exception.Message}";
+
+            Console.WriteLine(errorInfo);
+
+            // Quan trọng: Ngăn không cho hiển thị hộp thoại lỗi
+            e.ThrowException = false;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -94,7 +112,7 @@ namespace Environmental_Monitoring.View
                 {
                     Name = "colEdit",
                     HeaderText = rm.GetString("Edit", culture),
-                    Image = Properties.Resources.edit, 
+                    Image = Properties.Resources.edit,
                     ImageLayout = DataGridViewImageCellLayout.Zoom,
                     DefaultCellStyle = { Padding = new Padding(5) },
                     Width = 40
@@ -112,7 +130,7 @@ namespace Environmental_Monitoring.View
                 {
                     Name = "colDelete",
                     HeaderText = rm.GetString("Delete", culture),
-                    Image = Properties.Resources.delete, 
+                    Image = Properties.Resources.delete,
                     ImageLayout = DataGridViewImageCellLayout.Zoom,
                     DefaultCellStyle = { Padding = new Padding(5) },
                     Width = 40
@@ -135,7 +153,21 @@ namespace Environmental_Monitoring.View
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
             string columnName = dgvEmployee.Columns[e.ColumnIndex].Name;
-            int employeeId = Convert.ToInt32(dgvEmployee.Rows[e.RowIndex].Cells["EmployeeId"].Value);
+
+            // --- SỬA LỖI TẠI ĐÂY ---
+            // Lấy giá trị EmployeeId một cách an toàn
+            object idValue = dgvEmployee.Rows[e.RowIndex].Cells["EmployeeId"].Value;
+
+            // Kiểm tra xem giá trị có phải là DBNull hoặc có chuyển đổi (parse) thành int được không
+            if (idValue == DBNull.Value || !int.TryParse(idValue.ToString(), out int employeeId))
+            {
+                // Nếu không lấy được ID, ghi log và thoát ra, không làm gì cả
+                Console.WriteLine("Lỗi CellContentClick: Không thể lấy EmployeeId tại dòng " + e.RowIndex);
+                return;
+            }
+            // --- KẾT THÚC SỬA ---
+
+            // Nếu code chạy đến đây, 'employeeId' đã là một số int hợp lệ
 
             if (columnName == "colEdit")
             {
@@ -212,10 +244,10 @@ namespace Environmental_Monitoring.View
 
         private void Employee_Load(object sender, EventArgs e)
         {
-           
+
 
             LoadData();
-            UpdateUIText(); 
+            UpdateUIText();
 
             btnFirst.Click -= btnFirst_Click;
             btnFirst.Click += btnFirst_Click;
@@ -268,8 +300,8 @@ namespace Environmental_Monitoring.View
                 dgvEmployee.ColumnHeadersDefaultCellStyle.BackColor = ThemeManager.SecondaryPanelColor;
                 dgvEmployee.ColumnHeadersDefaultCellStyle.ForeColor = ThemeManager.TextColor;
             }
-            catch (Exception) {  }
-          
+            catch (Exception) { }
+
         }
 
 
@@ -331,12 +363,13 @@ namespace Environmental_Monitoring.View
         {
             if (this.dgvEmployee.Columns[e.ColumnIndex].DataPropertyName == "TruongBoPhan")
             {
-                if (e.Value != null)
+                if (e.Value != null && e.Value != DBNull.Value)
                 {
                     try
                     {
-                        int val = Convert.ToInt32(e.Value);
-                        if (val == 1)
+                        bool isHead = Convert.ToBoolean(e.Value);
+
+                        if (isHead)
                         {
                             e.Value = "✓";
                         }
@@ -344,13 +377,20 @@ namespace Environmental_Monitoring.View
                         {
                             e.Value = "";
                         }
+
                         e.FormattingApplied = true;
                         e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     }
-                    catch (Exception)
+                    catch (FormatException)
                     {
                         e.Value = "";
+                        e.FormattingApplied = true;
                     }
+                }
+                else
+                {
+                    e.Value = "";
+                    e.FormattingApplied = true;
                 }
             }
         }
