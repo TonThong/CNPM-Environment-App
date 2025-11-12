@@ -120,6 +120,8 @@ namespace Environmental_Monitoring.View
 
             this.Text = rm.GetString("Forgot_Title", culture);
             label1.Text = rm.GetString("Forgot_Title", culture);
+            label2.Text = rm.GetString("Forgot_Section_Verify", culture);
+            label3.Text = rm.GetString("Forgot_Set_New_Password", culture);
 
             btnSave.Text = rm.GetString("Forgot_Button_Confirm", culture);
             btnSendCode.Text = rm.GetString("Forgot_Button_SendCode", culture);
@@ -134,8 +136,6 @@ namespace Environmental_Monitoring.View
             {
                 this.BackColor = ThemeManager.BackgroundColor;
                 label1.ForeColor = ThemeManager.TextColor;
-                // label2.ForeColor = ThemeManager.TextColor;
-                // label3.ForeColor = ThemeManager.TextColor;
                 picShowPassNew.BackColor = txtMatKhauMoi.BackColor;
                 picShowPassConfirm.BackColor = txtXacNhanMatKhauMoi.BackColor;
                 txtOTP.BackColor = ThemeManager.PanelColor;

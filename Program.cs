@@ -66,7 +66,7 @@ namespace Environmental_Monitoring
                 Properties.Settings.Default.Save();
             }
 
-            Application.Run(new Mainlayout());
+            Application.Run(new Login());
         }
     }
 }

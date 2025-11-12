@@ -55,7 +55,7 @@
             btnSearch.Enabled = false;
             btnSearch.FlatAppearance.BorderSize = 0;
             btnSearch.FlatStyle = FlatStyle.Flat;
-            btnSearch.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnSearch.ForeColor = Color.Black;
             btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
             btnSearch.Location = new Point(883, 15);
@@ -96,20 +96,20 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             label1.Location = new Point(38, 84);
             label1.Name = "label1";
-            label1.Size = new Size(235, 25);
+            label1.Size = new Size(221, 28);
             label1.TabIndex = 58;
             label1.Text = "Chọn mẫu môi trường";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             label2.Location = new Point(520, 84);
             label2.Name = "label2";
-            label2.Size = new Size(189, 25);
+            label2.Size = new Size(180, 28);
             label2.TabIndex = 59;
             label2.Text = "Chọn thông số đo";
             // 
@@ -122,7 +122,7 @@
             btnContracts.BorderSize = 0;
             btnContracts.FlatAppearance.BorderSize = 0;
             btnContracts.FlatStyle = FlatStyle.Flat;
-            btnContracts.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnContracts.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnContracts.ForeColor = Color.White;
             btnContracts.HoverColor = Color.FromArgb(34, 139, 34);
             btnContracts.Location = new Point(29, 15);
@@ -142,7 +142,7 @@
             btnCancel.BorderSize = 0;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
             btnCancel.Location = new Point(888, 381);
@@ -161,7 +161,7 @@
             roundedButton2.BorderSize = 0;
             roundedButton2.FlatAppearance.BorderSize = 0;
             roundedButton2.FlatStyle = FlatStyle.Flat;
-            roundedButton2.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            roundedButton2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             roundedButton2.ForeColor = Color.White;
             roundedButton2.HoverColor = Color.FromArgb(34, 139, 34);
             roundedButton2.Location = new Point(520, 381);
@@ -195,7 +195,7 @@
             btnAddParameter.BorderSize = 0;
             btnAddParameter.FlatAppearance.BorderSize = 0;
             btnAddParameter.FlatStyle = FlatStyle.Flat;
-            btnAddParameter.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnAddParameter.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnAddParameter.ForeColor = Color.White;
             btnAddParameter.HoverColor = Color.DodgerBlue;
             btnAddParameter.Location = new Point(704, 381);

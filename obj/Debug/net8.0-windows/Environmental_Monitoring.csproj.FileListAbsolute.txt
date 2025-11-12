@@ -347,3 +347,6 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x64\native\
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x86\native\MklImports.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x86\native\MklProxyNative.dll
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win-x86\native\libiomp5md.dll
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\Resources\times.ttf
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\itext.bouncy-castle-adapter.dll
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\itextsharp.dll

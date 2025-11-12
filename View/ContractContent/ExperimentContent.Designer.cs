@@ -60,7 +60,7 @@
             btnCancel.BorderSize = 0;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
             btnCancel.Location = new Point(947, 383);
@@ -79,7 +79,7 @@
             btnSave.BorderSize = 0;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSave.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
             btnSave.HoverColor = Color.FromArgb(34, 139, 34);
             btnSave.Location = new Point(682, 383);
@@ -100,7 +100,7 @@
             btnSearch.Enabled = false;
             btnSearch.FlatAppearance.BorderSize = 0;
             btnSearch.FlatStyle = FlatStyle.Flat;
-            btnSearch.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnSearch.ForeColor = Color.Black;
             btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
             btnSearch.Location = new Point(883, 15);
@@ -119,7 +119,7 @@
             btnContracts.BorderSize = 0;
             btnContracts.FlatAppearance.BorderSize = 0;
             btnContracts.FlatStyle = FlatStyle.Flat;
-            btnContracts.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnContracts.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnContracts.ForeColor = Color.White;
             btnContracts.HoverColor = Color.FromArgb(34, 139, 34);
             btnContracts.Location = new Point(29, 15);

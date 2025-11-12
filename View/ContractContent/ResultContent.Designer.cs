@@ -66,7 +66,7 @@
             btnRequest.Dock = DockStyle.Fill;
             btnRequest.FlatAppearance.BorderSize = 0;
             btnRequest.FlatStyle = FlatStyle.Flat;
-            btnRequest.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnRequest.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnRequest.ForeColor = Color.Black;
             btnRequest.HoverColor = Color.FromArgb(34, 139, 34);
             btnRequest.Location = new Point(569, 3);
@@ -87,7 +87,7 @@
             btnMail.Dock = DockStyle.Fill;
             btnMail.FlatAppearance.BorderSize = 0;
             btnMail.FlatStyle = FlatStyle.Flat;
-            btnMail.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnMail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnMail.ForeColor = Color.White;
             btnMail.HoverColor = Color.FromArgb(34, 139, 34);
             btnMail.Location = new Point(286, 3);
@@ -109,7 +109,7 @@
             btnSearch.Enabled = false;
             btnSearch.FlatAppearance.BorderSize = 0;
             btnSearch.FlatStyle = FlatStyle.Flat;
-            btnSearch.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnSearch.ForeColor = Color.Black;
             btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
             btnSearch.Location = new Point(922, 28);
@@ -130,7 +130,7 @@
             btnPDF.Dock = DockStyle.Fill;
             btnPDF.FlatAppearance.BorderSize = 0;
             btnPDF.FlatStyle = FlatStyle.Flat;
-            btnPDF.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnPDF.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnPDF.ForeColor = Color.Black;
             btnPDF.HoverColor = Color.FromArgb(34, 139, 34);
             btnPDF.Location = new Point(3, 3);
@@ -151,7 +151,7 @@
             btnDuyet.Dock = DockStyle.Fill;
             btnDuyet.FlatAppearance.BorderSize = 0;
             btnDuyet.FlatStyle = FlatStyle.Flat;
-            btnDuyet.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnDuyet.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnDuyet.ForeColor = Color.White;
             btnDuyet.HoverColor = Color.FromArgb(34, 139, 34);
             btnDuyet.Location = new Point(64, 407);
@@ -213,7 +213,7 @@
             btnContract.BorderSize = 0;
             btnContract.FlatAppearance.BorderSize = 0;
             btnContract.FlatStyle = FlatStyle.Flat;
-            btnContract.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnContract.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnContract.ForeColor = Color.White;
             btnContract.HoverColor = Color.FromArgb(34, 139, 34);
             btnContract.Location = new Point(64, 28);

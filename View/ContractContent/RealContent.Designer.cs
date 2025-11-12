@@ -46,7 +46,7 @@
             btnCancel.BorderSize = 0;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
             btnCancel.Location = new Point(1022, 355);
@@ -65,7 +65,7 @@
             btnMail.BorderSize = 0;
             btnMail.FlatAppearance.BorderSize = 0;
             btnMail.FlatStyle = FlatStyle.Flat;
-            btnMail.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnMail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnMail.ForeColor = Color.White;
             btnMail.HoverColor = Color.FromArgb(34, 139, 34);
             btnMail.Location = new Point(682, 355);
@@ -86,7 +86,7 @@
             btnSearch.Enabled = false;
             btnSearch.FlatAppearance.BorderSize = 0;
             btnSearch.FlatStyle = FlatStyle.Flat;
-            btnSearch.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnSearch.ForeColor = Color.Black;
             btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
             btnSearch.Location = new Point(883, 45);
@@ -119,7 +119,7 @@
             btnContracts.BorderSize = 0;
             btnContracts.FlatAppearance.BorderSize = 0;
             btnContracts.FlatStyle = FlatStyle.Flat;
-            btnContracts.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnContracts.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnContracts.ForeColor = Color.White;
             btnContracts.HoverColor = Color.FromArgb(34, 139, 34);
             btnContracts.Location = new Point(18, 45);
@@ -139,7 +139,7 @@
             btnCreateTemplate.BorderSize = 0;
             btnCreateTemplate.FlatAppearance.BorderSize = 0;
             btnCreateTemplate.FlatStyle = FlatStyle.Flat;
-            btnCreateTemplate.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCreateTemplate.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnCreateTemplate.ForeColor = Color.White;
             btnCreateTemplate.HoverColor = Color.DodgerBlue;
             btnCreateTemplate.Location = new Point(866, 355);

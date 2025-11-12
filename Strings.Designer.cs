@@ -529,6 +529,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xác Thực Tài Khoản.
+        /// </summary>
+        internal static string Forgot_Account_Verification {
+            get {
+                return ResourceManager.GetString("Forgot_Account_Verification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xác Nhận.
         /// </summary>
         internal static string Forgot_Button_Confirm {
@@ -619,6 +628,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đặt Mật Khẩu Mới.
+        /// </summary>
+        internal static string Forgot_Set_New_Password {
+            get {
+                return ResourceManager.GetString("Forgot_Set_New_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quên Mật Khẩu.
         /// </summary>
         internal static string Forgot_Title {
@@ -628,7 +646,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thêm nhân viên.
+        ///   Looks up a localized string similar to Thêm Nhân Viên.
         /// </summary>
         internal static string Form_AddEmployee_Title {
             get {
@@ -637,7 +655,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cập nhật nhân viên.
+        ///   Looks up a localized string similar to Cập Nhật Nhân Viên.
         /// </summary>
         internal static string Form_UpdateEmployee_Title {
             get {
@@ -646,7 +664,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Họ tên.
+        ///   Looks up a localized string similar to Họ Tên.
         /// </summary>
         internal static string FullName {
             get {
@@ -808,7 +826,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tên Đăng Nhập(Email).
+        ///   Looks up a localized string similar to Tên Đăng Nhập (Email).
         /// </summary>
         internal static string Login_Username {
             get {
@@ -826,7 +844,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xác nhận Đăng xuất.
+        ///   Looks up a localized string similar to Xác Nhận Đăng xuất.
         /// </summary>
         internal static string Logout_Confirm_Title {
             get {
@@ -943,7 +961,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mật khẩu.
+        ///   Looks up a localized string similar to Mật Khẩu.
         /// </summary>
         internal static string Password {
             get {
@@ -952,7 +970,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Điện thoại.
+        ///   Looks up a localized string similar to Điện Thoại.
         /// </summary>
         internal static string Phone {
             get {
@@ -1177,7 +1195,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trễ hẹn.
+        ///   Looks up a localized string similar to Trễ Hẹn.
         /// </summary>
         internal static string Stats_Late {
             get {
@@ -1186,7 +1204,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Đang tải....
+        ///   Looks up a localized string similar to Đang Tải....
         /// </summary>
         internal static string Stats_Loading {
             get {
@@ -1204,7 +1222,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Đúng hẹn.
+        ///   Looks up a localized string similar to Đúng Hẹn.
         /// </summary>
         internal static string Stats_OnTime {
             get {
@@ -1267,7 +1285,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tỷ lệ.
+        ///   Looks up a localized string similar to Tỷ Lệ.
         /// </summary>
         internal static string Stats_Rate {
             get {
