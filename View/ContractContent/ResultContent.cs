@@ -4,13 +4,15 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Environmental_Monitoring.Controller;
+using System.IO;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using iText.IO.Font;
 using iText.Kernel.Font;
 using iText.IO.Font.Constants;
-using System.IO;
+using Emgu.CV.Shape;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -42,7 +44,7 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 // Get samples, parameters and result values
                 string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
-                                    p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
+                                    p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,p.ONhiem,
                                     r.GiaTri, r.TrangThaiPheDuyet
                              FROM EnvironmentalSamples s
                              JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
@@ -50,8 +52,8 @@ namespace Environmental_Monitoring.View.ContractContent
                              LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
                              WHERE s.ContractID = @contractId
                              ORDER BY s.MaMau, p.TenThongSo";
-
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
+                this.currentContractId = contractId;
                 if (dt == null)
                 {
                     roundedDataGridView2.DataSource = null;
@@ -65,33 +67,8 @@ namespace Environmental_Monitoring.View.ContractContent
                 // Compute KetQua based on GiaTri vs limits
                 foreach (DataRow row in dt.Rows)
                 {
-                    object gObj = row["GiaTri"];
-                    object minObj = row["GioiHanMin"];
-                    object maxObj = row["GioiHanMax"];
-
                     string res = string.Empty;
-                    if (gObj == DBNull.Value || gObj == null || string.IsNullOrWhiteSpace(gObj.ToString()))
-                    {
-                        res = "Chưa có";
-                    }
-                    else if (!decimal.TryParse(gObj.ToString(), out var g))
-                    {
-                        res = "Sai định dạng";
-                    }
-                    else
-                    {
-                        decimal? min = null, max = null;
-                        if (minObj != DBNull.Value && minObj != null)
-                            min = Convert.ToDecimal(minObj);
-                        if (maxObj != DBNull.Value && maxObj != null)
-                            max = Convert.ToDecimal(maxObj);
-
-                        if ((min.HasValue && g < min.Value) || (max.HasValue && g > max.Value))
-                            res = "Ô Nhiễm";
-                        else
-                            res = "Không Ô Nhiễm";
-                    }
-
+                    res = row["ONhiem"].ToString().Equals('1') ? "Ô Nhiễm" : "Không Ô Nhiễm";
                     row["KetQua"] = res;
                 }
 
@@ -147,6 +124,8 @@ namespace Environmental_Monitoring.View.ContractContent
                     roundedDataGridView2.Columns["SampleID"].Visible = false;
                 if (roundedDataGridView2.Columns["ParameterID"] != null)
                     roundedDataGridView2.Columns["ParameterID"].Visible = false;
+                if (roundedDataGridView2.Columns["ONhiem"] != null)
+                    roundedDataGridView2.Columns["ONhiem"].Visible = false;
             }
             catch (Exception ex)
             {
@@ -156,94 +135,117 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void BtnPDF_Click(object? sender, EventArgs e)
         {
-            try
+            if ( currentContractId == 0)
             {
-                // Prompt user to select file location
-                using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-                {
-                    saveFileDialog.Filter = "PDF files (*.pdf)|*.pdf";
-                    saveFileDialog.Title = "Save PDF File";
-
-                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        string filePath = saveFileDialog.FileName;
-
-                        // Validate file path and directory
-                        if (string.IsNullOrWhiteSpace(filePath))
-                        {
-                            MessageBox.Show("Invalid file path.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-
-                        string dir = Path.GetDirectoryName(filePath) ?? string.Empty;
-                        if (!Directory.Exists(dir))
-                        {
-                            MessageBox.Show($"Directory does not exist: {dir}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-
-                        // Try to create/overwrite file via FileStream to get clear IO errors
-                        try
-                        {
-                            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                            {
-                                // Prepare writer properties and disable smart mode to avoid SmartModePdfObjectsSerializer issues
-                                var writerProps = new iText.Kernel.Pdf.WriterProperties();
-
-                                using (PdfWriter writer = new PdfWriter(fs, writerProps))
-                                using (PdfDocument pdf = new PdfDocument(writer))
-                                using (Document document = new Document(pdf))
-                                {
-                                    // Add title
-                                    document.Add(new Paragraph("Contract Results")
-                                        .SetTextAlignment(TextAlignment.CENTER)
-                                        .SetFont(PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD))
-                                        .SetFontSize(20));
-
-                                    // Add customer information
-                                    document.Add(new Paragraph("Customer Information:")
-                                        .SetFont(PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD)));
-                                    document.Add(new Paragraph("Contract ID: " + currentContractId));
-
-                                    // Add table for data grid view content
-                                    Table table = new Table(UnitValue.CreatePercentArray(roundedDataGridView2.Columns.Count))
-                                        .UseAllAvailableWidth();
-
-                                    // Add headers
-                                    foreach (DataGridViewColumn column in roundedDataGridView2.Columns)
-                                    {
-                                        table.AddHeaderCell(new Cell().Add(new Paragraph(column.HeaderText)));
-                                    }
-
-                                    // Add rows
-                                    foreach (DataGridViewRow row in roundedDataGridView2.Rows)
-                                    {
-                                        foreach (DataGridViewCell cell in row.Cells)
-                                        {
-                                            string cellValue = cell.Value?.ToString() ?? "";
-                                            table.AddCell(new Cell().Add(new Paragraph(cellValue)));
-                                        }
-                                    }
-
-                                    document.Add(table);
-                                }
-                            }
-
-                            MessageBox.Show("PDF exported successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        catch (Exception ioEx)
-                        {
-                            // Show detailed IO errors which are common root causes for Unknown PdfException
-                            MessageBox.Show($"Failed to create/write file. {ioEx.GetType().Name}: {ioEx.Message}\nPath: {filePath}\n\n{ioEx.StackTrace}", "File I/O Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
+                MessageBox.Show("Vui lòng chọn hợp đồng trước khi xuất PDF.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            catch (Exception ex)
+
+            SaveFileDialog saveDialog = new SaveFileDialog
             {
-                // Provide as much detail as possible for troubleshooting
-                string inner = ex.InnerException != null ? ex.InnerException.Message : string.Empty;
-                MessageBox.Show("Error exporting PDF: " + ex.Message + "\nInner: " + inner + "\n\n" + ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Title = "Chọn nơi lưu hợp đồng",
+                Filter = "PDF files (*.pdf)|*.pdf",
+                FileName = "HopDongQuanTrac.pdf"
+            };
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = saveDialog.FileName;
+
+                using (PdfWriter writer = new PdfWriter(filePath))
+                using (PdfDocument pdf = new PdfDocument(writer))
+                using (Document doc = new Document(pdf))
+                {
+                    string fontPath = Path.Combine(Application.StartupPath, "Resources", "times.ttf");
+
+                    PdfFont font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H);
+                    string query = @"
+                    SELECT *
+                    FROM Contracts c
+                    JOIN Customers cu ON c.CustomerID = cu.CustomerID
+                    WHERE c.ContractID = @ContractID
+                    ";
+
+                    DataTable dt = DataProvider.Instance.ExecuteQuery(query, new object[] { currentContractId });
+
+                    // Lấy từng thông tin
+                    string nguoiDaiDien = dt.Rows[0]["TenNguoiDaiDien"].ToString();
+                    string diaChi = dt.Rows[0]["DiaChi"].ToString();
+                    string tenDoanhNghiep = dt.Rows[0]["TenDoanhNghiep"].ToString();
+                    string kyHieuDoanhNghiep = dt.Rows[0]["KyHieuDoanhNghiep"].ToString();
+                    doc.Add(new Paragraph("HỢP ĐỒNG QUAN TRẮC MÔI TRƯỜNG").SetFont(font).SetFontSize(16).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+                    doc.Add(new Paragraph("Doanh Nghiệp: " + tenDoanhNghiep).SetFont(font));
+                    doc.Add(new Paragraph("Ký Hiệu Doanh Nghiệp: " + kyHieuDoanhNghiep).SetFont(font));
+                    doc.Add(new Paragraph("Đại diện bên A: " + nguoiDaiDien).SetFont(font));
+                    doc.Add(new Paragraph("Các Thông Số").SetFont(font).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+
+                    // Danh sách cột (có thể đổi theo DataTable của bạn)
+                    string[] headers = { "Mã Mẫu", "Thông Số", "Đơn Vị", "Giới Hạn Min", "Giới Hạn Max", "Giá Trị", "Trạng Thái","Kết Quả" };
+
+                    // Tạo bảng có số cột = headers.Length
+                    Table table = new Table(headers.Length).UseAllAvailableWidth();
+                    foreach (string header in headers)
+                    {
+                        table.AddHeaderCell(
+                            new Cell().Add(new Paragraph(header).SetFont(font))
+                                      .SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY)
+                                      .SetTextAlignment(TextAlignment.CENTER)
+                                      .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                                      .SetPadding(5)
+                        );
+                    }
+
+                    string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
+                                    p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,p.ONhiem,
+                                    r.GiaTri, r.TrangThaiPheDuyet
+                             FROM EnvironmentalSamples s
+                             JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
+                             JOIN Parameters p ON tp.ParameterID = p.ParameterID
+                             LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
+                             WHERE s.ContractID = @contractId
+                             ORDER BY s.MaMau, p.TenThongSo";
+                    DataTable dtInfo = DataProvider.Instance.ExecuteQuery(q, new object[] { this.currentContractId });
+                    foreach (DataRow row in dtInfo.Rows)
+                    {
+                        table.AddCell(new Cell().Add(new Paragraph(row["SampleCode"].ToString()).SetFont(font)));
+                        table.AddCell(new Cell().Add(new Paragraph(row["TenThongSo"].ToString()).SetFont(font)));
+                        table.AddCell(new Cell().Add(new Paragraph(row["DonVi"].ToString()).SetFont(font)));
+                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMin"].ToString()).SetFont(font)));
+                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMax"].ToString()).SetFont(font)));
+                        table.AddCell(new Cell().Add(new Paragraph(row["GiaTri"].ToString()).SetFont(font)));
+                        table.AddCell(new Cell().Add(new Paragraph(row["TrangThaiPheDuyet"].ToString()).SetFont(font)));
+                        table.AddCell(new Cell().Add(new Paragraph(row["ONhiem"].ToString().Equals('1')?"Ô Nhiễm" :"Không Ô Nhiễm" ).SetFont(font)));
+                    }
+                    doc.Add(table);
+                    DateTime now = DateTime.Now;
+                    string ngayThang = $"Ngày {now.Day} tháng {now.Month} năm {now.Year}";
+
+                    doc.Add(new Paragraph("\n\n")); // tạo cách dòng
+
+                    // Thêm phần ký tên
+                    doc.Add(new Paragraph(ngayThang)
+                        .SetFont(font)
+                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT)
+                        .SetMarginRight(40));
+
+                    doc.Add(new Paragraph("ĐẠI DIỆN DOANH NGHIỆP "+ tenDoanhNghiep)
+                        .SetFont(font)
+                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
+                        .SetMarginTop(30)
+                        .SetMarginRight(250));
+
+                    doc.Add(new Paragraph("ĐẠI DIỆN PHỤ TRÁCH")
+                        .SetFont(font)
+                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
+                        .SetMarginTop(-30)
+                        .SetMarginLeft(250));
+                }
+
+                MessageBox.Show("Đã lưu hợp đồng", "Thông báo");
+            }
+            else
+            {
+                MessageBox.Show("Bạn đã hủy thao tác lưu file", "Thông báo");
             }
         }
 
