@@ -30,6 +30,12 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblOrderCountTitle = new Label();
             lblOnTimeRateTitle = new Label();
             roundedPanel4 = new RoundedPanel();
@@ -39,8 +45,12 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1 = new TableLayoutPanel();
             lblTitle = new Label();
             txtSearch = new RoundedTextBox();
+            chartOrderQuantity = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            chartOnTimeRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
             roundedPanel4.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chartOrderQuantity).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chartOnTimeRate).BeginInit();
             SuspendLayout();
             // 
             // lblOrderCountTitle
@@ -160,6 +170,8 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.Controls.Add(lblOnTimeRateTitle, 3, 4);
             tableLayoutPanel1.Controls.Add(lblOrderCountTitle, 1, 4);
             tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
+            tableLayoutPanel1.Controls.Add(chartOrderQuantity, 1, 5);
+            tableLayoutPanel1.Controls.Add(chartOnTimeRate, 3, 5);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 7;
@@ -203,6 +215,39 @@ namespace Environmental_Monitoring.View
             txtSearch.TabIndex = 21;
             txtSearch.UseSystemPasswordChar = false;
             // 
+            // chartOrderQuantity
+            // 
+            chartArea3.Name = "ChartArea1";
+            chartOrderQuantity.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            chartOrderQuantity.Legends.Add(legend3);
+            chartOrderQuantity.Location = new Point(64, 255);
+            chartOrderQuantity.Name = "chartOrderQuantity";
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            chartOrderQuantity.Series.Add(series3);
+            chartOrderQuantity.Size = new Size(531, 412);
+            chartOrderQuantity.TabIndex = 22;
+            chartOrderQuantity.Text = "chart1";
+            // 
+            // chartOnTimeRate
+            // 
+            chartArea4.Name = "ChartArea1";
+            chartOnTimeRate.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            chartOnTimeRate.Legends.Add(legend4);
+            chartOnTimeRate.Location = new Point(625, 255);
+            chartOnTimeRate.Name = "chartOnTimeRate";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            chartOnTimeRate.Series.Add(series4);
+            chartOnTimeRate.Size = new Size(531, 412);
+            chartOnTimeRate.TabIndex = 23;
+            chartOnTimeRate.Text = "chart1";
+            // 
             // Stats
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -214,6 +259,8 @@ namespace Environmental_Monitoring.View
             roundedPanel4.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chartOrderQuantity).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chartOnTimeRate).EndInit();
             ResumeLayout(false);
         }
 
