@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BCrypt.Net;
 using Environmental_Monitoring.Controller.Data;
-using Environmental_Monitoring.Controller; 
+using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.Model;
 using System.Resources;
 using System.Globalization;
@@ -142,6 +142,31 @@ namespace Environmental_Monitoring.View
             {
                 MessageBox.Show("Số điện thoại không hợp lệ. (Phải là 10 số, bắt đầu bằng 0).", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtSDT.Focus();
+                return false;
+            }
+
+            string password = txtMatKhau.Text;
+
+            if (id == 0)
+            {
+                if (string.IsNullOrWhiteSpace(password))
+                {
+                    MessageBox.Show("Mật khẩu là bắt buộc khi tạo mới nhân viên.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtMatKhau.Focus();
+                    return false;
+                }
+
+                if (password.Length < 6)
+                {
+                    MessageBox.Show("Mật khẩu phải có tối thiểu 6 ký tự.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtMatKhau.Focus();
+                    return false;
+                }
+            }
+            else if (id != 0 && !string.IsNullOrWhiteSpace(password) && password.Length < 6)
+            {
+                MessageBox.Show("Mật khẩu mới phải có tối thiểu 6 ký tự.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMatKhau.Focus();
                 return false;
             }
 

@@ -78,6 +78,7 @@
             // 
             txtMatKhauMoi.BorderRadius = 15;
             txtMatKhauMoi.BorderThickness = 2;
+            txtMatKhauMoi.Cursor = Cursors.IBeam;
             txtMatKhauMoi.FocusBorderColor = Color.DimGray;
             txtMatKhauMoi.HoverBorderColor = Color.DarkGray;
             txtMatKhauMoi.Location = new Point(67, 124);
@@ -97,6 +98,7 @@
             // 
             txtXacNhanMatKhauMoi.BorderRadius = 15;
             txtXacNhanMatKhauMoi.BorderThickness = 2;
+            txtXacNhanMatKhauMoi.Cursor = Cursors.IBeam;
             txtXacNhanMatKhauMoi.FocusBorderColor = Color.DimGray;
             txtXacNhanMatKhauMoi.HoverBorderColor = Color.DarkGray;
             txtXacNhanMatKhauMoi.Location = new Point(67, 180);
@@ -118,6 +120,7 @@
             btnSave.BorderColor = Color.Transparent;
             btnSave.BorderRadius = 10;
             btnSave.BorderSize = 0;
+            btnSave.Cursor = Cursors.Hand;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
@@ -138,6 +141,7 @@
             btnSendCode.BorderColor = Color.Transparent;
             btnSendCode.BorderRadius = 10;
             btnSendCode.BorderSize = 0;
+            btnSendCode.Cursor = Cursors.Hand;
             btnSendCode.FlatAppearance.BorderSize = 0;
             btnSendCode.FlatStyle = FlatStyle.Flat;
             btnSendCode.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
@@ -158,6 +162,7 @@
             btnVerifyCode.BorderColor = Color.Transparent;
             btnVerifyCode.BorderRadius = 10;
             btnVerifyCode.BorderSize = 0;
+            btnVerifyCode.Cursor = Cursors.Hand;
             btnVerifyCode.FlatAppearance.BorderSize = 0;
             btnVerifyCode.FlatStyle = FlatStyle.Flat;
             btnVerifyCode.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
@@ -175,6 +180,7 @@
             // 
             txtSoDienThoai.BorderRadius = 15;
             txtSoDienThoai.BorderThickness = 2;
+            txtSoDienThoai.Cursor = Cursors.IBeam;
             txtSoDienThoai.FocusBorderColor = Color.DimGray;
             txtSoDienThoai.HoverBorderColor = Color.DarkGray;
             txtSoDienThoai.Location = new Point(67, 157);

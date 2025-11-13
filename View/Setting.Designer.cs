@@ -32,6 +32,8 @@ namespace Environmental_Monitoring
         private void InitializeComponent()
         {
             roundedPanel3 = new RoundedPanel();
+            btnRegisterFace = new RoundedButton();
+            lblFaceID = new Label();
             cmbGiaoDien = new CustomComboBox();
             cmbNgonNgu = new CustomComboBox();
             btnSave = new RoundedButton();
@@ -53,8 +55,6 @@ namespace Environmental_Monitoring
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             txtSearch = new RoundedTextBox();
-            lblFaceID = new Label();
-            btnRegisterFace = new RoundedButton();
             roundedPanel3.SuspendLayout();
             roundedPanel2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -77,10 +77,39 @@ namespace Environmental_Monitoring
             roundedPanel3.Controls.Add(lblNotification);
             roundedPanel3.Controls.Add(lblTheme);
             roundedPanel3.Controls.Add(lblLanguage);
-            roundedPanel3.Location = new Point(637, 164);
+            roundedPanel3.Location = new Point(625, 164);
             roundedPanel3.Name = "roundedPanel3";
-            roundedPanel3.Size = new Size(519, 504);
+            roundedPanel3.Size = new Size(531, 504);
             roundedPanel3.TabIndex = 17;
+            // 
+            // btnRegisterFace
+            // 
+            btnRegisterFace.BackColor = Color.DarkGray;
+            btnRegisterFace.BaseColor = Color.DarkGray;
+            btnRegisterFace.BorderColor = Color.Transparent;
+            btnRegisterFace.BorderRadius = 10;
+            btnRegisterFace.BorderSize = 0;
+            btnRegisterFace.FlatAppearance.BorderSize = 0;
+            btnRegisterFace.FlatStyle = FlatStyle.Flat;
+            btnRegisterFace.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnRegisterFace.ForeColor = Color.Black;
+            btnRegisterFace.HoverColor = Color.FromArgb(34, 139, 34);
+            btnRegisterFace.Location = new Point(94, 333);
+            btnRegisterFace.Name = "btnRegisterFace";
+            btnRegisterFace.Size = new Size(150, 40);
+            btnRegisterFace.TabIndex = 25;
+            btnRegisterFace.Text = "Cài Đặt Face ID";
+            btnRegisterFace.UseVisualStyleBackColor = false;
+            // 
+            // lblFaceID
+            // 
+            lblFaceID.AutoSize = true;
+            lblFaceID.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblFaceID.Location = new Point(60, 290);
+            lblFaceID.Name = "lblFaceID";
+            lblFaceID.Size = new Size(90, 31);
+            lblFaceID.TabIndex = 24;
+            lblFaceID.Text = "Face ID";
             // 
             // cmbGiaoDien
             // 
@@ -223,7 +252,7 @@ namespace Environmental_Monitoring
             roundedPanel2.Controls.Add(lblUserManual);
             roundedPanel2.Location = new Point(64, 164);
             roundedPanel2.Name = "roundedPanel2";
-            roundedPanel2.Size = new Size(519, 504);
+            roundedPanel2.Size = new Size(531, 504);
             roundedPanel2.TabIndex = 8;
             // 
             // lblUserSupport
@@ -324,9 +353,9 @@ namespace Environmental_Monitoring
             tableLayoutPanel1.BackColor = Color.FromArgb(217, 244, 227);
             tableLayoutPanel1.ColumnCount = 5;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(roundedPanel2, 1, 3);
             tableLayoutPanel1.Controls.Add(roundedPanel3, 3, 3);
@@ -350,7 +379,7 @@ namespace Environmental_Monitoring
             txtSearch.BorderThickness = 1;
             txtSearch.FocusBorderColor = SystemColors.ControlDark;
             txtSearch.HoverBorderColor = Color.DarkGray;
-            txtSearch.Location = new Point(637, 24);
+            txtSearch.Location = new Point(625, 24);
             txtSearch.Multiline = false;
             txtSearch.Name = "txtSearch";
             txtSearch.NormalBorderColor = Color.DarkGray;
@@ -358,38 +387,9 @@ namespace Environmental_Monitoring
             txtSearch.PasswordChar = '\0';
             txtSearch.PlaceholderText = "Tìm Kiếm...";
             txtSearch.ReadOnly = false;
-            txtSearch.Size = new Size(519, 45);
+            txtSearch.Size = new Size(531, 45);
             txtSearch.TabIndex = 20;
             txtSearch.UseSystemPasswordChar = false;
-            // 
-            // lblFaceID
-            // 
-            lblFaceID.AutoSize = true;
-            lblFaceID.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lblFaceID.Location = new Point(60, 290);
-            lblFaceID.Name = "lblFaceID";
-            lblFaceID.Size = new Size(90, 31);
-            lblFaceID.TabIndex = 24;
-            lblFaceID.Text = "Face ID";
-            // 
-            // btnRegisterFace
-            // 
-            btnRegisterFace.BackColor = Color.DarkGray;
-            btnRegisterFace.BaseColor = Color.DarkGray;
-            btnRegisterFace.BorderColor = Color.Transparent;
-            btnRegisterFace.BorderRadius = 10;
-            btnRegisterFace.BorderSize = 0;
-            btnRegisterFace.FlatAppearance.BorderSize = 0;
-            btnRegisterFace.FlatStyle = FlatStyle.Flat;
-            btnRegisterFace.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnRegisterFace.ForeColor = Color.Black;
-            btnRegisterFace.HoverColor = Color.FromArgb(34, 139, 34);
-            btnRegisterFace.Location = new Point(94, 333);
-            btnRegisterFace.Name = "btnRegisterFace";
-            btnRegisterFace.Size = new Size(150, 40);
-            btnRegisterFace.TabIndex = 25;
-            btnRegisterFace.Text = "Cài Đặt Face ID";
-            btnRegisterFace.UseVisualStyleBackColor = false;
             // 
             // Setting
             // 

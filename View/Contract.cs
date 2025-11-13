@@ -65,7 +65,7 @@ namespace Environmental_Monitoring.View
             btnBusiness.Enabled = false;
             btnPlan.Enabled = false;
             btnReal.Enabled = false;
-            roundedButton1.Enabled = false; 
+            roundedButton1.Enabled = false;
             btnResult.Enabled = false;
 
             btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
@@ -82,7 +82,7 @@ namespace Environmental_Monitoring.View
             btnBusiness.Enabled = true;
             btnPlan.Enabled = true;
             btnReal.Enabled = true;
-            roundedButton1.Enabled = true; 
+            roundedButton1.Enabled = true;
             btnResult.Enabled = true;
 
             btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
@@ -97,7 +97,7 @@ namespace Environmental_Monitoring.View
         private void ApplyRolePermissions()
         {
             string userRole = UserSession.CurrentUser?.Role?.RoleName ?? "";
-         
+
             string cleanRoleName = userRole.ToLowerInvariant().Trim();
 
             if (UserSession.IsAdmin())
@@ -113,26 +113,26 @@ namespace Environmental_Monitoring.View
             switch (cleanRoleName)
             {
                 case "business":
-                    btnBusiness.Enabled = true; 
+                    btnBusiness.Enabled = true;
                     LoadPage(new BusinessContent());
                     HighlightTab(btnBusiness);
                     break;
-                case "plan": 
+                case "plan":
                     btnPlan.Enabled = true;
                     LoadPage(new PlanContent());
                     HighlightTab(btnPlan);
                     break;
-                case "field": 
+                case "field":
                     btnReal.Enabled = true;
                     LoadPage(new RealContent());
                     HighlightTab(btnReal);
                     break;
-                case "lab": 
+                case "lab":
                     roundedButton1.Enabled = true;
                     LoadPage(new ExperimentContent());
                     HighlightTab(roundedButton1);
                     break;
-                case "result": 
+                case "result":
                     btnResult.Enabled = true;
                     LoadPage(new ResultContent());
                     HighlightTab(btnResult);
@@ -207,7 +207,7 @@ namespace Environmental_Monitoring.View
 
                 pnContent.BackColor = ThemeManager.PanelColor;
             }
-            catch (Exception) {}
+            catch (Exception) { }
         }
 
         private void LoadPage(UserControl pageToLoad)
@@ -262,5 +262,10 @@ namespace Environmental_Monitoring.View
         }
 
         #endregion
+
+        private void lbContract_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

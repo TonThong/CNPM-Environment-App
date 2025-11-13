@@ -78,6 +78,7 @@
             tableLayoutPanel1.Controls.Add(cmbContractType, 3, 7);
             tableLayoutPanel1.Controls.Add(lbContract, 3, 3);
             tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 15;
@@ -104,11 +105,11 @@
             lbNamePage.AutoSize = true;
             lbNamePage.BackColor = Color.Transparent;
             tableLayoutPanel1.SetColumnSpan(lbNamePage, 3);
-            lbNamePage.Font = new Font("Times New Roman", 24F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lbNamePage.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lbNamePage.ForeColor = Color.Black;
             lbNamePage.Location = new Point(64, 25);
             lbNamePage.Name = "lbNamePage";
-            lbNamePage.Size = new Size(833, 45);
+            lbNamePage.Size = new Size(614, 41);
             lbNamePage.TabIndex = 40;
             lbNamePage.Text = "THÔNG TIN KHÁCH HÀNG VÀ HỢP ĐỒNG";
             // 
@@ -121,7 +122,7 @@
             btnCancel.BorderSize = 0;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCancel.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
             btnCancel.Location = new Point(676, 428);
@@ -134,10 +135,10 @@
             // lbCustomer
             // 
             lbCustomer.AutoSize = true;
-            lbCustomer.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbCustomer.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             lbCustomer.Location = new Point(64, 100);
             lbCustomer.Name = "lbCustomer";
-            lbCustomer.Size = new Size(140, 25);
+            lbCustomer.Size = new Size(144, 25);
             lbCustomer.TabIndex = 41;
             lbCustomer.Text = "Khách Hàng";
             // 
@@ -146,14 +147,14 @@
             txtboxEmployee.BorderRadius = 15;
             txtboxEmployee.BorderThickness = 2;
             txtboxEmployee.FocusBorderColor = Color.DimGray;
-            txtboxEmployee.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxEmployee.Font = new Font("Segoe UI", 12F);
             txtboxEmployee.ForeColor = SystemColors.ActiveCaptionText;
             txtboxEmployee.HoverBorderColor = Color.DarkGray;
             txtboxEmployee.Location = new Point(676, 358);
             txtboxEmployee.Multiline = false;
             txtboxEmployee.Name = "txtboxEmployee";
             txtboxEmployee.NormalBorderColor = Color.LightGray;
-            txtboxEmployee.Padding = new Padding(20, 7, 10, 10);
+            txtboxEmployee.Padding = new Padding(20, 6, 10, 10);
             txtboxEmployee.PasswordChar = '\0';
             txtboxEmployee.PlaceholderText = "Nhân Viên Thụ Lý";
             txtboxEmployee.ReadOnly = false;
@@ -171,7 +172,7 @@
             btnSave.BorderSize = 0;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSave.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
             btnSave.HoverColor = Color.FromArgb(34, 139, 34);
             btnSave.Location = new Point(164, 428);
@@ -186,14 +187,14 @@
             txtboxEndDate.BorderRadius = 15;
             txtboxEndDate.BorderThickness = 2;
             txtboxEndDate.FocusBorderColor = Color.DimGray;
-            txtboxEndDate.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxEndDate.Font = new Font("Segoe UI", 12F);
             txtboxEndDate.ForeColor = SystemColors.ActiveCaptionText;
             txtboxEndDate.HoverBorderColor = Color.DarkGray;
             txtboxEndDate.Location = new Point(676, 288);
             txtboxEndDate.Multiline = false;
             txtboxEndDate.Name = "txtboxEndDate";
             txtboxEndDate.NormalBorderColor = Color.LightGray;
-            txtboxEndDate.Padding = new Padding(20, 7, 10, 10);
+            txtboxEndDate.Padding = new Padding(20, 6, 10, 10);
             txtboxEndDate.PasswordChar = '\0';
             txtboxEndDate.PlaceholderText = "Ngày Dự Kiến Trả Kết Quả";
             txtboxEndDate.ReadOnly = false;
@@ -207,14 +208,14 @@
             txtboxCustomerName.BorderRadius = 15;
             txtboxCustomerName.BorderThickness = 2;
             txtboxCustomerName.FocusBorderColor = Color.DimGray;
-            txtboxCustomerName.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxCustomerName.Font = new Font("Segoe UI", 12F);
             txtboxCustomerName.ForeColor = SystemColors.ActiveCaptionText;
             txtboxCustomerName.HoverBorderColor = Color.DarkGray;
             txtboxCustomerName.Location = new Point(164, 148);
             txtboxCustomerName.Multiline = false;
             txtboxCustomerName.Name = "txtboxCustomerName";
             txtboxCustomerName.NormalBorderColor = Color.LightGray;
-            txtboxCustomerName.Padding = new Padding(20, 7, 10, 10);
+            txtboxCustomerName.Padding = new Padding(20, 6, 10, 10);
             txtboxCustomerName.PasswordChar = '\0';
             txtboxCustomerName.PlaceholderText = "Tên Khách Hàng / Doanh Nghiệp";
             txtboxCustomerName.ReadOnly = false;
@@ -228,14 +229,14 @@
             txtboxPhone.BorderRadius = 15;
             txtboxPhone.BorderThickness = 2;
             txtboxPhone.FocusBorderColor = Color.DimGray;
-            txtboxPhone.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxPhone.Font = new Font("Segoe UI", 12F);
             txtboxPhone.ForeColor = SystemColors.ActiveCaptionText;
             txtboxPhone.HoverBorderColor = Color.DarkGray;
             txtboxPhone.Location = new Point(164, 218);
             txtboxPhone.Multiline = false;
             txtboxPhone.Name = "txtboxPhone";
             txtboxPhone.NormalBorderColor = Color.LightGray;
-            txtboxPhone.Padding = new Padding(20, 7, 10, 10);
+            txtboxPhone.Padding = new Padding(20, 6, 10, 10);
             txtboxPhone.PasswordChar = '\0';
             txtboxPhone.PlaceholderText = "Ký hiệu doanh nghiệp";
             txtboxPhone.ReadOnly = false;
@@ -248,14 +249,14 @@
             txtboxIDContract.BorderRadius = 15;
             txtboxIDContract.BorderThickness = 2;
             txtboxIDContract.FocusBorderColor = Color.DimGray;
-            txtboxIDContract.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxIDContract.Font = new Font("Segoe UI", 12F);
             txtboxIDContract.ForeColor = SystemColors.ActiveCaptionText;
             txtboxIDContract.HoverBorderColor = Color.DarkGray;
             txtboxIDContract.Location = new Point(676, 148);
             txtboxIDContract.Multiline = false;
             txtboxIDContract.Name = "txtboxIDContract";
             txtboxIDContract.NormalBorderColor = Color.LightGray;
-            txtboxIDContract.Padding = new Padding(20, 7, 10, 10);
+            txtboxIDContract.Padding = new Padding(20, 6, 10, 10);
             txtboxIDContract.PasswordChar = '\0';
             txtboxIDContract.PlaceholderText = "Số Hợp Đồng";
             txtboxIDContract.ReadOnly = false;
@@ -269,14 +270,14 @@
             txtboxAddress.BorderRadius = 15;
             txtboxAddress.BorderThickness = 2;
             txtboxAddress.FocusBorderColor = Color.DimGray;
-            txtboxAddress.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxAddress.Font = new Font("Segoe UI", 12F);
             txtboxAddress.ForeColor = SystemColors.ActiveCaptionText;
             txtboxAddress.HoverBorderColor = Color.DarkGray;
             txtboxAddress.Location = new Point(164, 288);
             txtboxAddress.Multiline = false;
             txtboxAddress.Name = "txtboxAddress";
             txtboxAddress.NormalBorderColor = Color.LightGray;
-            txtboxAddress.Padding = new Padding(20, 7, 10, 10);
+            txtboxAddress.Padding = new Padding(20, 6, 10, 10);
             txtboxAddress.PasswordChar = '\0';
             txtboxAddress.PlaceholderText = "Địa Chỉ";
             txtboxAddress.ReadOnly = false;
@@ -290,14 +291,14 @@
             txtboxOwner.BorderRadius = 15;
             txtboxOwner.BorderThickness = 2;
             txtboxOwner.FocusBorderColor = Color.DimGray;
-            txtboxOwner.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            txtboxOwner.Font = new Font("Segoe UI", 12F);
             txtboxOwner.ForeColor = SystemColors.ActiveCaptionText;
             txtboxOwner.HoverBorderColor = Color.DarkGray;
             txtboxOwner.Location = new Point(164, 358);
             txtboxOwner.Multiline = false;
             txtboxOwner.Name = "txtboxOwner";
             txtboxOwner.NormalBorderColor = Color.LightGray;
-            txtboxOwner.Padding = new Padding(20, 7, 10, 10);
+            txtboxOwner.Padding = new Padding(20, 6, 10, 10);
             txtboxOwner.PasswordChar = '\0';
             txtboxOwner.PlaceholderText = "Người Đại Diện";
             txtboxOwner.ReadOnly = false;
@@ -313,6 +314,7 @@
             cmbContractType.DisplayMember = "";
             cmbContractType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbContractType.FocusBorderColor = Color.DimGray;
+            cmbContractType.Font = new Font("Segoe UI", 12F);
             cmbContractType.HoverBorderColor = Color.DarkGray;
             cmbContractType.Location = new Point(676, 218);
             cmbContractType.Name = "cmbContractType";
@@ -327,10 +329,10 @@
             // lbContract
             // 
             lbContract.AutoSize = true;
-            lbContract.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbContract.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             lbContract.Location = new Point(676, 100);
             lbContract.Name = "lbContract";
-            lbContract.Size = new Size(116, 25);
+            lbContract.Size = new Size(125, 25);
             lbContract.TabIndex = 42;
             lbContract.Text = "Hợp Đồng";
             // 

@@ -1,22 +1,23 @@
-﻿using MySql.Data.MySqlClient;
+﻿using BCrypt.Net;
+using Environmental_Monitoring.Controller;
+using Environmental_Monitoring.Controller.Data;
+using Environmental_Monitoring.Model;
+using Environmental_Monitoring.View;
+using Environmental_Monitoring.View.Components;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Environmental_Monitoring.View.Components;
-using Environmental_Monitoring.View;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BCrypt.Net;
-using Environmental_Monitoring.Controller.Data;
-using Environmental_Monitoring.Controller;
-using Environmental_Monitoring.Model;
-using System.Resources;
-using System.Globalization;
-using System.Threading;
 
 namespace Environmental_Monitoring.View
 {

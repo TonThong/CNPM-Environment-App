@@ -387,7 +387,7 @@ namespace Environmental_Monitoring.View
             Controls.Add(panel);
             Controls.Add(panelContent);
             Controls.Add(panelMenu);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Name = "Mainlayout";
             panelMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

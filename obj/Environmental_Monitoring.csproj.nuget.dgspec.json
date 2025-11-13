@@ -72,15 +72,15 @@
             },
             "Microsoft.ML": {
               "target": "Package",
-              "version": "[3.0.1, )"
+              "version": "[5.0.0, )"
             },
             "Microsoft.ML.FastTree": {
               "target": "Package",
-              "version": "[3.0.1, )"
+              "version": "[5.0.0, )"
             },
             "Microsoft.ML.TimeSeries": {
               "target": "Package",
-              "version": "[3.0.1, )"
+              "version": "[5.0.0, )"
             },
             "MySql.Data": {
               "target": "Package",
@@ -92,11 +92,11 @@
             },
             "System.Drawing.Common": {
               "target": "Package",
-              "version": "[9.0.10, )"
+              "version": "[10.0.0, )"
             },
             "Twilio": {
               "target": "Package",
-              "version": "[7.13.5, )"
+              "version": "[7.13.6, )"
             },
             "WinForms.DataVisualization": {
               "target": "Package",

@@ -214,7 +214,7 @@
     <value>Địa chỉ</value>
   </data>
   <data name="Phone" xml:space="preserve">
-    <value>Điện thoại</value>
+    <value>Điện Thoại</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
@@ -238,16 +238,16 @@
     <value>Xóa nhân viên thành công.</value>
   </data>
   <data name="Form_AddEmployee_Title" xml:space="preserve">
-    <value>Thêm nhân viên</value>
+    <value>Thêm Nhân Viên</value>
   </data>
   <data name="Form_UpdateEmployee_Title" xml:space="preserve">
-    <value>Cập nhật nhân viên</value>
+    <value>Cập Nhật Nhân Viên</value>
   </data>
   <data name="FullName" xml:space="preserve">
-    <value>Họ tên</value>
+    <value>Họ Tên</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Mật khẩu</value>
+    <value>Mật Khẩu</value>
   </data>
   <data name="Button_Save" xml:space="preserve">
     <value>Lưu</value>
@@ -355,7 +355,7 @@
     <value>Áp Dụng</value>
   </data>
   <data name="Stats_Loading" xml:space="preserve">
-    <value>Đang tải...</value>
+    <value>Đang Tải...</value>
   </data>
   <data name="Stats_OrderCount" xml:space="preserve">
     <value>Số Lượng Đơn Hàng</value>
@@ -379,13 +379,13 @@
     <value>Tháng {0}</value>
   </data>
   <data name="Stats_OnTime" xml:space="preserve">
-    <value>Đúng hẹn</value>
+    <value>Đúng Hẹn</value>
   </data>
   <data name="Stats_Late" xml:space="preserve">
-    <value>Trễ hẹn</value>
+    <value>Trễ Hẹn</value>
   </data>
   <data name="Stats_Rate" xml:space="preserve">
-    <value>Tỷ lệ</value>
+    <value>Tỷ Lệ</value>
   </data>
   <data name="Validation_SelectYearAndQuarter" xml:space="preserve">
     <value>Vui lòng chọn Năm và Quý.</value>
@@ -466,7 +466,7 @@
     <value>Kết Quả</value>
   </data>
   <data name="Login_Username" xml:space="preserve">
-    <value>Tên Đăng Nhập(Email)</value>
+    <value>Tên Đăng Nhập (Email)</value>
   </data>
   <data name="Login_Password" xml:space="preserve">
     <value>Mật Khẩu</value>
@@ -541,7 +541,7 @@
     <value>Face ID</value>
   </data>
   <data name="Logout_Confirm_Title" xml:space="preserve">
-    <value>Xác nhận Đăng xuất</value>
+    <value>Xác Nhận Đăng xuất</value>
   </data>
   <data name="Logout_Confirm_Message" xml:space="preserve">
     <value>Bạn có chắc chắn muốn đăng xuất?</value>
@@ -581,5 +581,11 @@
   </data>
   <data name="Alert_Forgot_OTPValid" xml:space="preserve">
     <value>Xác thực OTP thành công!</value>
+  </data>
+  <data name="Forgot_Account_Verification" xml:space="preserve">
+    <value>Xác Thực Tài Khoản</value>
+  </data>
+  <data name="Forgot_Set_New_Password" xml:space="preserve">
+    <value>Đặt Mật Khẩu Mới</value>
   </data>
 </root>

@@ -29,14 +29,12 @@ namespace Environmental_Monitoring.View
             btnPlan = new Environmental_Monitoring.View.Components.RoundedButton();
             btnBusiness = new Environmental_Monitoring.View.Components.RoundedButton();
             btnResult = new Environmental_Monitoring.View.Components.RoundedButton();
-            tableLayoutPanel3 = new TableLayoutPanel();
             roundedTextBox1 = new Environmental_Monitoring.View.Components.RoundedTextBox();
             lbContract = new Label();
             pnContent = new Environmental_Monitoring.View.Components.RoundedPanel();
             roundedPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
-            tableLayoutPanel3.SuspendLayout();
             SuspendLayout();
             // 
             // roundedPanel1
@@ -55,11 +53,16 @@ namespace Environmental_Monitoring.View
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.BackColor = Color.FromArgb(217, 244, 227);
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 3);
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 1, 1);
+            tableLayoutPanel1.ColumnCount = 5;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Controls.Add(lbContract, 1, 1);
+            tableLayoutPanel1.Controls.Add(roundedTextBox1, 3, 1);
             tableLayoutPanel1.Controls.Add(pnContent, 0, 4);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 3);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 5;
@@ -68,6 +71,7 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 74F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(1221, 709);
             tableLayoutPanel1.TabIndex = 32;
             // 
@@ -75,6 +79,7 @@ namespace Environmental_Monitoring.View
             // 
             tableLayoutPanel2.BackColor = Color.FromArgb(217, 244, 227);
             tableLayoutPanel2.ColumnCount = 7;
+            tableLayoutPanel1.SetColumnSpan(tableLayoutPanel2, 5);
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.5454545F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
@@ -199,22 +204,6 @@ namespace Environmental_Monitoring.View
             btnResult.UseVisualStyleBackColor = false;
             btnResult.Click += btnResult_Click;
             // 
-            // tableLayoutPanel3
-            // 
-            tableLayoutPanel3.ColumnCount = 4;
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel3.Controls.Add(roundedTextBox1, 2, 0);
-            tableLayoutPanel3.Controls.Add(lbContract, 1, 0);
-            tableLayoutPanel3.Location = new Point(3, 24);
-            tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 1;
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel3.Size = new Size(1215, 64);
-            tableLayoutPanel3.TabIndex = 22;
-            // 
             // roundedTextBox1
             // 
             roundedTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -223,7 +212,7 @@ namespace Environmental_Monitoring.View
             roundedTextBox1.BorderThickness = 1;
             roundedTextBox1.FocusBorderColor = SystemColors.ControlDark;
             roundedTextBox1.HoverBorderColor = Color.DarkGray;
-            roundedTextBox1.Location = new Point(615, 3);
+            roundedTextBox1.Location = new Point(625, 24);
             roundedTextBox1.Multiline = false;
             roundedTextBox1.Name = "roundedTextBox1";
             roundedTextBox1.NormalBorderColor = Color.DarkGray;
@@ -231,7 +220,7 @@ namespace Environmental_Monitoring.View
             roundedTextBox1.PasswordChar = '\0';
             roundedTextBox1.PlaceholderText = "Tìm Kiếm...";
             roundedTextBox1.ReadOnly = false;
-            roundedTextBox1.Size = new Size(534, 45);
+            roundedTextBox1.Size = new Size(531, 45);
             roundedTextBox1.TabIndex = 19;
             roundedTextBox1.UseSystemPasswordChar = false;
             // 
@@ -241,11 +230,12 @@ namespace Environmental_Monitoring.View
             lbContract.BackColor = Color.Transparent;
             lbContract.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lbContract.ForeColor = Color.Black;
-            lbContract.Location = new Point(63, 0);
+            lbContract.Location = new Point(64, 21);
             lbContract.Name = "lbContract";
             lbContract.Size = new Size(383, 50);
             lbContract.TabIndex = 26;
             lbContract.Text = "QUẢN LÍ HỢP ĐỒNG";
+            lbContract.Click += lbContract_Click;
             // 
             // pnContent
             // 
@@ -253,6 +243,7 @@ namespace Environmental_Monitoring.View
             pnContent.BorderColor = Color.Transparent;
             pnContent.BorderRadius = 20;
             pnContent.BorderSize = 0;
+            tableLayoutPanel1.SetColumnSpan(pnContent, 5);
             pnContent.Location = new Point(3, 185);
             pnContent.Name = "pnContent";
             pnContent.Size = new Size(1215, 521);
@@ -268,9 +259,8 @@ namespace Environmental_Monitoring.View
             Size = new Size(1227, 715);
             roundedPanel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel3.ResumeLayout(false);
-            tableLayoutPanel3.PerformLayout();
             ResumeLayout(false);
         }
 

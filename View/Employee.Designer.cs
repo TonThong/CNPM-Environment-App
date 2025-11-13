@@ -32,99 +32,62 @@ namespace Environmental_Monitoring.View
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Employee));
             tableLayoutPanel1 = new TableLayoutPanel();
-            btnAdd = new RoundedButton();
-            dgvEmployee = new RoundedDataGridView();
             pnlPagination = new FlowLayoutPanel();
             btnFirst = new Button();
             btnPrevious = new Button();
             lblPageInfo = new Label();
             btnNext = new Button();
             btnLast = new Button();
-            headerPanel = new Panel();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            txtSearch = new RoundedTextBox();
+            dgvEmployee = new RoundedDataGridView();
+            btnAdd = new RoundedButton();
             lblTitle = new Label();
+            txtSearch = new RoundedTextBox();
             tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvEmployee).BeginInit();
             pnlPagination.SuspendLayout();
-            headerPanel.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvEmployee).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 6.754032F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 93.2459641F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 48F));
-            tableLayoutPanel1.Controls.Add(btnAdd, 1, 0);
-            tableLayoutPanel1.Controls.Add(dgvEmployee, 1, 1);
-            tableLayoutPanel1.Controls.Add(pnlPagination, 1, 2);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 80);
+            tableLayoutPanel1.BackColor = Color.FromArgb(217, 244, 227);
+            tableLayoutPanel1.ColumnCount = 5;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Controls.Add(pnlPagination, 1, 4);
+            tableLayoutPanel1.Controls.Add(dgvEmployee, 1, 3);
+            tableLayoutPanel1.Controls.Add(btnAdd, 1, 2);
+            tableLayoutPanel1.Controls.Add(lblTitle, 1, 1);
+            tableLayoutPanel1.Controls.Add(txtSearch, 3, 1);
+            tableLayoutPanel1.Location = new Point(3, 4);
             tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 107F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 73F));
-            tableLayoutPanel1.Size = new Size(1182, 635);
-            tableLayoutPanel1.TabIndex = 0;
-            // 
-            // btnAdd
-            // 
-            btnAdd.BackColor = Color.SeaGreen;
-            btnAdd.BaseColor = Color.SeaGreen;
-            btnAdd.BorderColor = Color.Transparent;
-            btnAdd.BorderRadius = 15;
-            btnAdd.BorderSize = 0;
-            btnAdd.FlatAppearance.BorderSize = 0;
-            btnAdd.FlatStyle = FlatStyle.Flat;
-            btnAdd.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAdd.ForeColor = Color.White;
-            btnAdd.HoverColor = Color.FromArgb(34, 139, 34);
-            btnAdd.Image = (Image)resources.GetObject("btnAdd.Image");
-            btnAdd.ImageAlign = ContentAlignment.MiddleLeft;
-            btnAdd.Location = new Point(79, 4);
-            btnAdd.Margin = new Padding(3, 4, 3, 4);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(207, 60);
-            btnAdd.TabIndex = 23;
-            btnAdd.Text = "Thêm nhân viên";
-            btnAdd.UseVisualStyleBackColor = false;
-            btnAdd.Click += btnAdd_Click;
-            // 
-            // dgvEmployee
-            // 
-            dgvEmployee.BackgroundColor = Color.White;
-            dgvEmployee.BorderRadius = 20;
-            dgvEmployee.BorderStyle = BorderStyle.None;
-            dgvEmployee.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            dgvEmployee.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEmployee.EnableHeadersVisualStyles = false;
-            dgvEmployee.Location = new Point(79, 111);
-            dgvEmployee.Margin = new Padding(3, 4, 3, 4);
-            dgvEmployee.Name = "dgvEmployee";
-            dgvEmployee.RowHeadersVisible = false;
-            dgvEmployee.RowHeadersWidth = 51;
-            dgvEmployee.RowTemplate.Height = 35;
-            dgvEmployee.Size = new Size(1051, 447);
-            dgvEmployee.TabIndex = 24;
-            dgvEmployee.CellContentClick += dgvEmployee_CellContentClick;
+            tableLayoutPanel1.RowCount = 6;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 2.94117641F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.803922F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.803922F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 62.7451F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.803922F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4.901961F));
+            tableLayoutPanel1.Size = new Size(1221, 710);
+            tableLayoutPanel1.TabIndex = 1;
             // 
             // pnlPagination
             // 
             pnlPagination.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             pnlPagination.AutoSize = true;
+            tableLayoutPanel1.SetColumnSpan(pnlPagination, 3);
             pnlPagination.Controls.Add(btnFirst);
             pnlPagination.Controls.Add(btnPrevious);
             pnlPagination.Controls.Add(lblPageInfo);
             pnlPagination.Controls.Add(btnNext);
             pnlPagination.Controls.Add(btnLast);
-            pnlPagination.Location = new Point(326, 566);
+            pnlPagination.Location = new Point(331, 607);
             pnlPagination.Margin = new Padding(3, 4, 3, 4);
             pnlPagination.Name = "pnlPagination";
-            pnlPagination.Size = new Size(557, 65);
+            pnlPagination.Size = new Size(557, 61);
             pnlPagination.TabIndex = 25;
             // 
             // btnFirst
@@ -177,98 +140,103 @@ namespace Environmental_Monitoring.View
             btnLast.Text = ">>";
             btnLast.UseVisualStyleBackColor = true;
             // 
-            // headerPanel
+            // dgvEmployee
             // 
-            headerPanel.BackColor = Color.WhiteSmoke;
-            headerPanel.Controls.Add(tableLayoutPanel2);
-            headerPanel.Dock = DockStyle.Top;
-            headerPanel.Location = new Point(0, 0);
-            headerPanel.Margin = new Padding(3, 4, 3, 4);
-            headerPanel.Name = "headerPanel";
-            headerPanel.Padding = new Padding(23, 13, 23, 13);
-            headerPanel.Size = new Size(1182, 80);
-            headerPanel.TabIndex = 1;
+            dgvEmployee.BackgroundColor = Color.White;
+            dgvEmployee.BorderRadius = 20;
+            dgvEmployee.BorderStyle = BorderStyle.None;
+            dgvEmployee.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            dgvEmployee.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            tableLayoutPanel1.SetColumnSpan(dgvEmployee, 3);
+            dgvEmployee.EnableHeadersVisualStyles = false;
+            dgvEmployee.Location = new Point(64, 162);
+            dgvEmployee.Margin = new Padding(3, 4, 3, 4);
+            dgvEmployee.Name = "dgvEmployee";
+            dgvEmployee.RowHeadersVisible = false;
+            dgvEmployee.RowHeadersWidth = 51;
+            dgvEmployee.RowTemplate.Height = 35;
+            dgvEmployee.Size = new Size(1092, 436);
+            dgvEmployee.TabIndex = 24;
             // 
-            // tableLayoutPanel2
+            // btnAdd
             // 
-            tableLayoutPanel2.ColumnCount = 2;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 57.95699F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42.04301F));
-            tableLayoutPanel2.Controls.Add(txtSearch, 1, 0);
-            tableLayoutPanel2.Controls.Add(lblTitle, 0, 0);
-            tableLayoutPanel2.Location = new Point(73, 17);
-            tableLayoutPanel2.Margin = new Padding(3, 4, 3, 4);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 1;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 46.1538467F));
-            tableLayoutPanel2.Size = new Size(1063, 52);
-            tableLayoutPanel2.TabIndex = 2;
+            btnAdd.BackColor = Color.SeaGreen;
+            btnAdd.BaseColor = Color.SeaGreen;
+            btnAdd.BorderColor = Color.Transparent;
+            btnAdd.BorderRadius = 15;
+            btnAdd.BorderSize = 0;
+            btnAdd.FlatAppearance.BorderSize = 0;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.HoverColor = Color.FromArgb(34, 139, 34);
+            btnAdd.Image = (Image)resources.GetObject("btnAdd.Image");
+            btnAdd.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAdd.Location = new Point(64, 93);
+            btnAdd.Margin = new Padding(3, 4, 3, 4);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(243, 61);
+            btnAdd.TabIndex = 23;
+            btnAdd.Text = "Thêm nhân viên";
+            btnAdd.UseVisualStyleBackColor = false;
+            // 
+            // lblTitle
+            // 
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblTitle.ForeColor = Color.Black;
+            lblTitle.Location = new Point(64, 20);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(334, 50);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Quản lý nhân viên";
             // 
             // txtSearch
             // 
             txtSearch.BackColor = Color.White;
             txtSearch.BorderRadius = 15;
             txtSearch.BorderThickness = 1;
-            txtSearch.FocusBorderColor = Color.DimGray;
+            txtSearch.FocusBorderColor = SystemColors.ControlDark;
             txtSearch.HoverBorderColor = Color.DarkGray;
-            txtSearch.Location = new Point(619, 3);
+            txtSearch.Location = new Point(625, 23);
             txtSearch.Multiline = false;
             txtSearch.Name = "txtSearch";
-            txtSearch.NormalBorderColor = Color.LightGray;
+            txtSearch.NormalBorderColor = Color.DarkGray;
             txtSearch.Padding = new Padding(9, 12, 9, 9);
             txtSearch.PasswordChar = '\0';
             txtSearch.PlaceholderText = "Tìm Kiếm...";
             txtSearch.ReadOnly = false;
-            txtSearch.Size = new Size(440, 45);
-            txtSearch.TabIndex = 21;
+            txtSearch.Size = new Size(531, 45);
+            txtSearch.TabIndex = 26;
             txtSearch.UseSystemPasswordChar = false;
-            txtSearch.TextChanged += txtSearch_TextChanged;
-            // 
-            // lblTitle
-            // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.Black;
-            lblTitle.Location = new Point(3, 0);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(308, 46);
-            lblTitle.TabIndex = 0;
-            lblTitle.Text = "Quản lý nhân viên";
             // 
             // Employee
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tableLayoutPanel1);
-            Controls.Add(headerPanel);
             Name = "Employee";
-            Size = new Size(1182, 715);
+            Size = new Size(1229, 720);
             Load += Employee_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvEmployee).EndInit();
             pnlPagination.ResumeLayout(false);
-            headerPanel.ResumeLayout(false);
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvEmployee).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
         private TableLayoutPanel tableLayoutPanel1;
-        private Panel headerPanel;
-        private Label lblTitle;
-        private RoundedButton btnAdd;
-        private RoundedDataGridView dgvEmployee;
-        private TableLayoutPanel tableLayoutPanel2;
-        private RoundedTextBox txtSearch;
-
         private FlowLayoutPanel pnlPagination;
         private Button btnFirst;
         private Button btnPrevious;
         private Label lblPageInfo;
         private Button btnNext;
         private Button btnLast;
+        private RoundedDataGridView dgvEmployee;
+        private RoundedButton btnAdd;
+        private Label lblTitle;
+        private RoundedTextBox txtSearch;
     }
 }
