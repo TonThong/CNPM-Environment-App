@@ -53,15 +53,6 @@ namespace Environmental_Monitoring.View
             roundedDataGridView2.CurrentCellDirtyStateChanged += RoundedDataGridView2_CurrentCellDirtyStateChanged;
             roundedDataGridView2.CellValueChanged += RoundedDataGridView2_CellValueChanged;
 
-            // wire create template button if present in designer
-            try
-            {
-                if (this.Controls.Find("btnCreateTemplate", true).Length > 0)
-                {
-                    btnCreateTemplate.Click += BtnCreateTemplate_Click;
-                }
-            }
-            catch { }
 
             // wire CellEndEdit for GiaTri save
             roundedDataGridView2.CellEndEdit += RoundedDataGridView2_CellEndEdit_SaveGiaTri;
@@ -441,6 +432,7 @@ namespace Environmental_Monitoring.View
                 {
                     popup.ContractSelected += (contractId) =>
                     {
+                        lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
                         LoadExperimentContract(contractId);
                     };
 

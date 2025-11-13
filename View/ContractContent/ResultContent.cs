@@ -261,29 +261,14 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void BtnDuyet_Click(object? sender, EventArgs e)
         {
-            try
+            if (this.currentContractId == 0)
             {
-                // Lấy danh sách hợp đồng cơ bản
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts";
-                DataTable dt = DataProvider.Instance.ExecuteQuery(query);
-
-                // Hiện popup với DataTable
-                using (PopUpContract popup = new PopUpContract(dt))
-                {
-                    // Khi người dùng chọn một hợp đồng trong popup
-                    popup.ContractSelected += (contractId) =>
-                    {
-                        // Load parameters for the selected contract into this RealContent
-                        LoadContract(contractId);
-                    };
-
-                    popup.ShowDialog();
-                }
+                MessageBox.Show("Vui lòng chọn hợp đồng trước khi duyệt.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Đã xảy ra lỗi khi tải danh sách hợp đồng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            this.currentContractId = 0;
+            roundedDataGridView2.DataSource = null;
+            MessageBox.Show("Đã duyệt hợp đồng", "Thông báo", MessageBoxButtons.OK);
         }
 
         // designer event placeholders (wired from designer)
@@ -291,7 +276,6 @@ namespace Environmental_Monitoring.View.ContractContent
         private void roundedButton1_Click(object sender, EventArgs e) { }
         private void btnMail_Click(object sender, EventArgs e) { }
         private void btnCancel_Click(object sender, EventArgs e) { }
-        private void roundedButton2_Click(object sender, EventArgs e) { }
         private void btnSearch_Click_1(object sender, EventArgs e)
         {
 
@@ -310,6 +294,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     popup.ContractSelected += (contractId) =>
                     {
                         // Load parameters for the selected contract into this RealContent
+                        lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
                         LoadContract(contractId);
                     };
 

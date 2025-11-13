@@ -74,6 +74,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     {
                         this.contractId = contractId;
                         // Load mẫu môi trường liên quan và cập nhật CheckedListBox
+                        lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
                         LoadSamplesForContract(contractId);
                     };
 
@@ -344,6 +345,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     }
                 }
             }
+
         }
 
         private void roundedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -383,9 +385,46 @@ namespace Environmental_Monitoring.View.ContractContent
             MessageBox.Show("Lưu giá trị thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void btnAddParameter_Click_1(object sender, EventArgs e)
+        private void roundedButton1_Click(object sender, EventArgs e)
         {
+            string q = "SELECT ParameterID, TenThongSo FROM Parameters";
+            DataTable dt = DataProvider.Instance.ExecuteQuery(q);
 
+            using (var dlg = new AddTemplateForm(dt))
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    // create new SampleTemplates entry linked to current contract via EnvironmentalSamples
+                    // 1) insert into SampleTemplates
+                    string insertTemplate = "INSERT INTO SampleTemplates (TenMau) VALUES (@tenmau)";
+                    DataProvider.Instance.ExecuteNonQuery(insertTemplate, new object[] { dlg.TemplateName });
+
+                    // get last inserted template id (MySQL LAST_INSERT_ID)
+                    object last = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
+                    int templateId = 0;
+                    if (last != null && int.TryParse(last.ToString(), out int tmp)) templateId = tmp;
+
+                    if (templateId > 0)
+                    {
+                        // 2) link selected parameters in TemplateParameters
+                        foreach (var pid in dlg.SelectedParameterIds)
+                        {
+                            string ins = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@t, @p)";
+                            DataProvider.Instance.ExecuteNonQuery(ins, new object[] { templateId, pid });
+                        }
+
+                        // 3) create an EnvironmentalSamples row for this contract using the new template
+                        string insertSample = "INSERT INTO EnvironmentalSamples (MaMau, ContractID, TemplateID) VALUES (@mamau, @contractId, @templateId)";
+                        string sampleCode = $"M{contractId}_{templateId}_{DateTime.Now.Ticks % 10000}";
+                        DataProvider.Instance.ExecuteNonQuery(insertSample, new object[] { sampleCode, contractId, templateId });
+
+                        MessageBox.Show("Tạo mẫu thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // reload
+                    }
+                }
+            }
+            lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
+            LoadSamplesForContract(contractId);
         }
     }
 }

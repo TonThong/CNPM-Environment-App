@@ -1442,33 +1442,6 @@
           }
         }
       },
-      "System.Drawing.Common/9.0.10": {
-        "dependencies": {
-          "Microsoft.Win32.SystemEvents": "9.0.10"
-        },
-        "runtime": {
-          "lib/net8.0/System.Drawing.Common.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.1025.47506"
-          },
-          "lib/net8.0/System.Private.Windows.Core.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.1025.47506"
-          }
-        }
-      },
-      "System.Drawing.Primitives/4.3.0": {
-        "dependencies": {
-          "System.Runtime": "4.3.1",
-          "System.Runtime.Extensions": "4.3.0"
-        },
-        "runtime": {
-          "lib/netstandard1.1/System.Drawing.Primitives.dll": {
-            "assemblyVersion": "4.0.1.0",
-            "fileVersion": "4.6.24705.1"
-          }
-        }
-      },
       "System.Dynamic.Runtime/4.0.11": {
         "dependencies": {
           "System.Collections": "4.3.0",

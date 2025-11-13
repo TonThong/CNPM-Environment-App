@@ -31,7 +31,7 @@
             roundedDataGridView2 = new Environmental_Monitoring.View.Components.RoundedDataGridView();
             btnRequest = new Environmental_Monitoring.View.Components.RoundedButton();
             btnMail = new Environmental_Monitoring.View.Components.RoundedButton();
-            btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
+            lbContractID = new Environmental_Monitoring.View.Components.RoundedButton();
             btnPDF = new Environmental_Monitoring.View.Components.RoundedButton();
             btnDuyet = new Environmental_Monitoring.View.Components.RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -98,27 +98,27 @@
             btnMail.UseVisualStyleBackColor = false;
             btnMail.Click += btnMail_Click;
             // 
-            // btnSearch
+            // lbContractID
             // 
-            btnSearch.BackColor = Color.FromArgb(217, 217, 217);
-            btnSearch.BaseColor = Color.FromArgb(217, 217, 217);
-            btnSearch.BorderColor = Color.Transparent;
-            btnSearch.BorderRadius = 25;
-            btnSearch.BorderSize = 0;
-            btnSearch.Dock = DockStyle.Right;
-            btnSearch.Enabled = false;
-            btnSearch.FlatAppearance.BorderSize = 0;
-            btnSearch.FlatStyle = FlatStyle.Flat;
-            btnSearch.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            btnSearch.ForeColor = Color.Black;
-            btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSearch.Location = new Point(922, 28);
-            btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(239, 70);
-            btnSearch.TabIndex = 67;
-            btnSearch.Text = "Mã Hợp Đồng: ";
-            btnSearch.UseVisualStyleBackColor = false;
-            btnSearch.Click += btnSearch_Click_1;
+            lbContractID.BackColor = Color.FromArgb(217, 217, 217);
+            lbContractID.BaseColor = Color.FromArgb(217, 217, 217);
+            lbContractID.BorderColor = Color.Transparent;
+            lbContractID.BorderRadius = 25;
+            lbContractID.BorderSize = 0;
+            lbContractID.Dock = DockStyle.Right;
+            lbContractID.Enabled = false;
+            lbContractID.FlatAppearance.BorderSize = 0;
+            lbContractID.FlatStyle = FlatStyle.Flat;
+            lbContractID.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            lbContractID.ForeColor = Color.Black;
+            lbContractID.HoverColor = Color.FromArgb(34, 139, 34);
+            lbContractID.Location = new Point(922, 28);
+            lbContractID.Name = "lbContractID";
+            lbContractID.Size = new Size(239, 70);
+            lbContractID.TabIndex = 67;
+            lbContractID.Text = "Mã Hợp Đồng: ";
+            lbContractID.UseVisualStyleBackColor = false;
+            lbContractID.Click += btnSearch_Click_1;
             // 
             // btnPDF
             // 
@@ -160,7 +160,6 @@
             btnDuyet.TabIndex = 71;
             btnDuyet.Text = "Duyệt";
             btnDuyet.UseVisualStyleBackColor = false;
-            btnDuyet.Click += roundedButton2_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -172,7 +171,7 @@
             tableLayoutPanel1.Controls.Add(roundedDataGridView2, 2, 3);
             tableLayoutPanel1.Controls.Add(btnDuyet, 1, 5);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 2, 5);
-            tableLayoutPanel1.Controls.Add(btnSearch, 2, 1);
+            tableLayoutPanel1.Controls.Add(lbContractID, 2, 1);
             tableLayoutPanel1.Controls.Add(btnContract, 1, 1);
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -242,7 +241,7 @@
         private Components.RoundedDataGridView roundedDataGridView2;
         private Components.RoundedButton btnRequest;
         private Components.RoundedButton btnMail;
-        private Components.RoundedButton btnSearch;
+        private Components.RoundedButton lbContractID;
         private Components.RoundedButton btnContract;
         private Components.RoundedButton btnPDF;
         private Components.RoundedButton btnDuyet;
