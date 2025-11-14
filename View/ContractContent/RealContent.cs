@@ -312,6 +312,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     popup.ContractSelected += (contractId) =>
                     {
                         // Load parameters for the selected contract into this RealContent
+                        lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
                         LoadContract(contractId);
                     };
 

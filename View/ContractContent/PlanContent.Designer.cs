@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnSearch = new Environmental_Monitoring.View.Components.RoundedButton();
+            lbContractID = new Environmental_Monitoring.View.Components.RoundedButton();
             panel1 = new Panel();
+            btnAddSample = new Environmental_Monitoring.View.Components.RoundedButton();
             checkedListBox1 = new CheckedListBox();
             label1 = new Label();
             label2 = new Label();
@@ -45,29 +46,30 @@
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView1).BeginInit();
             SuspendLayout();
             // 
-            // btnSearch
+            // lbContractID
             // 
-            btnSearch.BackColor = Color.FromArgb(217, 217, 217);
-            btnSearch.BaseColor = Color.FromArgb(217, 217, 217);
-            btnSearch.BorderColor = Color.Transparent;
-            btnSearch.BorderRadius = 25;
-            btnSearch.BorderSize = 0;
-            btnSearch.Enabled = false;
-            btnSearch.FlatAppearance.BorderSize = 0;
-            btnSearch.FlatStyle = FlatStyle.Flat;
-            btnSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            btnSearch.ForeColor = Color.Black;
-            btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSearch.Location = new Point(883, 15);
-            btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(341, 50);
-            btnSearch.TabIndex = 52;
-            btnSearch.Text = "Mã Hợp Đồng: ";
-            btnSearch.UseVisualStyleBackColor = false;
+            lbContractID.BackColor = Color.FromArgb(217, 217, 217);
+            lbContractID.BaseColor = Color.FromArgb(217, 217, 217);
+            lbContractID.BorderColor = Color.Transparent;
+            lbContractID.BorderRadius = 25;
+            lbContractID.BorderSize = 0;
+            lbContractID.Enabled = false;
+            lbContractID.FlatAppearance.BorderSize = 0;
+            lbContractID.FlatStyle = FlatStyle.Flat;
+            lbContractID.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            lbContractID.ForeColor = Color.Black;
+            lbContractID.HoverColor = Color.FromArgb(34, 139, 34);
+            lbContractID.Location = new Point(883, 15);
+            lbContractID.Name = "lbContractID";
+            lbContractID.Size = new Size(341, 50);
+            lbContractID.TabIndex = 52;
+            lbContractID.Text = "Mã Hợp Đồng: ";
+            lbContractID.UseVisualStyleBackColor = false;
             // 
             // panel1
             // 
             panel1.BackColor = Color.White;
+            panel1.Controls.Add(btnAddSample);
             panel1.Controls.Add(checkedListBox1);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(label2);
@@ -75,13 +77,33 @@
             panel1.Controls.Add(btnCancel);
             panel1.Controls.Add(roundedButton2);
             panel1.Controls.Add(roundedDataGridView1);
-            panel1.Controls.Add(btnSearch);
+            panel1.Controls.Add(lbContractID);
             panel1.Controls.Add(btnAddParameter);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(1227, 507);
             panel1.TabIndex = 1;
             panel1.Paint += panel1_Paint;
+            // 
+            // btnAddSample
+            // 
+            btnAddSample.BackColor = Color.SteelBlue;
+            btnAddSample.BaseColor = Color.SteelBlue;
+            btnAddSample.BorderColor = Color.Transparent;
+            btnAddSample.BorderRadius = 25;
+            btnAddSample.BorderSize = 0;
+            btnAddSample.FlatAppearance.BorderSize = 0;
+            btnAddSample.FlatStyle = FlatStyle.Flat;
+            btnAddSample.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnAddSample.ForeColor = Color.White;
+            btnAddSample.HoverColor = Color.DodgerBlue;
+            btnAddSample.Location = new Point(845, 381);
+            btnAddSample.Name = "btnAddSample";
+            btnAddSample.Size = new Size(178, 50);
+            btnAddSample.TabIndex = 71;
+            btnAddSample.Text = "Tạo mẫu";
+            btnAddSample.UseVisualStyleBackColor = false;
+            btnAddSample.Click += roundedButton1_Click;
             // 
             // checkedListBox1
             // 
@@ -96,20 +118,20 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label1.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(38, 84);
             label1.Name = "label1";
-            label1.Size = new Size(221, 28);
+            label1.Size = new Size(235, 25);
             label1.TabIndex = 58;
             label1.Text = "Chọn mẫu môi trường";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label2.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.Location = new Point(520, 84);
             label2.Name = "label2";
-            label2.Size = new Size(180, 28);
+            label2.Size = new Size(189, 25);
             label2.TabIndex = 59;
             label2.Text = "Chọn thông số đo";
             // 
@@ -122,7 +144,7 @@
             btnContracts.BorderSize = 0;
             btnContracts.FlatAppearance.BorderSize = 0;
             btnContracts.FlatStyle = FlatStyle.Flat;
-            btnContracts.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnContracts.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
             btnContracts.ForeColor = Color.White;
             btnContracts.HoverColor = Color.FromArgb(34, 139, 34);
             btnContracts.Location = new Point(29, 15);
@@ -142,10 +164,10 @@
             btnCancel.BorderSize = 0;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
-            btnCancel.Location = new Point(888, 381);
+            btnCancel.Location = new Point(1029, 381);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(178, 50);
             btnCancel.TabIndex = 56;
@@ -161,10 +183,10 @@
             roundedButton2.BorderSize = 0;
             roundedButton2.FlatAppearance.BorderSize = 0;
             roundedButton2.FlatStyle = FlatStyle.Flat;
-            roundedButton2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            roundedButton2.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
             roundedButton2.ForeColor = Color.White;
             roundedButton2.HoverColor = Color.FromArgb(34, 139, 34);
-            roundedButton2.Location = new Point(520, 381);
+            roundedButton2.Location = new Point(477, 381);
             roundedButton2.Name = "roundedButton2";
             roundedButton2.Size = new Size(178, 50);
             roundedButton2.TabIndex = 55;
@@ -195,16 +217,15 @@
             btnAddParameter.BorderSize = 0;
             btnAddParameter.FlatAppearance.BorderSize = 0;
             btnAddParameter.FlatStyle = FlatStyle.Flat;
-            btnAddParameter.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnAddParameter.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
             btnAddParameter.ForeColor = Color.White;
             btnAddParameter.HoverColor = Color.DodgerBlue;
-            btnAddParameter.Location = new Point(704, 381);
+            btnAddParameter.Location = new Point(661, 381);
             btnAddParameter.Name = "btnAddParameter";
             btnAddParameter.Size = new Size(178, 50);
             btnAddParameter.TabIndex = 70;
             btnAddParameter.Text = "Thêm thông số";
             btnAddParameter.UseVisualStyleBackColor = false;
-            btnAddParameter.Click += btnAddParameter_Click_1;
             // 
             // lblParamNameValue
             // 
@@ -248,7 +269,7 @@
         }
 
         #endregion
-        private Components.RoundedButton btnSearch;
+        private Components.RoundedButton lbContractID;
         private Panel panel1;
         private Components.RoundedDataGridView roundedDataGridView1;
         private Components.RoundedButton btnCancel;
@@ -265,5 +286,6 @@
         private Label lblDeptValue;
         private CheckedListBox checkedListBox1;
         private Components.RoundedButton btnAddParameter;
+        private Components.RoundedButton btnAddSample;
     }
 }

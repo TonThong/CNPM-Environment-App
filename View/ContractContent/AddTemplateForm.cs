@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -15,14 +15,19 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             InitializeComponent();
 
-            // parameters DataTable expected to have ParameterID and TenThongSo
-            lstParameters.DisplayMember = "TenThongSo";
-            lstParameters.ValueMember = "ParameterID";
-
             if (parameters != null)
             {
-                // Bind to DefaultView so DisplayMember is used instead of DataRowView.ToString()
-                lstParameters.DataSource = parameters.DefaultView;
+                foreach (DataRow row in parameters.Rows)
+                {
+                    lstParameters.Items.Add(
+                        new ParameterItem
+                        {
+                            ParameterID = Convert.ToInt32(row["ParameterID"]),
+                            TenThongSo = row["TenThongSo"].ToString()
+                        },
+                        false // chưa được chọn
+                    );
+                }
             }
         }
 
@@ -31,23 +36,21 @@ namespace Environmental_Monitoring.View.ContractContent
             SelectedParameterIds.Clear();
             foreach (var item in lstParameters.CheckedItems)
             {
-                var drv = item as DataRowView;
-                if (drv != null)
+                if (item is ParameterItem p)
                 {
-                    int id = Convert.ToInt32(drv["ParameterID"]);
-                    SelectedParameterIds.Add(id);
+                    SelectedParameterIds.Add(p.ParameterID);
                 }
             }
 
             if (string.IsNullOrWhiteSpace(TemplateName))
             {
-                MessageBox.Show("Vui l�ng nh?p t�n m?u.", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập tên mẫu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (SelectedParameterIds.Count == 0)
             {
-                MessageBox.Show("Vui l�ng ch?n �t nh?t m?t th�ng s?.", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn ít nhất một thông số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -60,5 +63,16 @@ namespace Environmental_Monitoring.View.ContractContent
             DialogResult = DialogResult.Cancel;
             Close();
         }
+    }
+}
+
+public class ParameterItem
+{
+    public int ParameterID { get; set; }
+    public string TenThongSo { get; set; }
+
+    public override string ToString()
+    {
+        return TenThongSo; // hiển thị tên thay vì kiểu đối tượng
     }
 }
