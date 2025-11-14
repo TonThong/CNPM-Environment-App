@@ -186,9 +186,8 @@ namespace Environmental_Monitoring.View
 
             try
             {
-                this.BackColor = ThemeManager.BackgroundColor;
+                this.BackColor = ThemeManager.BackgroundColor_tab;
                 lbContract.ForeColor = ThemeManager.TextColor;
-
 
                 btnBusiness.ForeColor = ThemeManager.TextColor;
                 btnPlan.ForeColor = ThemeManager.TextColor;
