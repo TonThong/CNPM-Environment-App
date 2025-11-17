@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Environmental_Monitoring.Model
 {
-    // =============================================
-    // Table for Environmental Sample Templates
-    // =============================================
-    [Table("SampleTemplates")]
+    // =============================================
+    // Table for Environmental Sample Templates
+    // =============================================
+    [Table("SampleTemplates")]
     public class SampleTemplate
     {
         [Key]
@@ -19,8 +19,7 @@ namespace Environmental_Monitoring.Model
         [StringLength(100)]
         public string TenMau { get; set; }
 
-        // Navigation properties
-        public virtual ICollection<TemplateParameter> TemplateParameters { get; set; }
+        public virtual ICollection<TemplateParameter> TemplateParameters { get; set; }
         public virtual ICollection<EnvironmentalSample> EnvironmentalSamples { get; set; }
 
         public SampleTemplate()
@@ -28,5 +27,14 @@ namespace Environmental_Monitoring.Model
             TemplateParameters = new HashSet<TemplateParameter>();
             EnvironmentalSamples = new HashSet<EnvironmentalSample>();
         }
+    }
+    /// <summary>
+    /// Lớp này dùng để hiển thị SampleTemplates trong CheckedListBox
+    /// </summary>
+    public class SampleTemplateDisplayItem
+    {
+        public int TemplateID { get; set; }
+        public string TenMau { get; set; }
+        public override string ToString() { return TenMau; }
     }
 }

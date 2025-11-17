@@ -25,45 +25,49 @@ namespace Environmental_Monitoring.View
         private int pageSize = 10;
         private int totalRecords = 0;
         private int totalPages = 0;
+
+        /// <summary>
+        /// Hàm khởi tạo (Constructor) cho UserControl.
+        /// </summary>
         public Employee()
         {
             InitializeComponent();
             this.Load += new System.EventHandler(this.Employee_Load);
             this.dgvEmployee.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmployee_CellFormatting);
-
-            // <--- THÊM VÀO: Dòng này sẽ đăng ký sự kiện DataError
             this.dgvEmployee.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvEmployee_DataError);
         }
 
-        // <--- HÀM MỚI: Hàm này sẽ được gọi khi có lỗi xảy ra
+        /// <summary>
+        /// Xử lý các lỗi dữ liệu (DataError) của DataGridView một cách thầm lặng.
+        /// </summary>
         private void dgvEmployee_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            // Ghi log lỗi ra cửa sổ Output của Visual Studio (View -> Output)
             string errorInfo = $"LỖI DATAERROR:\n" +
-                               $"- Cột Index: {e.ColumnIndex}\n" +
-                               $"- Tên Cột: {dgvEmployee.Columns[e.ColumnIndex].Name}\n" +
-                               $"- Dòng Index: {e.RowIndex}\n" +
-                               $"- Lỗi: {e.Exception.Message}";
-
+                             $"- Cột Index: {e.ColumnIndex}\n" +
+                             $"- Tên Cột: {dgvEmployee.Columns[e.ColumnIndex].Name}\n" +
+                             $"- Dòng Index: {e.RowIndex}\n" +
+                             $"- Lỗi: {e.Exception.Message}";
             Console.WriteLine(errorInfo);
-
-            // Quan trọng: Ngăn không cho hiển thị hộp thoại lỗi
             e.ThrowException = false;
         }
 
+        /// <summary>
+        /// Xử lý phím bấm (ví dụ: nhấn Enter trong ô tìm kiếm).
+        /// </summary>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if ((keyData == Keys.Enter) && (this.ActiveControl == txtSearch))
             {
                 currentPage = 1;
                 LoadData();
-
                 return true;
             }
-
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        /// <summary>
+        /// Tải dữ liệu nhân viên lên DataGridView theo trang và từ khóa tìm kiếm.
+        /// </summary>
         private void LoadData()
         {
             string keySearch = txtSearch.Text;
@@ -80,6 +84,9 @@ namespace Environmental_Monitoring.View
             UpdatePaginationControls();
         }
 
+        /// <summary>
+        /// Cập nhật tiêu đề các cột trong DataGridView theo ngôn ngữ hiện tại.
+        /// </summary>
         private void EditHeaderTitle()
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
@@ -101,6 +108,9 @@ namespace Environmental_Monitoring.View
             dgvEmployee.Columns["RoleName"].HeaderText = rm.GetString("Role", culture);
         }
 
+        /// <summary>
+        /// Thêm các cột hành động (Sửa, Xóa) bằng hình ảnh vào DataGridView.
+        /// </summary>
         private void AddActionColumns()
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
@@ -143,6 +153,9 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng nhấp vào một ô trong DataGridView (để Sửa hoặc Xóa).
+        /// </summary>
         private void dgvEmployee_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -154,20 +167,13 @@ namespace Environmental_Monitoring.View
 
             string columnName = dgvEmployee.Columns[e.ColumnIndex].Name;
 
-            // --- SỬA LỖI TẠI ĐÂY ---
-            // Lấy giá trị EmployeeId một cách an toàn
             object idValue = dgvEmployee.Rows[e.RowIndex].Cells["EmployeeId"].Value;
 
-            // Kiểm tra xem giá trị có phải là DBNull hoặc có chuyển đổi (parse) thành int được không
             if (idValue == DBNull.Value || !int.TryParse(idValue.ToString(), out int employeeId))
             {
-                // Nếu không lấy được ID, ghi log và thoát ra, không làm gì cả
                 Console.WriteLine("Lỗi CellContentClick: Không thể lấy EmployeeId tại dòng " + e.RowIndex);
                 return;
             }
-            // --- KẾT THÚC SỬA ---
-
-            // Nếu code chạy đến đây, 'employeeId' đã là một số int hợp lệ
 
             if (columnName == "colEdit")
             {
@@ -208,6 +214,9 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        /// <summary>
+        /// Cập nhật trạng thái (Enabled/Disabled) của các nút phân trang.
+        /// </summary>
         private void UpdatePaginationControls()
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
@@ -222,6 +231,9 @@ namespace Environmental_Monitoring.View
             btnLast.Enabled = (currentPage < totalPages);
         }
 
+        /// <summary>
+        /// Xử lý sự kiện sau khi Form CreateUpdateEmployee được đóng (Thêm mới hoặc Cập nhật).
+        /// </summary>
         private void Form_AddedEmployee(object sender, EventArgs e)
         {
             LoadData();
@@ -242,12 +254,19 @@ namespace Environmental_Monitoring.View
             mainForm?.ShowGlobalAlert(successMsg, AlertPanel.AlertType.Success);
         }
 
+        /// <summary>
+        /// Xử lý khi UserControl được tải, gán các sự kiện ban đầu cho các nút.
+        /// </summary>
         private void Employee_Load(object sender, EventArgs e)
         {
-
-
             LoadData();
             UpdateUIText();
+
+            btnAdd.Click -= btnAdd_Click;
+            btnAdd.Click += btnAdd_Click;
+
+            dgvEmployee.CellContentClick -= dgvEmployee_CellContentClick;
+            dgvEmployee.CellContentClick += dgvEmployee_CellContentClick;
 
             btnFirst.Click -= btnFirst_Click;
             btnFirst.Click += btnFirst_Click;
@@ -262,6 +281,9 @@ namespace Environmental_Monitoring.View
             btnLast.Click += btnLast_Click;
         }
 
+        /// <summary>
+        /// Cập nhật lại tất cả văn bản và màu sắc (Theme) trên UI.
+        /// </summary>
         public void UpdateUIText()
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
@@ -278,8 +300,6 @@ namespace Environmental_Monitoring.View
             try
             {
                 this.BackColor = ThemeManager.BackgroundColor;
-
-
                 lblTitle.ForeColor = ThemeManager.TextColor;
                 lblPageInfo.ForeColor = ThemeManager.TextColor;
 
@@ -301,10 +321,11 @@ namespace Environmental_Monitoring.View
                 dgvEmployee.ColumnHeadersDefaultCellStyle.ForeColor = ThemeManager.TextColor;
             }
             catch (Exception) { }
-
         }
 
-
+        /// <summary>
+        /// Xử lý sự kiện khi nhấn nút 'Thêm Nhân Viên'.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             CreateUpdateEmployee form = new CreateUpdateEmployee();
@@ -312,17 +333,30 @@ namespace Environmental_Monitoring.View
             form.ShowDialog();
         }
 
+        /// <summary>
+        /// (Hàm rỗng) Xử lý sự kiện KeyDown của ô tìm kiếm.
+        /// </summary>
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
         }
+
+        /// <summary>
+        /// (Hàm rỗng) Xử lý sự kiện KeyPress của ô tìm kiếm.
+        /// </summary>
         private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
         {
         }
 
+        /// <summary>
+        /// (Hàm rỗng) Xử lý sự kiện TextChanged của ô tìm kiếm.
+        /// </summary>
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
         }
 
+        /// <summary>
+        /// Xử lý sự kiện nhấn nút 'Trang Đầu'.
+        /// </summary>
         private void btnFirst_Click(object sender, EventArgs e)
         {
             if (currentPage > 1)
@@ -332,6 +366,9 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện nhấn nút 'Trang Trước'.
+        /// </summary>
         private void btnPrevious_Click(object sender, EventArgs e)
         {
             if (currentPage > 1)
@@ -341,6 +378,9 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện nhấn nút 'Trang Sau'.
+        /// </summary>
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (currentPage < totalPages)
@@ -350,6 +390,9 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện nhấn nút 'Trang Cuối'.
+        /// </summary>
         private void btnLast_Click(object sender, EventArgs e)
         {
             if (currentPage < totalPages)
@@ -359,6 +402,9 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        /// <summary>
+        /// Định dạng lại ô (Cell) trong DataGridView (ví dụ: hiển thị dấu tick '✓').
+        /// </summary>
         private void dgvEmployee_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (this.dgvEmployee.Columns[e.ColumnIndex].DataPropertyName == "TruongBoPhan")

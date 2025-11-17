@@ -25,6 +25,12 @@
     <Compile Update="View\Components\MenuButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="View\Components\NotificationBell.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Components\NotificationItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="View\Components\Roundedbutton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -33,6 +39,9 @@
     </Compile>
     <Compile Update="View\Components\RoundedDataGridView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="View\Components\CustomDateTimePicker.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="View\Components\RoundedPanel.cs">
       <SubType>Component</SubType>
@@ -49,9 +58,6 @@
     <Compile Update="View\ContractContent\AddEditParameterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="View\ContractContent\AddTemplateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="View\ContractContent\BusinessContent.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -66,6 +72,9 @@
     </Compile>
     <Compile Update="View\ContractContent\RealContent.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="View\ContractContent\Requestforcorrection.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="View\ContractContent\ResultContent.cs">
       <SubType>UserControl</SubType>

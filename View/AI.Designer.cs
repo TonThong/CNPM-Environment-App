@@ -277,5 +277,6 @@ namespace Environmental_Monitoring.View
         private System.Windows.Forms.DataVisualization.Charting.Chart chartPollution;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartResign;
         private CustomComboBox cmbLocation;
+        private CustomDateTimePicker customDateTimePicker1;
     }
 }

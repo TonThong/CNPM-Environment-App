@@ -4,6 +4,12 @@ using System.Drawing;
 using System.Windows.Forms;
 using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.View.ContractContent;
+using System.Globalization;
+using System.Resources;
+using System.Threading;
+using Environmental_Monitoring.View.Components;
+using System.Collections.Generic;
+using System.Linq; // Cần thêm để dùng .FirstOrDefault()
 
 namespace Environmental_Monitoring.View
 {
@@ -12,7 +18,130 @@ namespace Environmental_Monitoring.View
         private int currentContractId = 0;
         private bool isUpdatingCell = false;
 
-        // Culture-aware decimal parser: prefer vi-VN when comma present to avoid treating comma as thousands separator
+        // Tên hằng số cho các cột checkbox
+        private const string COL_ONHIEM = "ColONhiem";
+        private const string COL_SAPONHIEM = "ColSapONhiem";
+        private const string COL_KHONGONHIEM = "ColKhongONhiem";
+
+        private ResourceManager rm;
+        private CultureInfo culture;
+
+        /// <summary>
+        /// Hàm khởi tạo (Constructor) cho UserControl.
+        /// </summary>
+        public ExperimentContent()
+        {
+            InitializeComponent();
+            InitializeLocalization();
+
+            // [SỬA LỖI] Gán sự kiện Load để hàm ExperimentContent_Load_1 được chạy
+            // Nếu không có dòng này, các sự kiện (Grid, Nút bấm) sẽ không hoạt động
+            this.Load += ExperimentContent_Load_1;
+        }
+
+        /// <summary>
+        /// Khởi tạo ResourceManager để tải chuỗi đa ngôn ngữ.
+        /// </summary>
+        private void InitializeLocalization()
+        {
+            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(ExperimentContent).Assembly);
+            culture = Thread.CurrentThread.CurrentUICulture;
+        }
+
+        /// <summary>
+        /// Hiển thị thông báo (alert) cho người dùng, ưu tiên qua Mainlayout.
+        /// </summary>
+        private void ShowAlert(string message, AlertPanel.AlertType type)
+        {
+            var mainLayout = this.FindForm() as Mainlayout;
+            if (mainLayout != null)
+            {
+                mainLayout.ShowGlobalAlert(message, type);
+            }
+            else
+            {
+                string title = (type == AlertPanel.AlertType.Success) ? rm.GetString("Alert_SuccessTitle", culture) : rm.GetString("Alert_ErrorTitle", culture);
+                MessageBox.Show(message, title, MessageBoxButtons.OK,
+                    (type == AlertPanel.AlertType.Success) ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật lại tất cả văn bản trên UI (Label, Button, Header của Grid) theo ngôn ngữ hiện tại.
+        /// </summary>
+        public void UpdateUIText()
+        {
+            culture = Thread.CurrentThread.CurrentUICulture;
+
+            if (lbContractID != null)
+                lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+            if (btnContracts != null)
+                btnContracts.Text = rm.GetString("Plan_ContractListButton", culture);
+            if (btnSave != null)
+                btnSave.Text = rm.GetString("Button_Save", culture);
+
+            // (MỚI) Cập nhật nút Hủy
+            if (btnCancel != null)
+                btnCancel.Text = rm.GetString("Button_Cancel", culture);
+
+            if (roundedDataGridView2.Columns.Contains("SampleCode"))
+                roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
+            if (roundedDataGridView2.Columns.Contains("TenThongSo"))
+                roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
+            if (roundedDataGridView2.Columns.Contains("DonVi"))
+                roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
+            if (roundedDataGridView2.Columns.Contains("GioiHanMin"))
+                roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
+            if (roundedDataGridView2.Columns.Contains("GioiHanMax"))
+                roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
+            if (roundedDataGridView2.Columns.Contains("GiaTri"))
+                roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
+
+            if (roundedDataGridView2.Columns.Contains(COL_ONHIEM))
+                roundedDataGridView2.Columns[COL_ONHIEM].HeaderText = rm.GetString("Grid_Polluted", culture);
+            if (roundedDataGridView2.Columns.Contains(COL_SAPONHIEM))
+                roundedDataGridView2.Columns[COL_SAPONHIEM].HeaderText = rm.GetString("Grid_SoonPolluted", culture);
+            if (roundedDataGridView2.Columns.Contains(COL_KHONGONHIEM))
+                roundedDataGridView2.Columns[COL_KHONGONHIEM].HeaderText = rm.GetString("Grid_NotPolluted", culture);
+        }
+
+        /// <summary>
+        /// Xử lý khi UserControl được tải, gán các sự kiện cho DataGridView và các nút.
+        /// </summary>
+        private void ExperimentContent_Load_1(object sender, EventArgs e)
+        {
+            roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            roundedDataGridView2.ForeColor = Color.Black;
+            roundedDataGridView2.AllowUserToAddRows = false;
+
+            // Gán sự kiện cho Grid
+            roundedDataGridView2.CurrentCellDirtyStateChanged += RoundedDataGridView2_CurrentCellDirtyStateChanged;
+            roundedDataGridView2.CellValueChanged += RoundedDataGridView2_CellValueChanged;
+            roundedDataGridView2.CellEndEdit += RoundedDataGridView2_CellEndEdit_SaveGiaTri;
+
+            // (MỚI) Gán sự kiện cho các nút
+            if (btnContracts != null)
+            {
+                btnContracts.Click -= btnContracts_Click;
+                btnContracts.Click += btnContracts_Click;
+            }
+            if (btnSave != null)
+            {
+                btnSave.Click -= btnSave_Click;
+                btnSave.Click += btnSave_Click;
+            }
+            if (btnCancel != null)
+            {
+                btnCancel.Click -= btnCancel_Click;
+                btnCancel.Click += btnCancel_Click;
+            }
+
+            UpdateUIText(); // Cập nhật ngôn ngữ khi tải
+        }
+
+        /// <summary>
+        /// Chuyển đổi một chuỗi (có thể chứa dấu . hoặc ,) thành số Decimal một cách an toàn.
+        /// </summary>
         private bool TryParseDecimalString(string s, out decimal result)
         {
             result = 0;
@@ -39,82 +168,68 @@ namespace Environmental_Monitoring.View
                 if (decimal.TryParse(s, styles, new System.Globalization.CultureInfo("vi-VN"), out result)) return true;
                 if (decimal.TryParse(s, styles, System.Globalization.CultureInfo.InvariantCulture, out result)) return true;
             }
-
             return false;
         }
 
-        public ExperimentContent()
-        {
-            InitializeComponent();
-            roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            roundedDataGridView2.ForeColor = Color.Black;
-
-            // ensure checkbox edits commit immediately
-            roundedDataGridView2.CurrentCellDirtyStateChanged += RoundedDataGridView2_CurrentCellDirtyStateChanged;
-            roundedDataGridView2.CellValueChanged += RoundedDataGridView2_CellValueChanged;
-
-
-            // wire CellEndEdit for GiaTri save
-            roundedDataGridView2.CellEndEdit += RoundedDataGridView2_CellEndEdit_SaveGiaTri;
-        }
-
+        /// <summary>
+        /// Kích hoạt khi kết thúc chỉnh sửa một ô, dùng để lưu giá trị (số) của cột 'GiaTri' vào CSDL.
+        /// </summary>
         private void RoundedDataGridView2_CellEndEdit_SaveGiaTri(object? sender, DataGridViewCellEventArgs e)
         {
             if (isUpdatingCell || e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
+            var col = roundedDataGridView2.Columns[e.ColumnIndex];
+            if (col == null || col.Name != "GiaTri") return;
+
             isUpdatingCell = true;
             try
             {
-                var col = roundedDataGridView2.Columns[e.ColumnIndex];
-                if (col == null || col.Name != "GiaTri") return; // only handle GiaTri edits
-
                 var row = roundedDataGridView2.Rows[e.RowIndex];
                 object val = row.Cells["GiaTri"].Value;
-                if (val == null || val == DBNull.Value || string.IsNullOrWhiteSpace(val.ToString()))
-                    return; // nothing to save
 
-                // parse decimal with culture-aware helper to handle "11,00" correctly
+                if (val == null || val == DBNull.Value || string.IsNullOrWhiteSpace(val.ToString()))
+                {
+                    return; // Không làm gì nếu giá trị rỗng
+                }
+
                 if (!TryParseDecimalString(val.ToString(), out var giaTri))
                 {
-                    MessageBox.Show("Giá trị nhập không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowAlert(rm.GetString("Error_InvalidValue", culture), AlertPanel.AlertType.Error); // "Giá trị không hợp lệ"
                     return;
                 }
 
-                if (roundedDataGridView2.Columns.Contains("ParameterID"))
+                if (roundedDataGridView2.Columns.Contains("ParameterID") && roundedDataGridView2.Columns.Contains("SampleID"))
                 {
                     int parameterId = Convert.ToInt32(row.Cells["ParameterID"].Value);
+                    int sampleId = Convert.ToInt32(row.Cells["SampleID"].Value);
 
-                    // find a sample for this contract (use first sample as target)
-                    string sampleQ = "SELECT SampleID FROM EnvironmentalSamples WHERE ContractID = @contractId LIMIT 1";
-                    object sampleObj = DataProvider.Instance.ExecuteScalar(sampleQ, new object[] { currentContractId });
-                    if (sampleObj == null || !int.TryParse(sampleObj.ToString(), out int sampleId))
+                    if (sampleId <= 0)
                     {
-                        MessageBox.Show("Không tìm thấy mẫu để lưu giá trị.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ShowAlert(rm.GetString("Error_SampleIDNotFound", culture), AlertPanel.AlertType.Error); // "Không tìm thấy SampleID"
                         return;
                     }
 
-                    // check existing result
+                    // Kiểm tra xem đã có kết quả (Result) chưa
                     string checkQ = "SELECT ResultID FROM Results WHERE SampleID = @sampleId AND ParameterID = @parameterId LIMIT 1";
                     object exist = DataProvider.Instance.ExecuteScalar(checkQ, new object[] { sampleId, parameterId });
 
                     if (exist != null && int.TryParse(exist.ToString(), out int resultId))
                     {
+                        // Nếu có rồi thì Cập nhật
                         string updateQ = "UPDATE Results SET GiaTri = @giaTri, NgayPhanTich = CURRENT_TIMESTAMP WHERE ResultID = @resultId";
                         DataProvider.Instance.ExecuteNonQuery(updateQ, new object[] { giaTri, resultId });
                     }
                     else
                     {
-                        string insertQ = "INSERT INTO Results (GiaTri, TrangThaiPheDuyet, NgayPhanTich, SampleID, ParameterID) VALUES (@giaTri, NULL, CURRENT_TIMESTAMP, @sampleId, @parameterId)";
+                        // Nếu chưa có thì Thêm mới
+                        string insertQ = "INSERT INTO Results (GiaTri, NgayPhanTich, SampleID, ParameterID) VALUES (@giaTri, CURRENT_TIMESTAMP, @sampleId, @parameterId)";
                         DataProvider.Instance.ExecuteNonQuery(insertQ, new object[] { giaTri, sampleId, parameterId });
                     }
-
-                    // optional: refresh DataGridView row status after save
-                    BeginInvoke(new Action(() => LoadExperimentContract(currentContractId)));
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi lưu giá trị: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowAlert(rm.GetString("Error_SavingValue", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); // "Lỗi khi lưu giá trị"
             }
             finally
             {
@@ -122,58 +237,9 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        private void BtnCreateTemplate_Click(object? sender, EventArgs e)
-        {
-            if (currentContractId <= 0)
-            {
-                MessageBox.Show("Vui lòng chọn hợp đồng trước khi tạo mẫu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // load parameters where PhuTrach IS NULL OR = 'ThiNghiem'
-            string q = "SELECT ParameterID, TenThongSo FROM Parameters WHERE PhuTrach IS NULL OR PhuTrach = 'ThiNghiem'";
-            DataTable dt = DataProvider.Instance.ExecuteQuery(q);
-
-            using (var dlg = new AddTemplateForm(dt))
-            {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    // insert into SampleTemplates
-                    string insertTemplate = "INSERT INTO SampleTemplates (TenMau) VALUES (@tenmau)";
-                    DataProvider.Instance.ExecuteNonQuery(insertTemplate, new object[] { dlg.TemplateName });
-
-                    // get last inserted template id
-                    object last = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
-                    int templateId = 0;
-                    if (last != null && int.TryParse(last.ToString(), out int tmp)) templateId = tmp;
-
-                    if (templateId > 0)
-                    {
-                        // insert into TemplateParameters
-                        foreach (var pid in dlg.SelectedParameterIds)
-                        {
-                            string ins = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@t, @p)";
-                            DataProvider.Instance.ExecuteNonQuery(ins, new object[] { templateId, pid });
-                        }
-
-                        // create EnvironmentalSamples for this contract
-                        string insertSample = "INSERT INTO EnvironmentalSamples (MaMau, ContractID, TemplateID) VALUES (@mamau, @contractId, @templateId)";
-                        string sampleCode = $"M{currentContractId}_{templateId}_{DateTime.Now.Ticks % 10000}";
-                        DataProvider.Instance.ExecuteNonQuery(insertSample, new object[] { sampleCode, currentContractId, templateId });
-
-                        MessageBox.Show("Tạo mẫu thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LoadExperimentContract(currentContractId);
-                    }
-                }
-            }
-        }
-
-        private void btnCreateTemplate_Click(object? sender, EventArgs e)
-        {
-            // Designer-created event wiring calls this name; forward to implementation
-            BtnCreateTemplate_Click(sender, e);
-        }
-
+        /// <summary>
+        /// Kích hoạt ngay khi người dùng bắt đầu chỉnh sửa một ô (checkbox), dùng để commit giá trị ngay lập tức.
+        /// </summary>
         private void RoundedDataGridView2_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
         {
             if (roundedDataGridView2.IsCurrentCellDirty)
@@ -182,104 +248,67 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        /// <summary>
+        /// Kích hoạt sau khi giá trị ô (checkbox) được commit, dùng để xử lý logic (chỉ cho phép 1 trong 3 checkbox được chọn).
+        /// </summary>
         private void RoundedDataGridView2_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
             if (isUpdatingCell || e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            isUpdatingCell = true;
-            try
-            {
-                var colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
-                var row = roundedDataGridView2.Rows[e.RowIndex];
+            string colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
+            var row = roundedDataGridView2.Rows[e.RowIndex];
 
-                // enforce mutual exclusivity: Contaminated and Warning
-                if (colName == "Contaminated")
+            // Kiểm tra xem có phải là 1 trong 3 cột checkbox không
+            if (colName == COL_ONHIEM || colName == COL_SAPONHIEM || colName == COL_KHONGONHIEM)
+            {
+                isUpdatingCell = true; // Cờ an toàn để tránh vòng lặp vô hạn
+                try
                 {
-                    bool isCont = false;
-                    var cell = row.Cells["Contaminated"];
-                    if (cell.Value != null && bool.TryParse(cell.Value.ToString(), out bool b)) isCont = b;
-                    // if contaminated, uncheck warning
-                    if (isCont && roundedDataGridView2.Columns.Contains("Warning"))
+                    bool isChecked = false;
+                    var cell = row.Cells[colName];
+                    if (cell.Value != null && bool.TryParse(cell.Value.ToString(), out bool b))
                     {
-                        row.Cells["Warning"].Value = false;
+                        isChecked = b;
+                    }
+
+                    // Nếu người dùng check vào 1 ô, tự động uncheck 2 ô còn lại
+                    if (isChecked)
+                    {
+                        if (colName != COL_ONHIEM)
+                            row.Cells[COL_ONHIEM].Value = false;
+                        if (colName != COL_SAPONHIEM)
+                            row.Cells[COL_SAPONHIEM].Value = false;
+                        if (colName != COL_KHONGONHIEM)
+                            row.Cells[COL_KHONGONHIEM].Value = false;
                     }
                 }
-                else if (colName == "Warning")
+                finally
                 {
-                    bool isWarn = false;
-                    var cell = row.Cells["Warning"];
-                    if (cell.Value != null && bool.TryParse(cell.Value.ToString(), out bool b)) isWarn = b;
-                    if (isWarn && roundedDataGridView2.Columns.Contains("Contaminated"))
-                    {
-                        row.Cells["Contaminated"].Value = false;
-                    }
+                    isUpdatingCell = false;
                 }
-
-                // update row styling
-                BeginInvoke(new Action(() => UpdateRowStyle(e.RowIndex)));
-            }
-            finally
-            {
-                isUpdatingCell = false;
             }
         }
 
-        private void UpdateRowStyle(int rowIndex)
-        {
-            if (rowIndex < 0 || rowIndex >= roundedDataGridView2.Rows.Count) return;
-            var row = roundedDataGridView2.Rows[rowIndex];
-            bool isCont = false, isWarn = false;
-            if (roundedDataGridView2.Columns.Contains("Contaminated"))
-            {
-                var c = row.Cells["Contaminated"].Value;
-                if (c != null && bool.TryParse(c.ToString(), out bool b)) isCont = b;
-            }
-            if (roundedDataGridView2.Columns.Contains("Warning"))
-            {
-                var c = row.Cells["Warning"].Value;
-                if (c != null && bool.TryParse(c.ToString(), out bool b)) isWarn = b;
-            }
-
-            if (isCont)
-            {
-                row.DefaultCellStyle.BackColor = Color.LightCoral;
-                row.DefaultCellStyle.ForeColor = Color.Black;
-            }
-            else if (isWarn)
-            {
-                row.DefaultCellStyle.BackColor = Color.Orange;
-                row.DefaultCellStyle.ForeColor = Color.Black;
-            }
-            else
-            {
-                row.DefaultCellStyle.BackColor = Color.LightGreen;
-                row.DefaultCellStyle.ForeColor = Color.Black;
-            }
-        }
-
+        /// <summary>
+        /// Tải dữ liệu chi tiết của hợp đồng (phần Thí Nghiệm) lên DataGridView.
+        /// </summary>
         private void LoadExperimentContract(int contractId)
         {
             try
             {
                 currentContractId = contractId;
 
-                // For the given contract, list distinct parameters from samples' templates
-                // and determine if any Result for that parameter in the contract is out of min/max
-                // Also get an aggregated saved status flag (TrangThaiPheDuyet) if present
-                string q = @"SELECT p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
-                                MAX(CASE 
-                                    WHEN r.GiaTri IS NULL THEN 0
-                                    WHEN (p.GioiHanMin IS NOT NULL AND r.GiaTri < p.GioiHanMin) OR (p.GioiHanMax IS NOT NULL AND r.GiaTri > p.GioiHanMax) THEN 1
-                                    ELSE 0 END) AS IsContaminated,
-                                MAX(r.TrangThaiPheDuyet) AS StatusFlag,
-                                MAX(r.GiaTri) AS GiaTri
+                // Query lấy dữ liệu từ nhiều bảng
+                string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
+                                p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
+                                p.PhuTrach, p.ONhiem,
+                                r.GiaTri
                              FROM EnvironmentalSamples s
                              JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
                              JOIN Parameters p ON tp.ParameterID = p.ParameterID
                              LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
                              WHERE s.ContractID = @contractId
-                               AND (p.PhuTrach IS NULL OR p.PhuTrach = 'ThiNghiem')
-                             GROUP BY p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax";
+                             ORDER BY s.MaMau, p.ParameterID";
 
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
 
@@ -289,150 +318,121 @@ namespace Environmental_Monitoring.View
                     return;
                 }
 
-                // Convert StatusFlag/IsContaminated into two boolean editable columns: Contaminated and Warning
-                if (!dt.Columns.Contains("Contaminated"))
-                    dt.Columns.Add("Contaminated", typeof(bool));
-                if (!dt.Columns.Contains("Warning"))
-                    dt.Columns.Add("Warning", typeof(bool));
+                // Thêm 3 cột boolean (cho checkbox) vào DataTable
+                dt.Columns.Add(COL_ONHIEM, typeof(bool));
+                dt.Columns.Add(COL_SAPONHIEM, typeof(bool));
+                dt.Columns.Add(COL_KHONGONHIEM, typeof(bool));
 
+                // Gán giá trị cho 3 cột checkbox dựa trên cột 'ONhiem' từ CSDL
                 foreach (DataRow row in dt.Rows)
                 {
-                    bool contaminated = false;
-                    bool warning = false;
-
-                    // prefer stored StatusFlag if available
-                    if (dt.Columns.Contains("StatusFlag"))
+                    int onhiemStatus = 0;
+                    if (row["ONhiem"] != DBNull.Value)
                     {
-                        var sf = row["StatusFlag"];
-                        if (sf != DBNull.Value && sf != null && int.TryParse(sf.ToString(), out int sfv))
-                        {
-                            switch (sfv)
-                            {
-                                case 0: // Bad/Contaminated
-                                    contaminated = true; warning = false; break;
-                                case 2: // Warning
-                                    contaminated = false; warning = true; break;
-                                case 1: // Good
-                                default:
-                                    contaminated = false; warning = false; break;
-                            }
-                        }
-                        else
-                        {
-                            // fallback to IsContaminated computed from values
-                            var ic = row["IsContaminated"];
-                            if (ic != DBNull.Value && ic != null && int.TryParse(ic.ToString(), out int icv))
-                            {
-                                contaminated = icv == 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var ic = row["IsContaminated"];
-                        if (ic != DBNull.Value && ic != null && int.TryParse(ic.ToString(), out int icv))
-                        {
-                            contaminated = icv == 1;
-                        }
+                        onhiemStatus = Convert.ToInt32(row["ONhiem"]);
                     }
 
-                    row["Contaminated"] = contaminated;
-                    row["Warning"] = warning;
+                    row[COL_ONHIEM] = (onhiemStatus == 1);
+                    row[COL_SAPONHIEM] = (onhiemStatus == 2);
+                    row[COL_KHONGONHIEM] = (onhiemStatus == 0);
                 }
-
-                // remove raw helper columns to avoid showing to user
-                if (dt.Columns.Contains("IsContaminated")) dt.Columns.Remove("IsContaminated");
-                if (dt.Columns.Contains("StatusFlag")) dt.Columns.Remove("StatusFlag");
 
                 roundedDataGridView2.DataSource = dt;
 
-                // Adjust headers and visibility
+                // Ẩn các cột ID
                 if (roundedDataGridView2.Columns["ParameterID"] != null)
                     roundedDataGridView2.Columns["ParameterID"].Visible = false;
-                if (roundedDataGridView2.Columns["TenThongSo"] != null)
-                    roundedDataGridView2.Columns["TenThongSo"].HeaderText = "Tên thông số";
-                if (roundedDataGridView2.Columns["DonVi"] != null)
-                    roundedDataGridView2.Columns["DonVi"].HeaderText = "Đơn vị";
-                if (roundedDataGridView2.Columns["GioiHanMin"] != null)
-                    roundedDataGridView2.Columns["GioiHanMin"].HeaderText = "Min";
-                if (roundedDataGridView2.Columns["GioiHanMax"] != null)
-                    roundedDataGridView2.Columns["GioiHanMax"].HeaderText = "Max";
+                if (roundedDataGridView2.Columns["SampleID"] != null)
+                    roundedDataGridView2.Columns["SampleID"].Visible = false;
+                if (roundedDataGridView2.Columns["PhuTrach"] != null)
+                    roundedDataGridView2.Columns["PhuTrach"].Visible = false;
+                if (roundedDataGridView2.Columns["ONhiem"] != null)
+                    roundedDataGridView2.Columns["ONhiem"].Visible = false;
 
-                // Replace/ensure Contaminated and Warning are checkbox columns and editable
-                EnsureCheckBoxColumn("Contaminated", "Ô nhiễm", 0);
-                EnsureCheckBoxColumn("Warning", "Cảnh báo sắp ô nhiễm", 1);
+                // Cập nhật tiêu đề cột (sẽ được gọi lại bởi UpdateUIText)
+                if (roundedDataGridView2.Columns["SampleCode"] != null)
+                    roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
+                // ... (các cột khác)
+                if (roundedDataGridView2.Columns["GiaTri"] != null)
+                    roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
 
-                // Ensure GiaTri column is editable and placed after parameter name
-                if (roundedDataGridView2.Columns.Contains("GiaTri"))
+                // Đảm bảo 3 cột trạng thái là CheckBox
+                EnsureCheckBoxColumn(COL_ONHIEM, rm.GetString("Grid_Polluted", culture), 10);
+                EnsureCheckBoxColumn(COL_SAPONHIEM, rm.GetString("Grid_SoonPolluted", culture), 11);
+                EnsureCheckBoxColumn(COL_KHONGONHIEM, rm.GetString("Grid_NotPolluted", culture), 12);
+
+                // Phân biệt ô 'GiaTri' nào được phép nhập (ThiNghiem) và ô nào không (HienTruong)
+                foreach (DataGridViewRow row in roundedDataGridView2.Rows)
                 {
-                    var gcol = roundedDataGridView2.Columns["GiaTri"];
-                    gcol.ReadOnly = false;
-                    int insertAt = Math.Min(2, roundedDataGridView2.Columns.Count);
-                    roundedDataGridView2.Columns.Remove(gcol);
-                    var newCol = new DataGridViewTextBoxColumn()
+                    string phuTrach = row.Cells["PhuTrach"].Value?.ToString() ?? "";
+                    DataGridViewCell giaTriCell = row.Cells["GiaTri"];
+
+                    if (phuTrach.Equals("ThiNghiem", StringComparison.OrdinalIgnoreCase))
                     {
-                        Name = "GiaTri",
-                        HeaderText = "Giá trị",
-                        DataPropertyName = "GiaTri",
-                        ReadOnly = false
-                    };
-                    roundedDataGridView2.Columns.Insert(insertAt, newCol);
+                        giaTriCell.ReadOnly = false;
+                        giaTriCell.Style.BackColor = Color.FromArgb(224, 224, 224); // Màu xám nhạt
+                        giaTriCell.Style.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        giaTriCell.ReadOnly = true;
+                        giaTriCell.Style.BackColor = Color.White; // Màu trắng
+                        giaTriCell.Style.ForeColor = Color.Black;
+                    }
                 }
 
-                // Apply initial styling
-                for (int i = 0; i < roundedDataGridView2.Rows.Count; i++)
-                {
-                    UpdateRowStyle(i);
-                }
+                MergeSampleCells(); // Gọi hàm gộp ô
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi tải dữ liệu thử nghiệm: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowAlert(rm.GetString("Error_LoadExperimentData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); // "Lỗi tải dữ liệu Thí Nghiệm"
             }
         }
 
+        /// <summary>
+        /// Đảm bảo rằng một cột được hiển thị dưới dạng CheckBox (đánh dấu) và nằm đúng vị trí.
+        /// </summary>
         private void EnsureCheckBoxColumn(string name, string headerText, int desiredIndex)
         {
-            if (!roundedDataGridView2.Columns.Contains(name)) return;
+            // Xóa cột cũ nếu tồn tại (để thay bằng CheckBox)
+            if (roundedDataGridView2.Columns.Contains(name))
+            {
+                roundedDataGridView2.Columns.Remove(name);
+            }
 
-            var col = roundedDataGridView2.Columns[name];
-            col.ReadOnly = false;
-            int idx = col.Index;
-            // remove and replace with checkbox column
-            roundedDataGridView2.Columns.Remove(col);
-
+            // Tạo cột CheckBox mới
             var chk = new DataGridViewCheckBoxColumn()
             {
                 Name = name,
-                DataPropertyName = name,
+                DataPropertyName = name, // Liên kết với cột trong DataTable
                 HeaderText = headerText,
                 TrueValue = true,
                 FalseValue = false,
                 ReadOnly = false,
-                Width = 80
+                Width = 120
             };
 
             int insertAt = Math.Min(desiredIndex, roundedDataGridView2.Columns.Count);
             roundedDataGridView2.Columns.Insert(insertAt, chk);
         }
 
-        private void ExperimentContent_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Xử lý sự kiện nhấn nút 'Danh Sách Hợp Đồng' (mở PopUpContract).
+        /// </summary>
         private void btnContracts_Click(object sender, EventArgs e)
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts where TienTrinh = 3";
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status 
+                                 FROM Contracts 
+                                 WHERE TienTrinh = 3";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
 
                 using (ContractContent.PopUpContract popup = new ContractContent.PopUpContract(dt))
                 {
                     popup.ContractSelected += (contractId) =>
                     {
-                        lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
+                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
                         LoadExperimentContract(contractId);
                     };
 
@@ -441,81 +441,204 @@ namespace Environmental_Monitoring.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi lấy danh sách hợp đồng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowAlert(rm.GetString("Error_LoadContracts", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện nhấn nút 'Lưu', lưu các trạng thái (ô nhiễm/sắp/không) vào CSDL.
+        /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
-                // Save Contaminated/Warning flags into Results.TrangThaiPheDuyet for one sample of the contract
                 var dt = roundedDataGridView2.DataSource as DataTable;
-                if (dt == null)
+                if (dt == null || currentContractId == 0)
                 {
-                    MessageBox.Show("Không có dữ liệu để lưu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                // Find one sample for the contract to attach results to (fallback)
-                string sampleQ = "SELECT SampleID FROM EnvironmentalSamples WHERE ContractID = @contractId LIMIT 1";
-                object sampleObj = DataProvider.Instance.ExecuteScalar(sampleQ, new object[] { currentContractId });
-                if (sampleObj == null || !int.TryParse(sampleObj.ToString(), out int sampleId))
-                {
-                    MessageBox.Show("Không tìm thấy mẫu để lưu kết quả.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowAlert(rm.GetString("Exp_NoDataToSave", culture), AlertPanel.AlertType.Error); // "Không có dữ liệu để lưu"
                     return;
                 }
 
                 int savedCount = 0;
-                foreach (DataRow row in dt.Rows)
+                // Dùng HashSet để chỉ cập nhật mỗi ParameterID 1 lần duy nhất (vì grid bị gộp ô)
+                HashSet<int> parametersToUpdate = new HashSet<int>();
+
+                foreach (DataGridViewRow row in roundedDataGridView2.Rows)
                 {
-                    if (row["ParameterID"] == DBNull.Value || row["ParameterID"] == null) continue;
-                    int parameterId = Convert.ToInt32(row["ParameterID"]);
+                    if (row.IsNewRow) continue;
+                    if (row.Cells["ParameterID"].Value == DBNull.Value || row.Cells["ParameterID"].Value == null) continue;
 
-                    bool contaminated = false;
-                    bool warning = false;
-                    if (dt.Columns.Contains("Contaminated") && row["Contaminated"] != DBNull.Value && row["Contaminated"] != null)
-                    {
-                        if (bool.TryParse(row["Contaminated"].ToString(), out bool b)) contaminated = b;
-                    }
-                    if (dt.Columns.Contains("Warning") && row["Warning"] != DBNull.Value && row["Warning"] != null)
-                    {
-                        if (bool.TryParse(row["Warning"].ToString(), out bool b)) warning = b;
-                    }
+                    int parameterId = Convert.ToInt32(row.Cells["ParameterID"].Value);
 
-                    int flag;
-                    if (contaminated) flag = 0; // contaminated -> 0 (Bad)
-                    else if (warning) flag = 2; // warning -> 2
-                    else flag = 1; // good -> 1
+                    if (parametersToUpdate.Contains(parameterId)) continue; // Đã cập nhật rồi, bỏ qua
 
-                    // check existing result for this sample+parameter
-                    string checkQ = "SELECT ResultID FROM Results WHERE SampleID = @sampleId AND ParameterID = @parameterId LIMIT 1";
-                    object exist = DataProvider.Instance.ExecuteScalar(checkQ, new object[] { sampleId, parameterId });
+                    // Lấy giá trị từ 3 cột checkbox
+                    bool oNhiem = Convert.ToBoolean(row.Cells[COL_ONHIEM].Value);
+                    bool sapONhiem = Convert.ToBoolean(row.Cells[COL_SAPONHIEM].Value);
 
-                    if (exist != null && int.TryParse(exist.ToString(), out int resultId))
-                    {
-                        string updateQ = "UPDATE Results SET TrangThaiPheDuyet = @flag, NgayPhanTich = CURRENT_TIMESTAMP WHERE ResultID = @resultId";
-                        DataProvider.Instance.ExecuteNonQuery(updateQ, new object[] { flag, resultId });
-                        savedCount++;
-                    }
-                    else
-                    {
-                        string insertQ = "INSERT INTO Results (GiaTri, TrangThaiPheDuyet, NgayPhanTich, SampleID, ParameterID) VALUES (NULL, @flag, CURRENT_TIMESTAMP, @sampleId, @parameterId)";
-                        DataProvider.Instance.ExecuteNonQuery(insertQ, new object[] { flag, sampleId, parameterId });
-                        savedCount++;
-                    }
+                    // Chuyển 3 bool thành 1 số int (flag)
+                    int flag = 0; // 0 = Không ô nhiễm
+                    if (oNhiem) flag = 1; // 1 = Ô nhiễm
+                    else if (sapONhiem) flag = 2; // 2 = Sắp ô nhiễm
+
+                    // Cập nhật CSDL
+                    string updateQuery = "UPDATE Parameters SET ONhiem = @flag WHERE ParameterID = @paramId";
+                    DataProvider.Instance.ExecuteNonQuery(updateQuery, new object[] { flag, parameterId });
+
+                    parametersToUpdate.Add(parameterId); // Đánh dấu đã cập nhật
+                    savedCount++;
                 }
+
+                // Chuyển hợp đồng sang bước tiếp theo
                 string query = @"UPDATE Contracts SET TienTrinh = 4 WHERE ContractID = @contractId;";
                 DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.currentContractId });
-                MessageBox.Show($"Đã lưu {savedCount} mục ô nhiễm.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // reload to refresh
-                if (currentContractId > 0) LoadExperimentContract(currentContractId);
+                string successMsg = string.Format(rm.GetString("Exp_SaveSuccess", culture), savedCount); // "Lưu thành công... thông số"
+                ShowAlert(successMsg, AlertPanel.AlertType.Success);
+
+                // Xóa form
+                roundedDataGridView2.DataSource = null;
+                lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+                this.currentContractId = 0;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi lưu dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowAlert(rm.GetString("Error_SaveData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); // "Lỗi lưu dữ liệu"
             }
+        }
+
+        /// <summary>
+        /// (MỚI) Xử lý sự kiện nhấn nút 'Hủy', xóa dữ liệu đang hiển thị trên form.
+        /// </summary>
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            roundedDataGridView2.DataSource = null;
+            if (lbContractID != null)
+            {
+                lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+            }
+            this.currentContractId = 0;
+        }
+
+
+        // --- CÁC HÀM HỖ TRỢ GỘP Ô (MERGE CELLS) ---
+
+        /// <summary>
+        /// Gán (hoặc gán lại) các sự kiện Paint và CellFormatting để vẽ các ô được gộp.
+        /// </summary>
+        private void MergeSampleCells()
+        {
+            // Gỡ bỏ sự kiện cũ để tránh gán chồng chéo
+            roundedDataGridView2.Paint -= roundedDataGridView2_Paint;
+            roundedDataGridView2.CellFormatting -= roundedDataGridView2_CellFormatting;
+
+            // Gán sự kiện mới
+            roundedDataGridView2.Paint += roundedDataGridView2_Paint;
+            roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
+        }
+
+        /// <summary>
+        /// (Logic Hỗ trợ) Tự vẽ lại ô 'SampleCode' (Mã Mẫu) để nó trông như được gộp.
+        /// </summary>
+        private void roundedDataGridView2_Paint(object sender, PaintEventArgs e)
+        {
+            if (roundedDataGridView2.Rows.Count == 0) return;
+
+            string colName = "SampleCode";
+            if (!roundedDataGridView2.Columns.Contains(colName)) return;
+
+            int colIndex = roundedDataGridView2.Columns[colName].Index;
+
+            Rectangle rect;
+            int firstVisibleRow = roundedDataGridView2.FirstDisplayedCell?.RowIndex ?? 0;
+            int lastVisibleRow = firstVisibleRow + roundedDataGridView2.DisplayedRowCount(false);
+            lastVisibleRow = Math.Min(lastVisibleRow, roundedDataGridView2.RowCount);
+
+            for (int i = firstVisibleRow; i < lastVisibleRow; i++)
+            {
+                rect = roundedDataGridView2.GetCellDisplayRectangle(colIndex, i, true);
+
+                if (i == 0 || roundedDataGridView2[colIndex, i].Value?.ToString() != roundedDataGridView2[colIndex, i - 1].Value?.ToString())
+                {
+                    // Đây là ô đầu tiên của một nhóm gộp
+                }
+                else
+                {
+                    // Đây là ô con, điều chỉnh hình chữ nhật để che đường viền
+                    rect.Y -= 1;
+                    rect.Height += 1;
+                }
+
+                // Đếm xem có bao nhiêu hàng bên dưới giống hệt
+                int mergeCount = 0;
+                for (int j = i + 1; j < roundedDataGridView2.RowCount; j++)
+                {
+                    if (roundedDataGridView2[colIndex, i].Value?.ToString() == roundedDataGridView2[colIndex, j].Value?.ToString())
+                    {
+                        mergeCount++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (mergeCount > 0)
+                {
+                    // Tính tổng chiều cao của các ô gộp
+                    for (int k = 1; k <= mergeCount; k++)
+                    {
+                        if (i + k < roundedDataGridView2.RowCount)
+                            rect.Height += roundedDataGridView2.GetCellDisplayRectangle(colIndex, i + k, true).Height;
+                    }
+
+                    // Vẽ hình chữ nhật nền
+                    Color backColor = roundedDataGridView2.Rows[i].Cells[colIndex].Style.BackColor;
+                    if (backColor.IsEmpty) backColor = roundedDataGridView2.DefaultCellStyle.BackColor;
+                    e.Graphics.FillRectangle(new SolidBrush(backColor), rect);
+
+                    // Vẽ đường viền
+                    e.Graphics.DrawRectangle(new Pen(roundedDataGridView2.GridColor), rect.X - 1, rect.Y - 1, rect.Width, rect.Height);
+
+                    // Vẽ văn bản (căn giữa)
+                    TextRenderer.DrawText(e.Graphics,
+                        roundedDataGridView2[colIndex, i].FormattedValue?.ToString(),
+                        roundedDataGridView2.DefaultCellStyle.Font,
+                        rect,
+                        roundedDataGridView2.DefaultCellStyle.ForeColor,
+                        TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
+
+                    i += mergeCount; // Bỏ qua các hàng đã được gộp
+                }
+            }
+        }
+
+        /// <summary>
+        /// (Logic Hỗ trợ) Ẩn văn bản ở các ô con (ô đã bị gộp) để chỉ hiển thị văn bản ở ô đầu tiên.
+        /// </summary>
+        private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex == 0 || e.ColumnIndex < 0) return;
+
+            string colName = "SampleCode";
+            if (!roundedDataGridView2.Columns.Contains(colName) || e.ColumnIndex != roundedDataGridView2.Columns[colName].Index)
+            {
+                return;
+            }
+
+            try
+            {
+                // Nếu giá trị ô này giống hệt ô bên trên nó
+                var currentValue = e.Value;
+                var prevValue = roundedDataGridView2[e.ColumnIndex, e.RowIndex - 1].Value;
+
+                if (currentValue != null && prevValue != null && currentValue.Equals(prevValue))
+                {
+                    e.Value = ""; // Ẩn văn bản đi
+                    e.FormattingApplied = true;
+                }
+            }
+            catch { }
         }
     }
 }

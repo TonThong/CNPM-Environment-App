@@ -26,345 +26,381 @@
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            lbNamePage = new Label();
-            btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
-            lbCustomer = new Label();
-            txtboxEmployee = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
-            txtboxEndDate = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            lblTitle = new Label();
+            lblCustomer = new Label();
+            lblContract = new Label();
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+            tableLayoutPanel2 = new TableLayoutPanel();
             txtboxCustomerName = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtboxPhone = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxIDContract = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            txtboxPhone = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            cmbContractType = new Environmental_Monitoring.View.Components.RoundedComboBox();
             txtboxAddress = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxOwner = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            cmbContractType = new Environmental_Monitoring.View.Components.RoundedComboBox();
-            lbContract = new Label();
-            panel1.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
+            txtboxEmployee = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            dtpDueDate = new Environmental_Monitoring.View.Components.CustomDateTimePicker();
+            btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
+            txtEmailCustomer = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
-            // panel1
+            // lblTitle
             // 
-            panel1.BackColor = Color.White;
-            panel1.Controls.Add(tableLayoutPanel1);
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1227, 507);
-            panel1.TabIndex = 0;
+            lblTitle.AutoSize = true;
+            lblTitle.BackColor = Color.Transparent;
+            tableLayoutPanel2.SetColumnSpan(lblTitle, 3);
+            lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblTitle.ForeColor = Color.Black;
+            lblTitle.Location = new Point(63, 26);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(614, 41);
+            lblTitle.TabIndex = 40;
+            lblTitle.Text = "THÔNG TIN KHÁCH HÀNG VÀ HỢP ĐỒNG";
             // 
-            // tableLayoutPanel1
+            // lblCustomer
             // 
-            tableLayoutPanel1.ColumnCount = 5;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.Controls.Add(lbNamePage, 1, 1);
-            tableLayoutPanel1.Controls.Add(btnCancel, 3, 13);
-            tableLayoutPanel1.Controls.Add(lbCustomer, 1, 3);
-            tableLayoutPanel1.Controls.Add(txtboxEmployee, 3, 11);
-            tableLayoutPanel1.Controls.Add(btnSave, 1, 13);
-            tableLayoutPanel1.Controls.Add(txtboxEndDate, 3, 9);
-            tableLayoutPanel1.Controls.Add(txtboxCustomerName, 1, 5);
-            tableLayoutPanel1.Controls.Add(txtboxPhone, 1, 7);
-            tableLayoutPanel1.Controls.Add(txtboxIDContract, 3, 5);
-            tableLayoutPanel1.Controls.Add(txtboxAddress, 1, 9);
-            tableLayoutPanel1.Controls.Add(txtboxOwner, 1, 11);
-            tableLayoutPanel1.Controls.Add(cmbContractType, 3, 7);
-            tableLayoutPanel1.Controls.Add(lbContract, 3, 3);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 15;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.Size = new Size(1227, 507);
-            tableLayoutPanel1.TabIndex = 53;
+            lblCustomer.AutoSize = true;
+            lblCustomer.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
+            lblCustomer.ForeColor = Color.Black;
+            lblCustomer.Location = new Point(63, 104);
+            lblCustomer.Name = "lblCustomer";
+            tableLayoutPanel2.SetRowSpan(lblCustomer, 2);
+            lblCustomer.Size = new Size(144, 31);
+            lblCustomer.TabIndex = 41;
+            lblCustomer.Text = "Khách Hàng";
             // 
-            // lbNamePage
+            // lblContract
             // 
-            lbNamePage.AutoSize = true;
-            lbNamePage.BackColor = Color.Transparent;
-            tableLayoutPanel1.SetColumnSpan(lbNamePage, 3);
-            lbNamePage.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lbNamePage.ForeColor = Color.Black;
-            lbNamePage.Location = new Point(64, 25);
-            lbNamePage.Name = "lbNamePage";
-            lbNamePage.Size = new Size(614, 41);
-            lbNamePage.TabIndex = 40;
-            lbNamePage.Text = "THÔNG TIN KHÁCH HÀNG VÀ HỢP ĐỒNG";
+            lblContract.AutoSize = true;
+            lblContract.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
+            lblContract.ForeColor = Color.Black;
+            lblContract.Location = new Point(670, 104);
+            lblContract.Name = "lblContract";
+            tableLayoutPanel2.SetRowSpan(lblContract, 2);
+            lblContract.Size = new Size(125, 31);
+            lblContract.TabIndex = 42;
+            lblContract.Text = "Hợp Đồng";
             // 
-            // btnCancel
+            // sqlCommand1
             // 
-            btnCancel.BackColor = Color.FromArgb(217, 217, 217);
-            btnCancel.BaseColor = Color.FromArgb(217, 217, 217);
-            btnCancel.BorderColor = Color.Transparent;
-            btnCancel.BorderRadius = 20;
-            btnCancel.BorderSize = 0;
-            btnCancel.FlatAppearance.BorderSize = 0;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            btnCancel.ForeColor = Color.Black;
-            btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
-            btnCancel.Location = new Point(676, 428);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(384, 44);
-            btnCancel.TabIndex = 52;
-            btnCancel.Text = "Hủy";
-            btnCancel.UseVisualStyleBackColor = false;
+            sqlCommand1.CommandTimeout = 30;
+            sqlCommand1.EnableOptimizedParameterBinding = false;
             // 
-            // lbCustomer
+            // tableLayoutPanel2
             // 
-            lbCustomer.AutoSize = true;
-            lbCustomer.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            lbCustomer.Location = new Point(64, 100);
-            lbCustomer.Name = "lbCustomer";
-            lbCustomer.Size = new Size(144, 25);
-            lbCustomer.TabIndex = 41;
-            lbCustomer.Text = "Khách Hàng";
-            // 
-            // txtboxEmployee
-            // 
-            txtboxEmployee.BorderRadius = 15;
-            txtboxEmployee.BorderThickness = 2;
-            txtboxEmployee.FocusBorderColor = Color.DimGray;
-            txtboxEmployee.Font = new Font("Segoe UI", 12F);
-            txtboxEmployee.ForeColor = SystemColors.ActiveCaptionText;
-            txtboxEmployee.HoverBorderColor = Color.DarkGray;
-            txtboxEmployee.Location = new Point(676, 358);
-            txtboxEmployee.Multiline = false;
-            txtboxEmployee.Name = "txtboxEmployee";
-            txtboxEmployee.NormalBorderColor = Color.LightGray;
-            txtboxEmployee.Padding = new Padding(20, 6, 10, 10);
-            txtboxEmployee.PasswordChar = '\0';
-            txtboxEmployee.PlaceholderText = "Nhân Viên Thụ Lý";
-            txtboxEmployee.ReadOnly = false;
-            txtboxEmployee.Size = new Size(384, 44);
-            txtboxEmployee.TabIndex = 50;
-            txtboxEmployee.UseSystemPasswordChar = false;
-            // 
-            // btnSave
-            // 
-            btnSave.Anchor = AnchorStyles.Right;
-            btnSave.BackColor = Color.SeaGreen;
-            btnSave.BaseColor = Color.SeaGreen;
-            btnSave.BorderColor = Color.Transparent;
-            btnSave.BorderRadius = 20;
-            btnSave.BorderSize = 0;
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            btnSave.ForeColor = Color.White;
-            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
-            btnSave.Location = new Point(164, 428);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(384, 44);
-            btnSave.TabIndex = 51;
-            btnSave.Text = "Lưu";
-            btnSave.UseVisualStyleBackColor = false;
-            // 
-            // txtboxEndDate
-            // 
-            txtboxEndDate.BorderRadius = 15;
-            txtboxEndDate.BorderThickness = 2;
-            txtboxEndDate.FocusBorderColor = Color.DimGray;
-            txtboxEndDate.Font = new Font("Segoe UI", 12F);
-            txtboxEndDate.ForeColor = SystemColors.ActiveCaptionText;
-            txtboxEndDate.HoverBorderColor = Color.DarkGray;
-            txtboxEndDate.Location = new Point(676, 288);
-            txtboxEndDate.Multiline = false;
-            txtboxEndDate.Name = "txtboxEndDate";
-            txtboxEndDate.NormalBorderColor = Color.LightGray;
-            txtboxEndDate.Padding = new Padding(20, 6, 10, 10);
-            txtboxEndDate.PasswordChar = '\0';
-            txtboxEndDate.PlaceholderText = "Ngày Dự Kiến Trả Kết Quả";
-            txtboxEndDate.ReadOnly = false;
-            txtboxEndDate.Size = new Size(384, 44);
-            txtboxEndDate.TabIndex = 49;
-            txtboxEndDate.UseSystemPasswordChar = false;
+            tableLayoutPanel2.ColumnCount = 6;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.Controls.Add(lblContract, 3, 3);
+            tableLayoutPanel2.Controls.Add(lblTitle, 1, 1);
+            tableLayoutPanel2.Controls.Add(txtboxCustomerName, 1, 5);
+            tableLayoutPanel2.Controls.Add(txtboxIDContract, 3, 5);
+            tableLayoutPanel2.Controls.Add(txtboxPhone, 1, 7);
+            tableLayoutPanel2.Controls.Add(cmbContractType, 3, 7);
+            tableLayoutPanel2.Controls.Add(txtboxAddress, 1, 9);
+            tableLayoutPanel2.Controls.Add(txtboxOwner, 1, 11);
+            tableLayoutPanel2.Controls.Add(txtboxEmployee, 3, 11);
+            tableLayoutPanel2.Controls.Add(dtpDueDate, 3, 9);
+            tableLayoutPanel2.Controls.Add(lblCustomer, 1, 3);
+            tableLayoutPanel2.Controls.Add(btnCancel, 4, 13);
+            tableLayoutPanel2.Controls.Add(btnSave, 3, 13);
+            tableLayoutPanel2.Controls.Add(txtEmailCustomer, 1, 13);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
+            tableLayoutPanel2.Location = new Point(0, 0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 15;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.Size = new Size(1215, 521);
+            tableLayoutPanel2.TabIndex = 54;
             // 
             // txtboxCustomerName
             // 
-            txtboxCustomerName.Anchor = AnchorStyles.Right;
-            txtboxCustomerName.BorderRadius = 15;
+            txtboxCustomerName.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtboxCustomerName.BorderRadius = 13;
             txtboxCustomerName.BorderThickness = 2;
             txtboxCustomerName.FocusBorderColor = Color.DimGray;
             txtboxCustomerName.Font = new Font("Segoe UI", 12F);
-            txtboxCustomerName.ForeColor = SystemColors.ActiveCaptionText;
-            txtboxCustomerName.HoverBorderColor = Color.DarkGray;
-            txtboxCustomerName.Location = new Point(164, 148);
+            txtboxCustomerName.ForeColor = Color.Black;
+            txtboxCustomerName.HoverBorderColor = Color.Gray;
+            txtboxCustomerName.Location = new Point(63, 153);
             txtboxCustomerName.Multiline = false;
             txtboxCustomerName.Name = "txtboxCustomerName";
-            txtboxCustomerName.NormalBorderColor = Color.LightGray;
-            txtboxCustomerName.Padding = new Padding(20, 6, 10, 10);
+            txtboxCustomerName.NormalBorderColor = Color.DarkGray;
+            txtboxCustomerName.Padding = new Padding(9);
             txtboxCustomerName.PasswordChar = '\0';
-            txtboxCustomerName.PlaceholderText = "Tên Khách Hàng / Doanh Nghiệp";
+            txtboxCustomerName.PlaceholderText = "";
             txtboxCustomerName.ReadOnly = false;
-            txtboxCustomerName.Size = new Size(384, 44);
+            tableLayoutPanel2.SetRowSpan(txtboxCustomerName, 2);
+            txtboxCustomerName.Size = new Size(480, 46);
             txtboxCustomerName.TabIndex = 43;
             txtboxCustomerName.UseSystemPasswordChar = false;
             // 
+            // txtboxIDContract
+            // 
+            txtboxIDContract.BorderRadius = 13;
+            txtboxIDContract.BorderThickness = 2;
+            tableLayoutPanel2.SetColumnSpan(txtboxIDContract, 2);
+            txtboxIDContract.FocusBorderColor = Color.DimGray;
+            txtboxIDContract.Font = new Font("Segoe UI", 12F);
+            txtboxIDContract.ForeColor = Color.Black;
+            txtboxIDContract.HoverBorderColor = Color.Gray;
+            txtboxIDContract.Location = new Point(670, 153);
+            txtboxIDContract.Multiline = false;
+            txtboxIDContract.Name = "txtboxIDContract";
+            txtboxIDContract.NormalBorderColor = Color.DarkGray;
+            txtboxIDContract.Padding = new Padding(9);
+            txtboxIDContract.PasswordChar = '\0';
+            txtboxIDContract.PlaceholderText = "";
+            txtboxIDContract.ReadOnly = false;
+            tableLayoutPanel2.SetRowSpan(txtboxIDContract, 2);
+            txtboxIDContract.Size = new Size(480, 46);
+            txtboxIDContract.TabIndex = 44;
+            txtboxIDContract.UseSystemPasswordChar = false;
+            // 
             // txtboxPhone
             // 
-            txtboxPhone.Anchor = AnchorStyles.Right;
-            txtboxPhone.BorderRadius = 15;
+            txtboxPhone.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtboxPhone.BorderRadius = 13;
             txtboxPhone.BorderThickness = 2;
             txtboxPhone.FocusBorderColor = Color.DimGray;
             txtboxPhone.Font = new Font("Segoe UI", 12F);
-            txtboxPhone.ForeColor = SystemColors.ActiveCaptionText;
-            txtboxPhone.HoverBorderColor = Color.DarkGray;
-            txtboxPhone.Location = new Point(164, 218);
+            txtboxPhone.ForeColor = Color.Black;
+            txtboxPhone.HoverBorderColor = Color.Gray;
+            txtboxPhone.Location = new Point(63, 225);
             txtboxPhone.Multiline = false;
             txtboxPhone.Name = "txtboxPhone";
-            txtboxPhone.NormalBorderColor = Color.LightGray;
-            txtboxPhone.Padding = new Padding(20, 6, 10, 10);
+            txtboxPhone.NormalBorderColor = Color.DarkGray;
+            txtboxPhone.Padding = new Padding(9);
             txtboxPhone.PasswordChar = '\0';
-            txtboxPhone.PlaceholderText = "Ký hiệu doanh nghiệp";
+            txtboxPhone.PlaceholderText = "";
             txtboxPhone.ReadOnly = false;
-            txtboxPhone.Size = new Size(384, 44);
-            txtboxPhone.TabIndex = 44;
+            tableLayoutPanel2.SetRowSpan(txtboxPhone, 2);
+            txtboxPhone.Size = new Size(480, 46);
+            txtboxPhone.TabIndex = 45;
             txtboxPhone.UseSystemPasswordChar = false;
-            // 
-            // txtboxIDContract
-            // 
-            txtboxIDContract.BorderRadius = 15;
-            txtboxIDContract.BorderThickness = 2;
-            txtboxIDContract.FocusBorderColor = Color.DimGray;
-            txtboxIDContract.Font = new Font("Segoe UI", 12F);
-            txtboxIDContract.ForeColor = SystemColors.ActiveCaptionText;
-            txtboxIDContract.HoverBorderColor = Color.DarkGray;
-            txtboxIDContract.Location = new Point(676, 148);
-            txtboxIDContract.Multiline = false;
-            txtboxIDContract.Name = "txtboxIDContract";
-            txtboxIDContract.NormalBorderColor = Color.LightGray;
-            txtboxIDContract.Padding = new Padding(20, 6, 10, 10);
-            txtboxIDContract.PasswordChar = '\0';
-            txtboxIDContract.PlaceholderText = "Số Hợp Đồng";
-            txtboxIDContract.ReadOnly = false;
-            txtboxIDContract.Size = new Size(384, 44);
-            txtboxIDContract.TabIndex = 47;
-            txtboxIDContract.UseSystemPasswordChar = false;
-            // 
-            // txtboxAddress
-            // 
-            txtboxAddress.Anchor = AnchorStyles.Right;
-            txtboxAddress.BorderRadius = 15;
-            txtboxAddress.BorderThickness = 2;
-            txtboxAddress.FocusBorderColor = Color.DimGray;
-            txtboxAddress.Font = new Font("Segoe UI", 12F);
-            txtboxAddress.ForeColor = SystemColors.ActiveCaptionText;
-            txtboxAddress.HoverBorderColor = Color.DarkGray;
-            txtboxAddress.Location = new Point(164, 288);
-            txtboxAddress.Multiline = false;
-            txtboxAddress.Name = "txtboxAddress";
-            txtboxAddress.NormalBorderColor = Color.LightGray;
-            txtboxAddress.Padding = new Padding(20, 6, 10, 10);
-            txtboxAddress.PasswordChar = '\0';
-            txtboxAddress.PlaceholderText = "Địa Chỉ";
-            txtboxAddress.ReadOnly = false;
-            txtboxAddress.Size = new Size(384, 44);
-            txtboxAddress.TabIndex = 45;
-            txtboxAddress.UseSystemPasswordChar = false;
-            // 
-            // txtboxOwner
-            // 
-            txtboxOwner.Anchor = AnchorStyles.Right;
-            txtboxOwner.BorderRadius = 15;
-            txtboxOwner.BorderThickness = 2;
-            txtboxOwner.FocusBorderColor = Color.DimGray;
-            txtboxOwner.Font = new Font("Segoe UI", 12F);
-            txtboxOwner.ForeColor = SystemColors.ActiveCaptionText;
-            txtboxOwner.HoverBorderColor = Color.DarkGray;
-            txtboxOwner.Location = new Point(164, 358);
-            txtboxOwner.Multiline = false;
-            txtboxOwner.Name = "txtboxOwner";
-            txtboxOwner.NormalBorderColor = Color.LightGray;
-            txtboxOwner.Padding = new Padding(20, 6, 10, 10);
-            txtboxOwner.PasswordChar = '\0';
-            txtboxOwner.PlaceholderText = "Người Đại Diện";
-            txtboxOwner.ReadOnly = false;
-            txtboxOwner.Size = new Size(384, 44);
-            txtboxOwner.TabIndex = 46;
-            txtboxOwner.UseSystemPasswordChar = false;
             // 
             // cmbContractType
             // 
-            cmbContractType.BorderRadius = 12;
+            cmbContractType.BorderRadius = 13;
             cmbContractType.BorderThickness = 2;
+            tableLayoutPanel2.SetColumnSpan(cmbContractType, 2);
             cmbContractType.DataSource = null;
             cmbContractType.DisplayMember = "";
             cmbContractType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbContractType.FocusBorderColor = Color.DimGray;
             cmbContractType.Font = new Font("Segoe UI", 12F);
-            cmbContractType.HoverBorderColor = Color.DarkGray;
-            cmbContractType.Location = new Point(676, 218);
+            cmbContractType.ForeColor = Color.Black;
+            cmbContractType.HoverBorderColor = Color.Gray;
+            cmbContractType.Location = new Point(670, 225);
             cmbContractType.Name = "cmbContractType";
-            cmbContractType.NormalBorderColor = Color.LightGray;
+            cmbContractType.NormalBorderColor = Color.DarkGray;
             cmbContractType.SelectedIndex = -1;
             cmbContractType.SelectedItem = null;
             cmbContractType.SelectedValue = null;
-            cmbContractType.Size = new Size(384, 44);
-            cmbContractType.TabIndex = 53;
+            cmbContractType.Size = new Size(480, 46);
+            cmbContractType.TabIndex = 46;
             cmbContractType.ValueMember = "";
             // 
-            // lbContract
+            // txtboxAddress
             // 
-            lbContract.AutoSize = true;
-            lbContract.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            lbContract.Location = new Point(676, 100);
-            lbContract.Name = "lbContract";
-            lbContract.Size = new Size(125, 25);
-            lbContract.TabIndex = 42;
-            lbContract.Text = "Hợp Đồng";
+            txtboxAddress.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtboxAddress.BorderRadius = 13;
+            txtboxAddress.BorderThickness = 2;
+            txtboxAddress.FocusBorderColor = Color.DimGray;
+            txtboxAddress.Font = new Font("Segoe UI", 12F);
+            txtboxAddress.ForeColor = Color.Black;
+            txtboxAddress.HoverBorderColor = Color.Gray;
+            txtboxAddress.Location = new Point(63, 297);
+            txtboxAddress.Multiline = false;
+            txtboxAddress.Name = "txtboxAddress";
+            txtboxAddress.NormalBorderColor = Color.DarkGray;
+            txtboxAddress.Padding = new Padding(9);
+            txtboxAddress.PasswordChar = '\0';
+            txtboxAddress.PlaceholderText = "";
+            txtboxAddress.ReadOnly = false;
+            tableLayoutPanel2.SetRowSpan(txtboxAddress, 2);
+            txtboxAddress.Size = new Size(480, 46);
+            txtboxAddress.TabIndex = 47;
+            txtboxAddress.UseSystemPasswordChar = false;
+            // 
+            // txtboxOwner
+            // 
+            txtboxOwner.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtboxOwner.BorderRadius = 13;
+            txtboxOwner.BorderThickness = 2;
+            txtboxOwner.FocusBorderColor = Color.DimGray;
+            txtboxOwner.Font = new Font("Segoe UI", 12F);
+            txtboxOwner.ForeColor = Color.Black;
+            txtboxOwner.HoverBorderColor = Color.Gray;
+            txtboxOwner.Location = new Point(63, 369);
+            txtboxOwner.Multiline = false;
+            txtboxOwner.Name = "txtboxOwner";
+            txtboxOwner.NormalBorderColor = Color.DarkGray;
+            txtboxOwner.Padding = new Padding(9);
+            txtboxOwner.PasswordChar = '\0';
+            txtboxOwner.PlaceholderText = "";
+            txtboxOwner.ReadOnly = false;
+            tableLayoutPanel2.SetRowSpan(txtboxOwner, 2);
+            txtboxOwner.Size = new Size(480, 46);
+            txtboxOwner.TabIndex = 48;
+            txtboxOwner.UseSystemPasswordChar = false;
+            // 
+            // txtboxEmployee
+            // 
+            txtboxEmployee.BorderRadius = 13;
+            txtboxEmployee.BorderThickness = 2;
+            tableLayoutPanel2.SetColumnSpan(txtboxEmployee, 2);
+            txtboxEmployee.FocusBorderColor = Color.DimGray;
+            txtboxEmployee.Font = new Font("Segoe UI", 12F);
+            txtboxEmployee.ForeColor = Color.Black;
+            txtboxEmployee.HoverBorderColor = Color.Gray;
+            txtboxEmployee.Location = new Point(670, 369);
+            txtboxEmployee.Multiline = false;
+            txtboxEmployee.Name = "txtboxEmployee";
+            txtboxEmployee.NormalBorderColor = Color.DarkGray;
+            txtboxEmployee.Padding = new Padding(9);
+            txtboxEmployee.PasswordChar = '\0';
+            txtboxEmployee.PlaceholderText = "";
+            txtboxEmployee.ReadOnly = false;
+            tableLayoutPanel2.SetRowSpan(txtboxEmployee, 2);
+            txtboxEmployee.Size = new Size(480, 46);
+            txtboxEmployee.TabIndex = 49;
+            txtboxEmployee.UseSystemPasswordChar = false;
+            // 
+            // dtpDueDate
+            // 
+            dtpDueDate.BorderColor = Color.FromArgb(171, 171, 171);
+            dtpDueDate.BorderRadius = 13;
+            dtpDueDate.BorderSize = 1;
+            tableLayoutPanel2.SetColumnSpan(dtpDueDate, 2);
+            dtpDueDate.CustomFormat = null;
+            dtpDueDate.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            dtpDueDate.Format = DateTimePickerFormat.Short;
+            dtpDueDate.Location = new Point(671, 298);
+            dtpDueDate.Margin = new Padding(4);
+            dtpDueDate.Name = "dtpDueDate";
+            dtpDueDate.Size = new Size(478, 44);
+            dtpDueDate.TabIndex = 50;
+            dtpDueDate.Value = new DateTime(2025, 11, 15, 9, 57, 11, 361);
+            // 
+            // btnCancel
+            // 
+            btnCancel.BackColor = Color.Gray;
+            btnCancel.BaseColor = Color.Gray;
+            btnCancel.BorderColor = Color.Transparent;
+            btnCancel.BorderRadius = 13;
+            btnCancel.BorderSize = 0;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
+            btnCancel.ForeColor = Color.White;
+            btnCancel.HoverColor = Color.Silver;
+            btnCancel.Location = new Point(913, 441);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(237, 46);
+            btnCancel.TabIndex = 52;
+            btnCancel.Text = "Hủy";
+            btnCancel.UseVisualStyleBackColor = false;
+            // 
+            // btnSave
+            // 
+            btnSave.BackColor = Color.FromArgb(0, 113, 0);
+            btnSave.BaseColor = Color.FromArgb(0, 113, 0);
+            btnSave.BorderColor = Color.Transparent;
+            btnSave.BorderRadius = 13;
+            btnSave.BorderSize = 0;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
+            btnSave.ForeColor = Color.White;
+            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
+            btnSave.Location = new Point(670, 441);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(237, 46);
+            btnSave.TabIndex = 51;
+            btnSave.Text = "Lưu";
+            btnSave.UseVisualStyleBackColor = false;
+            // 
+            // txtEmailCustomer
+            // 
+            txtEmailCustomer.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtEmailCustomer.BorderRadius = 13;
+            txtEmailCustomer.BorderThickness = 2;
+            txtEmailCustomer.FocusBorderColor = Color.DimGray;
+            txtEmailCustomer.Font = new Font("Segoe UI", 12F);
+            txtEmailCustomer.ForeColor = Color.Black;
+            txtEmailCustomer.HoverBorderColor = Color.Gray;
+            txtEmailCustomer.Location = new Point(63, 441);
+            txtEmailCustomer.Multiline = false;
+            txtEmailCustomer.Name = "txtEmailCustomer";
+            txtEmailCustomer.NormalBorderColor = Color.DarkGray;
+            txtEmailCustomer.Padding = new Padding(9);
+            txtEmailCustomer.PasswordChar = '\0';
+            txtEmailCustomer.PlaceholderText = "";
+            txtEmailCustomer.ReadOnly = false;
+            tableLayoutPanel2.SetRowSpan(txtEmailCustomer, 2);
+            txtEmailCustomer.Size = new Size(480, 46);
+            txtEmailCustomer.TabIndex = 53;
+            txtEmailCustomer.UseSystemPasswordChar = false;
             // 
             // BusinessContent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(panel1);
+            Controls.Add(tableLayoutPanel2);
             Name = "BusinessContent";
-            Size = new Size(1227, 507);
-            panel1.ResumeLayout(false);
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
+            Size = new Size(1215, 521);
+            tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel2.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Label lbNamePage;
-        private Label lbCustomer;
-        private Label lbContract;
+        private Label lblTitle;
+        private Label lblCustomer;
+        private Label lblContract;
+        private Components.RoundedButton btnSave;
+        private TableLayoutPanel tableLayoutPanel1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        //private Components.RoundedButton btnSave;
+        private Microsoft.Data.SqlClient.SqlCommandBuilder sqlCommandBuilder1;
+        private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+        private TableLayoutPanel tableLayoutPanel2;
         private Components.RoundedTextBox txtboxCustomerName;
+        private Components.RoundedTextBox txtboxIDContract;
         private Components.RoundedTextBox txtboxPhone;
+        private Components.RoundedComboBox cmbContractType;
         private Components.RoundedTextBox txtboxAddress;
         private Components.RoundedTextBox txtboxOwner;
-        private Components.RoundedTextBox txtboxEndDate;
-        private Components.RoundedTextBox txtboxIDContract;
-        private Components.RoundedButton btnSave;
-        private Components.RoundedButton btnCancel;
-        private Panel panel1;
-        private TableLayoutPanel tableLayoutPanel1;
         private Components.RoundedTextBox txtboxEmployee;
-        private Components.RoundedComboBox cmbContractType;
+        private Components.CustomDateTimePicker dtpDueDate;
+        private Components.RoundedButton btnCancel;
+        private Components.RoundedTextBox txtEmailCustomer;
     }
 }

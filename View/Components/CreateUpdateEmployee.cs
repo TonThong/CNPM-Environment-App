@@ -60,7 +60,7 @@ namespace Environmental_Monitoring.View
         private void LoadForm()
         {
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
-            LoadRole();
+            LoadRole(); 
             if (id == 0)
             {
                 this.Text = rm.GetString("Form_AddEmployee_Title", culture);
@@ -73,11 +73,32 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        /// <summary>
+        /// Tải danh sách vai trò vào ComboBox và dịch tên vai trò theo ngôn ngữ hiện tại.
+        /// </summary>
         private void LoadRole()
         {
-            cbbRole.DataSource = RoleRepo.Instance.GetAll();
-            cbbRole.DisplayMember = "RoleName";
-            cbbRole.ValueMember = "RoleId";
+            DataTable rolesTable = RoleRepo.Instance.GetAll();
+
+            List<RoleDisplayItem> translatedRoles = new List<RoleDisplayItem>();
+
+            foreach (DataRow row in rolesTable.Rows)
+            {
+                int roleId = Convert.ToInt32(row["RoleID"]);
+                string originalRoleName = row["RoleName"].ToString();
+
+                string translatedName = TranslateRoleName(originalRoleName);
+
+                translatedRoles.Add(new RoleDisplayItem
+                {
+                    RoleId = roleId,
+                    TranslatedRoleName = translatedName
+                });
+            }
+
+            cbbRole.DataSource = translatedRoles;
+            cbbRole.DisplayMember = "TranslatedRoleName";
+            cbbRole.ValueMember = "RoleId"; 
         }
 
         private Model.Employee GetData()
@@ -199,6 +220,13 @@ namespace Environmental_Monitoring.View
             {
                 emp.PasswordHash = BCrypt.Net.BCrypt.HashPassword(emp.PasswordHash);
                 EmployeeRepo.Instance.InsertEmployee(emp);
+
+                object empIdObj = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
+                int newEmployeeId = (empIdObj != null && int.TryParse(empIdObj.ToString(), out int eid)) ? eid : 0;
+
+                string noiDung = $"Nhân viên '{emp.HoTen}' (Mã: {emp.MaNhanVien}) vừa được thêm.";
+                int adminRoleID = 5; 
+                NotificationService.CreateNotification("NhanVienMoi", noiDung, adminRoleID, null, newEmployeeId);
             }
             else
             {
@@ -292,5 +320,36 @@ namespace Environmental_Monitoring.View
         {
             Save();
         }
+
+        public class RoleDisplayItem
+        {
+            public int RoleId { get; set; }
+            public string TranslatedRoleName { get; set; }
+        }
+
+        private string TranslateRoleName(string originalRoleName)
+        {
+            CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
+
+            switch (originalRoleName.ToLower())
+            {
+                case "admin":
+                    return rm.GetString("Role_Admin", culture);
+                case "business":
+                    return rm.GetString("Role_Business", culture);
+                case "field":
+                    return rm.GetString("Role_Field", culture); 
+                case "lab":
+                    return rm.GetString("Role_Lab", culture); 
+                case "plan":
+                    return rm.GetString("Role_Plan", culture); 
+                case "result":
+                    return rm.GetString("Role_Result", culture); 
+                default:
+                    return originalRoleName; 
+            }
+        }
+
+
     }
 }
