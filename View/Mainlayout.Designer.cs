@@ -313,7 +313,7 @@ namespace Environmental_Monitoring.View
             // 
             // globalAlertPanel
             // 
-            globalAlertPanel.Location = new Point(1009, 9);
+            globalAlertPanel.Location = new Point(1010, 8);
             globalAlertPanel.Name = "globalAlertPanel";
             globalAlertPanel.Size = new Size(400, 100);
             globalAlertPanel.TabIndex = 22;
@@ -384,6 +384,7 @@ namespace Environmental_Monitoring.View
             // iconBell
             // 
             iconBell.BackColor = Color.Transparent;
+            iconBell.Cursor = Cursors.Hand;
             iconBell.Image = (Image)resources.GetObject("iconBell.Image");
             iconBell.Location = new Point(1153, 10);
             iconBell.Name = "iconBell";
