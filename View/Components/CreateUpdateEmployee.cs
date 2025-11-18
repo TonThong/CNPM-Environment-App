@@ -60,7 +60,7 @@ namespace Environmental_Monitoring.View
         private void LoadForm()
         {
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
-            LoadRole(); 
+            LoadRole();
             if (id == 0)
             {
                 this.Text = rm.GetString("Form_AddEmployee_Title", culture);
@@ -98,7 +98,7 @@ namespace Environmental_Monitoring.View
 
             cbbRole.DataSource = translatedRoles;
             cbbRole.DisplayMember = "TranslatedRoleName";
-            cbbRole.ValueMember = "RoleId"; 
+            cbbRole.ValueMember = "RoleId";
         }
 
         private Model.Employee GetData()
@@ -114,9 +114,8 @@ namespace Environmental_Monitoring.View
             emp.Email = txtEmail.Text;
             emp.PasswordHash = txtMatKhau.Text;
             emp.RoleID = int.Parse(cbbRole.SelectedValue.ToString());
-            int namSinh = 0;
-            int.TryParse(txtNamSinh.Text, out namSinh);
-            emp.NamSinh = namSinh;
+
+            emp.NamSinh = dtpNamSinh.Value;
 
             return emp;
         }
@@ -127,7 +126,16 @@ namespace Environmental_Monitoring.View
 
             txtMaNV.Text = model.MaNhanVien;
             txtHoTen.Text = model.HoTen;
-            txtNamSinh.Text = model.NamSinh.ToString();
+
+            if (model.NamSinh.HasValue)
+            {
+                dtpNamSinh.Value = model.NamSinh.Value;
+            }
+            else
+            {
+                dtpNamSinh.Value = DateTime.Now;
+            }
+
             chkTruongBoPhan.Checked = (model.TruongBoPhan == 1);
             txtDiaChi.Text = model.DiaChi;
             txtSDT.Text = model.SoDienThoai;
@@ -225,7 +233,7 @@ namespace Environmental_Monitoring.View
                 int newEmployeeId = (empIdObj != null && int.TryParse(empIdObj.ToString(), out int eid)) ? eid : 0;
 
                 string noiDung = $"Nhân viên '{emp.HoTen}' (Mã: {emp.MaNhanVien}) vừa được thêm.";
-                int adminRoleID = 5; 
+                int adminRoleID = 5;
                 NotificationService.CreateNotification("NhanVienMoi", noiDung, adminRoleID, null, newEmployeeId);
             }
             else
@@ -268,7 +276,8 @@ namespace Environmental_Monitoring.View
             txtDiaChi.PlaceholderText = rm.GetString("Placeholder_Address", culture);
             txtEmail.PlaceholderText = rm.GetString("Placeholder_Email", culture);
             txtMatKhau.PlaceholderText = rm.GetString("Placeholder_Password", culture);
-            txtNamSinh.PlaceholderText = rm.GetString("Placeholder_BirthYear", culture);
+
+
             txtSDT.PlaceholderText = rm.GetString("Placeholder_Phone", culture);
 
             btnSave.Text = rm.GetString("Button_Save", culture);
@@ -300,8 +309,10 @@ namespace Environmental_Monitoring.View
                 txtEmail.ForeColor = ThemeManager.TextColor;
                 txtMatKhau.BackColor = ThemeManager.PanelColor;
                 txtMatKhau.ForeColor = ThemeManager.TextColor;
-                txtNamSinh.BackColor = ThemeManager.PanelColor;
-                txtNamSinh.ForeColor = ThemeManager.TextColor;
+
+                dtpNamSinh.BackColor = ThemeManager.PanelColor;
+                dtpNamSinh.ForeColor = ThemeManager.TextColor;
+
                 txtSDT.BackColor = ThemeManager.PanelColor;
                 txtSDT.ForeColor = ThemeManager.TextColor;
                 cbbRole.BackColor = ThemeManager.PanelColor;
@@ -338,15 +349,15 @@ namespace Environmental_Monitoring.View
                 case "business":
                     return rm.GetString("Role_Business", culture);
                 case "field":
-                    return rm.GetString("Role_Field", culture); 
+                    return rm.GetString("Role_Field", culture);
                 case "lab":
-                    return rm.GetString("Role_Lab", culture); 
+                    return rm.GetString("Role_Lab", culture);
                 case "plan":
-                    return rm.GetString("Role_Plan", culture); 
+                    return rm.GetString("Role_Plan", culture);
                 case "result":
-                    return rm.GetString("Role_Result", culture); 
+                    return rm.GetString("Role_Result", culture);
                 default:
-                    return originalRoleName; 
+                    return originalRoleName;
             }
         }
 

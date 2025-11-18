@@ -5,18 +5,14 @@ using System.Linq;
 using System.Windows.Forms;
 using Environmental_Monitoring.Controller;
 using System.IO;
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using iText.Layout.Properties;
-using iText.IO.Font;
-using iText.Kernel.Font;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Resources;
 using System.Globalization;
 using System.Threading;
 using Environmental_Monitoring.View.Components;
+using Environmental_Monitoring.Controller.Data;
+using Environmental_Monitoring.Controller;
+using System.Reflection;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -28,28 +24,23 @@ namespace Environmental_Monitoring.View.ContractContent
         private ResourceManager rm;
         private CultureInfo culture;
 
-        /// <summary>
-        /// Hàm khởi tạo (Constructor) cho UserControl.
-        /// </summary>
+
         public ResultContent()
         {
             InitializeComponent();
             InitializeLocalization();
             this.Load += ResultContent_Load;
+
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+            this.UpdateStyles();
         }
 
-        /// <summary>
-        /// Khởi tạo ResourceManager để tải chuỗi đa ngôn ngữ.
-        /// </summary>
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(ResultContent).Assembly);
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        /// <summary>
-        /// Hiển thị thông báo (alert) cho người dùng, ưu tiên qua Mainlayout.
-        /// </summary>
         private void ShowAlert(string message, AlertPanel.AlertType type)
         {
             var mainLayout = this.FindForm() as Mainlayout;
@@ -59,9 +50,24 @@ namespace Environmental_Monitoring.View.ContractContent
             }
             else
             {
-                string title = (type == AlertPanel.AlertType.Success) ? rm.GetString("Alert_SuccessTitle", culture) : rm.GetString("Alert_ErrorTitle", culture);
-                MessageBox.Show(message, title, MessageBoxButtons.OK,
-                    (type == AlertPanel.AlertType.Success) ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+                string title;
+                MessageBoxIcon icon;
+                switch (type)
+                {
+                    case AlertPanel.AlertType.Success:
+                        title = rm.GetString("Alert_SuccessTitle", culture);
+                        icon = MessageBoxIcon.Information;
+                        break;
+                    case AlertPanel.AlertType.Error:
+                        title = rm.GetString("Alert_ErrorTitle", culture);
+                        icon = MessageBoxIcon.Error;
+                        break;
+                    default:
+                        title = rm.GetString("Alert_InfoTitle", culture) ?? "Information";
+                        icon = MessageBoxIcon.Information;
+                        break;
+                }
+                MessageBox.Show(message, title, MessageBoxButtons.OK, icon);
             }
         }
 
@@ -74,15 +80,9 @@ namespace Environmental_Monitoring.View.ContractContent
 
             if (lbContractID != null)
             {
-                // Chỉ đặt lại văn bản nếu CHƯA có hợp đồng nào được tải
                 if (currentContractId == 0)
                 {
                     lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
-                }
-                // Nếu ĐÃ CÓ hợp đồng, cập nhật văn bản (để hỗ trợ đổi ngôn ngữ)
-                else
-                {
-                    lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + currentContractId.ToString();
                 }
             }
             if (btnContract != null)
@@ -103,30 +103,77 @@ namespace Environmental_Monitoring.View.ContractContent
                 btnCancel.Text = rm.GetString("Button_Cancel", culture);
             }
 
-            if (roundedDataGridView2.Columns.Contains("SampleCode"))
-                roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
+            // 1. Mã hợp đồng
+            if (roundedDataGridView2.Columns.Contains("MaDon"))
+                roundedDataGridView2.Columns["MaDon"].HeaderText = rm.GetString("Grid_ContractCode", culture);
+            // 2. Ngày đăng kí
+            if (roundedDataGridView2.Columns.Contains("NgayKy"))
+                roundedDataGridView2.Columns["NgayKy"].HeaderText = rm.GetString("Grid_SignDate", culture);
+            // 3. Ngày hết hạn
+            if (roundedDataGridView2.Columns.Contains("NgayTraKetQua"))
+                roundedDataGridView2.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture);
+            // 4. Tên công ty
+            if (roundedDataGridView2.Columns.Contains("TenDoanhNghiep"))
+                roundedDataGridView2.Columns["TenDoanhNghiep"].HeaderText = rm.GetString("PDF_Company", culture);
+            // 5. Người đại diện
+            if (roundedDataGridView2.Columns.Contains("TenNguoiDaiDien"))
+                roundedDataGridView2.Columns["TenNguoiDaiDien"].HeaderText = rm.GetString("PDF_Representative", culture);
+            // 6. Tên nhân viên
+            if (roundedDataGridView2.Columns.Contains("TenNhanVien"))
+                roundedDataGridView2.Columns["TenNhanVien"].HeaderText = rm.GetString("Business_Employee", culture);
+            // 7. Mẫu
+            if (roundedDataGridView2.Columns.Contains("MauKiemNghiem"))
+                roundedDataGridView2.Columns["MauKiemNghiem"].HeaderText = rm.GetString("Grid_Sample", culture);
+            // 8. Thông số
             if (roundedDataGridView2.Columns.Contains("TenThongSo"))
                 roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
-            if (roundedDataGridView2.Columns.Contains("DonVi"))
-                roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
+            // 9. Min
             if (roundedDataGridView2.Columns.Contains("GioiHanMin"))
                 roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
+            // 10. Max
             if (roundedDataGridView2.Columns.Contains("GioiHanMax"))
                 roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
+            // 11. Đơn vị
+            if (roundedDataGridView2.Columns.Contains("DonVi"))
+                roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
+            // 12. Giá trị
             if (roundedDataGridView2.Columns.Contains("GiaTri"))
                 roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_Value", culture);
+            // 13. Kết quả
             if (roundedDataGridView2.Columns.Contains("KetQua"))
                 roundedDataGridView2.Columns["KetQua"].HeaderText = rm.GetString("Grid_Result", culture);
+            // 14. Trạng thái duyệt
             if (roundedDataGridView2.Columns.Contains("TrangThaiHienThi"))
                 roundedDataGridView2.Columns["TrangThaiHienThi"].HeaderText = rm.GetString("Grid_ApprovalStatus", culture);
+
+            if (roundedDataGridView2.Columns.Contains("TrangThaiHopDong"))
+                roundedDataGridView2.Columns["TrangThaiHopDong"].HeaderText = rm.GetString("Grid_ContractStatus", culture);
         }
 
-        /// <summary>
-        /// Xử lý khi UserControl được tải, gán các sự kiện ban đầu cho các nút.
-        /// </summary>
         private void ResultContent_Load(object sender, EventArgs e)
         {
-            roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            roundedDataGridView2.RowHeadersVisible = false;
+            roundedDataGridView2.ScrollBars = ScrollBars.Both;
+
+            roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            roundedDataGridView2.ReadOnly = true;
+            roundedDataGridView2.Scroll += roundedDataGridView2_Scroll;
+
+            roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            roundedDataGridView2.GridColor = Color.Gainsboro;
+            try
+            {
+                Type dgvType = roundedDataGridView2.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+                if (pi != null)
+                {
+                    pi.SetValue(roundedDataGridView2, true, null);
+                }
+            }
+            catch (Exception) { }
+
+
             roundedDataGridView2.DefaultCellStyle.ForeColor = Color.Black;
             roundedDataGridView2.AllowUserToAddRows = false;
 
@@ -142,26 +189,15 @@ namespace Environmental_Monitoring.View.ContractContent
             UpdateUIText();
         }
 
-        /// <summary>
-        /// Tải dữ liệu của một Hợp đồng cụ thể lên DataGridView.
-        /// </summary>
         private void LoadContract(int contractId)
         {
             try
             {
-                string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
-                                    p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
-                                    p.ONhiem,
-                                    r.GiaTri, r.TrangThaiPheDuyet
-                                FROM EnvironmentalSamples s
-                                JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
-                                JOIN Parameters p ON tp.ParameterID = p.ParameterID
-                                LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
-                                WHERE s.ContractID = @contractId
-                                ORDER BY s.MaMau, p.TenThongSo";
-
-                DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
                 this.currentContractId = contractId;
+                if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
+
+                string q = QueryRepository.LoadContractResults;
+                DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
 
                 if (dt == null || dt.Rows.Count == 0)
                 {
@@ -174,6 +210,9 @@ namespace Environmental_Monitoring.View.ContractContent
                     dt.Columns.Add("KetQua", typeof(string));
                 if (!dt.Columns.Contains("TrangThaiHienThi"))
                     dt.Columns.Add("TrangThaiHienThi", typeof(string));
+                if (!dt.Columns.Contains("TrangThaiHopDong"))
+                    dt.Columns.Add("TrangThaiHopDong", typeof(string));
+
 
                 bool motMucChuaDuyet = false;
 
@@ -182,6 +221,11 @@ namespace Environmental_Monitoring.View.ContractContent
                 string notPolluted = rm.GetString("Grid_NotPolluted", culture);
                 string approved = rm.GetString("Grid_Approved", culture);
                 string notApproved = rm.GetString("Grid_NotApproved", culture);
+                string status_Completed = rm.GetString("Status_Completed", culture);
+                string status_Expired = rm.GetString("Status_Expired", culture);
+                string status_Overdue = rm.GetString("Status_Overdue", culture);
+                string status_Active = rm.GetString("Status_Active", culture);
+
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -211,6 +255,17 @@ namespace Environmental_Monitoring.View.ContractContent
                         row["TrangThaiHienThi"] = notApproved;
                         motMucChuaDuyet = true;
                     }
+
+                    string statusHopDongDB = row["Status"].ToString();
+                    DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
+                    if (statusHopDongDB == "Completed")
+                        row["TrangThaiHopDong"] = status_Completed;
+                    else if (statusHopDongDB == "Expired")
+                        row["TrangThaiHopDong"] = status_Expired;
+                    else if (DateTime.Now > ngayTra)
+                        row["TrangThaiHopDong"] = status_Overdue;
+                    else
+                        row["TrangThaiHopDong"] = status_Active;
                 }
 
                 roundedDataGridView2.DataSource = dt;
@@ -257,8 +312,22 @@ namespace Environmental_Monitoring.View.ContractContent
                     roundedDataGridView2.Columns["ONhiem"].Visible = false;
                 if (roundedDataGridView2.Columns["TrangThaiPheDuyet"] != null)
                     roundedDataGridView2.Columns["TrangThaiPheDuyet"].Visible = false;
+                if (roundedDataGridView2.Columns["Status"] != null)
+                    roundedDataGridView2.Columns["Status"].Visible = false;
 
-                MergeSampleCells();
+                foreach (DataGridViewColumn col in roundedDataGridView2.Columns)
+                {
+                    if (col.Name == "TenThongSo" || col.Name == "MauKiemNghiem")
+                    {
+                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                        col.MinimumWidth = 150;
+                    }
+                    else if (col.Visible)
+                    {
+                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                    }
+                } 
                 UpdateUIStates(true, isContractApproved);
             }
             catch (Exception ex)
@@ -268,9 +337,14 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Cập nhật trạng thái (Enabled/Disabled) của các nút bấm.
-        /// </summary>
+        private void roundedDataGridView2_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
+            {
+                roundedDataGridView2.Invalidate();
+            }
+        }
+
         private void UpdateUIStates(bool contractLoaded, bool isApproved)
         {
             if (!contractLoaded)
@@ -289,111 +363,6 @@ namespace Environmental_Monitoring.View.ContractContent
             btnMail.Enabled = isApproved;
         }
 
-        /// <summary>
-        /// Tạo file PDF báo cáo kết quả từ dữ liệu trên DataGridView.
-        /// </summary>
-        private string GeneratePdfReport(int contractId)
-        {
-            string tempFilePath = Path.Combine(Path.GetTempPath(), $"HopDong_{contractId}_{Path.GetRandomFileName()}.pdf");
-
-            try
-            {
-                using (PdfWriter writer = new PdfWriter(tempFilePath))
-                using (PdfDocument pdf = new PdfDocument(writer))
-                using (Document doc = new Document(pdf))
-                {
-                    string fontPath = Path.Combine(Application.StartupPath, "Resources", "times.ttf");
-                    PdfFont font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H);
-
-                    string query = @"SELECT * FROM Contracts c
-                                     JOIN Customers cu ON c.CustomerID = cu.CustomerID
-                                     WHERE c.ContractID = @ContractID";
-                    DataTable dt = DataProvider.Instance.ExecuteQuery(query, new object[] { contractId });
-
-                    string nguoiDaiDien = dt.Rows[0]["TenNguoiDaiDien"].ToString();
-                    string tenDoanhNghiep = dt.Rows[0]["TenDoanhNghiep"].ToString();
-                    string kyHieuDoanhNghiep = dt.Rows[0]["KyHieuDoanhNghiep"].ToString();
-
-                    doc.Add(new Paragraph(rm.GetString("PDF_Title", culture)).SetFont(font).SetFontSize(16).SetTextAlignment(TextAlignment.CENTER));
-                    doc.Add(new Paragraph(rm.GetString("PDF_Company", culture) + ": " + tenDoanhNghiep).SetFont(font));
-                    doc.Add(new Paragraph(rm.GetString("PDF_CompanySymbol", culture) + ": " + kyHieuDoanhNghiep).SetFont(font));
-                    doc.Add(new Paragraph(rm.GetString("PDF_Representative", culture) + ": " + nguoiDaiDien).SetFont(font));
-
-                    Paragraph title = new Paragraph(rm.GetString("PDF_TableTitle", culture));
-                    title.SetFont(font);
-                    title.SetTextAlignment(TextAlignment.CENTER);
-                    doc.Add(title);
-
-                    string[] headers = {
-                        rm.GetString("Grid_Sample", culture),
-                        rm.GetString("Grid_ParamName", culture),
-                        rm.GetString("Grid_Unit", culture),
-                        rm.GetString("Grid_Min", culture),
-                        rm.GetString("Grid_Max", culture),
-                        rm.GetString("Grid_Value", culture),
-                        rm.GetString("Grid_Result", culture),
-                        rm.GetString("Grid_ApprovalStatus", culture)
-                    };
-                    Table table = new Table(headers.Length).UseAllAvailableWidth();
-
-                    foreach (string header in headers)
-                    {
-                        table.AddHeaderCell(
-                            new Cell().Add(new Paragraph(header).SetFont(font))
-                                    .SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY)
-                                    .SetTextAlignment(TextAlignment.CENTER)
-                                    .SetVerticalAlignment(VerticalAlignment.MIDDLE)
-                                    .SetPadding(5)
-                        );
-                    }
-
-                    DataTable dtInfo = (DataTable)roundedDataGridView2.DataSource;
-                    foreach (DataRow row in dtInfo.Rows)
-                    {
-                        table.AddCell(new Cell().Add(new Paragraph(row["SampleCode"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["TenThongSo"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["DonVi"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMin"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMax"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GiaTri"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["KetQua"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["TrangThaiHienThi"].ToString()).SetFont(font)));
-                    }
-                    doc.Add(table);
-
-                    DateTime now = DateTime.Now;
-                    string dateString = rm.GetString("PDF_DateFormat", culture);
-                    string ngayThang = string.Format(dateString, now.Day, now.Month, now.Year);
-
-                    doc.Add(new Paragraph("\n\n"));
-                    doc.Add(new Paragraph(ngayThang)
-                        .SetFont(font)
-                        .SetTextAlignment(TextAlignment.RIGHT)
-                        .SetMarginRight(40));
-
-                    doc.Add(new Paragraph(rm.GetString("PDF_Sign_Company", culture) + " " + tenDoanhNghiep)
-                        .SetFont(font)
-                        .SetTextAlignment(TextAlignment.CENTER)
-                        .SetMarginTop(30)
-                        .SetMarginRight(250));
-
-                    doc.Add(new Paragraph(rm.GetString("PDF_Sign_Manager", culture))
-                        .SetFont(font)
-                        .SetTextAlignment(TextAlignment.CENTER)
-                        .SetMarginTop(-30)
-                        .SetMarginLeft(250));
-                }
-                return tempFilePath;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(rm.GetString("Error_GeneratePDF", culture) + ": " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'PDF', gọi hàm GeneratePdfReport và lưu file.
-        /// </summary>
         private void BtnPDF_Click(object? sender, EventArgs e)
         {
             if (currentContractId == 0)
@@ -416,7 +385,11 @@ namespace Environmental_Monitoring.View.ContractContent
                 try
                 {
                     this.Cursor = Cursors.WaitCursor;
-                    tempPdfPath = GeneratePdfReport(currentContractId);
+
+                    var reportService = new ReportService(rm, culture);
+                    DataTable gridData = (DataTable)roundedDataGridView2.DataSource;
+                    tempPdfPath = reportService.GeneratePdfReport(currentContractId, gridData);
+
                     File.Copy(tempPdfPath, savePath, true);
                     this.Cursor = Cursors.Default;
                     ShowAlert(rm.GetString("Result_PDFSaveSuccess", culture), AlertPanel.AlertType.Success);
@@ -436,9 +409,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'Mail', tạo PDF và gửi mail (bất đồng bộ).
-        /// </summary>
         private async void BtnMail_Click(object? sender, EventArgs e)
         {
             if (currentContractId == 0)
@@ -450,10 +420,7 @@ namespace Environmental_Monitoring.View.ContractContent
             string tempPdfPath = null;
             try
             {
-                string query = @"SELECT cu.Email FROM Customers cu
-                                 JOIN Contracts c ON c.CustomerID = cu.CustomerID
-                                 WHERE c.ContractID = @contractId";
-                object emailObj = DataProvider.Instance.ExecuteScalar(query, new object[] { currentContractId });
+                object emailObj = DataProvider.Instance.ExecuteScalar(QueryRepository.GetCustomerEmail, new object[] { currentContractId });
 
                 if (emailObj == null || emailObj == DBNull.Value || string.IsNullOrWhiteSpace(emailObj.ToString()))
                 {
@@ -464,9 +431,12 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 this.Cursor = Cursors.WaitCursor;
                 ShowAlert(rm.GetString("Result_GeneratingPDF", culture), AlertPanel.AlertType.Error);
-                tempPdfPath = GeneratePdfReport(currentContractId);
 
-                string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @contractId", new object[] { currentContractId }).ToString();
+                var reportService = new ReportService(rm, culture);
+                DataTable gridData = (DataTable)roundedDataGridView2.DataSource;
+                tempPdfPath = await Task.Run(() => reportService.GeneratePdfReport(currentContractId, gridData));
+
+                string maDon = DataProvider.Instance.ExecuteScalar(QueryRepository.GetMaDon, new object[] { currentContractId }).ToString();
 
                 string subject = string.Format(rm.GetString("Mail_Subject", culture), maDon);
                 string body = string.Format(rm.GetString("Mail_Body", culture), maDon, currentContractId);
@@ -494,9 +464,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'Yêu Cầu Chỉnh Sửa', mở popup và chuyển hợp đồng về bước trước đó.
-        /// </summary>
         private void BtnRequest_Click(object? sender, EventArgs e)
         {
             if (this.currentContractId == 0)
@@ -514,33 +481,26 @@ namespace Environmental_Monitoring.View.ContractContent
 
                     try
                     {
-                        string resetResultsQuery = @"
-                            UPDATE Results r
-                            JOIN EnvironmentalSamples es ON r.SampleID = es.SampleID
-                            SET r.TrangThaiPheDuyet = NULL 
-                            WHERE es.ContractID = @contractId";
-                        DataProvider.Instance.ExecuteNonQuery(resetResultsQuery, new object[] { this.currentContractId });
-
-                        string updateContractQuery = "UPDATE Contracts SET TienTrinh = @tienTrinh WHERE ContractID = @contractId";
-                        DataProvider.Instance.ExecuteNonQuery(updateContractQuery, new object[] { newTienTrinh, this.currentContractId });
+                        DataProvider.Instance.ExecuteNonQuery(QueryRepository.ResetResultsOnRequest, new object[] { this.currentContractId });
+                        DataProvider.Instance.ExecuteNonQuery(QueryRepository.UpdateContractTienTrinh, new object[] { newTienTrinh, this.currentContractId });
 
                         int recipientRoleID;
-                        if (newTienTrinh == 2) 
+                        if (newTienTrinh == (int)ContractProcess.Sampling)
                         {
-                            recipientRoleID = 10; 
+                            recipientRoleID = (int)UserRole.Planning;
                         }
-                        else 
+                        else
                         {
-                            recipientRoleID = 7; 
+                            recipientRoleID = (int)UserRole.Lab;
                         }
 
-                        string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @id", new object[] { this.currentContractId }).ToString();
+                        string maDon = DataProvider.Instance.ExecuteScalar(QueryRepository.GetMaDon, new object[] { this.currentContractId }).ToString();
                         string noiDung = $"Hợp đồng '{maDon}' yêu cầu bạn chỉnh sửa.";
 
                         NotificationService.CreateNotification("ChinhSua", noiDung, recipientRoleID, this.currentContractId, null);
 
                         string noiDungAdmin = $"Hợp đồng '{maDon}' đã được gửi yêu cầu chỉnh sửa cho {form.SelectedPhongBan}.";
-                        NotificationService.CreateNotification("ChinhSua", noiDungAdmin, 5, this.currentContractId, null);
+                        NotificationService.CreateNotification("ChinhSua", noiDungAdmin, (int)UserRole.Admin, this.currentContractId, null);
 
                         string successMsg = string.Format(rm.GetString("Result_RequestSuccess", culture), form.SelectedPhongBan);
                         ShowAlert(successMsg, AlertPanel.AlertType.Success);
@@ -558,9 +518,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'Duyệt', chốt tất cả kết quả và hoàn thành hợp đồng.
-        /// </summary>
         private void BtnDuyet_Click(object? sender, EventArgs e)
         {
             if (this.currentContractId == 0)
@@ -571,15 +528,13 @@ namespace Environmental_Monitoring.View.ContractContent
 
             try
             {
-                string updateResultsQuery = @"
-                    UPDATE Results r
-                    JOIN EnvironmentalSamples es ON r.SampleID = es.SampleID
-                    SET r.TrangThaiPheDuyet = 1 
-                    WHERE es.ContractID = @contractId";
-                DataProvider.Instance.ExecuteNonQuery(updateResultsQuery, new object[] { this.currentContractId });
+                DataProvider.Instance.ExecuteNonQuery(QueryRepository.ApproveAllResults, new object[] { this.currentContractId });
+                DataProvider.Instance.ExecuteNonQuery(QueryRepository.CompleteContractStatus, new object[] { this.currentContractId });
 
-                string updateContractQuery = "UPDATE Contracts SET Status = 'Completed' WHERE ContractID = @contractId";
-                DataProvider.Instance.ExecuteNonQuery(updateContractQuery, new object[] { this.currentContractId });
+                int adminRoleID = (int)UserRole.Admin;
+                string maDon = DataProvider.Instance.ExecuteScalar(QueryRepository.GetMaDon, new object[] { this.currentContractId }).ToString();
+                string noiDungAdmin = $"Hợp đồng '{maDon}' đã được duyệt và hoàn thành.";
+                NotificationService.CreateNotification("ChinhSua", noiDungAdmin, adminRoleID, this.currentContractId, null);
 
                 ShowAlert(rm.GetString("Result_ApproveSuccess", culture), AlertPanel.AlertType.Success);
 
@@ -591,21 +546,17 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'Danh Sách Hợp Đồng' (mở PopUpContract).
-        /// </summary>
         private void btnContract_Click(object sender, EventArgs e)
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts";
+                string query = QueryRepository.GetPopupContracts;
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
 
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
                     popup.ContractSelected += (contractId) =>
                     {
-                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
                         LoadContract(contractId);
                     };
 
@@ -619,113 +570,8 @@ namespace Environmental_Monitoring.View.ContractContent
         }
 
         /// <summary>
-        /// Gán (hoặc gán lại) các sự kiện Paint và CellFormatting để vẽ các ô được gộp.
+        /// Logic gộp ô (đã bị vô hiệu hóa)
         /// </summary>
-        private void MergeSampleCells()
-        {
-            roundedDataGridView2.Paint -= roundedDataGridView2_Paint;
-            roundedDataGridView2.CellFormatting -= roundedDataGridView2_CellFormatting;
-
-            roundedDataGridView2.Paint += roundedDataGridView2_Paint;
-            roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
-        }
-
-        /// <summary>
-        /// (Logic Hỗ trợ) Tự vẽ lại ô 'SampleCode' (Mã Mẫu) để nó trông như được gộp.
-        /// </summary>
-        private void roundedDataGridView2_Paint(object sender, PaintEventArgs e)
-        {
-            if (roundedDataGridView2.Rows.Count == 0) return;
-
-            string colName = "SampleCode";
-            if (!roundedDataGridView2.Columns.Contains(colName)) return;
-
-            int colIndex = roundedDataGridView2.Columns[colName].Index;
-
-            Rectangle rect;
-            int firstVisibleRow = roundedDataGridView2.FirstDisplayedCell?.RowIndex ?? 0;
-            int lastVisibleRow = firstVisibleRow + roundedDataGridView2.DisplayedRowCount(false);
-            lastVisibleRow = Math.Min(lastVisibleRow, roundedDataGridView2.RowCount);
-
-            for (int i = firstVisibleRow; i < lastVisibleRow; i++)
-            {
-                rect = roundedDataGridView2.GetCellDisplayRectangle(colIndex, i, true);
-
-                if (i == 0 || roundedDataGridView2[colIndex, i].Value?.ToString() != roundedDataGridView2[colIndex, i - 1].Value?.ToString())
-                {
-                }
-                else
-                {
-                    rect.Y -= 1;
-                    rect.Height += 1;
-                }
-
-                int mergeCount = 0;
-                for (int j = i + 1; j < roundedDataGridView2.RowCount; j++)
-                {
-                    if (roundedDataGridView2[colIndex, i].Value?.ToString() == roundedDataGridView2[colIndex, j].Value?.ToString())
-                    {
-                        mergeCount++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                if (mergeCount > 0)
-                {
-                    for (int k = 1; k <= mergeCount; k++)
-                    {
-                        if (i + k < roundedDataGridView2.RowCount)
-                            rect.Height += roundedDataGridView2.GetCellDisplayRectangle(colIndex, i + k, true).Height;
-                    }
-
-                    Color backColor = roundedDataGridView2.Rows[i].Cells[colIndex].Style.BackColor;
-                    if (backColor.IsEmpty) backColor = roundedDataGridView2.DefaultCellStyle.BackColor;
-
-                    e.Graphics.FillRectangle(new SolidBrush(backColor), rect);
-                    e.Graphics.DrawRectangle(new Pen(roundedDataGridView2.GridColor), rect.X - 1, rect.Y - 1, rect.Width, rect.Height);
-
-                    TextRenderer.DrawText(e.Graphics,
-                        roundedDataGridView2[colIndex, i].FormattedValue?.ToString(),
-                        roundedDataGridView2.DefaultCellStyle.Font,
-                        rect,
-                        roundedDataGridView2.DefaultCellStyle.ForeColor,
-                        TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
-
-                    i += mergeCount;
-                }
-            }
-        }
-
-        /// <summary>
-        /// (Logic Hỗ trợ) Ẩn văn bản ở các ô con (ô đã bị gộp) để chỉ hiển thị văn bản ở ô đầu tiên.
-        /// </summary>
-        private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (e.RowIndex == 0 || e.ColumnIndex < 0) return;
-
-            string colName = "SampleCode";
-            if (!roundedDataGridView2.Columns.Contains(colName) || e.ColumnIndex != roundedDataGridView2.Columns[colName].Index)
-            {
-                return;
-            }
-
-            try
-            {
-                var currentValue = e.Value;
-                var prevValue = roundedDataGridView2[e.ColumnIndex, e.RowIndex - 1].Value;
-
-                if (currentValue != null && prevValue != null && currentValue.Equals(prevValue))
-                {
-                    e.Value = "";
-                    e.FormattingApplied = true;
-                }
-            }
-            catch { }
-        }
-
         private void btnSearch_Click(object sender, EventArgs e) { }
         private void roundedButton1_Click(object sender, EventArgs e) { }
         private void btnSearch_Click_1(object sender, EventArgs e) { }

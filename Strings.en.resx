@@ -955,4 +955,16 @@ Green Flow Team&lt;/p&gt;</value>
   <data name="Role_Result" xml:space="preserve">
     <value>Result</value>
   </data>
+  <data name="Alert_DeleteError_InUse_Specific" xml:space="preserve">
+    <value>Cannot delete. {0}</value>
+  </data>
+  <data name="Usage_Contract" xml:space="preserve">
+    <value>The Employee in charge of Contract '{0}'</value>
+  </data>
+  <data name="Usage_SampleHT" xml:space="preserve">
+    <value>assigned to Field Sample '{0}'</value>
+  </data>
+  <data name="Usage_SamplePTN" xml:space="preserve">
+    <value>assigned to Lab Sample '{0}'</value>
+  </data>
 </root>

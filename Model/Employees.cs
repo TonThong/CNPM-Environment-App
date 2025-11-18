@@ -21,7 +21,8 @@ namespace Environmental_Monitoring.Model
         [StringLength(100)]
         public string HoTen { get; set; }
 
-        public int? NamSinh { get; set; }
+        // --- ĐÃ THAY ĐỔI ---
+        public DateTime? NamSinh { get; set; } // Đổi từ int? sang DateTime?
 
         public int TruongBoPhan { get; set; }
 
@@ -66,8 +67,9 @@ namespace Environmental_Monitoring.Model
             MaNhanVien = row["MaNhanVien"].ToString();
             HoTen = row["HoTen"].ToString();
 
+            // --- ĐÃ THAY ĐỔI ---
             if (row["NamSinh"] != DBNull.Value)
-                NamSinh = Convert.ToInt32(row["NamSinh"]);
+                NamSinh = Convert.ToDateTime(row["NamSinh"]); // Đổi từ ToInt32 sang ToDateTime
             else
                 NamSinh = null;
 

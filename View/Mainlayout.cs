@@ -14,9 +14,9 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.Controller;
-using Environmental_Monitoring.Properties; 
-using Environmental_Monitoring.Controller.Data; 
-using System.IO; 
+using Environmental_Monitoring.Properties;
+using Environmental_Monitoring.Controller.Data;
+using System.IO;
 
 namespace Environmental_Monitoring.View
 {
@@ -113,7 +113,7 @@ namespace Environmental_Monitoring.View
 
             if (this.timerNotifications != null)
             {
-                timerNotifications.Interval = 60000;
+                timerNotifications.Interval = 60000; 
                 timerNotifications.Tick += TimerNotifications_Tick;
                 timerNotifications.Start();
             }
@@ -456,12 +456,32 @@ namespace Environmental_Monitoring.View
         #region Notification Logic
 
         /// <summary>
-        /// Sự kiện chạy mỗi phút để kiểm tra thông báo mới.
+        /// (ĐÃ SỬA) Sự kiện chạy mỗi phút:
+        /// 1. Kiểm tra thông báo mới (cho event).
+        /// 2. Kích hoạt tác vụ hàng ngày lúc 00:01.
         /// </summary>
-        private void TimerNotifications_Tick(object sender, EventArgs e)
+        private async void TimerNotifications_Tick(object sender, EventArgs e)
         {
             CheckForUnreadNotifications();
+
+            DateTime now = DateTime.Now;
+
+            if (now.Hour == 0 && now.Minute == 1)
+            {
+                if (Settings.Default.LastNotificationCheck.Date < now.Date)
+                {
+                    try
+                    {
+                        await RunDailyTasksInternal();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Lỗi chạy tác vụ hàng ngày tự động: " + ex.Message);
+                    }
+                }
+            }
         }
+
 
         /// <summary>
         /// Kiểm tra CSDL xem có thông báo chưa đọc CỦA NGƯỜI DÙNG NÀY không.
@@ -470,7 +490,8 @@ namespace Environmental_Monitoring.View
         {
             if (UserSession.CurrentUser == null || UserSession.CurrentUser.RoleID == null)
             {
-                iconBell.Visible = false;
+                if (iconBell != null) iconBell.Visible = false;
+                if (lblBadge != null) lblBadge.Visible = false;
                 return;
             }
 
@@ -514,7 +535,8 @@ namespace Environmental_Monitoring.View
         }
 
         /// <summary>
-        /// Chạy kiểm tra các thông báo tự động (hết hạn, trễ hạn) - Chỉ dành cho Admin.
+        /// (ĐÃ SỬA) Chạy kiểm tra hàng ngày KHI ADMIN ĐĂNG NHẬP.
+        /// Chỉ là dự phòng nếu timer 00:01 bị lỡ.
         /// </summary>
         private async Task RunDailyNotificationChecks()
         {
@@ -528,50 +550,68 @@ namespace Environmental_Monitoring.View
                 return;
             }
 
-            int adminRoleID = UserSession.CurrentUser.RoleID.Value;
-
             try
             {
-                string overdueQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
-                                        WHERE (Status IS NULL OR Status != 'Completed') 
-                                        AND NgayTraKetQua < CURDATE()";
-
-                DataTable overdueContracts = await Task.Run(() => DataProvider.Instance.ExecuteQuery(overdueQuery));
-                foreach (DataRow row in overdueContracts.Rows)
-                {
-                    int contractId = Convert.ToInt32(row["ContractID"]);
-                    string maDon = row["MaDon"].ToString();
-                    DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
-                    int daysOverdue = (DateTime.Now.Date - ngayTra.Date).Days;
-
-                    string noiDung = $"Hợp đồng '{maDon}' đã trễ hạn {daysOverdue} ngày.";
-                    await CreateDailyNotificationOnce(contractId, "QuaHan", noiDung, adminRoleID);
-                }
-
-                string expiringQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
-                                         WHERE (Status IS NULL OR Status != 'Completed') 
-                                         AND NgayTraKetQua BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
-
-                DataTable expiringContracts = await Task.Run(() => DataProvider.Instance.ExecuteQuery(expiringQuery));
-                foreach (DataRow row in expiringContracts.Rows)
-                {
-                    int contractId = Convert.ToInt32(row["ContractID"]);
-                    string maDon = row["MaDon"].ToString();
-                    DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
-                    int daysLeft = (ngayTra.Date - DateTime.Now.Date).Days;
-
-                    string noiDung = $"Hợp đồng '{maDon}' sắp hết hạn, còn {daysLeft} ngày.";
-                    await CreateDailyNotificationOnce(contractId, "SapHetHan", noiDung, adminRoleID);
-                }
-
-                Settings.Default.LastNotificationCheck = DateTime.Now;
-                Settings.Default.Save();
+                await RunDailyTasksInternal();
             }
             catch (Exception ex)
             {
                 ShowGlobalAlert("Lỗi khi chạy kiểm tra thông báo: " + ex.Message, AlertPanel.AlertType.Error);
             }
         }
+
+        /// <summary>
+        /// (HÀM MỚI) Logic cốt lõi: Cập nhật Status và Tạo thông báo hàng ngày.
+        /// Được gọi bởi Timer (00:01) hoặc khi Admin đăng nhập (lần đầu trong ngày).
+        /// </summary>
+        private async Task RunDailyTasksInternal()
+        {
+            string updateExpiredQuery = @"
+                UPDATE Contracts
+                SET Status = 'Expired'
+                WHERE NgayTraKetQua < CURDATE()
+                  AND Status = 'Active';";
+
+            await Task.Run(() => DataProvider.Instance.ExecuteNonQuery(updateExpiredQuery));
+
+            int adminRoleID = 5; 
+
+            string overdueQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
+                                    WHERE Status = 'Expired' 
+                                    AND NgayTraKetQua < CURDATE()";
+
+            DataTable overdueContracts = await Task.Run(() => DataProvider.Instance.ExecuteQuery(overdueQuery));
+            foreach (DataRow row in overdueContracts.Rows)
+            {
+                int contractId = Convert.ToInt32(row["ContractID"]);
+                string maDon = row["MaDon"].ToString();
+                DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
+                int daysOverdue = (DateTime.Now.Date - ngayTra.Date).Days;
+
+                string noiDung = $"Hợp đồng '{maDon}' đã trễ hạn {daysOverdue} ngày.";
+                await CreateDailyNotificationOnce(contractId, "QuaHan", noiDung, adminRoleID);
+            }
+
+            string expiringQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
+                                     WHERE Status = 'Active' 
+                                     AND NgayTraKetQua BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
+
+            DataTable expiringContracts = await Task.Run(() => DataProvider.Instance.ExecuteQuery(expiringQuery));
+            foreach (DataRow row in expiringContracts.Rows)
+            {
+                int contractId = Convert.ToInt32(row["ContractID"]);
+                string maDon = row["MaDon"].ToString();
+                DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
+                int daysLeft = (ngayTra.Date - DateTime.Now.Date).Days;
+
+                string noiDung = $"Hợp đồng '{maDon}' sắp hết hạn, còn {daysLeft} ngày.";
+                await CreateDailyNotificationOnce(contractId, "SapHetHan", noiDung, adminRoleID);
+            }
+
+            Settings.Default.LastNotificationCheck = DateTime.Now;
+            Settings.Default.Save();
+        }
+
 
         /// <summary>
         /// Hàm phụ: Đảm bảo chỉ tạo 1 thông báo/ngày cho mỗi loại VÀ MỖI ROLE.
@@ -648,38 +688,6 @@ namespace Environmental_Monitoring.View
             else
             {
                 CheckForUnreadNotifications();
-            }
-        }
-
-        private void btnTestNotify_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (UserSession.CurrentUser == null || UserSession.CurrentUser.RoleID == null)
-                {
-                    MessageBox.Show("Bạn chưa đăng nhập để lấy RoleID!");
-                    return;
-                }
-
-                int currentUserRoleID = UserSession.CurrentUser.RoleID.Value;
-                string noiDung = "Đây là thông báo test lúc " + DateTime.Now.ToLongTimeString();
-
-                // SỬA ĐỔI TẠI ĐÂY:
-                // Dùng một giá trị ENUM hợp lệ từ database của bạn
-                NotificationService.CreateNotification(
-                    "HopDongMoi",       // <-- THAY "Test" BẰNG "HopDongMoi"
-                    noiDung,            // noiDung
-                    currentUserRoleID,  // recipientRoleID
-                    null,               // contractId 
-                    null                // employeeId (file NotificationService của bạn có tên này)
-                );
-
-                CheckForUnreadNotifications();
-                ShowGlobalAlert("Đã gửi thông báo test thành công!", AlertPanel.AlertType.Success);
-            }
-            catch (Exception ex)
-            {
-                ShowGlobalAlert("Lỗi gửi thông báo test: " + ex.Message, AlertPanel.AlertType.Error);
             }
         }
     }

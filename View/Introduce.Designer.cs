@@ -284,6 +284,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Transparent;
             Controls.Add(tableLayoutPanel1);
             Name = "Introduce";
             Size = new Size(1227, 715);

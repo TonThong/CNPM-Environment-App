@@ -9,7 +9,8 @@ using System.Resources;
 using System.Threading;
 using Environmental_Monitoring.View.Components;
 using System.Collections.Generic;
-using System.Linq; // Cần thêm để dùng .FirstOrDefault()
+using System.Linq;
+using Environmental_Monitoring.Controller.Data;
 
 namespace Environmental_Monitoring.View
 {
@@ -18,7 +19,6 @@ namespace Environmental_Monitoring.View
         private int currentContractId = 0;
         private bool isUpdatingCell = false;
 
-        // Tên hằng số cho các cột checkbox
         private const string COL_ONHIEM = "ColONhiem";
         private const string COL_SAPONHIEM = "ColSapONhiem";
         private const string COL_KHONGONHIEM = "ColKhongONhiem";
@@ -33,9 +33,6 @@ namespace Environmental_Monitoring.View
         {
             InitializeComponent();
             InitializeLocalization();
-
-            // [SỬA LỖI] Gán sự kiện Load để hàm ExperimentContent_Load_1 được chạy
-            // Nếu không có dòng này, các sự kiện (Grid, Nút bấm) sẽ không hoạt động
             this.Load += ExperimentContent_Load_1;
         }
 
@@ -80,7 +77,6 @@ namespace Environmental_Monitoring.View
             if (btnSave != null)
                 btnSave.Text = rm.GetString("Button_Save", culture);
 
-            // (MỚI) Cập nhật nút Hủy
             if (btnCancel != null)
                 btnCancel.Text = rm.GetString("Button_Cancel", culture);
 
@@ -114,12 +110,12 @@ namespace Environmental_Monitoring.View
             roundedDataGridView2.ForeColor = Color.Black;
             roundedDataGridView2.AllowUserToAddRows = false;
 
-            // Gán sự kiện cho Grid
+            roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+
             roundedDataGridView2.CurrentCellDirtyStateChanged += RoundedDataGridView2_CurrentCellDirtyStateChanged;
             roundedDataGridView2.CellValueChanged += RoundedDataGridView2_CellValueChanged;
             roundedDataGridView2.CellEndEdit += RoundedDataGridView2_CellEndEdit_SaveGiaTri;
 
-            // (MỚI) Gán sự kiện cho các nút
             if (btnContracts != null)
             {
                 btnContracts.Click -= btnContracts_Click;
@@ -136,7 +132,7 @@ namespace Environmental_Monitoring.View
                 btnCancel.Click += btnCancel_Click;
             }
 
-            UpdateUIText(); // Cập nhật ngôn ngữ khi tải
+            UpdateUIText();
         }
 
         /// <summary>
@@ -189,12 +185,12 @@ namespace Environmental_Monitoring.View
 
                 if (val == null || val == DBNull.Value || string.IsNullOrWhiteSpace(val.ToString()))
                 {
-                    return; // Không làm gì nếu giá trị rỗng
+                    return;
                 }
 
                 if (!TryParseDecimalString(val.ToString(), out var giaTri))
                 {
-                    ShowAlert(rm.GetString("Error_InvalidValue", culture), AlertPanel.AlertType.Error); // "Giá trị không hợp lệ"
+                    ShowAlert(rm.GetString("Error_InvalidValue", culture), AlertPanel.AlertType.Error);
                     return;
                 }
 
@@ -205,23 +201,20 @@ namespace Environmental_Monitoring.View
 
                     if (sampleId <= 0)
                     {
-                        ShowAlert(rm.GetString("Error_SampleIDNotFound", culture), AlertPanel.AlertType.Error); // "Không tìm thấy SampleID"
+                        ShowAlert(rm.GetString("Error_SampleIDNotFound", culture), AlertPanel.AlertType.Error);
                         return;
                     }
 
-                    // Kiểm tra xem đã có kết quả (Result) chưa
                     string checkQ = "SELECT ResultID FROM Results WHERE SampleID = @sampleId AND ParameterID = @parameterId LIMIT 1";
                     object exist = DataProvider.Instance.ExecuteScalar(checkQ, new object[] { sampleId, parameterId });
 
                     if (exist != null && int.TryParse(exist.ToString(), out int resultId))
                     {
-                        // Nếu có rồi thì Cập nhật
                         string updateQ = "UPDATE Results SET GiaTri = @giaTri, NgayPhanTich = CURRENT_TIMESTAMP WHERE ResultID = @resultId";
                         DataProvider.Instance.ExecuteNonQuery(updateQ, new object[] { giaTri, resultId });
                     }
                     else
                     {
-                        // Nếu chưa có thì Thêm mới
                         string insertQ = "INSERT INTO Results (GiaTri, NgayPhanTich, SampleID, ParameterID) VALUES (@giaTri, CURRENT_TIMESTAMP, @sampleId, @parameterId)";
                         DataProvider.Instance.ExecuteNonQuery(insertQ, new object[] { giaTri, sampleId, parameterId });
                     }
@@ -229,7 +222,7 @@ namespace Environmental_Monitoring.View
             }
             catch (Exception ex)
             {
-                ShowAlert(rm.GetString("Error_SavingValue", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); // "Lỗi khi lưu giá trị"
+                ShowAlert(rm.GetString("Error_SavingValue", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
             }
             finally
             {
@@ -258,10 +251,9 @@ namespace Environmental_Monitoring.View
             string colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
             var row = roundedDataGridView2.Rows[e.RowIndex];
 
-            // Kiểm tra xem có phải là 1 trong 3 cột checkbox không
             if (colName == COL_ONHIEM || colName == COL_SAPONHIEM || colName == COL_KHONGONHIEM)
             {
-                isUpdatingCell = true; // Cờ an toàn để tránh vòng lặp vô hạn
+                isUpdatingCell = true;
                 try
                 {
                     bool isChecked = false;
@@ -271,7 +263,6 @@ namespace Environmental_Monitoring.View
                         isChecked = b;
                     }
 
-                    // Nếu người dùng check vào 1 ô, tự động uncheck 2 ô còn lại
                     if (isChecked)
                     {
                         if (colName != COL_ONHIEM)
@@ -298,7 +289,6 @@ namespace Environmental_Monitoring.View
             {
                 currentContractId = contractId;
 
-                // Query lấy dữ liệu từ nhiều bảng
                 string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
                                 p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
                                 p.PhuTrach, p.ONhiem,
@@ -318,12 +308,10 @@ namespace Environmental_Monitoring.View
                     return;
                 }
 
-                // Thêm 3 cột boolean (cho checkbox) vào DataTable
                 dt.Columns.Add(COL_ONHIEM, typeof(bool));
                 dt.Columns.Add(COL_SAPONHIEM, typeof(bool));
                 dt.Columns.Add(COL_KHONGONHIEM, typeof(bool));
 
-                // Gán giá trị cho 3 cột checkbox dựa trên cột 'ONhiem' từ CSDL
                 foreach (DataRow row in dt.Rows)
                 {
                     int onhiemStatus = 0;
@@ -339,7 +327,6 @@ namespace Environmental_Monitoring.View
 
                 roundedDataGridView2.DataSource = dt;
 
-                // Ẩn các cột ID
                 if (roundedDataGridView2.Columns["ParameterID"] != null)
                     roundedDataGridView2.Columns["ParameterID"].Visible = false;
                 if (roundedDataGridView2.Columns["SampleID"] != null)
@@ -349,19 +336,15 @@ namespace Environmental_Monitoring.View
                 if (roundedDataGridView2.Columns["ONhiem"] != null)
                     roundedDataGridView2.Columns["ONhiem"].Visible = false;
 
-                // Cập nhật tiêu đề cột (sẽ được gọi lại bởi UpdateUIText)
                 if (roundedDataGridView2.Columns["SampleCode"] != null)
                     roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
-                // ... (các cột khác)
                 if (roundedDataGridView2.Columns["GiaTri"] != null)
                     roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
 
-                // Đảm bảo 3 cột trạng thái là CheckBox
                 EnsureCheckBoxColumn(COL_ONHIEM, rm.GetString("Grid_Polluted", culture), 10);
                 EnsureCheckBoxColumn(COL_SAPONHIEM, rm.GetString("Grid_SoonPolluted", culture), 11);
                 EnsureCheckBoxColumn(COL_KHONGONHIEM, rm.GetString("Grid_NotPolluted", culture), 12);
 
-                // Phân biệt ô 'GiaTri' nào được phép nhập (ThiNghiem) và ô nào không (HienTruong)
                 foreach (DataGridViewRow row in roundedDataGridView2.Rows)
                 {
                     string phuTrach = row.Cells["PhuTrach"].Value?.ToString() ?? "";
@@ -370,22 +353,22 @@ namespace Environmental_Monitoring.View
                     if (phuTrach.Equals("ThiNghiem", StringComparison.OrdinalIgnoreCase))
                     {
                         giaTriCell.ReadOnly = false;
-                        giaTriCell.Style.BackColor = Color.FromArgb(224, 224, 224); // Màu xám nhạt
+                        giaTriCell.Style.BackColor = Color.FromArgb(224, 224, 224);
                         giaTriCell.Style.ForeColor = Color.Black;
                     }
                     else
                     {
                         giaTriCell.ReadOnly = true;
-                        giaTriCell.Style.BackColor = Color.White; // Màu trắng
+                        giaTriCell.Style.BackColor = Color.White;
                         giaTriCell.Style.ForeColor = Color.Black;
                     }
                 }
 
-                MergeSampleCells(); // Gọi hàm gộp ô
+                MergeSampleCells();
             }
             catch (Exception ex)
             {
-                ShowAlert(rm.GetString("Error_LoadExperimentData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); // "Lỗi tải dữ liệu Thí Nghiệm"
+                ShowAlert(rm.GetString("Error_LoadExperimentData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
             }
         }
 
@@ -394,17 +377,15 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void EnsureCheckBoxColumn(string name, string headerText, int desiredIndex)
         {
-            // Xóa cột cũ nếu tồn tại (để thay bằng CheckBox)
             if (roundedDataGridView2.Columns.Contains(name))
             {
                 roundedDataGridView2.Columns.Remove(name);
             }
 
-            // Tạo cột CheckBox mới
             var chk = new DataGridViewCheckBoxColumn()
             {
                 Name = name,
-                DataPropertyName = name, // Liên kết với cột trong DataTable
+                DataPropertyName = name,
                 HeaderText = headerText,
                 TrueValue = true,
                 FalseValue = false,
@@ -455,12 +436,11 @@ namespace Environmental_Monitoring.View
                 var dt = roundedDataGridView2.DataSource as DataTable;
                 if (dt == null || currentContractId == 0)
                 {
-                    ShowAlert(rm.GetString("Exp_NoDataToSave", culture), AlertPanel.AlertType.Error); // "Không có dữ liệu để lưu"
+                    ShowAlert(rm.GetString("Exp_NoDataToSave", culture), AlertPanel.AlertType.Error);
                     return;
                 }
 
                 int savedCount = 0;
-                // Dùng HashSet để chỉ cập nhật mỗi ParameterID 1 lần duy nhất (vì grid bị gộp ô)
                 HashSet<int> parametersToUpdate = new HashSet<int>();
 
                 foreach (DataGridViewRow row in roundedDataGridView2.Rows)
@@ -470,40 +450,47 @@ namespace Environmental_Monitoring.View
 
                     int parameterId = Convert.ToInt32(row.Cells["ParameterID"].Value);
 
-                    if (parametersToUpdate.Contains(parameterId)) continue; // Đã cập nhật rồi, bỏ qua
+                    if (parametersToUpdate.Contains(parameterId)) continue;
 
-                    // Lấy giá trị từ 3 cột checkbox
                     bool oNhiem = Convert.ToBoolean(row.Cells[COL_ONHIEM].Value);
                     bool sapONhiem = Convert.ToBoolean(row.Cells[COL_SAPONHIEM].Value);
 
-                    // Chuyển 3 bool thành 1 số int (flag)
-                    int flag = 0; // 0 = Không ô nhiễm
-                    if (oNhiem) flag = 1; // 1 = Ô nhiễm
-                    else if (sapONhiem) flag = 2; // 2 = Sắp ô nhiễm
+                    int flag = 0;
+                    if (oNhiem) flag = 1;
+                    else if (sapONhiem) flag = 2;
 
-                    // Cập nhật CSDL
                     string updateQuery = "UPDATE Parameters SET ONhiem = @flag WHERE ParameterID = @paramId";
                     DataProvider.Instance.ExecuteNonQuery(updateQuery, new object[] { flag, parameterId });
 
-                    parametersToUpdate.Add(parameterId); // Đánh dấu đã cập nhật
+                    parametersToUpdate.Add(parameterId);
                     savedCount++;
                 }
 
-                // Chuyển hợp đồng sang bước tiếp theo
                 string query = @"UPDATE Contracts SET TienTrinh = 4 WHERE ContractID = @contractId;";
                 DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.currentContractId });
 
-                string successMsg = string.Format(rm.GetString("Exp_SaveSuccess", culture), savedCount); // "Lưu thành công... thông số"
+                int ketQuaRoleID = 8;
+                if (ketQuaRoleID == 0)
+                {
+                    ShowAlert("RoleID phòng Kết Quả chưa được thiết lập. Thông báo bị bỏ qua.", AlertPanel.AlertType.Error);
+                }
+                else
+                {
+                    string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @id", new object[] { this.currentContractId }).ToString();
+                    string noiDungKetQua = $"Hợp đồng '{maDon}' đã phân tích xong, cần xem xét và duyệt kết quả.";
+                    NotificationService.CreateNotification("ChinhSua", noiDungKetQua, ketQuaRoleID, this.currentContractId, null);
+                }
+
+                string successMsg = string.Format(rm.GetString("Exp_SaveSuccess", culture), savedCount);
                 ShowAlert(successMsg, AlertPanel.AlertType.Success);
 
-                // Xóa form
                 roundedDataGridView2.DataSource = null;
                 lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
                 this.currentContractId = 0;
             }
             catch (Exception ex)
             {
-                ShowAlert(rm.GetString("Error_SaveData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); // "Lỗi lưu dữ liệu"
+                ShowAlert(rm.GetString("Error_SaveData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
             }
         }
 
@@ -521,18 +508,14 @@ namespace Environmental_Monitoring.View
         }
 
 
-        // --- CÁC HÀM HỖ TRỢ GỘP Ô (MERGE CELLS) ---
-
         /// <summary>
         /// Gán (hoặc gán lại) các sự kiện Paint và CellFormatting để vẽ các ô được gộp.
         /// </summary>
         private void MergeSampleCells()
         {
-            // Gỡ bỏ sự kiện cũ để tránh gán chồng chéo
             roundedDataGridView2.Paint -= roundedDataGridView2_Paint;
             roundedDataGridView2.CellFormatting -= roundedDataGridView2_CellFormatting;
 
-            // Gán sự kiện mới
             roundedDataGridView2.Paint += roundedDataGridView2_Paint;
             roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
         }
@@ -560,16 +543,13 @@ namespace Environmental_Monitoring.View
 
                 if (i == 0 || roundedDataGridView2[colIndex, i].Value?.ToString() != roundedDataGridView2[colIndex, i - 1].Value?.ToString())
                 {
-                    // Đây là ô đầu tiên của một nhóm gộp
                 }
                 else
                 {
-                    // Đây là ô con, điều chỉnh hình chữ nhật để che đường viền
                     rect.Y -= 1;
                     rect.Height += 1;
                 }
 
-                // Đếm xem có bao nhiêu hàng bên dưới giống hệt
                 int mergeCount = 0;
                 for (int j = i + 1; j < roundedDataGridView2.RowCount; j++)
                 {
@@ -585,22 +565,18 @@ namespace Environmental_Monitoring.View
 
                 if (mergeCount > 0)
                 {
-                    // Tính tổng chiều cao của các ô gộp
                     for (int k = 1; k <= mergeCount; k++)
                     {
                         if (i + k < roundedDataGridView2.RowCount)
                             rect.Height += roundedDataGridView2.GetCellDisplayRectangle(colIndex, i + k, true).Height;
                     }
 
-                    // Vẽ hình chữ nhật nền
                     Color backColor = roundedDataGridView2.Rows[i].Cells[colIndex].Style.BackColor;
                     if (backColor.IsEmpty) backColor = roundedDataGridView2.DefaultCellStyle.BackColor;
                     e.Graphics.FillRectangle(new SolidBrush(backColor), rect);
 
-                    // Vẽ đường viền
                     e.Graphics.DrawRectangle(new Pen(roundedDataGridView2.GridColor), rect.X - 1, rect.Y - 1, rect.Width, rect.Height);
 
-                    // Vẽ văn bản (căn giữa)
                     TextRenderer.DrawText(e.Graphics,
                         roundedDataGridView2[colIndex, i].FormattedValue?.ToString(),
                         roundedDataGridView2.DefaultCellStyle.Font,
@@ -608,7 +584,7 @@ namespace Environmental_Monitoring.View
                         roundedDataGridView2.DefaultCellStyle.ForeColor,
                         TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
 
-                    i += mergeCount; // Bỏ qua các hàng đã được gộp
+                    i += mergeCount;
                 }
             }
         }
@@ -628,13 +604,12 @@ namespace Environmental_Monitoring.View
 
             try
             {
-                // Nếu giá trị ô này giống hệt ô bên trên nó
                 var currentValue = e.Value;
                 var prevValue = roundedDataGridView2[e.ColumnIndex, e.RowIndex - 1].Value;
 
                 if (currentValue != null && prevValue != null && currentValue.Equals(prevValue))
                 {
-                    e.Value = ""; // Ẩn văn bản đi
+                    e.Value = "";
                     e.FormattingApplied = true;
                 }
             }

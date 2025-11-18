@@ -52,7 +52,6 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1 = new TableLayoutPanel();
             iconBell = new PictureBox();
             timerNotifications = new System.Windows.Forms.Timer(components);
-            btnTestNotify = new Button();
             lblBadge = new Label();
             panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -394,16 +393,6 @@ namespace Environmental_Monitoring.View
             iconBell.TabStop = false;
             iconBell.Click += iconBell_Click;
             // 
-            // btnTestNotify
-            // 
-            btnTestNotify.Location = new Point(626, 114);
-            btnTestNotify.Name = "btnTestNotify";
-            btnTestNotify.Size = new Size(94, 29);
-            btnTestNotify.TabIndex = 28;
-            btnTestNotify.Text = "Gửi Test";
-            btnTestNotify.UseVisualStyleBackColor = true;
-            btnTestNotify.Click += btnTestNotify_Click;
-            // 
             // lblBadge
             // 
             lblBadge.AutoSize = true;
@@ -427,7 +416,6 @@ namespace Environmental_Monitoring.View
             ClientSize = new Size(1421, 853);
             Controls.Add(globalAlertPanel);
             Controls.Add(lblBadge);
-            Controls.Add(btnTestNotify);
             Controls.Add(iconBell);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(panel);
@@ -470,7 +458,6 @@ namespace Environmental_Monitoring.View
         private TableLayoutPanel tableLayoutPanel1;
         private PictureBox iconBell;
         private System.Windows.Forms.Timer timerNotifications;
-        private Button btnTestNotify;
         private Label lblBadge;
     }
 }

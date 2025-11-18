@@ -45,6 +45,7 @@
             btnCancel.BorderColor = Color.Transparent;
             btnCancel.BorderRadius = 25;
             btnCancel.BorderSize = 0;
+            btnCancel.Cursor = Cursors.Hand;
             btnCancel.Dock = DockStyle.Fill;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
@@ -66,6 +67,7 @@
             btnSave.BorderColor = Color.Transparent;
             btnSave.BorderRadius = 25;
             btnSave.BorderSize = 0;
+            btnSave.Cursor = Cursors.Hand;
             btnSave.Dock = DockStyle.Fill;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
@@ -123,6 +125,7 @@
             btnContracts.BorderColor = Color.Transparent;
             btnContracts.BorderRadius = 25;
             btnContracts.BorderSize = 0;
+            btnContracts.Cursor = Cursors.Hand;
             btnContracts.Dock = DockStyle.Fill;
             btnContracts.FlatAppearance.BorderSize = 0;
             btnContracts.FlatStyle = FlatStyle.Flat;
@@ -151,6 +154,7 @@
             tableLayoutPanel1.Controls.Add(btnContracts, 1, 1);
             tableLayoutPanel1.Controls.Add(btnCancel, 4, 5);
             tableLayoutPanel1.Controls.Add(btnSave, 3, 5);
+            tableLayoutPanel1.Cursor = Cursors.Default;
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";

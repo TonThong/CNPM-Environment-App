@@ -196,6 +196,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không thể xóa. {0}.
+        /// </summary>
+        internal static string Alert_DeleteError_InUse_Specific {
+            get {
+                return ResourceManager.GetString("Alert_DeleteError_InUse_Specific", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xóa nhân viên thành công..
         /// </summary>
         internal static string Alert_DeleteSuccess {
@@ -2412,6 +2421,33 @@ namespace Environmental_Monitoring {
         internal static string Theme_Light {
             get {
                 return ResourceManager.GetString("Theme_Light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhân Viên đang phụ trách Hợp đồng &apos;{0}&apos;.
+        /// </summary>
+        internal static string Usage_Contract {
+            get {
+                return ResourceManager.GetString("Usage_Contract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to đang phụ trách mẫu Hiện trường &apos;{0}&apos;.
+        /// </summary>
+        internal static string Usage_SampleHT {
+            get {
+                return ResourceManager.GetString("Usage_SampleHT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to đang phụ trách mẫu Thí nghiệm &apos;{0}&apos;.
+        /// </summary>
+        internal static string Usage_SamplePTN {
+            get {
+                return ResourceManager.GetString("Usage_SamplePTN", resourceCulture);
             }
         }
         

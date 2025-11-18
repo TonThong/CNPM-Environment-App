@@ -7,7 +7,8 @@ using System.Globalization;
 using System.Windows.Forms;
 using System.Resources;
 using System.Threading;
-using System.Linq; 
+using System.Linq;
+using Environmental_Monitoring.Controller.Data;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -104,6 +105,8 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             roundedDataGridView2.AllowUserToAddRows = false;
 
+            roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+
             roundedDataGridView2.CurrentCellDirtyStateChanged -= roundedDataGridView2_CurrentCellDirtyStateChanged;
             roundedDataGridView2.CurrentCellDirtyStateChanged += roundedDataGridView2_CurrentCellDirtyStateChanged;
             roundedDataGridView2.CellValueChanged -= roundedDataGridView2_CellValueChanged;
@@ -112,7 +115,7 @@ namespace Environmental_Monitoring.View.ContractContent
             var matches = this.Controls.Find("btnContracts", true);
             if (matches.Length > 0 && matches[0] is Control ctl)
             {
-                ctl.Click -= new EventHandler(btnContracts_Click); 
+                ctl.Click -= new EventHandler(btnContracts_Click);
                 ctl.Click += new EventHandler(btnContracts_Click);
             }
 
@@ -463,6 +466,11 @@ namespace Environmental_Monitoring.View.ContractContent
 
             string query = @"UPDATE Contracts SET TienTrinh = 3 WHERE ContractID = @contractId;";
             DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.currentContractId });
+
+            int thiNghiemRoleID = 7;
+            string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @id", new object[] { this.currentContractId }).ToString();
+            string noiDungThiNghiem = $"Hợp đồng '{maDon}' đã lấy mẫu hiện trường, cần phân tích thí nghiệm.";
+            NotificationService.CreateNotification("ChinhSua", noiDungThiNghiem, thiNghiemRoleID, this.currentContractId, null);
 
             ShowAlert(rm.GetString("Real_SaveSuccess", culture), AlertPanel.AlertType.Success);
 

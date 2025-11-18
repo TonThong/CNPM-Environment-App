@@ -156,6 +156,9 @@ namespace Environmental_Monitoring.View
         /// <summary>
         /// Xử lý sự kiện khi người dùng nhấp vào một ô trong DataGridView (để Sửa hoặc Xóa).
         /// </summary>
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng nhấp vào một ô trong DataGridView (để Sửa hoặc Xóa).
+        /// </summary>
         private void dgvEmployee_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -183,9 +186,26 @@ namespace Environmental_Monitoring.View
             }
             else if (columnName == "colDelete")
             {
-                if (EmployeeRepo.Instance.ExistsAnotherTable(employeeId))
+                UsageDetails usage = EmployeeRepo.Instance.GetEmployeeUsageDetails(employeeId);
+
+                if (usage != null) 
                 {
-                    string errorMsg = rm.GetString("Alert_DeleteError_InUse", culture);
+                    string baseErrorMsg = rm.GetString("Alert_DeleteError_InUse_Specific", culture);
+                    if (string.IsNullOrEmpty(baseErrorMsg) || baseErrorMsg == "Alert_DeleteError_InUse_Specific")
+                    {
+                        baseErrorMsg = "Cannot delete. Data in use: {0}"; 
+                    }
+
+                    string reasonTemplate = rm.GetString(usage.ReasonKey, culture);
+                    if (string.IsNullOrEmpty(reasonTemplate) || reasonTemplate == usage.ReasonKey)
+                    {
+                        reasonTemplate = "{0}"; 
+                    }
+
+                    string specificReason = string.Format(reasonTemplate, usage.Value);
+
+                    string errorMsg = string.Format(baseErrorMsg, specificReason);
+
                     mainForm?.ShowGlobalAlert(errorMsg, AlertPanel.AlertType.Error);
                     return;
                 }

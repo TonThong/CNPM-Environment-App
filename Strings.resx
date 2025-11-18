@@ -958,4 +958,16 @@
   <data name="Role_Result" xml:space="preserve">
     <value>Kết quả</value>
   </data>
+  <data name="Alert_DeleteError_InUse_Specific" xml:space="preserve">
+    <value>Không thể xóa. {0}</value>
+  </data>
+  <data name="Usage_Contract" xml:space="preserve">
+    <value>Nhân Viên đang phụ trách Hợp đồng '{0}'</value>
+  </data>
+  <data name="Usage_SampleHT" xml:space="preserve">
+    <value>đang phụ trách mẫu Hiện trường '{0}'</value>
+  </data>
+  <data name="Usage_SamplePTN" xml:space="preserve">
+    <value>đang phụ trách mẫu Thí nghiệm '{0}'</value>
+  </data>
 </root>

@@ -59,7 +59,7 @@ namespace Environmental_Monitoring.View.ContractContent
             txtboxPhone.PlaceholderText = rm.GetString("Business_CustomerSymbol_Placeholder", culture);
             txtboxAddress.PlaceholderText = rm.GetString("Business_Address_Placeholder", culture);
             txtboxOwner.PlaceholderText = rm.GetString("Business_Representative_Placeholder", culture);
-            txtEmailCustomer.PlaceholderText = rm.GetString("Business_EmailCustomer_Placeholder", culture); 
+            txtEmailCustomer.PlaceholderText = rm.GetString("Business_EmailCustomer_Placeholder", culture);
 
             txtboxIDContract.PlaceholderText = rm.GetString("Business_ContractID_Placeholder", culture);
 
@@ -135,7 +135,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 string email = txtEmailCustomer.Text.Trim();
                 if (!string.IsNullOrWhiteSpace(email) && !ValidationHelper.IsValidEmailFormat(email))
                 {
-                    ShowAlert(rm.GetString("Error_InvalidEmailFormat", culture), AlertPanel.AlertType.Error); 
+                    ShowAlert(rm.GetString("Error_InvalidEmailFormat", culture), AlertPanel.AlertType.Error);
                     txtEmailCustomer.Focus();
                     return;
                 }
@@ -151,8 +151,15 @@ namespace Environmental_Monitoring.View.ContractContent
                 string diaChi = txtboxAddress.Text.Trim();
                 string nguoiDaiDien = txtboxOwner.Text.Trim();
                 string loaiHopDong = cmbContractType != null ? cmbContractType.Text : string.Empty;
-                string employeeName = txtboxEmployee.Text.Trim();
                 DateTime ngayTraKetQua = dtpDueDate.Value;
+                DateTime ngayKy = DateTime.Now;
+
+                int employeeId = UserSession.CurrentUser?.EmployeeID ?? 0;
+                if (employeeId == 0)
+                {
+                    ShowAlert("Không tìm thấy EmployeeID của người dùng. Không thể lưu.", AlertPanel.AlertType.Error);
+                    return;
+                }
 
                 string insertCustomer = @"INSERT INTO Customers (TenDoanhNghiep, KyHieuDoanhNghiep, DiaChi, TenNguoiDaiDien, Email)
                                             VALUES (@ten, @kyhieu, @diaChi, @nguoiDaiDien, @email) 
@@ -160,20 +167,42 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 DataProvider.Instance.ExecuteNonQuery(insertCustomer, new object[] { tenKhachHang, kyHieuDoanhNghiep, diaChi, nguoiDaiDien, email });
 
-                object contractIdObj = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
-                int newContractId = (contractIdObj != null && int.TryParse(contractIdObj.ToString(), out int ctid)) ? ctid : 0;
+                int newCustomerId = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
 
-                string noiDung = $"Hợp đồng mới '{maDon}' vừa được tạo.";
+                string insertContract = @"INSERT INTO Contracts (MaDon, CustomerID, EmployeeID, NgayKy, NgayTraKetQua, ContractType, Status, TienTrinh)
+                                            VALUES (@maDon, @customerID, @employeeID, @ngayKy, @ngayTra, @loai, 'Active', 1)";
+                DataProvider.Instance.ExecuteNonQuery(insertContract, new object[] { maDon, newCustomerId, employeeId, ngayKy, ngayTraKetQua, loaiHopDong });
+
+                int newContractId = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
+
+                string noiDungAdmin = $"Hợp đồng mới '{maDon}' vừa được tạo.";
                 int adminRoleID = 5;
-                NotificationService.CreateNotification("HopDongMoi", noiDung, adminRoleID, newContractId, null);
+                NotificationService.CreateNotification("HopDongMoi", noiDungAdmin, adminRoleID, newContractId, null);
 
-              
-                ShowAlert(rm.GetString("Error_CustomerUndefined", culture), AlertPanel.AlertType.Error);
+                int keHoachRoleID = 6; 
+                if (keHoachRoleID == 0)
+                {
+                    ShowAlert("RoleID phòng Kế Hoạch chưa được thiết lập. Thông báo cho Kế Hoạch bị bỏ qua.", AlertPanel.AlertType.Error);
+                }
+                else
+                {
+                    string noiDungKeHoach = $"Hợp đồng mới '{maDon}' cần được lập kế hoạch chi tiết.";
+                    NotificationService.CreateNotification("HopDongMoi", noiDungKeHoach, keHoachRoleID, newContractId, null);
+                }
+
+                ShowAlert(rm.GetString("Business_SaveSuccess", culture), AlertPanel.AlertType.Success);
                 ClearFields();
             }
             catch (Exception ex)
             {
-                ShowAlert(rm.GetString("Error_General", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
+                if (ex.Message.Contains("Duplicate entry") && ex.Message.Contains("MaDon"))
+                {
+                    ShowAlert(rm.GetString("Error_ContractIDExists", culture), AlertPanel.AlertType.Error);
+                }
+                else
+                {
+                    ShowAlert(rm.GetString("Error_General", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
+                }
             }
         }
 

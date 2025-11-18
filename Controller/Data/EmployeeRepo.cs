@@ -9,6 +9,14 @@ using System.Threading.Tasks;
 
 namespace Environmental_Monitoring.Controller.Data
 {
+    // --- LỚP MỚI ĐỂ CHỨA CHI TIẾT LỖI ---
+    public class UsageDetails
+    {
+        public string ReasonKey { get; set; } // Ví dụ: "Usage_Contract"
+        public string Value { get; set; }     // Ví dụ: "HD-011"
+    }
+    // ------------------------------------
+
     public class EmployeeRepo
     {
         private static EmployeeRepo instance;
@@ -146,20 +154,42 @@ namespace Environmental_Monitoring.Controller.Data
             return DataProvider.Instance.ExecuteScalar("SELECT EmployeeId FROM Employees WHERE UPPER(Email) = @email AND EmployeeId != @id", new object[] { email, id }) != null;
         }
 
+        // --- HÀM ĐÃ SỬA: Trả về đối tượng UsageDetails thay vì string ---
+        public UsageDetails GetEmployeeUsageDetails(int employeeId)
+        {
+            // Kiểm tra Hợp đồng
+            string contractQuery = "SELECT MaDon FROM Contracts WHERE EmployeeId = @id LIMIT 1";
+            object contractResult = DataProvider.Instance.ExecuteScalar(contractQuery, new object[] { employeeId });
+            if (contractResult != null && contractResult != DBNull.Value)
+            {
+                return new UsageDetails { ReasonKey = "Usage_Contract", Value = contractResult.ToString() };
+            }
+
+            // Kiểm tra Mẫu Hiện trường
+            string sampleHTQuery = "SELECT MaMau FROM EnvironmentalSamples WHERE AssignedToHT = @id LIMIT 1";
+            object sampleHTResult = DataProvider.Instance.ExecuteScalar(sampleHTQuery, new object[] { employeeId });
+            if (sampleHTResult != null && sampleHTResult != DBNull.Value)
+            {
+                return new UsageDetails { ReasonKey = "Usage_SampleHT", Value = sampleHTResult.ToString() };
+            }
+
+            // Kiểm tra Mẫu Thí nghiệm
+            string samplePTNQuery = "SELECT MaMau FROM EnvironmentalSamples WHERE AssignedToPTN = @id LIMIT 1";
+            object samplePTNResult = DataProvider.Instance.ExecuteScalar(samplePTNQuery, new object[] { employeeId });
+            if (samplePTNResult != null && samplePTNResult != DBNull.Value)
+            {
+                return new UsageDetails { ReasonKey = "Usage_SamplePTN", Value = samplePTNResult.ToString() };
+            }
+
+            // Không tìm thấy, trả về null
+            return null;
+        }
+
+
+        // --- HÀM ĐÃ SỬA: Gọi hàm mới ---
         public bool ExistsAnotherTable(int id)
         {
-            return DataProvider.Instance
-                       .ExecuteScalar(
-                       "SELECT ContractID FROM Contracts WHERE EmployeeId = @id",
-                       new object[] { id }) != null ||
-                   DataProvider.Instance
-                       .ExecuteScalar(
-                       "SELECT AssignedToHT FROM EnvironmentalSamples WHERE AssignedToHT = @id",
-                       new object[] { id }) != null ||
-                   DataProvider.Instance
-                       .ExecuteScalar(
-                       "SELECT AssignedToPTN FROM EnvironmentalSamples WHERE AssignedToPTN = @id",
-                       new object[] { id }) != null;
+            return GetEmployeeUsageDetails(id) != null;
         }
 
         public DataTable Filter(string keySearch)

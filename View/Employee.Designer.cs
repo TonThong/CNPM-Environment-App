@@ -214,6 +214,7 @@ namespace Environmental_Monitoring.View
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Transparent;
             Controls.Add(tableLayoutPanel1);
             Name = "Employee";
             Size = new Size(1229, 720);

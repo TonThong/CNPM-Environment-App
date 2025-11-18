@@ -108,15 +108,15 @@
             tableLayoutPanel2.Controls.Add(txtboxCustomerName, 1, 5);
             tableLayoutPanel2.Controls.Add(txtboxIDContract, 3, 5);
             tableLayoutPanel2.Controls.Add(txtboxPhone, 1, 7);
-            tableLayoutPanel2.Controls.Add(cmbContractType, 3, 7);
             tableLayoutPanel2.Controls.Add(txtboxAddress, 1, 9);
             tableLayoutPanel2.Controls.Add(txtboxOwner, 1, 11);
             tableLayoutPanel2.Controls.Add(txtboxEmployee, 3, 11);
-            tableLayoutPanel2.Controls.Add(dtpDueDate, 3, 9);
             tableLayoutPanel2.Controls.Add(lblCustomer, 1, 3);
             tableLayoutPanel2.Controls.Add(btnCancel, 4, 13);
             tableLayoutPanel2.Controls.Add(btnSave, 3, 13);
             tableLayoutPanel2.Controls.Add(txtEmailCustomer, 1, 13);
+            tableLayoutPanel2.Controls.Add(cmbContractType, 3, 9);
+            tableLayoutPanel2.Controls.Add(dtpDueDate, 3, 7);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(0, 0);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -217,7 +217,7 @@
             cmbContractType.Font = new Font("Segoe UI", 12F);
             cmbContractType.ForeColor = Color.Black;
             cmbContractType.HoverBorderColor = Color.Gray;
-            cmbContractType.Location = new Point(670, 225);
+            cmbContractType.Location = new Point(670, 297);
             cmbContractType.Name = "cmbContractType";
             cmbContractType.NormalBorderColor = Color.DarkGray;
             cmbContractType.SelectedIndex = -1;
@@ -302,7 +302,7 @@
             dtpDueDate.CustomFormat = null;
             dtpDueDate.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
             dtpDueDate.Format = DateTimePickerFormat.Short;
-            dtpDueDate.Location = new Point(671, 298);
+            dtpDueDate.Location = new Point(671, 226);
             dtpDueDate.Margin = new Padding(4);
             dtpDueDate.Name = "dtpDueDate";
             dtpDueDate.Size = new Size(478, 44);

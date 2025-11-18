@@ -169,7 +169,7 @@ namespace Environmental_Monitoring.View.Components
             if (!calendar.IsHandleCreated)
                 calendar.CreateControl();
             Size calSize = calendar.GetPreferredSize(Size.Empty);
-            dropdownForm.ClientSize = new Size(calSize.Width + 84, calSize.Height + 2);
+            dropdownForm.ClientSize = new Size(calSize.Width + 84, calSize.Height + 27);
 
             calendar.DateSelected += Calendar_DateSelected;
             calendar.MinDate = new DateTime(1900, 1, 1);
