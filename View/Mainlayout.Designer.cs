@@ -312,7 +312,7 @@ namespace Environmental_Monitoring.View
             // 
             // globalAlertPanel
             // 
-            globalAlertPanel.Location = new Point(1010, 8);
+            globalAlertPanel.Location = new Point(1009, 9);
             globalAlertPanel.Name = "globalAlertPanel";
             globalAlertPanel.Size = new Size(400, 100);
             globalAlertPanel.TabIndex = 22;
@@ -345,7 +345,7 @@ namespace Environmental_Monitoring.View
             pbLogout.BackColor = Color.Transparent;
             pbLogout.Cursor = Cursors.Hand;
             pbLogout.Image = Properties.Resources.image_removebg_preview;
-            pbLogout.Location = new Point(151, 3);
+            pbLogout.Location = new Point(239, 3);
             pbLogout.Name = "pbLogout";
             pbLogout.Size = new Size(32, 31);
             pbLogout.SizeMode = PictureBoxSizeMode.Zoom;
@@ -360,7 +360,7 @@ namespace Environmental_Monitoring.View
             lblUserName.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lblUserName.Location = new Point(3, 0);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(142, 37);
+            lblUserName.Size = new Size(226, 37);
             lblUserName.TabIndex = 24;
             lblUserName.Text = "User Name";
             lblUserName.TextAlign = ContentAlignment.MiddleRight;
@@ -369,15 +369,15 @@ namespace Environmental_Monitoring.View
             // 
             tableLayoutPanel1.BackColor = Color.Transparent;
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel1.Controls.Add(pbLogout, 1, 0);
             tableLayoutPanel1.Controls.Add(lblUserName, 0, 0);
-            tableLayoutPanel1.Location = new Point(1223, 12);
+            tableLayoutPanel1.Location = new Point(1135, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(186, 37);
+            tableLayoutPanel1.Size = new Size(274, 37);
             tableLayoutPanel1.TabIndex = 26;
             // 
             // iconBell
@@ -385,7 +385,7 @@ namespace Environmental_Monitoring.View
             iconBell.BackColor = Color.Transparent;
             iconBell.Cursor = Cursors.Hand;
             iconBell.Image = (Image)resources.GetObject("iconBell.Image");
-            iconBell.Location = new Point(1153, 10);
+            iconBell.Location = new Point(1064, 10);
             iconBell.Name = "iconBell";
             iconBell.Size = new Size(40, 40);
             iconBell.SizeMode = PictureBoxSizeMode.Zoom;
@@ -399,7 +399,7 @@ namespace Environmental_Monitoring.View
             lblBadge.BackColor = Color.Red;
             lblBadge.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lblBadge.ForeColor = Color.White;
-            lblBadge.Location = new Point(1176, 9);
+            lblBadge.Location = new Point(1085, 9);
             lblBadge.Name = "lblBadge";
             lblBadge.Size = new Size(18, 20);
             lblBadge.TabIndex = 29;

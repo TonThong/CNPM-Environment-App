@@ -13,6 +13,7 @@ using Environmental_Monitoring.View.Components;
 using Environmental_Monitoring.Controller.Data;
 using Environmental_Monitoring.Controller;
 using System.Reflection;
+using Environmental_Monitoring.View;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -97,55 +98,46 @@ namespace Environmental_Monitoring.View.ContractContent
             if (btnMail != null)
                 btnMail.Text = rm.GetString("Result_Mail", culture);
 
+            if (btnEdit != null)
+            {
+                string editText = rm.GetString("Button_Edit", culture);
+                btnEdit.Text = string.IsNullOrEmpty(editText) ? "Chỉnh Sửa" : editText;
+            }
+
             var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
             if (btnCancel != null)
             {
                 btnCancel.Text = rm.GetString("Button_Cancel", culture);
             }
 
-            // 1. Mã hợp đồng
             if (roundedDataGridView2.Columns.Contains("MaDon"))
                 roundedDataGridView2.Columns["MaDon"].HeaderText = rm.GetString("Grid_ContractCode", culture);
-            // 2. Ngày đăng kí
             if (roundedDataGridView2.Columns.Contains("NgayKy"))
                 roundedDataGridView2.Columns["NgayKy"].HeaderText = rm.GetString("Grid_SignDate", culture);
-            // 3. Ngày hết hạn
             if (roundedDataGridView2.Columns.Contains("NgayTraKetQua"))
                 roundedDataGridView2.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture);
-            // 4. Tên công ty
             if (roundedDataGridView2.Columns.Contains("TenDoanhNghiep"))
                 roundedDataGridView2.Columns["TenDoanhNghiep"].HeaderText = rm.GetString("PDF_Company", culture);
-            // 5. Người đại diện
             if (roundedDataGridView2.Columns.Contains("TenNguoiDaiDien"))
                 roundedDataGridView2.Columns["TenNguoiDaiDien"].HeaderText = rm.GetString("PDF_Representative", culture);
-            // 6. Tên nhân viên
             if (roundedDataGridView2.Columns.Contains("TenNhanVien"))
                 roundedDataGridView2.Columns["TenNhanVien"].HeaderText = rm.GetString("Business_Employee", culture);
-            // 7. Mẫu
             if (roundedDataGridView2.Columns.Contains("MauKiemNghiem"))
                 roundedDataGridView2.Columns["MauKiemNghiem"].HeaderText = rm.GetString("Grid_Sample", culture);
-            // 8. Thông số
             if (roundedDataGridView2.Columns.Contains("TenThongSo"))
                 roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
-            // 9. Min
             if (roundedDataGridView2.Columns.Contains("GioiHanMin"))
                 roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
-            // 10. Max
             if (roundedDataGridView2.Columns.Contains("GioiHanMax"))
                 roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
-            // 11. Đơn vị
             if (roundedDataGridView2.Columns.Contains("DonVi"))
                 roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
-            // 12. Giá trị
             if (roundedDataGridView2.Columns.Contains("GiaTri"))
                 roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_Value", culture);
-            // 13. Kết quả
             if (roundedDataGridView2.Columns.Contains("KetQua"))
                 roundedDataGridView2.Columns["KetQua"].HeaderText = rm.GetString("Grid_Result", culture);
-            // 14. Trạng thái duyệt
             if (roundedDataGridView2.Columns.Contains("TrangThaiHienThi"))
                 roundedDataGridView2.Columns["TrangThaiHienThi"].HeaderText = rm.GetString("Grid_ApprovalStatus", culture);
-
             if (roundedDataGridView2.Columns.Contains("TrangThaiHopDong"))
                 roundedDataGridView2.Columns["TrangThaiHopDong"].HeaderText = rm.GetString("Grid_ContractStatus", culture);
         }
@@ -157,7 +149,7 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView2.ScrollBars = ScrollBars.Both;
 
             roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            roundedDataGridView2.ReadOnly = true;
+            roundedDataGridView2.ReadOnly = true; 
             roundedDataGridView2.Scroll += roundedDataGridView2_Scroll;
 
             roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -185,8 +177,43 @@ namespace Environmental_Monitoring.View.ContractContent
             btnContract.Click -= btnContract_Click;
             btnContract.Click += btnContract_Click;
 
+            if (btnEdit != null)
+            {
+                btnEdit.Click -= BtnEdit_Click;
+                btnEdit.Click += BtnEdit_Click;
+
+                if (UserSession.IsAdmin())
+                {
+                    btnEdit.Visible = true;
+                }
+                else
+                {
+                    btnEdit.Visible = false;
+                }
+            }
+
             UpdateUIStates(false, false);
             UpdateUIText();
+        }
+
+        private void BtnEdit_Click(object sender, EventArgs e)
+        {
+            if (this.currentContractId == 0)
+            {
+                ShowAlert(rm.GetString("Result_SelectContract", culture), AlertPanel.AlertType.Error);
+                return;
+            }
+
+            using (var editForm = new CreateUpdateContract(this.currentContractId))
+            {
+                if (editForm.ShowDialog() == DialogResult.OK)
+                {
+                    string msg = rm.GetString("Result_EditSuccess", culture);
+                    ShowAlert(string.IsNullOrEmpty(msg) ? "Cập nhật thành công!" : msg, AlertPanel.AlertType.Success);
+
+                    LoadContract(this.currentContractId);
+                }
+            }
         }
 
         private void LoadContract(int contractId)
@@ -304,30 +331,24 @@ namespace Environmental_Monitoring.View.ContractContent
                     roundedDataGridView2.Columns["TrangThaiHienThi"].ReadOnly = true;
                 }
 
-                if (roundedDataGridView2.Columns["SampleID"] != null)
-                    roundedDataGridView2.Columns["SampleID"].Visible = false;
-                if (roundedDataGridView2.Columns["ParameterID"] != null)
-                    roundedDataGridView2.Columns["ParameterID"].Visible = false;
-                if (roundedDataGridView2.Columns["ONhiem"] != null)
-                    roundedDataGridView2.Columns["ONhiem"].Visible = false;
-                if (roundedDataGridView2.Columns["TrangThaiPheDuyet"] != null)
-                    roundedDataGridView2.Columns["TrangThaiPheDuyet"].Visible = false;
-                if (roundedDataGridView2.Columns["Status"] != null)
-                    roundedDataGridView2.Columns["Status"].Visible = false;
+                if (roundedDataGridView2.Columns["SampleID"] != null) roundedDataGridView2.Columns["SampleID"].Visible = false;
+                if (roundedDataGridView2.Columns["ParameterID"] != null) roundedDataGridView2.Columns["ParameterID"].Visible = false;
+                if (roundedDataGridView2.Columns["ONhiem"] != null) roundedDataGridView2.Columns["ONhiem"].Visible = false;
+                if (roundedDataGridView2.Columns["TrangThaiPheDuyet"] != null) roundedDataGridView2.Columns["TrangThaiPheDuyet"].Visible = false;
+                if (roundedDataGridView2.Columns["Status"] != null) roundedDataGridView2.Columns["Status"].Visible = false;
 
                 foreach (DataGridViewColumn col in roundedDataGridView2.Columns)
                 {
                     if (col.Name == "TenThongSo" || col.Name == "MauKiemNghiem")
                     {
                         col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
                         col.MinimumWidth = 150;
                     }
                     else if (col.Visible)
                     {
                         col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
                     }
-                } 
+                }
                 UpdateUIStates(true, isContractApproved);
             }
             catch (Exception ex)
@@ -353,6 +374,9 @@ namespace Environmental_Monitoring.View.ContractContent
                 btnRequest.Enabled = false;
                 btnPDF.Enabled = false;
                 btnMail.Enabled = false;
+
+                if (btnEdit != null) btnEdit.Enabled = false;
+
                 return;
             }
 
@@ -361,6 +385,11 @@ namespace Environmental_Monitoring.View.ContractContent
             btnRequest.Enabled = !isApproved;
             btnPDF.Enabled = isApproved;
             btnMail.Enabled = isApproved;
+
+            if (btnEdit != null && UserSession.IsAdmin())
+            {
+                btnEdit.Enabled = true;
+            }
         }
 
         private void BtnPDF_Click(object? sender, EventArgs e)
@@ -569,9 +598,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Logic gộp ô (đã bị vô hiệu hóa)
-        /// </summary>
         private void btnSearch_Click(object sender, EventArgs e) { }
         private void roundedButton1_Click(object sender, EventArgs e) { }
         private void btnSearch_Click_1(object sender, EventArgs e) { }

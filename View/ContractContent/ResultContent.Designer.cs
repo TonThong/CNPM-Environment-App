@@ -36,6 +36,7 @@
             btnMail = new Environmental_Monitoring.View.Components.RoundedButton();
             btnRequest = new Environmental_Monitoring.View.Components.RoundedButton();
             btnContract = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnEdit = new Environmental_Monitoring.View.Components.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView2).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -107,6 +108,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.5F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.5F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.Controls.Add(btnEdit, 2, 1);
             tableLayoutPanel1.Controls.Add(btnPDF, 3, 5);
             tableLayoutPanel1.Controls.Add(btnMail, 4, 5);
             tableLayoutPanel1.Controls.Add(btnRequest, 2, 5);
@@ -212,6 +214,27 @@
             btnContract.UseVisualStyleBackColor = false;
             btnContract.Click += btnContract_Click;
             // 
+            // btnEdit
+            // 
+            btnEdit.BackColor = Color.FromArgb(131, 138, 154);
+            btnEdit.BaseColor = Color.FromArgb(131, 138, 154);
+            btnEdit.BorderColor = Color.Transparent;
+            btnEdit.BorderRadius = 25;
+            btnEdit.BorderSize = 0;
+            btnEdit.Cursor = Cursors.Hand;
+            btnEdit.Dock = DockStyle.Fill;
+            btnEdit.FlatAppearance.BorderSize = 0;
+            btnEdit.FlatStyle = FlatStyle.Flat;
+            btnEdit.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
+            btnEdit.ForeColor = Color.White;
+            btnEdit.HoverColor = Color.FromArgb(192, 192, 255);
+            btnEdit.Location = new Point(340, 28);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new Size(270, 70);
+            btnEdit.TabIndex = 78;
+            btnEdit.Text = "Chỉnh Sửa";
+            btnEdit.UseVisualStyleBackColor = false;
+            // 
             // ResultContent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -234,5 +257,6 @@
         private Components.RoundedButton btnPDF;
         private Components.RoundedButton btnMail;
         private Components.RoundedButton btnRequest;
+        private Components.RoundedButton btnEdit;
     }
 }
