@@ -35,6 +35,7 @@ namespace Environmental_Monitoring.View
             this.Load += new System.EventHandler(this.Employee_Load);
             this.dgvEmployee.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmployee_CellFormatting);
             this.dgvEmployee.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvEmployee_DataError);
+            this.dgvEmployee.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmployee_CellMouseEnter);
         }
 
         /// <summary>
@@ -43,10 +44,10 @@ namespace Environmental_Monitoring.View
         private void dgvEmployee_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             string errorInfo = $"LỖI DATAERROR:\n" +
-                             $"- Cột Index: {e.ColumnIndex}\n" +
-                             $"- Tên Cột: {dgvEmployee.Columns[e.ColumnIndex].Name}\n" +
-                             $"- Dòng Index: {e.RowIndex}\n" +
-                             $"- Lỗi: {e.Exception.Message}";
+                               $"- Cột Index: {e.ColumnIndex}\n" +
+                               $"- Tên Cột: {dgvEmployee.Columns[e.ColumnIndex].Name}\n" +
+                               $"- Dòng Index: {e.RowIndex}\n" +
+                               $"- Lỗi: {e.Exception.Message}";
             Console.WriteLine(errorInfo);
             e.ThrowException = false;
         }
@@ -100,7 +101,7 @@ namespace Environmental_Monitoring.View
             dgvEmployee.Columns["NamSinh"].HeaderText = rm.GetString("BirthYear", culture);
 
             string headerDeptHead = rm.GetString("IsDepartmentHead", culture);
-            dgvEmployee.Columns["TruongBoPhan"].HeaderText = (headerDeptHead == "IsDepartmentHead") ? "Dept. Head" : headerDeptHead;
+            dgvEmployee.Columns["TruongBoPhan"].HeaderText = (headerDeptHead == "IsDepartmentHead") ? "Manager" : headerDeptHead; 
 
             dgvEmployee.Columns["DiaChi"].HeaderText = rm.GetString("Address", culture);
             dgvEmployee.Columns["SoDienThoai"].HeaderText = rm.GetString("Phone", culture);
@@ -116,6 +117,8 @@ namespace Environmental_Monitoring.View
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
+            Color defaultBackColor = dgvEmployee.DefaultCellStyle.BackColor;
+
             if (dgvEmployee.Columns["colEdit"] == null)
             {
                 DataGridViewImageColumn colEdit = new DataGridViewImageColumn
@@ -124,7 +127,10 @@ namespace Environmental_Monitoring.View
                     HeaderText = rm.GetString("Edit", culture),
                     Image = Properties.Resources.edit,
                     ImageLayout = DataGridViewImageCellLayout.Zoom,
-                    DefaultCellStyle = { Padding = new Padding(5) },
+                    DefaultCellStyle = {
+                        Padding = new Padding(5),
+                        SelectionBackColor = defaultBackColor
+                    },
                     Width = 40
                 };
                 dgvEmployee.Columns.Add(colEdit);
@@ -142,7 +148,10 @@ namespace Environmental_Monitoring.View
                     HeaderText = rm.GetString("Delete", culture),
                     Image = Properties.Resources.delete,
                     ImageLayout = DataGridViewImageCellLayout.Zoom,
-                    DefaultCellStyle = { Padding = new Padding(5) },
+                    DefaultCellStyle = {
+                        Padding = new Padding(5),
+                        SelectionBackColor = defaultBackColor
+                    },
                     Width = 40
                 };
                 dgvEmployee.Columns.Add(colDelete);
@@ -153,9 +162,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Xử lý sự kiện khi người dùng nhấp vào một ô trong DataGridView (để Sửa hoặc Xóa).
-        /// </summary>
         /// <summary>
         /// Xử lý sự kiện khi người dùng nhấp vào một ô trong DataGridView (để Sửa hoặc Xóa).
         /// </summary>
@@ -188,18 +194,18 @@ namespace Environmental_Monitoring.View
             {
                 UsageDetails usage = EmployeeRepo.Instance.GetEmployeeUsageDetails(employeeId);
 
-                if (usage != null) 
+                if (usage != null)
                 {
                     string baseErrorMsg = rm.GetString("Alert_DeleteError_InUse_Specific", culture);
                     if (string.IsNullOrEmpty(baseErrorMsg) || baseErrorMsg == "Alert_DeleteError_InUse_Specific")
                     {
-                        baseErrorMsg = "Cannot delete. Data in use: {0}"; 
+                        baseErrorMsg = "Cannot delete. Data in use: {0}";
                     }
 
                     string reasonTemplate = rm.GetString(usage.ReasonKey, culture);
                     if (string.IsNullOrEmpty(reasonTemplate) || reasonTemplate == usage.ReasonKey)
                     {
-                        reasonTemplate = "{0}"; 
+                        reasonTemplate = "{0}";
                     }
 
                     string specificReason = string.Format(reasonTemplate, usage.Value);
@@ -233,6 +239,30 @@ namespace Environmental_Monitoring.View
                 }
             }
         }
+
+        /// <summary>
+        /// --- THÊM: Xử lý sự kiện rê chuột để đổi con trỏ thành Hand ---
+        /// </summary>
+        private void dgvEmployee_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+            {
+                dgvEmployee.Cursor = Cursors.Default;
+                return;
+            }
+
+            string columnName = dgvEmployee.Columns[e.ColumnIndex].Name;
+
+            if (columnName == "colEdit" || columnName == "colDelete")
+            {
+                dgvEmployee.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                dgvEmployee.Cursor = Cursors.Default;
+            }
+        }
+
 
         /// <summary>
         /// Cập nhật trạng thái (Enabled/Disabled) của các nút phân trang.
@@ -299,6 +329,8 @@ namespace Environmental_Monitoring.View
 
             btnLast.Click -= btnLast_Click;
             btnLast.Click += btnLast_Click;
+
+            dgvEmployee.ReadOnly = true;
         }
 
         /// <summary>
@@ -330,7 +362,10 @@ namespace Environmental_Monitoring.View
                 btnAdd.ForeColor = Color.White;
 
                 dgvEmployee.BackgroundColor = ThemeManager.PanelColor;
+
                 dgvEmployee.GridColor = ThemeManager.BorderColor;
+                dgvEmployee.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+                dgvEmployee.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 
                 dgvEmployee.DefaultCellStyle.BackColor = ThemeManager.PanelColor;
                 dgvEmployee.DefaultCellStyle.ForeColor = ThemeManager.TextColor;

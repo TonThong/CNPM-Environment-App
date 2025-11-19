@@ -22,12 +22,6 @@ namespace Environmental_Monitoring.View.ContractContent
             InitializeLocalization();
             btnSave.Click += BtnSave_Click;
 
-            this.Load += BusinessContent_Load;
-        }
-
-        private void BusinessContent_Load(object sender, EventArgs e)
-        {
-            LoadEmployees();
             culture = Thread.CurrentThread.CurrentUICulture;
             cmbContractType.Items.Clear();
             cmbContractType.Items.Add(rm.GetString("ContractType_Quarterly", culture));
@@ -38,6 +32,14 @@ namespace Environmental_Monitoring.View.ContractContent
                 cmbContractType.SelectedIndex = 0;
             }
 
+            ClearFields();
+
+            this.Load += BusinessContent_Load;
+        }
+
+        private void BusinessContent_Load(object sender, EventArgs e)
+        {
+            LoadEmployees();
             UpdateUIText();
         }
 
@@ -116,6 +118,27 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
+        /// <summary>
+        /// Tạo MaDon mới dựa trên ContractID lớn nhất hiện tại.
+        /// </summary>
+        private string GenerateNewMaDon()
+        {
+            string queryMaxId = "SELECT MAX(ContractID) FROM Contracts";
+            object maxIdResult = DataProvider.Instance.ExecuteScalar(queryMaxId, null);
+
+            int currentMaxId = 0;
+            if (maxIdResult != null && maxIdResult != DBNull.Value)
+            {
+                currentMaxId = Convert.ToInt32(maxIdResult) + 1;
+            }
+            else
+            {
+                currentMaxId = 1;
+            }
+
+            return $"HD-{currentMaxId}";
+        }
+
         private void BtnSave_Click(object sender, EventArgs e)
         {
             try
@@ -140,11 +163,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     return;
                 }
                 string maDon = txtboxIDContract.Text.Trim();
-                if (!maDon.StartsWith("HD-"))
-                {
-                    ShowAlert(rm.GetString("Error_ContractIDPrefix", culture), AlertPanel.AlertType.Error);
-                    return;
-                }
 
                 string tenKhachHang = txtboxCustomerName.Text.Trim();
                 string kyHieuDoanhNghiep = txtboxPhone.Text.Trim();
@@ -179,7 +197,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 int adminRoleID = 5;
                 NotificationService.CreateNotification("HopDongMoi", noiDungAdmin, adminRoleID, newContractId, null);
 
-                int keHoachRoleID = 6; 
+                int keHoachRoleID = 6;
                 if (keHoachRoleID == 0)
                 {
                     ShowAlert("RoleID phòng Kế Hoạch chưa được thiết lập. Thông báo cho Kế Hoạch bị bỏ qua.", AlertPanel.AlertType.Error);
@@ -209,7 +227,9 @@ namespace Environmental_Monitoring.View.ContractContent
         private void ClearFields()
         {
             txtboxCustomerName.Text = string.Empty;
-            txtboxIDContract.Text = string.Empty;
+
+            txtboxIDContract.Text = GenerateNewMaDon();
+
             txtboxPhone.Text = string.Empty;
             txtboxAddress.Text = string.Empty;
             txtboxOwner.Text = string.Empty;

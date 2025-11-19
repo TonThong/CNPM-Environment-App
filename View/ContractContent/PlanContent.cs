@@ -96,13 +96,29 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME)) return;
 
+            // Lấy màu nền mặc định của DataGridView để vô hiệu hóa highlight
+            Color defaultBackColor = roundedDataGridView1.DefaultCellStyle.BackColor;
+            if (defaultBackColor.IsEmpty)
+            {
+                // Nếu DefaultCellStyle chưa được thiết lập (vì UpdateUIText chưa chạy),
+                // ta dùng màu nền của control cha (nếu cần) hoặc màu trắng.
+                defaultBackColor = Color.White;
+            }
+
             DataGridViewCheckBoxColumn chkCol = new DataGridViewCheckBoxColumn
             {
                 Name = CHECKBOX_COLUMN_NAME,
                 HeaderText = rm.GetString("Grid_Select", culture),
                 Width = 60,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
-                Frozen = true
+                Frozen = true,
+                DefaultCellStyle =
+                {
+                    // --- ĐÃ THÊM: Bỏ highlight cho cột checkbox ---
+                    SelectionBackColor = defaultBackColor, 
+                    // ---------------------------------------------
+                    Alignment = DataGridViewContentAlignment.MiddleCenter
+                }
             };
             roundedDataGridView1.Columns.Add(chkCol);
             roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].DisplayIndex = 0;
@@ -118,6 +134,13 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             btnAddParameter.Click += btnAddParameter_Click;
             roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
+            roundedDataGridView1.CellContentClick += roundedDataGridView1_CellContentClick; // Đảm bảo sự kiện này được gán
+
+            // --- ĐÃ THÊM: Thiết lập vạch kẻ (Grid Lines) ---
+            roundedDataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            roundedDataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            // GridColor sẽ được đặt trong UpdateUIText nếu bạn dùng ThemeManager
+            // ------------------------------------------------
 
             AddCheckboxColumnToGrid();
 
@@ -132,6 +155,7 @@ namespace Environmental_Monitoring.View.ContractContent
             checkedListBox1.CheckOnClick = true;
 
             checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged_1;
+            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck; // Gán lại sự kiện này nếu chưa có
 
             try
             {
@@ -146,52 +170,39 @@ namespace Environmental_Monitoring.View.ContractContent
             catch { }
             roundedDataGridView1.DefaultCellStyle.ForeColor = Color.Black;
 
-            UpdateUIText();
+            UpdateUIText(); 
 
-            // --- ĐÃ THÊM ---
-            // Cập nhật trạng thái nút Add
             UpdateAddButtonState();
 
-            // Gán sự kiện cho nút Cancel
             var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
             if (btnCancel != null)
             {
                 btnCancel.Click += btnCancel_Click;
             }
-            // ---------------
         }
 
-        // --- HÀM MỚI ---
-        // Hàm này dùng để reset form về trạng thái ban đầu
         private void ResetForm()
         {
-            // Bỏ chọn hợp đồng
             currentContractId = 0;
             if (rm != null)
             {
                 lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
             }
 
-            // Xóa danh sách mẫu
             checkedListBox1.DataSource = null;
             checkedListBox1.Items.Clear();
 
-            // Xóa grid
             roundedDataGridView1.DataSource = null;
             if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
                 roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
             roundedDataGridView1.RowHeadersVisible = false;
 
 
-            // Xóa thông tin chi tiết
             ClearParameterControls();
 
-            // Cập nhật lại trạng thái nút Add
             UpdateAddButtonState();
         }
 
-        // --- HÀM MỚI ---
-        // Hàm này kiểm tra điều kiện và bật/tắt nút Add New Parameters
         private void UpdateAddButtonState()
         {
             bool contractSelected = (currentContractId != 0);
@@ -199,18 +210,14 @@ namespace Environmental_Monitoring.View.ContractContent
 
             if (btnAddParameter != null)
             {
-                // Chỉ bật nút khi cả 2 điều kiện đều đúng
                 btnAddParameter.Enabled = (contractSelected && templateSelected);
             }
         }
 
-        // --- HÀM MỚI ---
-        // Sự kiện Click cho nút Cancel
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ResetForm();
         }
-        // ---------------
 
         private void btnContracts_Click(object sender, EventArgs e)
         {
@@ -229,10 +236,7 @@ namespace Environmental_Monitoring.View.ContractContent
                         lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
                         LoadSampleTemplates();
 
-                        // --- ĐÃ THÊM ---
-                        // Cập nhật trạng thái nút khi chọn hợp đồng
                         UpdateAddButtonState();
-                        // ---------------
                     };
 
                     popup.ShowDialog();
@@ -301,11 +305,9 @@ namespace Environmental_Monitoring.View.ContractContent
                 {
                     roundedDataGridView1.DataSource = null;
                     ClearParameterControls();
-                    // --- ĐÃ THÊM (từ lần trước) ---
                     if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
                         roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
                     roundedDataGridView1.RowHeadersVisible = false;
-                    // ----------------------------
                     return;
                 }
 
@@ -318,25 +320,21 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q);
 
-                if (dt == null || dt.Rows.Count == 0) // Sửa | thành ||
+                if (dt == null || dt.Rows.Count == 0)
                 {
                     roundedDataGridView1.DataSource = null;
                     ClearParameterControls();
-                    // --- ĐÃ THÊM (từ lần trước) ---
                     if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
                         roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
                     roundedDataGridView1.RowHeadersVisible = false;
-                    // ----------------------------
                     return;
                 }
 
                 roundedDataGridView1.DataSource = dt;
 
-                // --- ĐÃ THÊM (từ lần trước) ---
                 if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
                     roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = true;
                 roundedDataGridView1.RowHeadersVisible = true;
-                // ----------------------------
 
                 foreach (DataGridViewRow row in roundedDataGridView1.Rows)
                 {
@@ -411,10 +409,7 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                // --- ĐÃ THÊM ---
-                // Cập nhật trạng thái nút khi chọn/bỏ chọn mẫu
                 UpdateAddButtonState();
-                // ---------------
 
                 var selectedItems = checkedListBox1.CheckedItems.OfType<SampleTemplateDisplayItem>().ToList();
 
@@ -422,11 +417,9 @@ namespace Environmental_Monitoring.View.ContractContent
                 {
                     roundedDataGridView1.DataSource = null;
                     ClearParameterControls();
-                    // --- ĐÃ THÊM (từ lần trước) ---
                     if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
                         roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
                     roundedDataGridView1.RowHeadersVisible = false;
-                    // ----------------------------
                     return;
                 }
 
@@ -649,10 +642,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 string successMsg = string.Format(rm.GetString("Plan_SaveSuccess", culture), maDon);
                 ShowAlert(successMsg, AlertPanel.AlertType.Success);
 
-                // --- ĐÃ CẬP NHẬT ---
-                // Thay thế toàn bộ code reset lộn xộn bằng 1 hàm
                 ResetForm();
-                // --------------------
             }
             catch (Exception ex)
             {

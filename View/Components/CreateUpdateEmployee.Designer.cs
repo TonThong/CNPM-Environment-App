@@ -242,16 +242,17 @@
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.BackColor = Color.SeaGreen;
-            btnSave.BaseColor = Color.SeaGreen;
+            btnSave.BackColor = Color.FromArgb(0, 113, 0);
+            btnSave.BaseColor = Color.FromArgb(0, 113, 0);
             btnSave.BorderColor = Color.Transparent;
             btnSave.BorderRadius = 10;
             btnSave.BorderSize = 0;
+            btnSave.Cursor = Cursors.Hand;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
-            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
+            btnSave.HoverColor = Color.FromArgb(0, 192, 0);
             btnSave.ImageAlign = ContentAlignment.MiddleLeft;
             btnSave.Location = new Point(190, 4);
             btnSave.Margin = new Padding(3, 4, 3, 4);
@@ -449,6 +450,7 @@
             btnCancel.BorderColor = Color.Transparent;
             btnCancel.BorderRadius = 10;
             btnCancel.BorderSize = 0;
+            btnCancel.Cursor = Cursors.Hand;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);

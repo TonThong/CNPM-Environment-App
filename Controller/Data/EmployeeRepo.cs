@@ -9,13 +9,12 @@ using System.Threading.Tasks;
 
 namespace Environmental_Monitoring.Controller.Data
 {
-    // --- LỚP MỚI ĐỂ CHỨA CHI TIẾT LỖI ---
     public class UsageDetails
     {
-        public string ReasonKey { get; set; } // Ví dụ: "Usage_Contract"
-        public string Value { get; set; }     // Ví dụ: "HD-011"
+        public string ReasonKey { get; set; }
+        public string Value { get; set; }     
     }
-    // ------------------------------------
+
 
     public class EmployeeRepo
     {
@@ -138,8 +137,31 @@ namespace Environmental_Monitoring.Controller.Data
 
         public void DeleteEmployee(int employeeId)
         {
-            string query = "DELETE FROM Employees WHERE EmployeeID = @EmployeeID";
-            DataProvider.Instance.ExecuteNonQuery(query, new object[] { employeeId });
+            object[] parameters = new object[] { employeeId };
+
+            try
+            {
+                string updateSamplesHT = "UPDATE EnvironmentalSamples SET AssignedToHT = NULL WHERE AssignedToHT = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(updateSamplesHT, parameters);
+
+                string updateSamplesPTN = "UPDATE EnvironmentalSamples SET AssignedToPTN = NULL WHERE AssignedToPTN = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(updateSamplesPTN, parameters);
+
+                string deleteNotifications = "DELETE FROM Notifications WHERE EmployeeID_LienQuan = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(deleteNotifications, parameters);
+
+                string deleteContracts = "DELETE FROM Contracts WHERE EmployeeID = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(deleteContracts, parameters);
+
+                string deleteEmployee = "DELETE FROM Employees WHERE EmployeeID = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(deleteEmployee, parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"LỖI khi xóa nhân viên {employeeId}: {ex.Message}");
+         
+                throw;
+            }
         }
 
         public bool ExistsMaNhanVien(string code, int? id = 0)
@@ -153,11 +175,8 @@ namespace Environmental_Monitoring.Controller.Data
             email = email.Trim().ToUpper();
             return DataProvider.Instance.ExecuteScalar("SELECT EmployeeId FROM Employees WHERE UPPER(Email) = @email AND EmployeeId != @id", new object[] { email, id }) != null;
         }
-
-        // --- HÀM ĐÃ SỬA: Trả về đối tượng UsageDetails thay vì string ---
         public UsageDetails GetEmployeeUsageDetails(int employeeId)
         {
-            // Kiểm tra Hợp đồng
             string contractQuery = "SELECT MaDon FROM Contracts WHERE EmployeeId = @id LIMIT 1";
             object contractResult = DataProvider.Instance.ExecuteScalar(contractQuery, new object[] { employeeId });
             if (contractResult != null && contractResult != DBNull.Value)
@@ -165,7 +184,6 @@ namespace Environmental_Monitoring.Controller.Data
                 return new UsageDetails { ReasonKey = "Usage_Contract", Value = contractResult.ToString() };
             }
 
-            // Kiểm tra Mẫu Hiện trường
             string sampleHTQuery = "SELECT MaMau FROM EnvironmentalSamples WHERE AssignedToHT = @id LIMIT 1";
             object sampleHTResult = DataProvider.Instance.ExecuteScalar(sampleHTQuery, new object[] { employeeId });
             if (sampleHTResult != null && sampleHTResult != DBNull.Value)
@@ -173,7 +191,6 @@ namespace Environmental_Monitoring.Controller.Data
                 return new UsageDetails { ReasonKey = "Usage_SampleHT", Value = sampleHTResult.ToString() };
             }
 
-            // Kiểm tra Mẫu Thí nghiệm
             string samplePTNQuery = "SELECT MaMau FROM EnvironmentalSamples WHERE AssignedToPTN = @id LIMIT 1";
             object samplePTNResult = DataProvider.Instance.ExecuteScalar(samplePTNQuery, new object[] { employeeId });
             if (samplePTNResult != null && samplePTNResult != DBNull.Value)
@@ -181,12 +198,9 @@ namespace Environmental_Monitoring.Controller.Data
                 return new UsageDetails { ReasonKey = "Usage_SamplePTN", Value = samplePTNResult.ToString() };
             }
 
-            // Không tìm thấy, trả về null
             return null;
         }
 
-
-        // --- HÀM ĐÃ SỬA: Gọi hàm mới ---
         public bool ExistsAnotherTable(int id)
         {
             return GetEmployeeUsageDetails(id) != null;
@@ -259,7 +273,6 @@ namespace Environmental_Monitoring.Controller.Data
             return result;
         }
 
-        // --- CÁC HÀM MỚI CHO CHỨC NĂNG QUÊN MẬT KHẨU ---
 
         public bool PhoneNumberExists(string phoneNumber)
         {

@@ -11,6 +11,7 @@ using Environmental_Monitoring.View.Components;
 using System.Collections.Generic;
 using System.Linq;
 using Environmental_Monitoring.Controller.Data;
+using System.Reflection;
 
 namespace Environmental_Monitoring.View
 {
@@ -26,9 +27,6 @@ namespace Environmental_Monitoring.View
         private ResourceManager rm;
         private CultureInfo culture;
 
-        /// <summary>
-        /// Hàm khởi tạo (Constructor) cho UserControl.
-        /// </summary>
         public ExperimentContent()
         {
             InitializeComponent();
@@ -36,18 +34,12 @@ namespace Environmental_Monitoring.View
             this.Load += ExperimentContent_Load_1;
         }
 
-        /// <summary>
-        /// Khởi tạo ResourceManager để tải chuỗi đa ngôn ngữ.
-        /// </summary>
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(ExperimentContent).Assembly);
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        /// <summary>
-        /// Hiển thị thông báo (alert) cho người dùng, ưu tiên qua Mainlayout.
-        /// </summary>
         private void ShowAlert(string message, AlertPanel.AlertType type)
         {
             var mainLayout = this.FindForm() as Mainlayout;
@@ -63,9 +55,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Cập nhật lại tất cả văn bản trên UI (Label, Button, Header của Grid) theo ngôn ngữ hiện tại.
-        /// </summary>
         public void UpdateUIText()
         {
             culture = Thread.CurrentThread.CurrentUICulture;
@@ -101,9 +90,6 @@ namespace Environmental_Monitoring.View
                 roundedDataGridView2.Columns[COL_KHONGONHIEM].HeaderText = rm.GetString("Grid_NotPolluted", culture);
         }
 
-        /// <summary>
-        /// Xử lý khi UserControl được tải, gán các sự kiện cho DataGridView và các nút.
-        /// </summary>
         private void ExperimentContent_Load_1(object sender, EventArgs e)
         {
             roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -132,12 +118,10 @@ namespace Environmental_Monitoring.View
                 btnCancel.Click += btnCancel_Click;
             }
 
+
             UpdateUIText();
         }
 
-        /// <summary>
-        /// Chuyển đổi một chuỗi (có thể chứa dấu . hoặc ,) thành số Decimal một cách an toàn.
-        /// </summary>
         private bool TryParseDecimalString(string s, out decimal result)
         {
             result = 0;
@@ -167,9 +151,6 @@ namespace Environmental_Monitoring.View
             return false;
         }
 
-        /// <summary>
-        /// Kích hoạt khi kết thúc chỉnh sửa một ô, dùng để lưu giá trị (số) của cột 'GiaTri' vào CSDL.
-        /// </summary>
         private void RoundedDataGridView2_CellEndEdit_SaveGiaTri(object? sender, DataGridViewCellEventArgs e)
         {
             if (isUpdatingCell || e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -230,9 +211,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Kích hoạt ngay khi người dùng bắt đầu chỉnh sửa một ô (checkbox), dùng để commit giá trị ngay lập tức.
-        /// </summary>
         private void RoundedDataGridView2_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
         {
             if (roundedDataGridView2.IsCurrentCellDirty)
@@ -241,9 +219,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Kích hoạt sau khi giá trị ô (checkbox) được commit, dùng để xử lý logic (chỉ cho phép 1 trong 3 checkbox được chọn).
-        /// </summary>
         private void RoundedDataGridView2_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
             if (isUpdatingCell || e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -280,9 +255,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Tải dữ liệu chi tiết của hợp đồng (phần Thí Nghiệm) lên DataGridView.
-        /// </summary>
         private void LoadExperimentContract(int contractId)
         {
             try
@@ -290,9 +262,9 @@ namespace Environmental_Monitoring.View
                 currentContractId = contractId;
 
                 string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
-                                p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
-                                p.PhuTrach, p.ONhiem,
-                                r.GiaTri
+                                 p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
+                                 p.PhuTrach, p.ONhiem,
+                                 r.GiaTri
                              FROM EnvironmentalSamples s
                              JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
                              JOIN Parameters p ON tp.ParameterID = p.ParameterID
@@ -314,15 +286,9 @@ namespace Environmental_Monitoring.View
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    int onhiemStatus = 0;
-                    if (row["ONhiem"] != DBNull.Value)
-                    {
-                        onhiemStatus = Convert.ToInt32(row["ONhiem"]);
-                    }
-
-                    row[COL_ONHIEM] = (onhiemStatus == 1);
-                    row[COL_SAPONHIEM] = (onhiemStatus == 2);
-                    row[COL_KHONGONHIEM] = (onhiemStatus == 0);
+                    row[COL_ONHIEM] = false;
+                    row[COL_SAPONHIEM] = false;
+                    row[COL_KHONGONHIEM] = false;
                 }
 
                 roundedDataGridView2.DataSource = dt;
@@ -362,9 +328,14 @@ namespace Environmental_Monitoring.View
                         giaTriCell.Style.BackColor = Color.White;
                         giaTriCell.Style.ForeColor = Color.Black;
                     }
-                }
 
-                MergeSampleCells();
+                    if (roundedDataGridView2.Columns.Contains(COL_ONHIEM))
+                    {
+                        roundedDataGridView2.Columns[COL_ONHIEM].DefaultCellStyle.SelectionBackColor = roundedDataGridView2.Columns[COL_ONHIEM].DefaultCellStyle.BackColor;
+                        roundedDataGridView2.Columns[COL_SAPONHIEM].DefaultCellStyle.SelectionBackColor = roundedDataGridView2.Columns[COL_SAPONHIEM].DefaultCellStyle.BackColor;
+                        roundedDataGridView2.Columns[COL_KHONGONHIEM].DefaultCellStyle.SelectionBackColor = roundedDataGridView2.Columns[COL_KHONGONHIEM].DefaultCellStyle.BackColor;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -372,9 +343,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Đảm bảo rằng một cột được hiển thị dưới dạng CheckBox (đánh dấu) và nằm đúng vị trí.
-        /// </summary>
         private void EnsureCheckBoxColumn(string name, string headerText, int desiredIndex)
         {
             if (roundedDataGridView2.Columns.Contains(name))
@@ -390,16 +358,18 @@ namespace Environmental_Monitoring.View
                 TrueValue = true,
                 FalseValue = false,
                 ReadOnly = false,
-                Width = 120
+                Width = 120,
+                DefaultCellStyle =
+                {
+                    SelectionBackColor = roundedDataGridView2.DefaultCellStyle.BackColor,
+                    SelectionForeColor = roundedDataGridView2.DefaultCellStyle.ForeColor
+                }
             };
 
             int insertAt = Math.Min(desiredIndex, roundedDataGridView2.Columns.Count);
             roundedDataGridView2.Columns.Insert(insertAt, chk);
         }
 
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'Danh Sách Hợp Đồng' (mở PopUpContract).
-        /// </summary>
         private void btnContracts_Click(object sender, EventArgs e)
         {
             try
@@ -426,9 +396,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'Lưu', lưu các trạng thái (ô nhiễm/sắp/không) vào CSDL.
-        /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -494,9 +461,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// (MỚI) Xử lý sự kiện nhấn nút 'Hủy', xóa dữ liệu đang hiển thị trên form.
-        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             roundedDataGridView2.DataSource = null;
@@ -508,9 +472,6 @@ namespace Environmental_Monitoring.View
         }
 
 
-        /// <summary>
-        /// Gán (hoặc gán lại) các sự kiện Paint và CellFormatting để vẽ các ô được gộp.
-        /// </summary>
         private void MergeSampleCells()
         {
             roundedDataGridView2.Paint -= roundedDataGridView2_Paint;
@@ -520,100 +481,12 @@ namespace Environmental_Monitoring.View
             roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
         }
 
-        /// <summary>
-        /// (Logic Hỗ trợ) Tự vẽ lại ô 'SampleCode' (Mã Mẫu) để nó trông như được gộp.
-        /// </summary>
         private void roundedDataGridView2_Paint(object sender, PaintEventArgs e)
         {
-            if (roundedDataGridView2.Rows.Count == 0) return;
-
-            string colName = "SampleCode";
-            if (!roundedDataGridView2.Columns.Contains(colName)) return;
-
-            int colIndex = roundedDataGridView2.Columns[colName].Index;
-
-            Rectangle rect;
-            int firstVisibleRow = roundedDataGridView2.FirstDisplayedCell?.RowIndex ?? 0;
-            int lastVisibleRow = firstVisibleRow + roundedDataGridView2.DisplayedRowCount(false);
-            lastVisibleRow = Math.Min(lastVisibleRow, roundedDataGridView2.RowCount);
-
-            for (int i = firstVisibleRow; i < lastVisibleRow; i++)
-            {
-                rect = roundedDataGridView2.GetCellDisplayRectangle(colIndex, i, true);
-
-                if (i == 0 || roundedDataGridView2[colIndex, i].Value?.ToString() != roundedDataGridView2[colIndex, i - 1].Value?.ToString())
-                {
-                }
-                else
-                {
-                    rect.Y -= 1;
-                    rect.Height += 1;
-                }
-
-                int mergeCount = 0;
-                for (int j = i + 1; j < roundedDataGridView2.RowCount; j++)
-                {
-                    if (roundedDataGridView2[colIndex, i].Value?.ToString() == roundedDataGridView2[colIndex, j].Value?.ToString())
-                    {
-                        mergeCount++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                if (mergeCount > 0)
-                {
-                    for (int k = 1; k <= mergeCount; k++)
-                    {
-                        if (i + k < roundedDataGridView2.RowCount)
-                            rect.Height += roundedDataGridView2.GetCellDisplayRectangle(colIndex, i + k, true).Height;
-                    }
-
-                    Color backColor = roundedDataGridView2.Rows[i].Cells[colIndex].Style.BackColor;
-                    if (backColor.IsEmpty) backColor = roundedDataGridView2.DefaultCellStyle.BackColor;
-                    e.Graphics.FillRectangle(new SolidBrush(backColor), rect);
-
-                    e.Graphics.DrawRectangle(new Pen(roundedDataGridView2.GridColor), rect.X - 1, rect.Y - 1, rect.Width, rect.Height);
-
-                    TextRenderer.DrawText(e.Graphics,
-                        roundedDataGridView2[colIndex, i].FormattedValue?.ToString(),
-                        roundedDataGridView2.DefaultCellStyle.Font,
-                        rect,
-                        roundedDataGridView2.DefaultCellStyle.ForeColor,
-                        TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
-
-                    i += mergeCount;
-                }
-            }
         }
 
-        /// <summary>
-        /// (Logic Hỗ trợ) Ẩn văn bản ở các ô con (ô đã bị gộp) để chỉ hiển thị văn bản ở ô đầu tiên.
-        /// </summary>
         private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.RowIndex == 0 || e.ColumnIndex < 0) return;
-
-            string colName = "SampleCode";
-            if (!roundedDataGridView2.Columns.Contains(colName) || e.ColumnIndex != roundedDataGridView2.Columns[colName].Index)
-            {
-                return;
-            }
-
-            try
-            {
-                var currentValue = e.Value;
-                var prevValue = roundedDataGridView2[e.ColumnIndex, e.RowIndex - 1].Value;
-
-                if (currentValue != null && prevValue != null && currentValue.Equals(prevValue))
-                {
-                    e.Value = "";
-                    e.FormattingApplied = true;
-                }
-            }
-            catch { }
         }
     }
 }

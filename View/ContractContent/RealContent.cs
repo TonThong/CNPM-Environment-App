@@ -9,6 +9,8 @@ using System.Resources;
 using System.Threading;
 using System.Linq;
 using Environmental_Monitoring.Controller.Data;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -19,9 +21,6 @@ namespace Environmental_Monitoring.View.ContractContent
         private ResourceManager rm;
         private CultureInfo culture;
 
-        /// <summary>
-        /// Hàm khởi tạo (Constructor) cho UserControl.
-        /// </summary>
         public RealContent()
         {
             InitializeComponent();
@@ -29,18 +28,12 @@ namespace Environmental_Monitoring.View.ContractContent
             this.Load += RealContent_Load;
         }
 
-        /// <summary>
-        /// Khởi tạo ResourceManager để tải chuỗi đa ngôn ngữ.
-        /// </summary>
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(RealContent).Assembly);
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        /// <summary>
-        /// Hiển thị thông báo (alert) cho người dùng, ưu tiên qua Mainlayout.
-        /// </summary>
         private void ShowAlert(string message, AlertPanel.AlertType type)
         {
             var mainLayout = this.FindForm() as Mainlayout;
@@ -56,9 +49,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Cập nhật lại tất cả văn bản trên UI (Label, Button, Header của Grid) theo ngôn ngữ hiện tại.
-        /// </summary>
         public void UpdateUIText()
         {
             culture = Thread.CurrentThread.CurrentUICulture;
@@ -95,22 +85,36 @@ namespace Environmental_Monitoring.View.ContractContent
                 roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
             if (roundedDataGridView2.Columns.Contains("Status"))
                 roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture);
+
+            roundedDataGridView2.GridColor = Color.LightGray;
         }
 
-        /// <summary>
-        /// Xử lý khi UserControl được tải, gán các sự kiện ban đầu cho DataGridView.
-        /// </summary>
         private void RealContent_Load(object? sender, EventArgs e)
         {
             roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             roundedDataGridView2.AllowUserToAddRows = false;
 
             roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            roundedDataGridView2.ReadOnly = false;
+
+            try
+            {
+                Type dgvType = roundedDataGridView2.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+                if (pi != null)
+                {
+                    pi.SetValue(roundedDataGridView2, true, null);
+                }
+            }
+            catch (Exception) { }
 
             roundedDataGridView2.CurrentCellDirtyStateChanged -= roundedDataGridView2_CurrentCellDirtyStateChanged;
             roundedDataGridView2.CurrentCellDirtyStateChanged += roundedDataGridView2_CurrentCellDirtyStateChanged;
             roundedDataGridView2.CellValueChanged -= roundedDataGridView2_CellValueChanged;
             roundedDataGridView2.CellValueChanged += roundedDataGridView2_CellValueChanged;
+
+            roundedDataGridView2.CellClick -= roundedDataGridView2_CellClick;
+            roundedDataGridView2.CellClick += roundedDataGridView2_CellClick;
 
             var matches = this.Controls.Find("btnContracts", true);
             if (matches.Length > 0 && matches[0] is Control ctl)
@@ -133,13 +137,24 @@ namespace Environmental_Monitoring.View.ContractContent
                 btnSave.Click += btnSave_Click;
             }
 
+            roundedDataGridView2.CellFormatting -= roundedDataGridView2_CellFormatting;
+            roundedDataGridView2.Paint -= roundedDataGridView2_Paint;
+            roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
 
             UpdateUIText();
         }
 
-        /// <summary>
-        /// Chuyển đổi một chuỗi (có thể chứa dấu . hoặc ,) thành số Decimal một cách an toàn.
-        /// </summary>
+        private void roundedDataGridView2_CellClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && roundedDataGridView2.Columns[e.ColumnIndex].Name == "GiaTri")
+            {
+                if (roundedDataGridView2.Columns["GiaTri"].ReadOnly == false)
+                {
+                    roundedDataGridView2.BeginEdit(true);
+                }
+            }
+        }
+
         private bool TryParseDecimalString(string s, out decimal result)
         {
             result = 0;
@@ -172,9 +187,6 @@ namespace Environmental_Monitoring.View.ContractContent
             return false;
         }
 
-        /// <summary>
-        /// Tải dữ liệu của một Hợp đồng cụ thể lên DataGridView.
-        /// </summary>
         public void LoadContract(int contractId)
         {
             currentContractId = contractId;
@@ -187,7 +199,8 @@ namespace Environmental_Monitoring.View.ContractContent
                      JOIN Parameters p ON tp.ParameterID = p.ParameterID
                      LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
                      WHERE s.ContractID = @contractId
-                       AND (p.PhuTrach IS NULL OR p.PhuTrach = 'HienTruong')";
+                       AND (p.PhuTrach IS NULL OR p.PhuTrach = 'HienTruong')
+                     ORDER BY s.MaMau, p.TenThongSo";
 
             DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
 
@@ -208,8 +221,18 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView2.DataSource = dt;
             roundedDataGridView2.DefaultCellStyle.ForeColor = Color.Black;
 
+            foreach (DataGridViewColumn col in roundedDataGridView2.Columns)
+            {
+                col.ReadOnly = true;
+                col.DefaultCellStyle.BackColor = roundedDataGridView2.DefaultCellStyle.BackColor;
+            }
+
             if (roundedDataGridView2.Columns["GiaTri"] != null)
+            {
                 roundedDataGridView2.Columns["GiaTri"].ReadOnly = false;
+                roundedDataGridView2.Columns["GiaTri"].DefaultCellStyle.BackColor = Color.FromArgb(224, 224, 224);
+                roundedDataGridView2.Columns["GiaTri"].CellTemplate = new DataGridViewTextBoxCell();
+            }
 
             if (roundedDataGridView2.Columns["ParameterID"] != null)
                 roundedDataGridView2.Columns["ParameterID"].Visible = false;
@@ -248,26 +271,17 @@ namespace Environmental_Monitoring.View.ContractContent
         }
 
 
-        /// <summary>
-        /// Hàm gốc: Tính toán Trạng Thái dựa trên giá trị 'GiaTri' đã có trong DataRow.
-        /// </summary>
         private string SetStatusForRow(DataRow row)
         {
             object gObj = row["GiaTri"];
             return SetStatusForRow(row, gObj, false);
         }
 
-        /// <summary>
-        /// Hàm quá tải (overload): Tính Trạng Thái dựa trên giá trị MỚI từ ô Cell.
-        /// </summary>
         private string SetStatusForRow(DataRow row, object newValueFromCell)
         {
             return SetStatusForRow(row, newValueFromCell, true);
         }
 
-        /// <summary>
-        /// HÀM MASTER: Tính toán và cập nhật Trạng Thái, đồng thời cập nhật luôn 'GiaTri' trong DataRow nếu cần.
-        /// </summary>
         private string SetStatusForRow(DataRow row, object gObj, bool updateGiaTriColumn)
         {
             object minObj = row["GioiHanMin"];
@@ -319,9 +333,6 @@ namespace Environmental_Monitoring.View.ContractContent
         }
 
 
-        /// <summary>
-        /// Kích hoạt ngay khi người dùng bắt đầu chỉnh sửa một ô, dùng để commit giá trị ngay lập tức.
-        /// </summary>
         private void roundedDataGridView2_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
         {
             if (roundedDataGridView2.IsCurrentCellDirty)
@@ -330,9 +341,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Kích hoạt sau khi giá trị ô được commit, dùng để cập nhật Trạng Thái ngay sau khi nhập Giá Trị Đo.
-        /// </summary>
         private void roundedDataGridView2_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -362,9 +370,6 @@ namespace Environmental_Monitoring.View.ContractContent
         }
 
 
-        /// <summary>
-        /// Tô màu nền (Xanh, Đỏ, Cam) cho ô Trạng Thái dựa trên giá trị của nó.
-        /// </summary>
         private void UpdateStatusCellStyle(int rowIndex, string val)
         {
             if (rowIndex < 0 || rowIndex >= roundedDataGridView2.Rows.Count) return;
@@ -398,9 +403,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Xử lý sự kiện khi nhấn nút 'Danh Sách Hợp Đồng' (mở PopUpContract).
-        /// </summary>
         private void btnContracts_Click(object sender, EventArgs e)
         {
             try
@@ -427,9 +429,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'Lưu', lưu các giá trị đã nhập vào CSDL.
-        /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
             var dt = roundedDataGridView2.DataSource as DataTable;
@@ -444,7 +443,12 @@ namespace Environmental_Monitoring.View.ContractContent
                 object gObj = row["GiaTri"];
                 if (gObj != DBNull.Value && gObj != null)
                 {
-                    decimal g = Convert.ToDecimal(gObj);
+                    if (!TryParseDecimalString(gObj.ToString(), out decimal g))
+                    {
+                        ShowAlert(rm.GetString("Status_InvalidFormat", culture), AlertPanel.AlertType.Error);
+                        return;
+                    }
+
                     int sampleId = Convert.ToInt32(row["SampleID"]);
                     int parameterId = Convert.ToInt32(row["ParameterID"]);
 
@@ -479,14 +483,54 @@ namespace Environmental_Monitoring.View.ContractContent
             this.currentContractId = 0;
         }
 
-        /// <summary>
-        /// Xử lý sự kiện nhấn nút 'Hủy', xóa dữ liệu đang hiển thị trên form.
-        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             roundedDataGridView2.DataSource = null;
             lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
             this.currentContractId = 0;
+        }
+
+
+        private void MergeSampleCells() { }
+
+        private void roundedDataGridView2_Paint(object sender, PaintEventArgs e) {  }
+
+        private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            string sampleCodeColName = "SampleCode";
+            string valueColName = "GiaTri";
+
+            if (roundedDataGridView2.Columns.Contains(sampleCodeColName) && e.ColumnIndex == roundedDataGridView2.Columns[sampleCodeColName].Index)
+            {
+                if (e.RowIndex > 0)
+                {
+                    try
+                    {
+                        var currentValue = e.Value?.ToString();
+                        var prevValue = roundedDataGridView2[e.ColumnIndex, e.RowIndex - 1].Value?.ToString();
+
+                        if (!string.IsNullOrEmpty(currentValue) && currentValue.Equals(prevValue))
+                        {
+                            e.Value = "";
+                            e.FormattingApplied = true;
+                        }
+                    }
+                    catch { }
+                }
+            }
+
+            if (roundedDataGridView2.Columns.Contains(valueColName))
+            {
+                if (roundedDataGridView2.Columns[e.ColumnIndex].Name != valueColName)
+                {
+                    e.CellStyle.SelectionBackColor = e.CellStyle.BackColor;
+                    e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor;
+                }
+                else if (roundedDataGridView2.Columns[e.ColumnIndex].Name == valueColName)
+                {
+                    e.CellStyle.SelectionBackColor = Color.FromArgb(170, 200, 230);
+                }
+            }
         }
     }
 }

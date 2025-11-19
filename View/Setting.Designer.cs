@@ -93,7 +93,7 @@ namespace Environmental_Monitoring
             btnRegisterFace.FlatStyle = FlatStyle.Flat;
             btnRegisterFace.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 163);
             btnRegisterFace.ForeColor = Color.Black;
-            btnRegisterFace.HoverColor = Color.FromArgb(34, 139, 34);
+            btnRegisterFace.HoverColor = Color.Gray;
             btnRegisterFace.Location = new Point(94, 333);
             btnRegisterFace.Name = "btnRegisterFace";
             btnRegisterFace.Size = new Size(150, 40);

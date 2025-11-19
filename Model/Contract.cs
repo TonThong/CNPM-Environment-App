@@ -1,9 +1,8 @@
-﻿using Environmental_Monitoring.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Data;
 namespace Environmental_Monitoring.Model
 {
     // =============================================
@@ -27,23 +26,39 @@ namespace Environmental_Monitoring.Model
 
         public string Status { get; set; }
 
-        // Foreign Keys
+        public int? TienTrinh { get; set; }
         public int? CustomerID { get; set; }
         [ForeignKey("CustomerID")]
-        public virtual Customer Customer { get; set; }
+        public virtual Customer Customer { get; set; } 
 
         public int? EmployeeID { get; set; }
         [ForeignKey("EmployeeID")]
-        public virtual Employee Employee { get; set; }
+        public virtual Employee Employee { get; set; } 
 
-        // Navigation properties
-        public virtual ICollection<EnvironmentalSample> EnvironmentalSamples { get; set; }
-        public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<EnvironmentalSample> EnvironmentalSamples { get; set; } 
+        public virtual ICollection<Notification> Notifications { get; set; } 
 
         public Contract()
         {
             EnvironmentalSamples = new HashSet<EnvironmentalSample>();
             Notifications = new HashSet<Notification>();
+        }
+
+        public Contract(DataRow row)
+        {
+            ContractID = Convert.ToInt32(row["ContractID"]);
+            MaDon = row["MaDon"].ToString();
+
+            CustomerID = row["CustomerID"] != DBNull.Value ? (int?)Convert.ToInt32(row["CustomerID"]) : null;
+            EmployeeID = row["EmployeeID"] != DBNull.Value ? (int?)Convert.ToInt32(row["EmployeeID"]) : null;
+
+            NgayKy = row["NgayKy"] != DBNull.Value ? (DateTime?)row["NgayKy"] : null;
+            NgayTraKetQua = row["NgayTraKetQua"] != DBNull.Value ? (DateTime?)row["NgayTraKetQua"] : null;
+
+            ContractType = row["ContractType"].ToString();
+            Status = row["Status"].ToString();
+
+            TienTrinh = row["TienTrinh"] != DBNull.Value ? (int?)Convert.ToInt32(row["TienTrinh"]) : null;
         }
     }
 }

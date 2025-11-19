@@ -160,16 +160,17 @@ namespace Environmental_Monitoring.View
             // 
             // btnAdd
             // 
-            btnAdd.BackColor = Color.SeaGreen;
-            btnAdd.BaseColor = Color.SeaGreen;
+            btnAdd.BackColor = Color.FromArgb(0, 113, 0);
+            btnAdd.BaseColor = Color.FromArgb(0, 113, 0);
             btnAdd.BorderColor = Color.Transparent;
             btnAdd.BorderRadius = 15;
             btnAdd.BorderSize = 0;
+            btnAdd.Cursor = Cursors.Hand;
             btnAdd.FlatAppearance.BorderSize = 0;
             btnAdd.FlatStyle = FlatStyle.Flat;
             btnAdd.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAdd.ForeColor = Color.White;
-            btnAdd.HoverColor = Color.FromArgb(34, 139, 34);
+            btnAdd.HoverColor = Color.FromArgb(0, 192, 0);
             btnAdd.Image = (Image)resources.GetObject("btnAdd.Image");
             btnAdd.ImageAlign = ContentAlignment.MiddleLeft;
             btnAdd.Location = new Point(64, 93);
@@ -196,6 +197,7 @@ namespace Environmental_Monitoring.View
             txtSearch.BackColor = Color.White;
             txtSearch.BorderRadius = 15;
             txtSearch.BorderThickness = 1;
+            txtSearch.Cursor = Cursors.IBeam;
             txtSearch.FocusBorderColor = SystemColors.ControlDark;
             txtSearch.HoverBorderColor = Color.DarkGray;
             txtSearch.Location = new Point(625, 23);

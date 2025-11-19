@@ -41,14 +41,14 @@
             txtboxCustomerName = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxIDContract = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxPhone = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            cmbContractType = new Environmental_Monitoring.View.Components.RoundedComboBox();
             txtboxAddress = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxOwner = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtboxEmployee = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            dtpDueDate = new Environmental_Monitoring.View.Components.CustomDateTimePicker();
             btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
             btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             txtEmailCustomer = new Environmental_Monitoring.View.Components.RoundedTextBox();
+            cmbContractType = new Environmental_Monitoring.View.Components.RoundedComboBox();
+            dtpDueDate = new Environmental_Monitoring.View.Components.CustomDateTimePicker();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -205,28 +205,6 @@
             txtboxPhone.TabIndex = 45;
             txtboxPhone.UseSystemPasswordChar = false;
             // 
-            // cmbContractType
-            // 
-            cmbContractType.BorderRadius = 13;
-            cmbContractType.BorderThickness = 2;
-            tableLayoutPanel2.SetColumnSpan(cmbContractType, 2);
-            cmbContractType.DataSource = null;
-            cmbContractType.DisplayMember = "";
-            cmbContractType.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbContractType.FocusBorderColor = Color.DimGray;
-            cmbContractType.Font = new Font("Segoe UI", 12F);
-            cmbContractType.ForeColor = Color.Black;
-            cmbContractType.HoverBorderColor = Color.Gray;
-            cmbContractType.Location = new Point(670, 297);
-            cmbContractType.Name = "cmbContractType";
-            cmbContractType.NormalBorderColor = Color.DarkGray;
-            cmbContractType.SelectedIndex = -1;
-            cmbContractType.SelectedItem = null;
-            cmbContractType.SelectedValue = null;
-            cmbContractType.Size = new Size(480, 46);
-            cmbContractType.TabIndex = 46;
-            cmbContractType.ValueMember = "";
-            // 
             // txtboxAddress
             // 
             txtboxAddress.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -293,22 +271,6 @@
             txtboxEmployee.TabIndex = 49;
             txtboxEmployee.UseSystemPasswordChar = false;
             // 
-            // dtpDueDate
-            // 
-            dtpDueDate.BorderColor = Color.FromArgb(171, 171, 171);
-            dtpDueDate.BorderRadius = 13;
-            dtpDueDate.BorderSize = 1;
-            tableLayoutPanel2.SetColumnSpan(dtpDueDate, 2);
-            dtpDueDate.CustomFormat = null;
-            dtpDueDate.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            dtpDueDate.Format = DateTimePickerFormat.Short;
-            dtpDueDate.Location = new Point(671, 226);
-            dtpDueDate.Margin = new Padding(4);
-            dtpDueDate.Name = "dtpDueDate";
-            dtpDueDate.Size = new Size(478, 44);
-            dtpDueDate.TabIndex = 50;
-            dtpDueDate.Value = new DateTime(2025, 11, 15, 9, 57, 11, 361);
-            // 
             // btnCancel
             // 
             btnCancel.BackColor = Color.Gray;
@@ -316,6 +278,7 @@
             btnCancel.BorderColor = Color.Transparent;
             btnCancel.BorderRadius = 13;
             btnCancel.BorderSize = 0;
+            btnCancel.Cursor = Cursors.Hand;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
@@ -335,6 +298,7 @@
             btnSave.BorderColor = Color.Transparent;
             btnSave.BorderRadius = 13;
             btnSave.BorderSize = 0;
+            btnSave.Cursor = Cursors.Hand;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
@@ -367,6 +331,46 @@
             txtEmailCustomer.Size = new Size(480, 46);
             txtEmailCustomer.TabIndex = 53;
             txtEmailCustomer.UseSystemPasswordChar = false;
+            // 
+            // cmbContractType
+            // 
+            cmbContractType.BorderRadius = 13;
+            cmbContractType.BorderThickness = 2;
+            tableLayoutPanel2.SetColumnSpan(cmbContractType, 2);
+            cmbContractType.Cursor = Cursors.Hand;
+            cmbContractType.DataSource = null;
+            cmbContractType.DisplayMember = "";
+            cmbContractType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbContractType.FocusBorderColor = Color.DimGray;
+            cmbContractType.Font = new Font("Segoe UI", 12F);
+            cmbContractType.ForeColor = Color.Black;
+            cmbContractType.HoverBorderColor = Color.Gray;
+            cmbContractType.Location = new Point(670, 297);
+            cmbContractType.Name = "cmbContractType";
+            cmbContractType.NormalBorderColor = Color.DarkGray;
+            cmbContractType.SelectedIndex = -1;
+            cmbContractType.SelectedItem = null;
+            cmbContractType.SelectedValue = null;
+            cmbContractType.Size = new Size(480, 46);
+            cmbContractType.TabIndex = 46;
+            cmbContractType.ValueMember = "";
+            // 
+            // dtpDueDate
+            // 
+            dtpDueDate.BorderColor = Color.FromArgb(171, 171, 171);
+            dtpDueDate.BorderRadius = 13;
+            dtpDueDate.BorderSize = 1;
+            tableLayoutPanel2.SetColumnSpan(dtpDueDate, 2);
+            dtpDueDate.Cursor = Cursors.Hand;
+            dtpDueDate.CustomFormat = null;
+            dtpDueDate.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            dtpDueDate.Format = DateTimePickerFormat.Short;
+            dtpDueDate.Location = new Point(671, 226);
+            dtpDueDate.Margin = new Padding(4);
+            dtpDueDate.Name = "dtpDueDate";
+            dtpDueDate.Size = new Size(478, 44);
+            dtpDueDate.TabIndex = 50;
+            dtpDueDate.Value = new DateTime(2025, 11, 15, 9, 57, 11, 361);
             // 
             // BusinessContent
             // 
