@@ -7,9 +7,6 @@
     <Compile Update="View\AI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="View\Components\CreateUpdateContract.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="View\Components\CreateUpdateEmployee.cs">
       <SubType>Form</SubType>
     </Compile>

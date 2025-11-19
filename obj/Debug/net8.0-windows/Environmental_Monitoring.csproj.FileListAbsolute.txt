@@ -367,4 +367,3 @@ C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.Security.Cryptogr
 C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.NotificationBell.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.NotificationItem.resources
-C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.CreateUpdateContract.resources

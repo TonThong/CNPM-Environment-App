@@ -118,8 +118,35 @@ namespace Environmental_Monitoring.View
                 btnCancel.Click += btnCancel_Click;
             }
 
+            // --- ĐĂNG KÝ SỰ KIỆN GỘP Ô (Ẩn text trùng) ---
+            roundedDataGridView2.CellFormatting -= RoundedDataGridView2_CellFormatting;
+            roundedDataGridView2.CellFormatting += RoundedDataGridView2_CellFormatting;
 
             UpdateUIText();
+        }
+
+        // --- LOGIC GỘP Ô: Ẩn Sample Code nếu giống dòng trên ---
+        private void RoundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            string sampleCodeColName = "SampleCode";
+            if (roundedDataGridView2.Columns.Contains(sampleCodeColName) && e.ColumnIndex == roundedDataGridView2.Columns[sampleCodeColName].Index)
+            {
+                if (e.RowIndex > 0)
+                {
+                    try
+                    {
+                        var currentValue = e.Value?.ToString();
+                        var prevValue = roundedDataGridView2[e.ColumnIndex, e.RowIndex - 1].Value?.ToString();
+
+                        if (!string.IsNullOrEmpty(currentValue) && currentValue.Equals(prevValue))
+                        {
+                            e.Value = ""; // Xóa chữ để tạo hiệu ứng gộp
+                            e.FormattingApplied = true;
+                        }
+                    }
+                    catch { }
+                }
+            }
         }
 
         private bool TryParseDecimalString(string s, out decimal result)
@@ -261,6 +288,7 @@ namespace Environmental_Monitoring.View
             {
                 currentContractId = contractId;
 
+                // --- QUAN TRỌNG: Sắp xếp theo Tên Mẫu để gộp ô chính xác ---
                 string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
                                  p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
                                  p.PhuTrach, p.ONhiem,
@@ -310,6 +338,12 @@ namespace Environmental_Monitoring.View
                 EnsureCheckBoxColumn(COL_ONHIEM, rm.GetString("Grid_Polluted", culture), 10);
                 EnsureCheckBoxColumn(COL_SAPONHIEM, rm.GetString("Grid_SoonPolluted", culture), 11);
                 EnsureCheckBoxColumn(COL_KHONGONHIEM, rm.GetString("Grid_NotPolluted", culture), 12);
+
+                // --- KHÓA SẮP XẾP ĐỂ GIỮ NGUYÊN THỨ TỰ MERGE ---
+                foreach (DataGridViewColumn col in roundedDataGridView2.Columns)
+                {
+                    col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
 
                 foreach (DataGridViewRow row in roundedDataGridView2.Rows)
                 {
@@ -469,24 +503,6 @@ namespace Environmental_Monitoring.View
                 lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
             }
             this.currentContractId = 0;
-        }
-
-
-        private void MergeSampleCells()
-        {
-            roundedDataGridView2.Paint -= roundedDataGridView2_Paint;
-            roundedDataGridView2.CellFormatting -= roundedDataGridView2_CellFormatting;
-
-            roundedDataGridView2.Paint += roundedDataGridView2_Paint;
-            roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
-        }
-
-        private void roundedDataGridView2_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
-        private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
         }
     }
 }

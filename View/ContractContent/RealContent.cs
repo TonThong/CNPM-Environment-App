@@ -137,8 +137,10 @@ namespace Environmental_Monitoring.View.ContractContent
                 btnSave.Click += btnSave_Click;
             }
 
+            // --- Đã BỎ CellPainting (vẽ thủ công) để tránh lỗi ---
+
+            // --- KÍCH HOẠT LẠI CellFormatting để ẩn text trùng lặp (an toàn hơn) ---
             roundedDataGridView2.CellFormatting -= roundedDataGridView2_CellFormatting;
-            roundedDataGridView2.Paint -= roundedDataGridView2_Paint;
             roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
 
             UpdateUIText();
@@ -191,6 +193,9 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             currentContractId = contractId;
 
+            // --- SQL QUAN TRỌNG: Sắp xếp theo Tên Mẫu (MaMau) trước, sau đó mới đến ParameterID ---
+            // Điều này đảm bảo các dòng "Môi trường nước" nằm cạnh nhau, "Tiếng ồn" nằm cạnh nhau.
+            // Khi chúng nằm cạnh nhau, hàm CellFormatting bên dưới sẽ tự động ẩn tên ở các dòng lặp lại.
             string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
                            p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
                            r.GiaTri, p.PhuTrach
@@ -200,7 +205,7 @@ namespace Environmental_Monitoring.View.ContractContent
                      LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
                      WHERE s.ContractID = @contractId
                        AND (p.PhuTrach IS NULL OR p.PhuTrach = 'HienTruong')
-                     ORDER BY s.MaMau, p.TenThongSo";
+                     ORDER BY s.MaMau, p.ParameterID";
 
             DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
 
@@ -225,6 +230,9 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 col.ReadOnly = true;
                 col.DefaultCellStyle.BackColor = roundedDataGridView2.DefaultCellStyle.BackColor;
+
+                // --- KHÓA SORT: Giữ nguyên thứ tự của SQL ---
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
 
             if (roundedDataGridView2.Columns["GiaTri"] != null)
@@ -490,10 +498,9 @@ namespace Environmental_Monitoring.View.ContractContent
             this.currentContractId = 0;
         }
 
-
         private void MergeSampleCells() { }
 
-        private void roundedDataGridView2_Paint(object sender, PaintEventArgs e) {  }
+        private void roundedDataGridView2_Paint(object sender, PaintEventArgs e) { }
 
         private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {

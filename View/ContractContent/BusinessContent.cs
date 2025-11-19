@@ -210,6 +210,10 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 ShowAlert(rm.GetString("Business_SaveSuccess", culture), AlertPanel.AlertType.Success);
                 ClearFields();
+
+                ShowAlert(rm.GetString("Success_ContractCreated", culture), AlertPanel.AlertType.Success);
+
+                ClearFields();
             }
             catch (Exception ex)
             {
