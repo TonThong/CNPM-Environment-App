@@ -15,7 +15,7 @@
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\contractcontent\\businesscontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|C:\\Github\\CNPM-Environment-App\\view\\contractcontent\\businesscontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\businesscontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -47,19 +47,19 @@
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\components\\forgotpasswordform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\components\\createupdateemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|C:\\Github\\CNPM-Environment-App\\view\\components\\createupdateemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\components\\createupdateemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|C:\\Github\\CNPM-Environment-App\\view\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\setting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|C:\\Github\\CNPM-Environment-App\\view\\setting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\setting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\introduce.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|C:\\Github\\CNPM-Environment-App\\view\\introduce.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\introduce.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -118,7 +118,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -129,6 +129,10 @@
               "Name": "ST:1:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "ExperimentContent.cs",
@@ -136,7 +140,7 @@
               "RelativeDocumentMoniker": "View\\ContractContent\\ExperimentContent.cs",
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ExperimentContent.cs",
               "RelativeToolTip": "View\\ContractContent\\ExperimentContent.cs",
-              "ViewState": "AgIAAMcBAAAAAAAAAAAswPMBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAM4BAAAAAAAAAAAUwOIBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-19T04:48:15.227Z",
               "EditorCaption": ""
@@ -151,8 +155,7 @@
               "RelativeToolTip": "View\\ContractContent\\RealContent.cs",
               "ViewState": "AgIAAPYBAAAAAAAAAAAqwBcCAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T04:00:47.963Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T04:00:47.963Z"
             },
             {
               "$type": "Document",
@@ -164,8 +167,7 @@
               "RelativeToolTip": "View\\ContractContent\\PlanContent.cs",
               "ViewState": "AgIAAHICAAAAAAAAAAAAAIkCAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:53:03.83Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T03:53:03.83Z"
             },
             {
               "$type": "Document",
@@ -176,8 +178,7 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\BusinessContent.cs [Design]",
               "RelativeToolTip": "View\\ContractContent\\BusinessContent.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:49:50.852Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-11-19T03:49:50.852Z"
             },
             {
               "$type": "Document",
@@ -189,8 +190,7 @@
               "RelativeToolTip": "View\\Contract.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:45:17.538Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T03:45:17.538Z"
             },
             {
               "$type": "Document",
@@ -202,8 +202,7 @@
               "RelativeToolTip": "Controller\\DataProvider.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAHoAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:32:10.363Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T03:32:10.363Z"
             },
             {
               "$type": "Document",
@@ -215,8 +214,7 @@
               "RelativeToolTip": "Controller\\Data\\ContractRepo.cs",
               "ViewState": "AgIAAEMAAAAAAAAAAAAIwE4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:32:02.588Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T03:32:02.588Z"
             },
             {
               "$type": "Document",
@@ -227,8 +225,7 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Setting.cs [Design]",
               "RelativeToolTip": "View\\Setting.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:17:26.77Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-11-19T03:17:26.77Z"
             },
             {
               "$type": "Document",
@@ -240,8 +237,7 @@
               "RelativeToolTip": "View\\ContractContent\\BusinessContent.cs",
               "ViewState": "AgIAANAAAAAAAAAAAAAQwPoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T09:21:16.485Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-17T09:21:16.485Z"
             },
             {
               "$type": "Document",
@@ -253,8 +249,7 @@
               "RelativeToolTip": "Model\\Contract.cs",
               "ViewState": "AgIAAB8AAAAAAAAAAAAIwCsAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:38:02.7Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T03:38:02.7Z"
             },
             {
               "$type": "Document",
@@ -265,8 +260,7 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Introduce.cs [Design]",
               "RelativeToolTip": "View\\Introduce.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:17:19.916Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-11-19T03:17:19.916Z"
             },
             {
               "$type": "Document",
@@ -290,8 +284,7 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Components\\CreateUpdateEmployee.cs [Design]",
               "RelativeToolTip": "View\\Components\\CreateUpdateEmployee.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:16:46.046Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-11-19T03:16:46.046Z"
             },
             {
               "$type": "Document",
@@ -302,8 +295,7 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Employee.cs [Design]",
               "RelativeToolTip": "View\\Employee.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:15:47.276Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-11-19T03:15:47.276Z"
             },
             {
               "$type": "Document",
@@ -315,8 +307,7 @@
               "RelativeToolTip": "View\\Components\\ForgotPasswordForm.cs",
               "ViewState": "AgIAABoAAAAAAAAAAAAQwJABAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:21:25.748Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T03:21:25.748Z"
             },
             {
               "$type": "Document",
@@ -352,8 +343,7 @@
               "RelativeToolTip": "Controller\\Data\\EmployeeRepo.cs",
               "ViewState": "AgIAAAsBAAAAAAAAAAAwwCEBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T04:07:56.365Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-18T04:07:56.365Z"
             },
             {
               "$type": "Document",

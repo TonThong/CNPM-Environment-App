@@ -118,7 +118,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -129,6 +129,14 @@
               "Name": "ST:1:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "ExperimentContent.cs",
@@ -136,7 +144,7 @@
               "RelativeDocumentMoniker": "View\\ContractContent\\ExperimentContent.cs",
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ExperimentContent.cs",
               "RelativeToolTip": "View\\ContractContent\\ExperimentContent.cs",
-              "ViewState": "AgIAACMCAAAAAAAAAAAmwDwCAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAM4BAAAAAAAAAAAUwOIBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-19T04:48:15.227Z",
               "EditorCaption": ""
