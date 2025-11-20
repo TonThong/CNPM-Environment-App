@@ -32,6 +32,7 @@ namespace Environmental_Monitoring.View
             btnPlan = new Environmental_Monitoring.View.Components.RoundedButton();
             btnBusiness = new Environmental_Monitoring.View.Components.RoundedButton();
             btnResult = new Environmental_Monitoring.View.Components.RoundedButton();
+            btnManager = new Environmental_Monitoring.View.Components.RoundedButton();
             roundedPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -123,20 +124,22 @@ namespace Environmental_Monitoring.View
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.BackColor = Color.FromArgb(217, 244, 227);
-            tableLayoutPanel2.ColumnCount = 7;
+            tableLayoutPanel2.ColumnCount = 8;
             tableLayoutPanel1.SetColumnSpan(tableLayoutPanel2, 5);
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.5454545F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.181818F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.5454545F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel2.Controls.Add(roundedButton1, 4, 0);
             tableLayoutPanel2.Controls.Add(btnReal, 3, 0);
             tableLayoutPanel2.Controls.Add(btnPlan, 2, 0);
             tableLayoutPanel2.Controls.Add(btnBusiness, 1, 0);
             tableLayoutPanel2.Controls.Add(btnResult, 5, 0);
+            tableLayoutPanel2.Controls.Add(btnManager, 6, 0);
             tableLayoutPanel2.Location = new Point(3, 115);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
@@ -157,10 +160,10 @@ namespace Environmental_Monitoring.View
             roundedButton1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             roundedButton1.ForeColor = Color.Black;
             roundedButton1.HoverColor = Color.LightGray;
-            roundedButton1.Location = new Point(718, 3);
+            roundedButton1.Location = new Point(609, 3);
             roundedButton1.Name = "roundedButton1";
             roundedButton1.Padding = new Padding(30, 15, 30, 15);
-            roundedButton1.Size = new Size(214, 58);
+            roundedButton1.Size = new Size(176, 58);
             roundedButton1.TabIndex = 31;
             roundedButton1.Text = "Phòng Thí Nghiệm";
             roundedButton1.UseVisualStyleBackColor = false;
@@ -179,10 +182,10 @@ namespace Environmental_Monitoring.View
             btnReal.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnReal.ForeColor = Color.Black;
             btnReal.HoverColor = Color.LightGray;
-            btnReal.Location = new Point(498, 3);
+            btnReal.Location = new Point(427, 3);
             btnReal.Name = "btnReal";
             btnReal.Padding = new Padding(30, 15, 30, 15);
-            btnReal.Size = new Size(214, 58);
+            btnReal.Size = new Size(176, 58);
             btnReal.TabIndex = 29;
             btnReal.Text = "Hiện Trường";
             btnReal.UseVisualStyleBackColor = false;
@@ -201,10 +204,10 @@ namespace Environmental_Monitoring.View
             btnPlan.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPlan.ForeColor = Color.Black;
             btnPlan.HoverColor = Color.LightGray;
-            btnPlan.Location = new Point(278, 3);
+            btnPlan.Location = new Point(245, 3);
             btnPlan.Name = "btnPlan";
             btnPlan.Padding = new Padding(30, 15, 30, 15);
-            btnPlan.Size = new Size(214, 58);
+            btnPlan.Size = new Size(176, 58);
             btnPlan.TabIndex = 28;
             btnPlan.Text = "Kế Hoạch";
             btnPlan.UseVisualStyleBackColor = false;
@@ -223,10 +226,10 @@ namespace Environmental_Monitoring.View
             btnBusiness.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnBusiness.ForeColor = Color.Black;
             btnBusiness.HoverColor = Color.LightGray;
-            btnBusiness.Location = new Point(58, 3);
+            btnBusiness.Location = new Point(63, 3);
             btnBusiness.Name = "btnBusiness";
             btnBusiness.Padding = new Padding(30, 15, 30, 15);
-            btnBusiness.Size = new Size(214, 58);
+            btnBusiness.Size = new Size(176, 58);
             btnBusiness.TabIndex = 27;
             btnBusiness.Text = "Kinh Doanh";
             btnBusiness.UseVisualStyleBackColor = false;
@@ -245,14 +248,35 @@ namespace Environmental_Monitoring.View
             btnResult.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnResult.ForeColor = Color.Black;
             btnResult.HoverColor = Color.LightGray;
-            btnResult.Location = new Point(938, 3);
+            btnResult.Location = new Point(791, 3);
             btnResult.Name = "btnResult";
             btnResult.Padding = new Padding(30, 15, 30, 15);
-            btnResult.Size = new Size(214, 58);
+            btnResult.Size = new Size(176, 58);
             btnResult.TabIndex = 30;
             btnResult.Text = "Kết Quả";
             btnResult.UseVisualStyleBackColor = false;
             btnResult.Click += btnResult_Click;
+            // 
+            // btnManager
+            // 
+            btnManager.BackColor = Color.Transparent;
+            btnManager.BaseColor = Color.Transparent;
+            btnManager.BorderColor = Color.Black;
+            btnManager.BorderRadius = 10;
+            btnManager.BorderSize = 0;
+            btnManager.Cursor = Cursors.Hand;
+            btnManager.FlatAppearance.BorderSize = 0;
+            btnManager.FlatStyle = FlatStyle.Flat;
+            btnManager.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnManager.ForeColor = Color.Black;
+            btnManager.HoverColor = Color.LightGray;
+            btnManager.Location = new Point(973, 3);
+            btnManager.Name = "btnManager";
+            btnManager.Padding = new Padding(30, 15, 30, 15);
+            btnManager.Size = new Size(176, 58);
+            btnManager.TabIndex = 32;
+            btnManager.Text = "Quản Lý";
+            btnManager.UseVisualStyleBackColor = false;
             // 
             // Contract
             // 
@@ -283,5 +307,7 @@ namespace Environmental_Monitoring.View
         private Label lbContract;
 
         #endregion
+
+        private Components.RoundedButton btnManager;
     }
 }

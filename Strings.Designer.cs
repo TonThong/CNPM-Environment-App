@@ -601,6 +601,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quản Lý.
+        /// </summary>
+        internal static string Contract_Tab_Manager {
+            get {
+                return ResourceManager.GetString("Contract_Tab_Manager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kế Hoạch.
         /// </summary>
         internal static string Contract_Tab_Plan {

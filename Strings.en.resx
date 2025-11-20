@@ -967,4 +967,7 @@ Green Flow Team&lt;/p&gt;</value>
   <data name="Usage_SamplePTN" xml:space="preserve">
     <value>assigned to Lab Sample '{0}'</value>
   </data>
+  <data name="Contract_Tab_Manager" xml:space="preserve">
+    <value>Manager</value>
+  </data>
 </root>

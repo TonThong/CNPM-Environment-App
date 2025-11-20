@@ -970,4 +970,7 @@
   <data name="Usage_SamplePTN" xml:space="preserve">
     <value>đang phụ trách mẫu Thí nghiệm '{0}'</value>
   </data>
+  <data name="Contract_Tab_Manager" xml:space="preserve">
+    <value>Quản Lý</value>
+  </data>
 </root>

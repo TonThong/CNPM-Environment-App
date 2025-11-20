@@ -33,6 +33,8 @@ namespace Environmental_Monitoring.View
             InitializeComponent();
             InitializeLocalization();
 
+            this.btnManager.Click += new System.EventHandler(this.btnManager_Click);
+
             this.Load += new System.EventHandler(this.Contract_Load);
             this.VisibleChanged += new System.EventHandler(this.Contract_VisibleChanged);
         }
@@ -68,11 +70,15 @@ namespace Environmental_Monitoring.View
             roundedButton1.Enabled = false;
             btnResult.Enabled = false;
 
+            // Vô hiệu hóa nút Manager với nhân viên
+            btnManager.Enabled = false;
+
             btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
             btnPlan.BackColor = btnPlan.BaseColor = tabDefaultColor;
             btnReal.BackColor = btnReal.BaseColor = tabDefaultColor;
             roundedButton1.BackColor = roundedButton1.BaseColor = tabDefaultColor;
             btnResult.BackColor = btnResult.BaseColor = tabDefaultColor;
+            btnManager.BackColor = btnManager.BaseColor = tabDefaultColor;
 
             currentActiveTab = null;
         }
@@ -85,11 +91,15 @@ namespace Environmental_Monitoring.View
             roundedButton1.Enabled = true;
             btnResult.Enabled = true;
 
+            // Cho phép Admin bấm nút Manager
+            btnManager.Enabled = true;
+
             btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
             btnPlan.BackColor = btnPlan.BaseColor = tabDefaultColor;
             btnReal.BackColor = btnReal.BaseColor = tabDefaultColor;
             roundedButton1.BackColor = roundedButton1.BaseColor = tabDefaultColor;
             btnResult.BackColor = btnResult.BaseColor = tabDefaultColor;
+            btnManager.BackColor = btnManager.BaseColor = tabDefaultColor;
 
             currentActiveTab = null;
         }
@@ -169,6 +179,7 @@ namespace Environmental_Monitoring.View
             btnReal.Text = rm.GetString("Contract_Tab_Scene", culture);
             roundedButton1.Text = rm.GetString("Contract_Tab_Lab", culture);
             btnResult.Text = rm.GetString("Contract_Tab_Result", culture);
+            btnManager.Text = rm.GetString("Contract_Tab_Manager", culture) ?? "Quản Lý";
 
             if (pnContent.Controls.Count > 0)
             {
@@ -194,6 +205,7 @@ namespace Environmental_Monitoring.View
                 btnReal.ForeColor = ThemeManager.TextColor;
                 roundedButton1.ForeColor = ThemeManager.TextColor;
                 btnResult.ForeColor = ThemeManager.TextColor;
+                btnManager.ForeColor = ThemeManager.TextColor;
 
                 if (currentActiveTab != null)
                 {
@@ -258,6 +270,15 @@ namespace Environmental_Monitoring.View
         {
             LoadPage(new ResultContent());
             HighlightTab(btnResult);
+        }
+
+        private void btnManager_Click(object sender, EventArgs e)
+        {
+            if (UserSession.IsAdmin())
+            {
+                LoadPage(new ManagerContent());
+                HighlightTab(btnManager);
+            }
         }
 
         #endregion
