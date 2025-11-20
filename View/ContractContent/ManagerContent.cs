@@ -46,6 +46,9 @@ namespace Environmental_Monitoring.View.ContractContent
             dgvManager.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvManager.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
 
+            // Tắt viền mặc định để tự vẽ
+            dgvManager.CellBorderStyle = DataGridViewCellBorderStyle.None;
+
             try
             {
                 Type dgvType = dgvManager.GetType();
@@ -91,6 +94,7 @@ namespace Environmental_Monitoring.View.ContractContent
                         c.NgayTraKetQua,
                         cus.TenDoanhNghiep,
                         cus.TenNguoiDaiDien,
+                        c.EmployeeID, 
                         emp.HoTen as TenNhanVien,
                         samp.MaMau
                     FROM Contracts c
@@ -103,6 +107,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 dgvManager.DataSource = dt;
 
                 if (dgvManager.Columns["ContractID"] != null) dgvManager.Columns["ContractID"].Visible = false;
+                if (dgvManager.Columns.Contains("EmployeeID")) dgvManager.Columns["EmployeeID"].Visible = false;
 
                 if (!dgvManager.Columns.Contains("Detail"))
                 {
@@ -134,18 +139,34 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void OpenDetailPopup(int rowIndex)
         {
-            int contractId = Convert.ToInt32(dgvManager.Rows[rowIndex].Cells["ContractID"].Value);
-            string maDon = dgvManager.Rows[rowIndex].Cells["MaDon"].Value.ToString();
-
-            using (var popup = new ContractDetailPopup(contractId, maDon))
+            try
             {
-                // Đăng ký sự kiện: Khi popup lưu xong -> Tải lại danh sách bên ngoài
-                popup.OnDataSaved += () =>
-                {
-                    LoadContractsList();
-                };
+                int contractId = Convert.ToInt32(dgvManager.Rows[rowIndex].Cells["ContractID"].Value);
+                string maDon = dgvManager.Rows[rowIndex].Cells["MaDon"].Value.ToString();
 
-                popup.ShowDialog();
+                int employeeId = 0;
+                if (dgvManager.Columns.Contains("EmployeeID"))
+                {
+                    var val = dgvManager.Rows[rowIndex].Cells["EmployeeID"].Value;
+                    if (val != null && val != DBNull.Value)
+                    {
+                        int.TryParse(val.ToString(), out employeeId);
+                    }
+                }
+
+                using (var popup = new ContractDetailPopup(contractId, maDon, employeeId))
+                {
+                    popup.OnDataSaved += () =>
+                    {
+                        LoadContractsList();
+                    };
+
+                    popup.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi mở chi tiết: " + ex.Message);
             }
         }
 
@@ -153,90 +174,110 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
+            e.Handled = true;
+
+            // --- 1. XÁC ĐỊNH MÀU SẮC ---
+            bool isSelected = (e.State & DataGridViewElementStates.Selected) != 0;
+            bool isSampleColumn = dgvManager.Columns[e.ColumnIndex].Name == "MaMau";
+
+            Color backColor = Color.White;
+            Color textColor = Color.Black; // Mặc định đen tuyền
+
+            if (isSelected && isSampleColumn)
+            {
+                backColor = SystemColors.Highlight;
+                textColor = SystemColors.HighlightText;
+            }
+
+            // Vẽ nền
+            using (Brush backBrush = new SolidBrush(backColor))
+            {
+                e.Graphics.FillRectangle(backBrush, e.CellBounds);
+            }
+
+            // Chuẩn bị cờ vẽ text (Căn giữa, 1 dòng, cắt đuôi ...)
+            TextFormatFlags flags = TextFormatFlags.HorizontalCenter |
+                                    TextFormatFlags.VerticalCenter |
+                                    TextFormatFlags.SingleLine |
+                                    TextFormatFlags.EndEllipsis |
+                                    TextFormatFlags.NoPrefix |
+                                    TextFormatFlags.PreserveGraphicsClipping;
+
+            // --- 2. XÁC ĐỊNH CỘT GỘP ---
             string[] mergeColumns = { "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "Detail" };
             bool isMergeColumn = mergeColumns.Contains(dgvManager.Columns[e.ColumnIndex].Name);
 
-            if (!isMergeColumn)
+            using (Pen gridPen = new Pen(Color.LightGray, 1))
             {
-                e.Handled = false;
-                return;
-            }
-
-            e.Handled = true;
-            e.PaintBackground(e.CellBounds, true);
-
-            int currentContractId = Convert.ToInt32(dgvManager.Rows[e.RowIndex].Cells["ContractID"].Value);
-
-            using (Pen gridPen = new Pen(dgvManager.GridColor, 1))
-            {
-                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
-
-                bool drawBottomLine = true;
-                if (e.RowIndex < dgvManager.Rows.Count - 1)
+                // TRƯỜNG HỢP A: KHÔNG GỘP (Vẽ bình thường)
+                if (!isMergeColumn)
                 {
-                    int nextContractId = Convert.ToInt32(dgvManager.Rows[e.RowIndex + 1].Cells["ContractID"].Value);
-                    if (currentContractId == nextContractId)
-                    {
-                        drawBottomLine = false;
-                    }
-                }
+                    string val = e.Value?.ToString();
+                    if (e.Value is DateTime dtVal) val = dtVal.ToString("dd/MM/yyyy");
 
-                if (drawBottomLine)
-                {
+                    // Dùng TextRenderer để chữ đen và sắc nét hơn DrawString
+                    TextRenderer.DrawText(e.Graphics, val, e.CellStyle.Font, e.CellBounds, textColor, flags);
+
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                    return;
                 }
-            }
 
-            bool isFirstRowOfGroup = false;
-            if (e.RowIndex == 0)
-            {
-                isFirstRowOfGroup = true;
-            }
-            else
-            {
-                int prevContractId = Convert.ToInt32(dgvManager.Rows[e.RowIndex - 1].Cells["ContractID"].Value);
-                if (currentContractId != prevContractId)
+                // TRƯỜNG HỢP B: CỘT GỘP
+                int contractId = Convert.ToInt32(dgvManager.Rows[e.RowIndex].Cells["ContractID"].Value);
+
+                int startIndex = e.RowIndex;
+                while (startIndex > 0 && Convert.ToInt32(dgvManager.Rows[startIndex - 1].Cells["ContractID"].Value) == contractId)
                 {
-                    isFirstRowOfGroup = true;
+                    startIndex--;
                 }
-            }
 
-            if (isFirstRowOfGroup)
-            {
-                if (e.Value != null || dgvManager.Columns[e.ColumnIndex].Name == "Detail")
+                int endIndex = e.RowIndex;
+                while (endIndex < dgvManager.Rows.Count - 1 && Convert.ToInt32(dgvManager.Rows[endIndex + 1].Cells["ContractID"].Value) == contractId)
                 {
-                    string textToDraw = "";
+                    endIndex++;
+                }
 
-                    if (e.Value is DateTime dtVal)
-                        textToDraw = dtVal.ToString("dd/MM/yyyy");
-                    else if (dgvManager.Columns[e.ColumnIndex].Name == "Detail")
-                        textToDraw = "Xem";
-                    else
-                        textToDraw = e.Value?.ToString();
+                int totalHeight = 0;
+                for (int i = startIndex; i <= endIndex; i++) totalHeight += dgvManager.Rows[i].Height;
 
-                    if (dgvManager.Columns[e.ColumnIndex].Name == "Detail")
+                int offsetY = 0;
+                for (int i = startIndex; i < e.RowIndex; i++) offsetY -= dgvManager.Rows[i].Height;
+
+                // Hình chữ nhật chứa nội dung gộp
+                Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
+
+                if (dgvManager.Columns[e.ColumnIndex].Name == "Detail")
+                {
+                    // Vẽ nút Xem
+                    int btnW = 60;
+                    int btnH = 25;
+                    Rectangle btnRect = new Rectangle(
+                        groupRect.X + (groupRect.Width - btnW) / 2,
+                        groupRect.Y + (groupRect.Height - btnH) / 2,
+                        btnW, btnH);
+
+                    using (Brush btnBrush = new SolidBrush(Color.FromArgb(40, 167, 69)))
                     {
-                        Rectangle btnRect = new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y + 4, e.CellBounds.Width - 20, e.CellBounds.Height - 8);
-                        using (Brush btnBrush = new SolidBrush(Color.FromArgb(40, 167, 69)))
-                        {
-                            e.Graphics.FillRectangle(btnBrush, btnRect);
-                        }
-                        TextRenderer.DrawText(e.Graphics, textToDraw, e.CellStyle.Font, btnRect, Color.White,
-                            TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                        e.Graphics.FillRectangle(btnBrush, btnRect);
                     }
-                    else
-                    {
-                        using (Brush textBrush = new SolidBrush(Color.Black))
-                        {
-                            e.Graphics.DrawString(textToDraw, e.CellStyle.Font, textBrush, e.CellBounds, new StringFormat
-                            {
-                                Alignment = StringAlignment.Center,
-                                LineAlignment = StringAlignment.Center,
-                                FormatFlags = StringFormatFlags.NoWrap,
-                                Trimming = StringTrimming.EllipsisCharacter
-                            });
-                        }
-                    }
+                    // Chữ trên nút cũng dùng TextRenderer
+                    TextRenderer.DrawText(e.Graphics, "Xem", new Font(e.CellStyle.Font, FontStyle.Bold), btnRect, Color.White, flags);
+                }
+                else
+                {
+                    string val = e.Value?.ToString();
+                    if (e.Value is DateTime dtVal) val = dtVal.ToString("dd/MM/yyyy");
+
+                    // Vẽ text gộp bằng TextRenderer -> Chữ đen sắc nét
+                    TextRenderer.DrawText(e.Graphics, val, e.CellStyle.Font, groupRect, textColor, flags);
+                }
+
+                // Vẽ viền
+                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom); // Kẻ dọc phải
+                if (e.RowIndex == endIndex)
+                {
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1); // Kẻ ngang đáy
                 }
             }
         }

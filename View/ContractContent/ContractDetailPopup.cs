@@ -15,6 +15,7 @@ namespace Environmental_Monitoring.View.ContractContent
     public partial class ContractDetailPopup : Form
     {
         private int _contractId;
+        private int _initialEmployeeId;
         private RoundedDataGridView dgvDetails;
         private ResourceManager rm;
         private CultureInfo culture;
@@ -29,11 +30,28 @@ namespace Environmental_Monitoring.View.ContractContent
 
         public event Action OnDataSaved;
 
-        public ContractDetailPopup(int contractId, string maDon)
+        // Constructor nhận tham số employeeId
+        public ContractDetailPopup(int contractId, string maDon, int employeeId)
         {
             _contractId = contractId;
+            _initialEmployeeId = employeeId; // Lưu ID nhận từ Form Manager
+
             InitializeComponentCustom(maDon);
             InitializeLocalization();
+
+            // QUAN TRỌNG: Dùng sự kiện Load để đảm bảo UI đã khởi tạo xong trước khi nạp dữ liệu
+            this.Load += ContractDetailPopup_Load;
+        }
+
+        private void ContractDetailPopup_Load(object sender, EventArgs e)
+        {
+            // 1. Nạp danh sách nhân viên vào ComboBox trước
+            LoadEmployeesToComboBox();
+
+            // 2. Chọn nhân viên theo ID đã truyền vào (Logic gán cứng)
+            SetSelectedEmployee(_initialEmployeeId);
+
+            // 3. Cuối cùng mới tải chi tiết hợp đồng
             LoadContractDetails();
         }
 
@@ -94,24 +112,18 @@ namespace Environmental_Monitoring.View.ContractContent
             lblEmployeeTitle.Text = "Nhân viên thụ lý:";
             lblEmployeeTitle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
             lblEmployeeTitle.AutoSize = true;
-            // Vị trí X=120
             lblEmployeeTitle.Location = new Point(120, 90);
             headerPanel.Controls.Add(lblEmployeeTitle);
             lblEmployeeTitle.BringToFront();
 
-            // Panel chứa ComboBox
             Panel borderPanel = new Panel();
-            borderPanel.BackColor = Color.White; // Nền trắng
+            borderPanel.BackColor = Color.White;
             borderPanel.Size = new Size(320, 35);
-            // Tăng khoảng cách: Label X=120, Width~140 -> X Panel = 120 + 140 + 30 (khoảng cách) = 290
-            // Để xa hơn nữa: X = 300
             borderPanel.Location = new Point(300, 85);
 
-            // Sự kiện vẽ viền dưới (Bottom Border) cho Panel
             borderPanel.Paint += (s, e) =>
             {
-                // Vẽ đường kẻ đen ở cạnh dưới
-                using (Pen p = new Pen(Color.Black, 2)) // Độ dày 2px
+                using (Pen p = new Pen(Color.Black, 2))
                 {
                     e.Graphics.DrawLine(p, 0, borderPanel.Height - 1, borderPanel.Width, borderPanel.Height - 1);
                 }
@@ -119,17 +131,11 @@ namespace Environmental_Monitoring.View.ContractContent
 
             cboEmployeeSelect = new ComboBox();
             cboEmployeeSelect.Font = new Font("Segoe UI", 11);
-            cboEmployeeSelect.Width = 318; // Gần bằng Panel
+            cboEmployeeSelect.Width = 318;
             cboEmployeeSelect.Location = new Point(1, 1);
             cboEmployeeSelect.DropDownStyle = ComboBoxStyle.DropDownList;
             cboEmployeeSelect.FlatStyle = FlatStyle.Flat;
             cboEmployeeSelect.BackColor = Color.White;
-
-            // Load dữ liệu
-            DataTable dtEmp = LoadEmployees();
-            cboEmployeeSelect.DataSource = dtEmp;
-            cboEmployeeSelect.DisplayMember = "HoTen";
-            cboEmployeeSelect.ValueMember = "EmployeeID";
 
             borderPanel.Controls.Add(cboEmployeeSelect);
             headerPanel.Controls.Add(borderPanel);
@@ -173,7 +179,6 @@ namespace Environmental_Monitoring.View.ContractContent
             gridContainer.Padding = new Padding(20, 10, 20, 10);
             gridContainer.Controls.Add(dgvDetails);
             mainPanel.Controls.Add(gridContainer);
-
             gridContainer.BringToFront();
 
             dgvDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
@@ -197,16 +202,47 @@ namespace Environmental_Monitoring.View.ContractContent
             dgvDetails.DataError += (s, e) => { e.ThrowException = false; };
         }
 
-        private DataTable LoadEmployees()
+        private void LoadEmployeesToComboBox()
         {
             try
             {
                 string query = "SELECT EmployeeID, HoTen FROM Employees";
-                return DataProvider.Instance.ExecuteQuery(query);
+                DataTable dt = DataProvider.Instance.ExecuteQuery(query);
+
+                cboEmployeeSelect.DataSource = dt;
+                cboEmployeeSelect.DisplayMember = "HoTen";
+                cboEmployeeSelect.ValueMember = "EmployeeID";
             }
-            catch
+            catch (Exception ex)
             {
-                return new DataTable();
+                MessageBox.Show("Lỗi tải nhân viên: " + ex.Message);
+            }
+        }
+
+        private void SetSelectedEmployee(int targetEmployeeId)
+        {
+            if (targetEmployeeId <= 0) return;
+
+            // Cách 1: Gán trực tiếp (thường dùng nếu kiểu dữ liệu khớp hoàn toàn)
+            cboEmployeeSelect.SelectedValue = targetEmployeeId;
+
+            // Cách 2: Duyệt qua từng item để tìm ID khớp (An toàn tuyệt đối nếu kiểu dữ liệu int/long bị lệch)
+            if (cboEmployeeSelect.SelectedValue == null || Convert.ToInt32(cboEmployeeSelect.SelectedValue) != targetEmployeeId)
+            {
+                for (int i = 0; i < cboEmployeeSelect.Items.Count; i++)
+                {
+                    DataRowView drv = cboEmployeeSelect.Items[i] as DataRowView;
+                    if (drv != null)
+                    {
+                        // Ép kiểu về int để so sánh chính xác
+                        int idInList = Convert.ToInt32(drv["EmployeeID"]);
+                        if (idInList == targetEmployeeId)
+                        {
+                            cboEmployeeSelect.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -243,29 +279,6 @@ namespace Environmental_Monitoring.View.ContractContent
                         int pheDuyetStatus = 0;
                         if (row["TrangThaiPheDuyet"] != DBNull.Value) int.TryParse(row["TrangThaiPheDuyet"].ToString(), out pheDuyetStatus);
                         row["TrangThaiHienThi"] = (pheDuyetStatus == 1) ? approved : notApproved;
-                    }
-                }
-
-                // --- ĐỒNG BỘ TÊN NHÂN VIÊN ---
-                string queryEmp = "SELECT EmployeeID FROM Contracts WHERE ContractID = " + _contractId;
-                object result = DataProvider.Instance.ExecuteScalar(queryEmp);
-                int currentEmpID = (result != null && result != DBNull.Value) ? Convert.ToInt32(result) : 0;
-
-                if (currentEmpID > 0)
-                {
-                    bool exists = false;
-                    foreach (DataRowView item in cboEmployeeSelect.Items)
-                    {
-                        if (Convert.ToInt32(item["EmployeeID"]) == currentEmpID)
-                        {
-                            exists = true;
-                            break;
-                        }
-                    }
-
-                    if (exists)
-                    {
-                        cboEmployeeSelect.SelectedValue = currentEmpID;
                     }
                 }
 
@@ -398,7 +411,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 MessageBox.Show($"Đã lưu thành công dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 OnDataSaved?.Invoke();
-
                 LoadContractDetails();
             }
             catch (Exception ex)

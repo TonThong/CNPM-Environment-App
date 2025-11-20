@@ -86,16 +86,18 @@ namespace Environmental_Monitoring.View.ContractContent
             if (roundedDataGridView2.Columns.Contains("Status"))
                 roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture);
 
-            roundedDataGridView2.GridColor = Color.LightGray;
+            roundedDataGridView2.GridColor = Color.Black;
         }
 
         private void RealContent_Load(object? sender, EventArgs e)
         {
             roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            roundedDataGridView2.AllowUserToAddRows = false;
+            roundedDataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
-            roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            roundedDataGridView2.AllowUserToAddRows = false;
+            roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.None;
             roundedDataGridView2.ReadOnly = false;
+            roundedDataGridView2.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
             try
             {
@@ -137,9 +139,9 @@ namespace Environmental_Monitoring.View.ContractContent
                 btnSave.Click += btnSave_Click;
             }
 
-            // --- Đã BỎ CellPainting (vẽ thủ công) để tránh lỗi ---
+            roundedDataGridView2.CellPainting -= roundedDataGridView2_CellPainting;
+            roundedDataGridView2.CellPainting += roundedDataGridView2_CellPainting;
 
-            // --- KÍCH HOẠT LẠI CellFormatting để ẩn text trùng lặp (an toàn hơn) ---
             roundedDataGridView2.CellFormatting -= roundedDataGridView2_CellFormatting;
             roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
 
@@ -161,12 +163,9 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             result = 0;
             if (string.IsNullOrWhiteSpace(s)) return false;
-
             s = s.Trim();
-
             bool hasComma = s.Contains(",");
             bool hasDot = s.Contains(".");
-
             NumberStyles styles = NumberStyles.Number;
 
             if (hasComma && !hasDot)
@@ -185,27 +184,22 @@ namespace Environmental_Monitoring.View.ContractContent
                 if (decimal.TryParse(s, styles, new CultureInfo("vi-VN"), out result)) return true;
                 if (decimal.TryParse(s, styles, CultureInfo.InvariantCulture, out result)) return true;
             }
-
             return false;
         }
 
         public void LoadContract(int contractId)
         {
             currentContractId = contractId;
-
-            // --- SQL QUAN TRỌNG: Sắp xếp theo Tên Mẫu (MaMau) trước, sau đó mới đến ParameterID ---
-            // Điều này đảm bảo các dòng "Môi trường nước" nằm cạnh nhau, "Tiếng ồn" nằm cạnh nhau.
-            // Khi chúng nằm cạnh nhau, hàm CellFormatting bên dưới sẽ tự động ẩn tên ở các dòng lặp lại.
             string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
                            p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
                            r.GiaTri, p.PhuTrach
-                     FROM EnvironmentalSamples s
-                     JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
-                     JOIN Parameters p ON tp.ParameterID = p.ParameterID
-                     LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
-                     WHERE s.ContractID = @contractId
-                       AND (p.PhuTrach IS NULL OR p.PhuTrach = 'HienTruong')
-                     ORDER BY s.MaMau, p.ParameterID";
+                      FROM EnvironmentalSamples s
+                      JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
+                      JOIN Parameters p ON tp.ParameterID = p.ParameterID
+                      LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
+                      WHERE s.ContractID = @contractId
+                        AND (p.PhuTrach IS NULL OR p.PhuTrach = 'HienTruong')
+                      ORDER BY s.MaMau, p.ParameterID";
 
             DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
 
@@ -230,8 +224,6 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 col.ReadOnly = true;
                 col.DefaultCellStyle.BackColor = roundedDataGridView2.DefaultCellStyle.BackColor;
-
-                // --- KHÓA SORT: Giữ nguyên thứ tự của SQL ---
                 col.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
 
@@ -242,18 +234,14 @@ namespace Environmental_Monitoring.View.ContractContent
                 roundedDataGridView2.Columns["GiaTri"].CellTemplate = new DataGridViewTextBoxCell();
             }
 
-            if (roundedDataGridView2.Columns["ParameterID"] != null)
-                roundedDataGridView2.Columns["ParameterID"].Visible = false;
-            if (roundedDataGridView2.Columns["SampleID"] != null)
-                roundedDataGridView2.Columns["SampleID"].Visible = false;
-            if (roundedDataGridView2.Columns["PhuTrach"] != null)
-                roundedDataGridView2.Columns["PhuTrach"].Visible = false;
+            if (roundedDataGridView2.Columns["ParameterID"] != null) roundedDataGridView2.Columns["ParameterID"].Visible = false;
+            if (roundedDataGridView2.Columns["SampleID"] != null) roundedDataGridView2.Columns["SampleID"].Visible = false;
+            if (roundedDataGridView2.Columns["PhuTrach"] != null) roundedDataGridView2.Columns["PhuTrach"].Visible = false;
 
             if (roundedDataGridView2.Columns["Status"] != null)
             {
                 roundedDataGridView2.Columns["Status"].ReadOnly = true;
                 roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture);
-
                 foreach (DataGridViewRow dgRow in roundedDataGridView2.Rows)
                 {
                     DataRowView drv = dgRow.DataBoundItem as DataRowView;
@@ -264,20 +252,13 @@ namespace Environmental_Monitoring.View.ContractContent
                     }
                 }
             }
-            if (roundedDataGridView2.Columns["SampleCode"] != null)
-                roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
-            if (roundedDataGridView2.Columns["TenThongSo"] != null)
-                roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
-            if (roundedDataGridView2.Columns["DonVi"] != null)
-                roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
-            if (roundedDataGridView2.Columns["GioiHanMin"] != null)
-                roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
-            if (roundedDataGridView2.Columns["GioiHanMax"] != null)
-                roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
-            if (roundedDataGridView2.Columns["GiaTri"] != null)
-                roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
+            if (roundedDataGridView2.Columns["SampleCode"] != null) roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
+            if (roundedDataGridView2.Columns["TenThongSo"] != null) roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
+            if (roundedDataGridView2.Columns["DonVi"] != null) roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
+            if (roundedDataGridView2.Columns["GioiHanMin"] != null) roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
+            if (roundedDataGridView2.Columns["GioiHanMax"] != null) roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
+            if (roundedDataGridView2.Columns["GiaTri"] != null) roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
         }
-
 
         private string SetStatusForRow(DataRow row)
         {
@@ -299,47 +280,27 @@ namespace Environmental_Monitoring.View.ContractContent
             if (gObj == DBNull.Value || gObj == null || string.IsNullOrWhiteSpace(gObj.ToString()))
             {
                 status = rm.GetString("Status_NotAvailable", culture);
-                if (updateGiaTriColumn)
-                {
-                    row["GiaTri"] = DBNull.Value;
-                }
+                if (updateGiaTriColumn) row["GiaTri"] = DBNull.Value;
             }
             else if (!TryParseDecimalString(gObj.ToString(), out var g))
             {
                 status = rm.GetString("Status_InvalidFormat", culture);
-
             }
             else
             {
-                if (updateGiaTriColumn)
-                {
-                    row["GiaTri"] = g;
-                }
+                if (updateGiaTriColumn) row["GiaTri"] = g;
 
                 decimal? min = null, max = null;
-                if (minObj != DBNull.Value && minObj != null)
-                    min = Convert.ToDecimal(minObj);
-                if (maxObj != DBNull.Value && maxObj != null)
-                    max = Convert.ToDecimal(maxObj);
+                if (minObj != DBNull.Value && minObj != null) min = Convert.ToDecimal(minObj);
+                if (maxObj != DBNull.Value && maxObj != null) max = Convert.ToDecimal(maxObj);
 
-                if (min.HasValue && g < min.Value)
-                {
-                    status = rm.GetString("Status_OutOfRange", culture);
-                }
-                else if (max.HasValue && g > max.Value)
-                {
-                    status = rm.GetString("Status_OutOfRange", culture);
-                }
-                else
-                {
-                    status = rm.GetString("Status_Passed", culture);
-                }
+                if (min.HasValue && g < min.Value) status = rm.GetString("Status_OutOfRange", culture);
+                else if (max.HasValue && g > max.Value) status = rm.GetString("Status_OutOfRange", culture);
+                else status = rm.GetString("Status_Passed", culture);
             }
-
             row["Status"] = status;
             return status;
         }
-
 
         private void roundedDataGridView2_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
         {
@@ -352,12 +313,8 @@ namespace Environmental_Monitoring.View.ContractContent
         private void roundedDataGridView2_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
             string colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
-            if (colName != "GiaTri")
-            {
-                return;
-            }
+            if (colName != "GiaTri") return;
 
             try
             {
@@ -365,9 +322,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 if (drv != null)
                 {
                     object newValue = roundedDataGridView2.Rows[e.RowIndex].Cells["GiaTri"].Value;
-
                     string newStatus = SetStatusForRow(drv.Row, newValue);
-
                     UpdateStatusCellStyle(e.RowIndex, newStatus);
                 }
             }
@@ -376,7 +331,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 ShowAlert("Lỗi cập nhật trạng thái: " + ex.Message, AlertPanel.AlertType.Error);
             }
         }
-
 
         private void UpdateStatusCellStyle(int rowIndex, string val)
         {
@@ -394,32 +348,17 @@ namespace Environmental_Monitoring.View.ContractContent
                 return;
             }
 
-            if (val == passed)
-            {
-                cell.Style.BackColor = Color.Green;
-                cell.Style.ForeColor = Color.White;
-            }
-            else if (val == outOfRange || val == invalidFormat)
-            {
-                cell.Style.BackColor = Color.Red;
-                cell.Style.ForeColor = Color.White;
-            }
-            else
-            {
-                cell.Style.BackColor = Color.Orange;
-                cell.Style.ForeColor = Color.White;
-            }
+            if (val == passed) { cell.Style.BackColor = Color.Green; cell.Style.ForeColor = Color.White; }
+            else if (val == outOfRange || val == invalidFormat) { cell.Style.BackColor = Color.Red; cell.Style.ForeColor = Color.White; }
+            else { cell.Style.BackColor = Color.Orange; cell.Style.ForeColor = Color.White; }
         }
 
         private void btnContracts_Click(object sender, EventArgs e)
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status 
-                                 FROM Contracts 
-                                 WHERE TienTrinh = 2";
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts WHERE TienTrinh = 2";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
-
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
                     popup.ContractSelected += (contractId) =>
@@ -427,14 +366,10 @@ namespace Environmental_Monitoring.View.ContractContent
                         lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
                         LoadContract(contractId);
                     };
-
                     popup.ShowDialog();
                 }
             }
-            catch (Exception ex)
-            {
-                ShowAlert(rm.GetString("Error_LoadContracts", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
-            }
+            catch (Exception ex) { ShowAlert(rm.GetString("Error_LoadContracts", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -449,30 +384,37 @@ namespace Environmental_Monitoring.View.ContractContent
             foreach (DataRow row in dt.Rows)
             {
                 object gObj = row["GiaTri"];
-                if (gObj != DBNull.Value && gObj != null)
+                if (gObj == DBNull.Value || gObj == null || string.IsNullOrWhiteSpace(gObj.ToString()))
                 {
-                    if (!TryParseDecimalString(gObj.ToString(), out decimal g))
-                    {
-                        ShowAlert(rm.GetString("Status_InvalidFormat", culture), AlertPanel.AlertType.Error);
-                        return;
-                    }
+                    ShowAlert("Vui lòng nhập đầy đủ tất cả các giá trị kết quả!", AlertPanel.AlertType.Error);
+                    return;
+                }
+                if (!TryParseDecimalString(gObj.ToString(), out decimal temp))
+                {
+                    ShowAlert(rm.GetString("Status_InvalidFormat", culture), AlertPanel.AlertType.Error);
+                    return;
+                }
+            }
 
-                    int sampleId = Convert.ToInt32(row["SampleID"]);
-                    int parameterId = Convert.ToInt32(row["ParameterID"]);
+            foreach (DataRow row in dt.Rows)
+            {
+                object gObj = row["GiaTri"];
+                TryParseDecimalString(gObj.ToString(), out decimal g);
+                int sampleId = Convert.ToInt32(row["SampleID"]);
+                int parameterId = Convert.ToInt32(row["ParameterID"]);
 
-                    string checkQ = "SELECT ResultID FROM Results WHERE SampleID = @sampleId AND ParameterID = @parameterId LIMIT 1";
-                    object exist = DataProvider.Instance.ExecuteScalar(checkQ, new object[] { sampleId, parameterId });
+                string checkQ = "SELECT ResultID FROM Results WHERE SampleID = @sampleId AND ParameterID = @parameterId LIMIT 1";
+                object exist = DataProvider.Instance.ExecuteScalar(checkQ, new object[] { sampleId, parameterId });
 
-                    if (exist != null && int.TryParse(exist.ToString(), out int resultId))
-                    {
-                        string updateQ = "UPDATE Results SET GiaTri = @giaTri, NgayPhanTich = CURRENT_TIMESTAMP WHERE ResultID = @resultId";
-                        DataProvider.Instance.ExecuteNonQuery(updateQ, new object[] { g, resultId });
-                    }
-                    else
-                    {
-                        string insertQ = "INSERT INTO Results (GiaTri, TrangThaiPheDuyet, NgayPhanTich, SampleID, ParameterID) VALUES (@giaTri, NULL, CURRENT_TIMESTAMP, @sampleId, @parameterId)";
-                        DataProvider.Instance.ExecuteNonQuery(insertQ, new object[] { g, sampleId, parameterId });
-                    }
+                if (exist != null && int.TryParse(exist.ToString(), out int resultId))
+                {
+                    string updateQ = "UPDATE Results SET GiaTri = @giaTri, NgayPhanTich = CURRENT_TIMESTAMP WHERE ResultID = @resultId";
+                    DataProvider.Instance.ExecuteNonQuery(updateQ, new object[] { g, resultId });
+                }
+                else
+                {
+                    string insertQ = "INSERT INTO Results (GiaTri, TrangThaiPheDuyet, NgayPhanTich, SampleID, ParameterID) VALUES (@giaTri, NULL, CURRENT_TIMESTAMP, @sampleId, @parameterId)";
+                    DataProvider.Instance.ExecuteNonQuery(insertQ, new object[] { g, sampleId, parameterId });
                 }
             }
 
@@ -483,7 +425,6 @@ namespace Environmental_Monitoring.View.ContractContent
             string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @id", new object[] { this.currentContractId }).ToString();
             string noiDungThiNghiem = $"Hợp đồng '{maDon}' đã lấy mẫu hiện trường, cần phân tích thí nghiệm.";
             NotificationService.CreateNotification("ChinhSua", noiDungThiNghiem, thiNghiemRoleID, this.currentContractId, null);
-
             ShowAlert(rm.GetString("Real_SaveSuccess", culture), AlertPanel.AlertType.Success);
 
             roundedDataGridView2.DataSource = null;
@@ -498,34 +439,10 @@ namespace Environmental_Monitoring.View.ContractContent
             this.currentContractId = 0;
         }
 
-        private void MergeSampleCells() { }
-
-        private void roundedDataGridView2_Paint(object sender, PaintEventArgs e) { }
-
         private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            string sampleCodeColName = "SampleCode";
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
             string valueColName = "GiaTri";
-
-            if (roundedDataGridView2.Columns.Contains(sampleCodeColName) && e.ColumnIndex == roundedDataGridView2.Columns[sampleCodeColName].Index)
-            {
-                if (e.RowIndex > 0)
-                {
-                    try
-                    {
-                        var currentValue = e.Value?.ToString();
-                        var prevValue = roundedDataGridView2[e.ColumnIndex, e.RowIndex - 1].Value?.ToString();
-
-                        if (!string.IsNullOrEmpty(currentValue) && currentValue.Equals(prevValue))
-                        {
-                            e.Value = "";
-                            e.FormattingApplied = true;
-                        }
-                    }
-                    catch { }
-                }
-            }
-
             if (roundedDataGridView2.Columns.Contains(valueColName))
             {
                 if (roundedDataGridView2.Columns[e.ColumnIndex].Name != valueColName)
@@ -536,6 +453,65 @@ namespace Environmental_Monitoring.View.ContractContent
                 else if (roundedDataGridView2.Columns[e.ColumnIndex].Name == valueColName)
                 {
                     e.CellStyle.SelectionBackColor = Color.FromArgb(170, 200, 230);
+                }
+            }
+        }
+
+        private void roundedDataGridView2_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            e.Handled = true;
+            e.PaintBackground(e.CellBounds, true);
+
+            string colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
+            bool isMergeColumn = (colName == "SampleCode");
+
+            using (Pen gridPen = new Pen(Color.Black, 1))
+            {
+                if (isMergeColumn)
+                {
+                    string rawValue = e.Value?.ToString() ?? "";
+                    string displayValue = rawValue;
+                    if (!string.IsNullOrEmpty(displayValue))
+                    {
+                        int index = displayValue.IndexOf(" - Template");
+                        if (index > 0) displayValue = displayValue.Substring(0, index);
+                    }
+
+                    int startIndex = e.RowIndex;
+                    while (startIndex > 0)
+                    {
+                        object prevVal = roundedDataGridView2.Rows[startIndex - 1].Cells[e.ColumnIndex].Value;
+                        if (prevVal != null && prevVal.ToString() == rawValue) startIndex--; else break;
+                    }
+
+                    int endIndex = e.RowIndex;
+                    while (endIndex < roundedDataGridView2.Rows.Count - 1)
+                    {
+                        object nextVal = roundedDataGridView2.Rows[endIndex + 1].Cells[e.ColumnIndex].Value;
+                        if (nextVal != null && nextVal.ToString() == rawValue) endIndex++; else break;
+                    }
+
+                    int totalHeight = 0;
+                    for (int i = startIndex; i <= endIndex; i++) totalHeight += roundedDataGridView2.Rows[i].Height;
+
+                    int offsetY = 0;
+                    for (int i = startIndex; i < e.RowIndex; i++) offsetY -= roundedDataGridView2.Rows[i].Height;
+
+                    Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
+
+                    TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak | TextFormatFlags.PreserveGraphicsClipping;
+                    TextRenderer.DrawText(e.Graphics, displayValue, e.CellStyle.Font, groupRect, Color.Black, flags);
+
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                    if (e.RowIndex == endIndex) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+                else
+                {
+                    e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.Border);
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                 }
             }
         }
