@@ -1000,4 +1000,7 @@
   <data name="Grid_Employee" xml:space="preserve">
     <value>Nhân Viên Thụ Lý</value>
   </data>
+  <data name="Business_Employee" xml:space="preserve">
+    <value>Nhân Viên Thụ Lý</value>
+  </data>
 </root>

@@ -46,7 +46,6 @@ namespace Environmental_Monitoring.View.ContractContent
             dgvManager.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvManager.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
 
-            // Tắt viền mặc định để tự vẽ
             dgvManager.CellBorderStyle = DataGridViewCellBorderStyle.None;
 
             try
@@ -77,7 +76,7 @@ namespace Environmental_Monitoring.View.ContractContent
             if (dgvManager.Columns.Contains("NgayTraKetQua")) dgvManager.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture) ?? "Ngày Trả";
             if (dgvManager.Columns.Contains("TenDoanhNghiep")) dgvManager.Columns["TenDoanhNghiep"].HeaderText = rm.GetString("PDF_Company", culture) ?? "Công Ty";
             if (dgvManager.Columns.Contains("TenNguoiDaiDien")) dgvManager.Columns["TenNguoiDaiDien"].HeaderText = rm.GetString("PDF_Representative", culture) ?? "Đại Diện";
-            if (dgvManager.Columns.Contains("TenNhanVien")) dgvManager.Columns["TenNhanVien"].HeaderText = rm.GetString("Business_Employee", culture) ?? "NV Thụ Lý";
+            if (dgvManager.Columns.Contains("TenNhanVien")) dgvManager.Columns["TenNhanVien"].HeaderText = rm.GetString("Business_Employee", culture) ?? "Nhân Viên Thụ Lý";
             if (dgvManager.Columns.Contains("MaMau")) dgvManager.Columns["MaMau"].HeaderText = rm.GetString("Grid_Sample", culture) ?? "Mẫu";
             if (dgvManager.Columns.Contains("Detail")) dgvManager.Columns["Detail"].HeaderText = rm.GetString("Grid_Detail", culture) ?? "Chi Tiết";
         }
@@ -176,12 +175,11 @@ namespace Environmental_Monitoring.View.ContractContent
 
             e.Handled = true;
 
-            // --- 1. XÁC ĐỊNH MÀU SẮC ---
             bool isSelected = (e.State & DataGridViewElementStates.Selected) != 0;
             bool isSampleColumn = dgvManager.Columns[e.ColumnIndex].Name == "MaMau";
 
             Color backColor = Color.White;
-            Color textColor = Color.Black; // Mặc định đen tuyền
+            Color textColor = Color.Black; 
 
             if (isSelected && isSampleColumn)
             {
@@ -189,13 +187,11 @@ namespace Environmental_Monitoring.View.ContractContent
                 textColor = SystemColors.HighlightText;
             }
 
-            // Vẽ nền
             using (Brush backBrush = new SolidBrush(backColor))
             {
                 e.Graphics.FillRectangle(backBrush, e.CellBounds);
             }
 
-            // Chuẩn bị cờ vẽ text (Căn giữa, 1 dòng, cắt đuôi ...)
             TextFormatFlags flags = TextFormatFlags.HorizontalCenter |
                                     TextFormatFlags.VerticalCenter |
                                     TextFormatFlags.SingleLine |
@@ -203,19 +199,16 @@ namespace Environmental_Monitoring.View.ContractContent
                                     TextFormatFlags.NoPrefix |
                                     TextFormatFlags.PreserveGraphicsClipping;
 
-            // --- 2. XÁC ĐỊNH CỘT GỘP ---
             string[] mergeColumns = { "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "Detail" };
             bool isMergeColumn = mergeColumns.Contains(dgvManager.Columns[e.ColumnIndex].Name);
 
             using (Pen gridPen = new Pen(Color.LightGray, 1))
             {
-                // TRƯỜNG HỢP A: KHÔNG GỘP (Vẽ bình thường)
                 if (!isMergeColumn)
                 {
                     string val = e.Value?.ToString();
                     if (e.Value is DateTime dtVal) val = dtVal.ToString("dd/MM/yyyy");
 
-                    // Dùng TextRenderer để chữ đen và sắc nét hơn DrawString
                     TextRenderer.DrawText(e.Graphics, val, e.CellStyle.Font, e.CellBounds, textColor, flags);
 
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
@@ -223,7 +216,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     return;
                 }
 
-                // TRƯỜNG HỢP B: CỘT GỘP
                 int contractId = Convert.ToInt32(dgvManager.Rows[e.RowIndex].Cells["ContractID"].Value);
 
                 int startIndex = e.RowIndex;
@@ -244,12 +236,10 @@ namespace Environmental_Monitoring.View.ContractContent
                 int offsetY = 0;
                 for (int i = startIndex; i < e.RowIndex; i++) offsetY -= dgvManager.Rows[i].Height;
 
-                // Hình chữ nhật chứa nội dung gộp
                 Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
 
                 if (dgvManager.Columns[e.ColumnIndex].Name == "Detail")
                 {
-                    // Vẽ nút Xem
                     int btnW = 60;
                     int btnH = 25;
                     Rectangle btnRect = new Rectangle(
@@ -261,7 +251,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     {
                         e.Graphics.FillRectangle(btnBrush, btnRect);
                     }
-                    // Chữ trên nút cũng dùng TextRenderer
                     TextRenderer.DrawText(e.Graphics, "Xem", new Font(e.CellStyle.Font, FontStyle.Bold), btnRect, Color.White, flags);
                 }
                 else
@@ -269,12 +258,10 @@ namespace Environmental_Monitoring.View.ContractContent
                     string val = e.Value?.ToString();
                     if (e.Value is DateTime dtVal) val = dtVal.ToString("dd/MM/yyyy");
 
-                    // Vẽ text gộp bằng TextRenderer -> Chữ đen sắc nét
                     TextRenderer.DrawText(e.Graphics, val, e.CellStyle.Font, groupRect, textColor, flags);
                 }
 
-                // Vẽ viền
-                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom); // Kẻ dọc phải
+                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom); 
                 if (e.RowIndex == endIndex)
                 {
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1); // Kẻ ngang đáy

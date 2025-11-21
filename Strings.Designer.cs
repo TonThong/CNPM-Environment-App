@@ -531,6 +531,15 @@ namespace Environmental_Monitoring {
         /// <summary>
         ///   Looks up a localized string similar to Nhân Viên Thụ Lý.
         /// </summary>
+        internal static string Business_Employee {
+            get {
+                return ResourceManager.GetString("Business_Employee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhân Viên Thụ Lý.
+        /// </summary>
         internal static string Business_Employee_Placeholder {
             get {
                 return ResourceManager.GetString("Business_Employee_Placeholder", resourceCulture);
