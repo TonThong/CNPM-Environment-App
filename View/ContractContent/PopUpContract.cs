@@ -24,11 +24,14 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             InitializeComponent();
             InitializeLocalization();
-            UpdateUIText();
 
+            // Gán datasource trước
             dataGridView1.DataSource = dt;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.DefaultCellStyle.ForeColor = Color.Black;
+
+            // Cập nhật text UI sau khi đã có datasource để đảm bảo cột tồn tại
+            UpdateUIText();
 
             dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;
             dataGridView1.CellClick += DataGridView1_CellClick;
@@ -42,14 +45,23 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void UpdateUIText()
         {
-            this.Text = rm.GetString("Popup_SelectContractTitle", culture);
+            // Cập nhật tiêu đề Form
+            this.Text = rm.GetString("Popup_SelectContractTitle", culture) ?? "Chọn Hợp Đồng";
+
+            // Cập nhật tiêu đề các cột trong DataGridView
+            // Sử dụng các key resource chuẩn, thêm fallback string nếu resource chưa có
+            if (dataGridView1.Columns.Contains("ContractID"))
+                dataGridView1.Columns["ContractID"].HeaderText = rm.GetString("Grid_ContractID", culture);
 
             if (dataGridView1.Columns.Contains("MaDon"))
                 dataGridView1.Columns["MaDon"].HeaderText = rm.GetString("Grid_ContractCode", culture);
+
             if (dataGridView1.Columns.Contains("NgayKy"))
                 dataGridView1.Columns["NgayKy"].HeaderText = rm.GetString("Grid_SignDate", culture);
+
             if (dataGridView1.Columns.Contains("NgayTraKetQua"))
                 dataGridView1.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture);
+
             if (dataGridView1.Columns.Contains("Status"))
                 dataGridView1.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture);
         }
@@ -65,14 +77,22 @@ namespace Environmental_Monitoring.View.ContractContent
             try
             {
                 var row = dataGridView1.Rows[e.RowIndex];
-                if (row.Cells["ContractID"].Value != null && int.TryParse(row.Cells["ContractID"].Value.ToString(), out int contractId))
+
+                // Ưu tiên lấy theo tên cột "ContractID"
+                if (dataGridView1.Columns.Contains("ContractID") && row.Cells["ContractID"].Value != null)
                 {
-                    ContractSelected?.Invoke(contractId);
-                    this.Close();
+                    if (int.TryParse(row.Cells["ContractID"].Value.ToString(), out int contractId))
+                    {
+                        ContractSelected?.Invoke(contractId);
+                        this.Close();
+                        return;
+                    }
                 }
-                else
+
+                // Fallback: Lấy cột đầu tiên nếu không tìm thấy cột tên "ContractID"
+                if (row.Cells.Count > 0 && row.Cells[0].Value != null)
                 {
-                    if (row.Cells.Count > 0 && int.TryParse(row.Cells[0].Value?.ToString(), out contractId))
+                    if (int.TryParse(row.Cells[0].Value.ToString(), out int contractId))
                     {
                         ContractSelected?.Invoke(contractId);
                         this.Close();
@@ -81,10 +101,9 @@ namespace Environmental_Monitoring.View.ContractContent
             }
             catch (Exception ex)
             {
-                MessageBox.Show(rm.GetString("Error_SelectContract", culture) + ": " + ex.Message,
-                                rm.GetString("Alert_ErrorTitle", culture),
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                string errorTitle = rm.GetString("Alert_ErrorTitle", culture) ?? "Lỗi";
+                string errorMsg = rm.GetString("Error_SelectContract", culture) ?? "Lỗi chọn hợp đồng";
+                MessageBox.Show(errorMsg + ": " + ex.Message, errorTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

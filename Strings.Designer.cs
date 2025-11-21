@@ -682,6 +682,24 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hiện Trường.
+        /// </summary>
+        internal static string Dept_Field {
+            get {
+                return ResourceManager.GetString("Dept_Field", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thí Nghiệm.
+        /// </summary>
+        internal static string Dept_Lab {
+            get {
+                return ResourceManager.GetString("Dept_Lab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sửa.
         /// </summary>
         internal static string Edit {
@@ -1105,6 +1123,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Số Hợp Đồng.
+        /// </summary>
+        internal static string Grid_ContractID {
+            get {
+                return ResourceManager.GetString("Grid_ContractID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tên Khách Hàng.
         /// </summary>
         internal static string Grid_CustomerName {
@@ -1146,6 +1173,15 @@ namespace Environmental_Monitoring {
         internal static string Grid_DueDate {
             get {
                 return ResourceManager.GetString("Grid_DueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhân Viên Thụ Lý.
+        /// </summary>
+        internal static string Grid_Employee {
+            get {
+                return ResourceManager.GetString("Grid_Employee", resourceCulture);
             }
         }
         
@@ -1353,6 +1389,15 @@ namespace Environmental_Monitoring {
         internal static string IsDepartmentHead {
             get {
                 return ResourceManager.GetString("IsDepartmentHead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mẫu Môi Trường.
+        /// </summary>
+        internal static string Label_Template {
+            get {
+                return ResourceManager.GetString("Label_Template", resourceCulture);
             }
         }
         
@@ -2412,6 +2457,42 @@ namespace Environmental_Monitoring {
         internal static string Success_ContractCreated {
             get {
                 return ResourceManager.GetString("Success_ContractCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Môi trường không khí.
+        /// </summary>
+        internal static string Template_Air {
+            get {
+                return ResourceManager.GetString("Template_Air", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tiếng ồn và độ rung.
+        /// </summary>
+        internal static string Template_Noise {
+            get {
+                return ResourceManager.GetString("Template_Noise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Môi trường đất.
+        /// </summary>
+        internal static string Template_Soil {
+            get {
+                return ResourceManager.GetString("Template_Soil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Môi trường nước.
+        /// </summary>
+        internal static string Template_Water {
+            get {
+                return ResourceManager.GetString("Template_Water", resourceCulture);
             }
         }
         

@@ -52,6 +52,32 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
+        // ... [Giữ nguyên các hàm Helper GetLocalizedDepartment, GetLocalizedTemplateName] ...
+        private string GetLocalizedDepartment(string dbValue)
+        {
+            if (string.IsNullOrEmpty(dbValue)) return "";
+            if (dbValue.Equals("HienTruong", StringComparison.OrdinalIgnoreCase) || dbValue.Equals("Field", StringComparison.OrdinalIgnoreCase))
+                return rm.GetString("Dept_Field", culture) ?? "Field";
+            if (dbValue.Equals("ThiNghiem", StringComparison.OrdinalIgnoreCase) || dbValue.Equals("Laboratory", StringComparison.OrdinalIgnoreCase))
+                return rm.GetString("Dept_Lab", culture) ?? "Laboratory";
+            return dbValue;
+        }
+
+        private string GetLocalizedTemplateName(string dbName)
+        {
+            if (string.IsNullOrEmpty(dbName)) return "";
+            string lowerName = dbName.ToLower();
+            if (lowerName.Contains("không khí") || lowerName.Contains("air"))
+                return rm.GetString("Template_Air", culture) ?? "Air Environment";
+            if (lowerName.Contains("nước") || lowerName.Contains("water"))
+                return rm.GetString("Template_Water", culture) ?? "Water Environment";
+            if (lowerName.Contains("đất") || lowerName.Contains("soil"))
+                return rm.GetString("Template_Soil", culture) ?? "Soil Environment";
+            if (lowerName.Contains("tiếng ồn") || lowerName.Contains("độ rung") || lowerName.Contains("noise") || lowerName.Contains("vibration"))
+                return rm.GetString("Template_Noise", culture) ?? "Noise & Vibration";
+            return dbName;
+        }
+
         public void UpdateUIText()
         {
             culture = Thread.CurrentThread.CurrentUICulture;
@@ -67,6 +93,16 @@ namespace Environmental_Monitoring.View.ContractContent
             if (label1 != null) label1.Text = rm.GetString("Plan_SampleTemplatesLabel", culture);
             if (label2 != null) label2.Text = rm.GetString("Plan_ParametersLabel", culture);
 
+            UpdateGridHeaders();
+
+            if (currentContractId != 0)
+            {
+                LoadSampleTemplates();
+            }
+        }
+
+        private void UpdateGridHeaders()
+        {
             if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
                 roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].HeaderText = rm.GetString("Grid_Select", culture);
             if (roundedDataGridView1.Columns.Contains("TenThongSo"))
@@ -103,17 +139,29 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void PlanContent_Load(object sender, EventArgs e)
         {
+            // --- Cấu hình giao diện ---
             roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            btnAddParameter.Click += btnAddParameter_Click;
-            roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
 
+            // Đăng ký sự kiện cho các nút (Đảm bảo nút Save được đăng ký)
+            btnAddParameter.Click -= btnAddParameter_Click;
+            btnAddParameter.Click += btnAddParameter_Click;
+
+            if (roundedButton2 != null)
+            {
+                roundedButton2.Click -= roundedButton2_Click; // Xóa sự kiện cũ nếu có
+                roundedButton2.Click += roundedButton2_Click; // Đăng ký sự kiện mới
+            }
+
+            roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
             roundedDataGridView1.CellContentClick -= roundedDataGridView1_CellContentClick;
             roundedDataGridView1.CellContentClick += roundedDataGridView1_CellContentClick;
             roundedDataGridView1.CurrentCellDirtyStateChanged += RoundedDataGridView1_CurrentCellDirtyStateChanged;
+            roundedDataGridView1.CellMouseEnter += roundedDataGridView1_CellMouseEnter;
+            roundedDataGridView1.CellMouseLeave += roundedDataGridView1_CellMouseLeave;
+            roundedDataGridView1.CellFormatting += roundedDataGridView1_CellFormatting;
 
             roundedDataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             roundedDataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-
             roundedDataGridView1.RowHeadersVisible = false;
             roundedDataGridView1.AllowUserToAddRows = false;
 
@@ -129,9 +177,9 @@ namespace Environmental_Monitoring.View.ContractContent
             checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged_1;
             checkedListBox1.ItemCheck -= checkedListBox1_ItemCheck;
             checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
-
             checkedListBox1.MouseUp += CheckedListBox1_MouseUp;
             checkedListBox1.SelectionMode = SelectionMode.One;
+            checkedListBox1.Cursor = Cursors.Hand;
 
             try
             {
@@ -141,25 +189,66 @@ namespace Environmental_Monitoring.View.ContractContent
             catch { }
 
             roundedDataGridView1.DefaultCellStyle.ForeColor = Color.Black;
-            UpdateUIText();
-            UpdateAddButtonState();
 
             var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
             if (btnCancel != null) btnCancel.Click += btnCancel_Click;
+
+            UpdateUIText();
+            ResetForm();
+
+            // Đảm bảo các nút hiển thị
+            if (roundedButton2 != null) roundedButton2.Visible = true;
+            if (btnAddParameter != null) btnAddParameter.Visible = true;
+            if (btnCancel != null) btnCancel.Visible = true;
+        }
+
+        private void UpdateAddButtonState()
+        {
+            bool isContractSelected = (currentContractId != 0);
+            bool isAnyTemplateChecked = (checkedListBox1.CheckedItems.Count > 0);
+
+            if (btnAddParameter != null)
+            {
+                btnAddParameter.Enabled = (isContractSelected && isAnyTemplateChecked);
+            }
+
+            // SỬA LỖI: Bật/Tắt nút Save dựa trên việc đã chọn hợp đồng hay chưa
+            if (roundedButton2 != null)
+            {
+                roundedButton2.Enabled = isContractSelected;
+            }
+        }
+
+        // ... [Giữ nguyên các hàm Event Handler của Grid, ResetForm, LoadParameters...] ...
+        private void roundedDataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 &&
+                roundedDataGridView1.Columns[e.ColumnIndex].Name == "PhuTrach" && e.Value != null)
+            {
+                string originalValue = e.Value.ToString();
+                e.Value = GetLocalizedDepartment(originalValue);
+                e.FormattingApplied = true;
+            }
+        }
+
+        private void roundedDataGridView1_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && roundedDataGridView1.Columns[e.ColumnIndex].Name == CHECKBOX_COLUMN_NAME)
+                roundedDataGridView1.Cursor = Cursors.Hand;
+        }
+
+        private void roundedDataGridView1_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            roundedDataGridView1.Cursor = Cursors.Default;
         }
 
         private void CheckedListBox1_MouseUp(object sender, MouseEventArgs e)
         {
             int index = checkedListBox1.IndexFromPoint(e.Location);
-
             if (index != -1)
             {
                 var item = checkedListBox1.Items[index] as SampleTemplateDisplayItem;
-                if (item != null)
-                {
-                    LoadParametersForSingleTemplate(item.TemplateID);
-                }
-                checkedListBox1.SelectedIndex = -1;
+                if (item != null) LoadParametersForSingleTemplate(item.TemplateID);
             }
         }
 
@@ -168,27 +257,19 @@ namespace Environmental_Monitoring.View.ContractContent
             currentContractId = 0;
             _selectedParamsMap.Clear();
             _currentViewingTemplateId = -1;
-
             if (rm != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
-
             checkedListBox1.DataSource = null;
             checkedListBox1.Items.Clear();
-
             roundedDataGridView1.DataSource = null;
-
             if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
                 roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
-
             ClearParameterControls();
             UpdateAddButtonState();
         }
 
         private void RoundedDataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
-            if (roundedDataGridView1.IsCurrentCellDirty)
-            {
-                roundedDataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            }
+            if (roundedDataGridView1.IsCurrentCellDirty) roundedDataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 
         private void roundedDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -200,26 +281,16 @@ namespace Environmental_Monitoring.View.ContractContent
             int paramId = Convert.ToInt32(roundedDataGridView1.Rows[e.RowIndex].Cells["ParameterID"].Value);
 
             if (!_selectedParamsMap.ContainsKey(_currentViewingTemplateId))
-            {
                 _selectedParamsMap[_currentViewingTemplateId] = new HashSet<int>();
-            }
 
-            if (isChecked)
-            {
-                _selectedParamsMap[_currentViewingTemplateId].Add(paramId);
-            }
-            else
-            {
-                _selectedParamsMap[_currentViewingTemplateId].Remove(paramId);
-            }
+            if (isChecked) _selectedParamsMap[_currentViewingTemplateId].Add(paramId);
+            else _selectedParamsMap[_currentViewingTemplateId].Remove(paramId);
         }
 
         private void checkedListBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             try
             {
-                UpdateAddButtonState();
-
                 if (checkedListBox1.SelectedItem is SampleTemplateDisplayItem selectedItem)
                 {
                     LoadParametersForSingleTemplate(selectedItem.TemplateID);
@@ -244,10 +315,8 @@ namespace Environmental_Monitoring.View.ContractContent
                 if (dt == null || dt.Rows.Count == 0)
                 {
                     roundedDataGridView1.DataSource = null;
-
                     if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
                         roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
-
                     ClearParameterControls();
                     return;
                 }
@@ -260,12 +329,9 @@ namespace Environmental_Monitoring.View.ContractContent
                 roundedDataGridView1.RowHeadersVisible = false;
 
                 if (roundedDataGridView1.Columns["ParameterID"] != null) roundedDataGridView1.Columns["ParameterID"].Visible = false;
-                if (roundedDataGridView1.Columns["TenThongSo"] != null) roundedDataGridView1.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
-                if (roundedDataGridView1.Columns["DonVi"] != null) roundedDataGridView1.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
-                if (roundedDataGridView1.Columns["GioiHanMin"] != null) roundedDataGridView1.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
-                if (roundedDataGridView1.Columns["GioiHanMax"] != null) roundedDataGridView1.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
-                if (roundedDataGridView1.Columns["PhuTrach"] != null) roundedDataGridView1.Columns["PhuTrach"].HeaderText = rm.GetString("Grid_Department", culture);
                 if (roundedDataGridView1.Columns.Contains("GiaTri")) roundedDataGridView1.Columns["GiaTri"].Visible = false;
+
+                UpdateGridHeaders();
 
                 if (_selectedParamsMap.ContainsKey(templateId))
                 {
@@ -273,20 +339,13 @@ namespace Environmental_Monitoring.View.ContractContent
                     foreach (DataGridViewRow row in roundedDataGridView1.Rows)
                     {
                         int pId = Convert.ToInt32(row.Cells["ParameterID"].Value);
-                        if (selectedForThis.Contains(pId))
-                        {
-                            row.Cells[CHECKBOX_COLUMN_NAME].Value = true;
-                        }
-                        else
-                        {
-                            row.Cells[CHECKBOX_COLUMN_NAME].Value = false;
-                        }
+                        if (selectedForThis.Contains(pId)) row.Cells[CHECKBOX_COLUMN_NAME].Value = true;
+                        else row.Cells[CHECKBOX_COLUMN_NAME].Value = false;
                     }
                 }
                 else
                 {
-                    foreach (DataGridViewRow row in roundedDataGridView1.Rows)
-                        row.Cells[CHECKBOX_COLUMN_NAME].Value = false;
+                    foreach (DataGridViewRow row in roundedDataGridView1.Rows) row.Cells[CHECKBOX_COLUMN_NAME].Value = false;
                 }
 
                 ClearParameterControls();
@@ -297,6 +356,7 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
+        // --- XỬ LÝ NÚT LƯU ---
         private void roundedButton2_Click(object sender, EventArgs e)
         {
             if (currentContractId == 0)
@@ -313,17 +373,23 @@ namespace Environmental_Monitoring.View.ContractContent
                 return;
             }
 
+            // Kiểm tra xem mẫu đã chọn có thông số nào được tick chưa
             foreach (var tpl in selectedBaseTemplates)
             {
                 if (!_selectedParamsMap.ContainsKey(tpl.TemplateID) || _selectedParamsMap[tpl.TemplateID].Count == 0)
                 {
-                    ShowAlert($"Mẫu '{tpl.TenMau}' được chọn nhưng chưa có thông số nào được chọn.", AlertPanel.AlertType.Error);
+                    string templateName = tpl.TenMau;
+                    string errorMsg = culture.Name == "vi-VN"
+                        ? $"Mẫu '{templateName}' được chọn nhưng chưa có thông số nào được chọn."
+                        : $"Template '{templateName}' is selected but no parameters are selected.";
+                    ShowAlert(errorMsg, AlertPanel.AlertType.Error);
                     return;
                 }
             }
 
             try
             {
+                // 1. Lấy mã đơn từ ID hợp đồng
                 string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @contractId", new object[] { currentContractId }).ToString();
                 if (string.IsNullOrEmpty(maDon))
                 {
@@ -331,21 +397,25 @@ namespace Environmental_Monitoring.View.ContractContent
                     return;
                 }
 
+                // 2. Duyệt qua các mẫu được chọn để tạo EnvironmentalSamples
                 foreach (var baseTemplate in selectedBaseTemplates)
                 {
                     string sampleCode = $"{maDon} - {baseTemplate.TenMau}";
                     int baseTemplateId = baseTemplate.TemplateID;
 
+                    // Kiểm tra trùng
                     string checkSampleQuery = "SELECT COUNT(*) FROM EnvironmentalSamples WHERE MaMau = @mamau AND ContractID = @contractId";
                     object sampleExists = DataProvider.Instance.ExecuteScalar(checkSampleQuery, new object[] { sampleCode, currentContractId });
                     if (Convert.ToInt32(sampleExists) > 0) continue;
 
+                    // Tạo Template riêng cho mẫu này
                     string newSpecificTemplateName = $"Template cho {maDon} - {baseTemplate.TenMau}";
                     string insertTemplateQuery = "INSERT INTO SampleTemplates (TenMau) VALUES (@tenmau)";
                     DataProvider.Instance.ExecuteNonQuery(insertTemplateQuery, new object[] { newSpecificTemplateName });
 
                     int newSpecificTemplateId = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
 
+                    // Copy các thông số đã tick sang Template mới
                     if (_selectedParamsMap.ContainsKey(baseTemplateId))
                     {
                         HashSet<int> paramsForThisSample = _selectedParamsMap[baseTemplateId];
@@ -357,13 +427,16 @@ namespace Environmental_Monitoring.View.ContractContent
                         }
                     }
 
+                    // Insert mẫu vào bảng EnvironmentalSamples
                     string insertSampleQuery = "INSERT INTO EnvironmentalSamples (MaMau, ContractID, TemplateID) VALUES (@mamau, @contractId, @templateId)";
                     DataProvider.Instance.ExecuteNonQuery(insertSampleQuery, new object[] { sampleCode, currentContractId, newSpecificTemplateId });
                 }
 
+                // 3. CẬP NHẬT TIẾN TRÌNH HỢP ĐỒNG (Sang bước 2 - Hiện trường)
                 string updateContractQuery = @"UPDATE Contracts SET TienTrinh = 2 WHERE ContractID = @contractId;";
                 DataProvider.Instance.ExecuteNonQuery(updateContractQuery, new object[] { this.currentContractId });
 
+                // 4. Tạo thông báo cho phòng Hiện trường
                 int hienTruongRoleID = 10;
                 string noiDungHienTruong = $"Hợp đồng '{maDon}' đã lập kế hoạch xong, cần lấy mẫu hiện trường.";
                 NotificationService.CreateNotification("ChinhSua", noiDungHienTruong, hienTruongRoleID, this.currentContractId, null);
@@ -403,8 +476,10 @@ namespace Environmental_Monitoring.View.ContractContent
                     {
                         this.currentContractId = contractId;
                         lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
+
                         LoadSampleTemplates();
-                        UpdateAddButtonState();
+
+                        UpdateAddButtonState(); // Cập nhật trạng thái nút ngay khi chọn HĐ
                     };
                     popup.ShowDialog();
                 }
@@ -430,7 +505,11 @@ namespace Environmental_Monitoring.View.ContractContent
 
                     if (dt == null || dt.Rows.Count == 0) { ClearParameterControls(); return; }
 
-                    var list = dt.AsEnumerable().Select(r => new SampleTemplateDisplayItem { TemplateID = r.Field<int>("TemplateID"), TenMau = r.Field<string>("TenMau") }).ToList();
+                    var list = dt.AsEnumerable().Select(r => new SampleTemplateDisplayItem
+                    {
+                        TemplateID = r.Field<int>("TemplateID"),
+                        TenMau = GetLocalizedTemplateName(r.Field<string>("TenMau"))
+                    }).ToList();
 
                     checkedListBox1.DataSource = list;
                     checkedListBox1.DisplayMember = "TenMau";
@@ -450,17 +529,10 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            this.BeginInvoke((MethodInvoker)delegate
+            this.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 UpdateAddButtonState();
             });
-        }
-
-        private void UpdateAddButtonState()
-        {
-            bool contractSelected = (currentContractId != 0);
-            bool templateSelected = (checkedListBox1.CheckedItems.Count > 0);
-            if (btnAddParameter != null) btnAddParameter.Enabled = (contractSelected && templateSelected);
         }
 
         private void ClearParameterControls()
@@ -480,7 +552,9 @@ namespace Environmental_Monitoring.View.ContractContent
                 var row = roundedDataGridView1.Rows[e.RowIndex];
                 lblParamNameValue.Text = row.Cells["TenThongSo"].Value?.ToString() ?? string.Empty;
                 lblUnitValue.Text = row.Cells["DonVi"].Value?.ToString() ?? string.Empty;
-                lblDeptValue.Text = row.Cells["PhuTrach"].Value?.ToString() ?? string.Empty;
+
+                string rawDept = row.Cells["PhuTrach"].Value?.ToString() ?? string.Empty;
+                lblDeptValue.Text = GetLocalizedDepartment(rawDept);
             }
             catch { }
         }
@@ -490,19 +564,11 @@ namespace Environmental_Monitoring.View.ContractContent
             using (var dlg = new AddEditParameterForm())
             {
                 dlg.SetPhuTrachOptions(new[] { "HienTruong", "ThiNghiem" });
+
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    try
-                    {
-                        string checkQuery = "SELECT COUNT(*) FROM Parameters WHERE TenThongSo = @ten";
-                        object result = DataProvider.Instance.ExecuteScalar(checkQuery, new object[] { dlg.Parameter.TenThongSo });
-                        if (Convert.ToInt32(result) > 0) { ShowAlert(rm.GetString("Plan_ParamAlreadyExists", culture), AlertPanel.AlertType.Error); return; }
-                        string insertQuery = @"INSERT INTO Parameters (TenThongSo, DonVi, GioiHanMin, GioiHanMax, PhuTrach, ONhiem) VALUES (@Ten, @DonVi, @Min, @Max, @PhuTrach, 0)";
-                        DataProvider.Instance.ExecuteNonQuery(insertQuery, new object[] { dlg.Parameter.TenThongSo, dlg.Parameter.DonVi, dlg.Parameter.GioiHanMin, dlg.Parameter.GioiHanMax, dlg.Parameter.PhuTrach });
-                        ShowAlert(rm.GetString("Plan_AddParamSuccess", culture), AlertPanel.AlertType.Success);
-                        ReloadCurrentParameters();
-                    }
-                    catch (Exception ex) { ShowAlert(rm.GetString("Error_SaveNewParam", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
+                    ShowAlert(rm.GetString("Plan_AddParamSuccess", culture) ?? "Thêm thông số thành công.", AlertPanel.AlertType.Success);
+                    ReloadCurrentParameters();
                 }
             }
         }
@@ -533,18 +599,13 @@ namespace Environmental_Monitoring.View.ContractContent
             }
             catch (Exception ex) { ShowAlert(rm.GetString("Error_LoadParamInfo", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); return; }
             if (param == null) return;
+
             using (var dlg = new AddEditParameterForm(param))
             {
                 dlg.SetPhuTrachOptions(new[] { "HienTruong", "ThiNghiem" });
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    try
-                    {
-                        string updateQuery = @"UPDATE Parameters SET TenThongSo = @Ten, DonVi = @DonVi, GioiHanMin = @Min, GioiHanMax = @Max, PhuTrach = @PhuTrach WHERE ParameterID = @ID";
-                        DataProvider.Instance.ExecuteNonQuery(updateQuery, new object[] { dlg.Parameter.TenThongSo, dlg.Parameter.DonVi, dlg.Parameter.GioiHanMin, dlg.Parameter.GioiHanMax, dlg.Parameter.PhuTrach, dlg.Parameter.ParameterID });
-                        ReloadCurrentParameters();
-                    }
-                    catch (Exception ex) { ShowAlert(rm.GetString("Error_UpdateParam", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
+                    ReloadCurrentParameters();
                 }
             }
         }

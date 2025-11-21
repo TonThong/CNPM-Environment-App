@@ -66,7 +66,13 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             culture = Thread.CurrentThread.CurrentUICulture;
 
-            if (lbContractID != null) { if (currentContractId == 0) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture); }
+            if (lbContractID != null)
+            {
+                if (currentContractId == 0)
+                    lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+                else
+                    lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + currentContractId.ToString();
+            }
             if (btnContract != null) btnContract.Text = rm.GetString("Plan_ContractListButton", culture);
             if (btnDuyet != null) btnDuyet.Text = rm.GetString("Result_Approve", culture);
             if (btnRequest != null) btnRequest.Text = rm.GetString("Result_RequestEdit", culture);
@@ -81,9 +87,7 @@ namespace Environmental_Monitoring.View.ContractContent
             if (roundedDataGridView2.Columns.Contains("NgayTraKetQua")) roundedDataGridView2.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture);
             if (roundedDataGridView2.Columns.Contains("TenDoanhNghiep")) roundedDataGridView2.Columns["TenDoanhNghiep"].HeaderText = rm.GetString("PDF_Company", culture);
             if (roundedDataGridView2.Columns.Contains("TenNguoiDaiDien")) roundedDataGridView2.Columns["TenNguoiDaiDien"].HeaderText = rm.GetString("PDF_Representative", culture);
-
-            if (roundedDataGridView2.Columns.Contains("TenNhanVien")) roundedDataGridView2.Columns["TenNhanVien"].HeaderText = "Nhân viên thụ lý";
-
+            if (roundedDataGridView2.Columns.Contains("TenNhanVien")) roundedDataGridView2.Columns["TenNhanVien"].HeaderText = rm.GetString("Grid_Employee", culture);
             if (roundedDataGridView2.Columns.Contains("MauKiemNghiem")) roundedDataGridView2.Columns["MauKiemNghiem"].HeaderText = rm.GetString("Grid_Sample", culture);
             if (roundedDataGridView2.Columns.Contains("TenThongSo")) roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
             if (roundedDataGridView2.Columns.Contains("GioiHanMin")) roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
@@ -93,6 +97,11 @@ namespace Environmental_Monitoring.View.ContractContent
             if (roundedDataGridView2.Columns.Contains("KetQua")) roundedDataGridView2.Columns["KetQua"].HeaderText = rm.GetString("Grid_Result", culture);
             if (roundedDataGridView2.Columns.Contains("TrangThaiHienThi")) roundedDataGridView2.Columns["TrangThaiHienThi"].HeaderText = rm.GetString("Grid_ApprovalStatus", culture);
             if (roundedDataGridView2.Columns.Contains("TrangThaiHopDong")) roundedDataGridView2.Columns["TrangThaiHopDong"].HeaderText = rm.GetString("Grid_ContractStatus", culture);
+
+            if (currentContractId != 0)
+            {
+                LoadContract(currentContractId);
+            }
         }
 
         private void ResultContent_Load(object sender, EventArgs e)
@@ -125,6 +134,9 @@ namespace Environmental_Monitoring.View.ContractContent
             UpdateUIText();
         }
 
+        // Đã xóa hàm NormalizeSubscripts để giữ nguyên ký tự subscript Unicode (₂, ₃...)
+        // Lưu ý: Để file PDF hiển thị đúng, ReportService phải dùng Font hỗ trợ Unicode (như Arial Unicode MS, Roboto, NotoSans...)
+
         private void RoundedDataGridView2_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -141,11 +153,8 @@ namespace Environmental_Monitoring.View.ContractContent
                 {
                     string rawValue = e.Value?.ToString() ?? "";
                     string displayValue = rawValue;
-                    if (!string.IsNullOrEmpty(displayValue) && (roundedDataGridView2.Columns[e.ColumnIndex].Name == "MauKiemNghiem"))
-                    {
-                        int index = displayValue.IndexOf(" - Template");
-                        if (index > 0) displayValue = displayValue.Substring(0, index);
-                    }
+
+                    // Logic cắt chuỗi đã được thực hiện ở LoadContract
 
                     int startIndex = e.RowIndex;
                     while (startIndex > 0)
@@ -190,7 +199,6 @@ namespace Environmental_Monitoring.View.ContractContent
             try
             {
                 this.currentContractId = contractId;
-                if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
 
                 string q = QueryRepository.LoadContractResults;
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
@@ -211,9 +219,23 @@ namespace Environmental_Monitoring.View.ContractContent
                 string status_Overdue = rm.GetString("Status_Overdue", culture);
                 string status_Active = rm.GetString("Status_Active", culture);
 
-                bool tatCaDaDuyet = true; 
+                bool tatCaDaDuyet = true;
                 foreach (DataRow row in dt.Rows)
                 {
+                    // --- XỬ LÝ TÊN MẪU (Sample Name) ---
+                    // Cắt bỏ phần " - Template..."
+                    string rawSample = row["MauKiemNghiem"] != DBNull.Value ? row["MauKiemNghiem"].ToString() : "";
+                    int idx = rawSample.IndexOf(" - Template");
+                    if (idx > 0)
+                    {
+                        row["MauKiemNghiem"] = rawSample.Substring(0, idx);
+                    }
+
+                    // --- GIỮ NGUYÊN CÔNG THỨC HÓA HỌC ---
+                    // Không normalize nữa để giữ subscript (NO₂, O₂...)
+                    // Yêu cầu: ReportService phải dùng font hỗ trợ Unicode.
+
+                    // --- Xử lý trạng thái ---
                     int onhiemStatus = (row["ONhiem"] != DBNull.Value) ? Convert.ToInt32(row["ONhiem"]) : 0;
                     switch (onhiemStatus)
                     {
@@ -221,6 +243,7 @@ namespace Environmental_Monitoring.View.ContractContent
                         case 2: row["KetQua"] = soonPolluted; break;
                         default: row["KetQua"] = notPolluted; break;
                     }
+
                     int pheDuyetStatus = 0;
                     if (row["TrangThaiPheDuyet"] != DBNull.Value) int.TryParse(row["TrangThaiPheDuyet"].ToString(), out pheDuyetStatus);
 
@@ -231,7 +254,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     else
                     {
                         row["TrangThaiHienThi"] = notApproved;
-                        tatCaDaDuyet = false; 
+                        tatCaDaDuyet = false;
                     }
 
                     string statusHopDongDB = row["Status"].ToString();
@@ -247,7 +270,7 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 isContractApproved = tatCaDaDuyet;
 
-                UpdateUIText();
+                UpdateUIStates(true, isContractApproved);
 
                 foreach (DataGridViewColumn col in roundedDataGridView2.Columns) col.SortMode = DataGridViewColumnSortMode.NotSortable;
 
@@ -282,8 +305,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     if (col.Name == "TenThongSo" || col.Name == "MauKiemNghiem") { col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; col.MinimumWidth = 150; }
                     else if (col.Visible) col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
                 }
-
-                UpdateUIStates(true, isContractApproved);
             }
             catch (Exception ex) { ShowAlert(rm.GetString("Result_LoadError", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); UpdateUIStates(false, false); }
         }
@@ -301,9 +322,9 @@ namespace Environmental_Monitoring.View.ContractContent
             btnMail.Enabled = enabled && isApproved;
 
             btnDuyet.BackColor = btnDuyet.Enabled ? Color.Green : Color.Gray;
-            btnRequest.BackColor = btnRequest.Enabled ? Color.FromArgb(119, 136, 153) : Color.Gray; 
-            btnPDF.BackColor = btnPDF.Enabled ? Color.FromArgb(220, 53, 69) : Color.Gray; 
-            btnMail.BackColor = btnMail.Enabled ? Color.FromArgb(0, 123, 255) : Color.Gray; 
+            btnRequest.BackColor = btnRequest.Enabled ? Color.FromArgb(119, 136, 153) : Color.Gray;
+            btnPDF.BackColor = btnPDF.Enabled ? Color.FromArgb(220, 53, 69) : Color.Gray;
+            btnMail.BackColor = btnMail.Enabled ? Color.FromArgb(0, 123, 255) : Color.Gray;
         }
 
         private void BtnPDF_Click(object? sender, EventArgs e)
@@ -390,7 +411,7 @@ namespace Environmental_Monitoring.View.ContractContent
             try
             {
                 DataProvider.Instance.ExecuteNonQuery(QueryRepository.ApproveAllResults, new object[] { this.currentContractId });
-     
+
                 DataProvider.Instance.ExecuteNonQuery(QueryRepository.CompleteContractStatus, new object[] { this.currentContractId });
 
                 int adminRoleID = (int)UserRole.Admin;
@@ -413,7 +434,10 @@ namespace Environmental_Monitoring.View.ContractContent
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
-                    popup.ContractSelected += (contractId) => { LoadContract(contractId); };
+                    popup.ContractSelected += (contractId) => {
+                        LoadContract(contractId);
+                        UpdateUIText();
+                    };
                     popup.ShowDialog();
                 }
             }

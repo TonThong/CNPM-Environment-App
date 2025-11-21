@@ -19,6 +19,9 @@ namespace Environmental_Monitoring.View.ContractContent
         public BusinessContent()
         {
             InitializeComponent();
+
+            txtboxIDContract.ReadOnly = true;
+
             InitializeLocalization();
             btnSave.Click += BtnSave_Click;
 

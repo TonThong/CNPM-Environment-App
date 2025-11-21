@@ -170,7 +170,6 @@
             roundedButton2.TabIndex = 55;
             roundedButton2.Text = "Lưu";
             roundedButton2.UseVisualStyleBackColor = false;
-            roundedButton2.Click += roundedButton2_Click;
             // 
             // roundedDataGridView1
             // 
@@ -189,8 +188,8 @@
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.FromArgb(217, 217, 217);
-            btnCancel.BaseColor = Color.FromArgb(217, 217, 217);
+            btnCancel.BackColor = Color.Silver;
+            btnCancel.BaseColor = Color.Silver;
             btnCancel.BorderColor = Color.Transparent;
             btnCancel.BorderRadius = 25;
             btnCancel.BorderSize = 0;
@@ -200,7 +199,7 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
-            btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
+            btnCancel.HoverColor = Color.DarkGray;
             btnCancel.Location = new Point(882, 419);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(267, 72);

@@ -331,7 +331,7 @@
     <value>Overdue Contracts</value>
   </data>
   <data name="Grid_ContractCode" xml:space="preserve">
-    <value>Contract Code</value>
+    <value>Contract ID</value>
   </data>
   <data name="Grid_CustomerName" xml:space="preserve">
     <value>Customer Name</value>
@@ -772,7 +772,7 @@
     <value>Add New Parameters</value>
   </data>
   <data name="Plan_SampleTemplatesLabel" xml:space="preserve">
-    <value>Environmental Template</value>
+    <value>Template</value>
   </data>
   <data name="Plan_ParametersLabel" xml:space="preserve">
     <value>Parameter</value>
@@ -969,5 +969,32 @@ Green Flow Team&lt;/p&gt;</value>
   </data>
   <data name="Contract_Tab_Manager" xml:space="preserve">
     <value>Manager</value>
+  </data>
+  <data name="Template_Air" xml:space="preserve">
+    <value>Air Environment</value>
+  </data>
+  <data name="Template_Water" xml:space="preserve">
+    <value>Water Environment</value>
+  </data>
+  <data name="Template_Soil" xml:space="preserve">
+    <value>Soil Environment</value>
+  </data>
+  <data name="Template_Noise" xml:space="preserve">
+    <value>Noise &amp; Vibration</value>
+  </data>
+  <data name="Dept_Field" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="Dept_Lab" xml:space="preserve">
+    <value>Laboratory</value>
+  </data>
+  <data name="Label_Template" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="Grid_ContractID" xml:space="preserve">
+    <value>Contract Number</value>
+  </data>
+  <data name="Grid_Employee" xml:space="preserve">
+    <value>Employee</value>
   </data>
 </root>

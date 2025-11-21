@@ -9,6 +9,7 @@ using System.Resources;
 using System.Globalization;
 using System.Threading;
 using System.Reflection;
+using Environmental_Monitoring.Controller.Data;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -30,34 +31,29 @@ namespace Environmental_Monitoring.View.ContractContent
 
         public event Action OnDataSaved;
 
-        // Constructor nhận tham số employeeId
         public ContractDetailPopup(int contractId, string maDon, int employeeId)
         {
             _contractId = contractId;
-            _initialEmployeeId = employeeId; // Lưu ID nhận từ Form Manager
+            _initialEmployeeId = employeeId; 
 
             InitializeComponentCustom(maDon);
             InitializeLocalization();
 
-            // QUAN TRỌNG: Dùng sự kiện Load để đảm bảo UI đã khởi tạo xong trước khi nạp dữ liệu
             this.Load += ContractDetailPopup_Load;
         }
 
         private void ContractDetailPopup_Load(object sender, EventArgs e)
         {
-            // 1. Nạp danh sách nhân viên vào ComboBox trước
             LoadEmployeesToComboBox();
 
-            // 2. Chọn nhân viên theo ID đã truyền vào (Logic gán cứng)
             SetSelectedEmployee(_initialEmployeeId);
 
-            // 3. Cuối cùng mới tải chi tiết hợp đồng
             LoadContractDetails();
         }
 
         private void InitializeLocalization()
         {
-            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(ManagerContent).Assembly);
+            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(ContractDetailPopup).Assembly);
             culture = Thread.CurrentThread.CurrentUICulture;
 
             if (btnSave != null) btnSave.Text = rm.GetString("Button_Save", culture) ?? "Lưu";
@@ -223,10 +219,8 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             if (targetEmployeeId <= 0) return;
 
-            // Cách 1: Gán trực tiếp (thường dùng nếu kiểu dữ liệu khớp hoàn toàn)
             cboEmployeeSelect.SelectedValue = targetEmployeeId;
 
-            // Cách 2: Duyệt qua từng item để tìm ID khớp (An toàn tuyệt đối nếu kiểu dữ liệu int/long bị lệch)
             if (cboEmployeeSelect.SelectedValue == null || Convert.ToInt32(cboEmployeeSelect.SelectedValue) != targetEmployeeId)
             {
                 for (int i = 0; i < cboEmployeeSelect.Items.Count; i++)
@@ -234,7 +228,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     DataRowView drv = cboEmployeeSelect.Items[i] as DataRowView;
                     if (drv != null)
                     {
-                        // Ép kiểu về int để so sánh chính xác
                         int idInList = Convert.ToInt32(drv["EmployeeID"]);
                         if (idInList == targetEmployeeId)
                         {
@@ -279,6 +272,13 @@ namespace Environmental_Monitoring.View.ContractContent
                         int pheDuyetStatus = 0;
                         if (row["TrangThaiPheDuyet"] != DBNull.Value) int.TryParse(row["TrangThaiPheDuyet"].ToString(), out pheDuyetStatus);
                         row["TrangThaiHienThi"] = (pheDuyetStatus == 1) ? approved : notApproved;
+
+                        string rawSample = row["MauKiemNghiem"].ToString();
+                        int idx = rawSample.IndexOf(" - Template");
+                        if (idx > 0)
+                        {
+                            row["MauKiemNghiem"] = rawSample.Substring(0, idx);
+                        }
                     }
                 }
 
@@ -431,13 +431,6 @@ namespace Environmental_Monitoring.View.ContractContent
 
             using (Pen gridPen = new Pen(dgvDetails.GridColor, 1))
             {
-                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
-
-                if (e.ColumnIndex == 0)
-                {
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Left, e.CellBounds.Bottom);
-                }
-
                 bool drawBottomLine = true;
                 if (isMergeColumn)
                 {
@@ -449,44 +442,65 @@ namespace Environmental_Monitoring.View.ContractContent
                     }
                 }
 
+                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                if (e.ColumnIndex == 0)
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Left, e.CellBounds.Bottom);
                 if (drawBottomLine)
-                {
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-                }
-
                 if (e.RowIndex == 0)
-                {
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Top);
-                }
-            }
-
-            bool isPrevSame = false;
-            if (isMergeColumn && e.RowIndex > 0)
-            {
-                string currVal = e.Value?.ToString();
-                string prevVal = dgvDetails.Rows[e.RowIndex - 1].Cells[e.ColumnIndex].Value?.ToString();
-                if (currVal == prevVal) isPrevSame = true;
             }
 
             if (e.Value != null)
             {
-                if (isMergeColumn && isPrevSame)
-                {
-                    return;
-                }
-
                 string textToDraw = e.Value.ToString();
 
                 using (Brush textBrush = new SolidBrush(Color.Black))
                 {
-                    Rectangle textRect = e.CellBounds;
-                    e.Graphics.DrawString(textToDraw, e.CellStyle.Font, textBrush, textRect, new StringFormat
+                    StringFormat sf = new StringFormat
                     {
                         Alignment = StringAlignment.Center,
                         LineAlignment = StringAlignment.Center,
                         FormatFlags = StringFormatFlags.NoWrap,
                         Trimming = StringTrimming.EllipsisCharacter
-                    });
+                    };
+
+                    if (isMergeColumn)
+                    {
+                        int startRow = e.RowIndex;
+                        while (startRow > 0 && dgvDetails.Rows[startRow - 1].Cells[e.ColumnIndex].Value?.ToString() == textToDraw)
+                        {
+                            startRow--;
+                        }
+
+                        int endRow = e.RowIndex;
+                        while (endRow < dgvDetails.Rows.Count - 1 && dgvDetails.Rows[endRow + 1].Cells[e.ColumnIndex].Value?.ToString() == textToDraw)
+                        {
+                            endRow++;
+                        }
+
+                        int totalHeight = 0;
+                        int yOffset = 0;
+
+                        for (int i = startRow; i <= endRow; i++)
+                        {
+                            int h = dgvDetails.Rows[i].Height;
+                            if (i < e.RowIndex) yOffset += h; 
+                            totalHeight += h;
+                        }
+
+                        Rectangle groupRect = new Rectangle(
+                            e.CellBounds.X,
+                            e.CellBounds.Y - yOffset,
+                            e.CellBounds.Width,
+                            totalHeight);
+
+                        e.Graphics.DrawString(textToDraw, e.CellStyle.Font, textBrush, groupRect, sf);
+                    }
+                    else
+                    {
+                        e.Graphics.DrawString(textToDraw, e.CellStyle.Font, textBrush, e.CellBounds, sf);
+                    }
                 }
             }
         }

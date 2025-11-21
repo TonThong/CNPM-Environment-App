@@ -973,4 +973,31 @@
   <data name="Contract_Tab_Manager" xml:space="preserve">
     <value>Quản Lý</value>
   </data>
+  <data name="Template_Air" xml:space="preserve">
+    <value>Môi trường không khí</value>
+  </data>
+  <data name="Template_Water" xml:space="preserve">
+    <value>Môi trường nước</value>
+  </data>
+  <data name="Template_Soil" xml:space="preserve">
+    <value>Môi trường đất</value>
+  </data>
+  <data name="Template_Noise" xml:space="preserve">
+    <value>Tiếng ồn và độ rung</value>
+  </data>
+  <data name="Dept_Field" xml:space="preserve">
+    <value>Hiện Trường</value>
+  </data>
+  <data name="Dept_Lab" xml:space="preserve">
+    <value>Thí Nghiệm</value>
+  </data>
+  <data name="Label_Template" xml:space="preserve">
+    <value>Mẫu Môi Trường</value>
+  </data>
+  <data name="Grid_ContractID" xml:space="preserve">
+    <value>Số Hợp Đồng</value>
+  </data>
+  <data name="Grid_Employee" xml:space="preserve">
+    <value>Nhân Viên Thụ Lý</value>
+  </data>
 </root>
