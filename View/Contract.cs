@@ -62,6 +62,40 @@ namespace Environmental_Monitoring.View
 
         #region Core Logic (Permissions, UI Updates, Page Loading)
 
+        /// <summary>
+        /// Xử lý phím Enter trên thanh tìm kiếm (giống logic bên Employee)
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Kiểm tra nếu phím nhấn là Enter và con trỏ đang ở ô tìm kiếm (roundedTextBox1)
+            if (keyData == Keys.Enter && this.ActiveControl == roundedTextBox1)
+            {
+                string searchText = roundedTextBox1.Text.Trim();
+
+                // Kiểm tra xem có tab nào đang hiển thị trong pnContent không
+                if (pnContent.Controls.Count > 0)
+                {
+                    Control currentChildPage = pnContent.Controls[0];
+                    try
+                    {
+                        // Dùng Reflection để gọi hàm PerformSearch(string) nếu tab con có hỗ trợ
+                        var method = currentChildPage.GetType().GetMethod("PerformSearch");
+                        if (method != null)
+                        {
+                            method.Invoke(currentChildPage, new object[] { searchText });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Search Error: " + ex.Message);
+                    }
+                }
+                return true; // Đã xử lý phím Enter, không kêu 'ding'
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void ResetTabsForEmployee()
         {
             btnBusiness.Enabled = false;

@@ -14,6 +14,7 @@ using Environmental_Monitoring.Controller.Data;
 using Environmental_Monitoring.Controller;
 using System.Reflection;
 using Environmental_Monitoring.View;
+using System.Collections.Generic;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -39,6 +40,58 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(ResultContent).Assembly);
             culture = Thread.CurrentThread.CurrentUICulture;
+        }
+
+        /// <summary>
+        /// Phương thức được gọi từ Contract.cs thông qua Reflection khi nhấn Enter ở ô tìm kiếm.
+        /// Tìm kiếm theo: Mẫu, Thông số, Đơn vị, Min, Max, Giá trị, Kết quả.
+        /// </summary>
+        public void PerformSearch(string keyword)
+        {
+            if (roundedDataGridView2.DataSource is DataTable dt)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(keyword))
+                    {
+                        dt.DefaultView.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        string safeKeyword = keyword.Replace("'", "''")
+                                                    .Replace("[", "[[]")
+                                                    .Replace("]", "[]]")
+                                                    .Replace("%", "[%]")
+                                                    .Replace("*", "[*]")
+                                                    .Trim();
+
+                        List<string> filterParts = new List<string>();
+
+                        if (dt.Columns.Contains("MauKiemNghiem"))
+                            filterParts.Add($"MauKiemNghiem LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("TenThongSo"))
+                            filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("DonVi"))
+                            filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GioiHanMin"))
+                            filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GioiHanMax"))
+                            filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GiaTri"))
+                            filterParts.Add($"Convert(GiaTri, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("KetQua"))
+                            filterParts.Add($"KetQua LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("TrangThaiHienThi"))
+                            filterParts.Add($"TrangThaiHienThi LIKE '%{safeKeyword}%'");
+
+                        dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Search Error: " + ex.Message);
+                }
+            }
         }
 
         private void ShowAlert(string message, AlertPanel.AlertType type)
@@ -110,13 +163,22 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView2.RowHeadersVisible = false;
             roundedDataGridView2.ScrollBars = ScrollBars.Both;
 
+            // Tự động giãn hàng và xuống dòng
+            roundedDataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            roundedDataGridView2.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
             roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.None;
             roundedDataGridView2.ReadOnly = true;
             roundedDataGridView2.Scroll += roundedDataGridView2_Scroll;
             roundedDataGridView2.GridColor = Color.Black;
 
+            // Đăng ký sự kiện vẽ và định dạng
             roundedDataGridView2.CellPainting -= RoundedDataGridView2_CellPainting;
             roundedDataGridView2.CellPainting += RoundedDataGridView2_CellPainting;
+
+            // QUAN TRỌNG: Đăng ký sự kiện CellFormatting để tô màu bền vững
+            roundedDataGridView2.CellFormatting -= RoundedDataGridView2_CellFormatting;
+            roundedDataGridView2.CellFormatting += RoundedDataGridView2_CellFormatting;
 
             try { Type dgvType = roundedDataGridView2.GetType(); PropertyInfo pi = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic); if (pi != null) pi.SetValue(roundedDataGridView2, true, null); } catch { }
 
@@ -134,8 +196,36 @@ namespace Environmental_Monitoring.View.ContractContent
             UpdateUIText();
         }
 
-        // Đã xóa hàm NormalizeSubscripts để giữ nguyên ký tự subscript Unicode (₂, ₃...)
-        // Lưu ý: Để file PDF hiển thị đúng, ReportService phải dùng Font hỗ trợ Unicode (như Arial Unicode MS, Roboto, NotoSans...)
+        // CẬP NHẬT: Logic tô màu nằm trong sự kiện này để đảm bảo không bị mất khi lọc
+        private void RoundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            // Tô màu cột "Kết quả" (Result)
+            if (roundedDataGridView2.Columns[e.ColumnIndex].Name == "KetQua")
+            {
+                string val = e.Value?.ToString() ?? "";
+                string polluted = rm.GetString("Grid_Polluted", culture);
+                string soonPolluted = rm.GetString("Grid_SoonPolluted", culture);
+                // string notPolluted = rm.GetString("Grid_NotPolluted", culture); // Mặc định là xanh
+
+                e.CellStyle.ForeColor = Color.White;
+
+                if (val == polluted)
+                {
+                    e.CellStyle.BackColor = Color.Red;
+                }
+                else if (val == soonPolluted)
+                {
+                    e.CellStyle.BackColor = Color.Orange;
+                }
+                else
+                {
+                    // Không ô nhiễm (Not Polluted)
+                    e.CellStyle.BackColor = Color.Green;
+                }
+            }
+        }
 
         private void RoundedDataGridView2_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
@@ -153,8 +243,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 {
                     string rawValue = e.Value?.ToString() ?? "";
                     string displayValue = rawValue;
-
-                    // Logic cắt chuỗi đã được thực hiện ở LoadContract
 
                     int startIndex = e.RowIndex;
                     while (startIndex > 0)
@@ -180,6 +268,7 @@ namespace Environmental_Monitoring.View.ContractContent
 
                     TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak | TextFormatFlags.PreserveGraphicsClipping;
 
+                    // Vẽ text với màu của style hiện tại (để hỗ trợ CellFormatting nếu sau này merge các ô màu)
                     TextRenderer.DrawText(e.Graphics, displayValue, e.CellStyle.Font, groupRect, e.CellStyle.ForeColor, flags);
 
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
@@ -187,6 +276,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 }
                 else
                 {
+                    // Vẽ ô bình thường, giữ lại BackColor đã set trong CellFormatting
                     e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.Border);
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
@@ -222,20 +312,10 @@ namespace Environmental_Monitoring.View.ContractContent
                 bool tatCaDaDuyet = true;
                 foreach (DataRow row in dt.Rows)
                 {
-                    // --- XỬ LÝ TÊN MẪU (Sample Name) ---
-                    // Cắt bỏ phần " - Template..."
                     string rawSample = row["MauKiemNghiem"] != DBNull.Value ? row["MauKiemNghiem"].ToString() : "";
                     int idx = rawSample.IndexOf(" - Template");
-                    if (idx > 0)
-                    {
-                        row["MauKiemNghiem"] = rawSample.Substring(0, idx);
-                    }
+                    if (idx > 0) row["MauKiemNghiem"] = rawSample.Substring(0, idx);
 
-                    // --- GIỮ NGUYÊN CÔNG THỨC HÓA HỌC ---
-                    // Không normalize nữa để giữ subscript (NO₂, O₂...)
-                    // Yêu cầu: ReportService phải dùng font hỗ trợ Unicode.
-
-                    // --- Xử lý trạng thái ---
                     int onhiemStatus = (row["ONhiem"] != DBNull.Value) ? Convert.ToInt32(row["ONhiem"]) : 0;
                     switch (onhiemStatus)
                     {
@@ -247,10 +327,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     int pheDuyetStatus = 0;
                     if (row["TrangThaiPheDuyet"] != DBNull.Value) int.TryParse(row["TrangThaiPheDuyet"].ToString(), out pheDuyetStatus);
 
-                    if (pheDuyetStatus == 1)
-                    {
-                        row["TrangThaiHienThi"] = approved;
-                    }
+                    if (pheDuyetStatus == 1) row["TrangThaiHienThi"] = approved;
                     else
                     {
                         row["TrangThaiHienThi"] = notApproved;
@@ -269,7 +346,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 roundedDataGridView2.DataSource = dt.DefaultView.ToTable();
 
                 isContractApproved = tatCaDaDuyet;
-
                 UpdateUIStates(true, isContractApproved);
 
                 foreach (DataGridViewColumn col in roundedDataGridView2.Columns) col.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -284,18 +360,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     }
                 }
 
-                if (roundedDataGridView2.Columns["KetQua"] != null)
-                {
-                    roundedDataGridView2.Columns["KetQua"].ReadOnly = true;
-                    foreach (DataGridViewRow dgRow in roundedDataGridView2.Rows)
-                    {
-                        var cell = dgRow.Cells["KetQua"];
-                        string v = cell.Value?.ToString() ?? string.Empty;
-                        if (v == polluted) { cell.Style.BackColor = Color.Red; cell.Style.ForeColor = Color.White; }
-                        else if (v == soonPolluted) { cell.Style.BackColor = Color.Orange; cell.Style.ForeColor = Color.White; }
-                        else { cell.Style.BackColor = Color.Green; cell.Style.ForeColor = Color.White; }
-                    }
-                }
+                // Đã xóa vòng lặp tô màu thủ công ở đây để tránh xung đột với CellFormatting
 
                 string[] hiddenCols = { "SampleID", "ParameterID", "ONhiem", "TrangThaiPheDuyet", "Status" };
                 foreach (string col in hiddenCols) if (roundedDataGridView2.Columns.Contains(col)) roundedDataGridView2.Columns[col].Visible = false;
@@ -396,7 +461,8 @@ namespace Environmental_Monitoring.View.ContractContent
                         ShowAlert(successMsg, AlertPanel.AlertType.Success);
 
                         roundedDataGridView2.DataSource = null;
-                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+                        if (lbContractID != null)
+                            lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
                         UpdateUIStates(false, false);
                         this.currentContractId = 0;
                     }

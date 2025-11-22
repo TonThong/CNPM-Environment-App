@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Threading;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -36,6 +37,10 @@ namespace Environmental_Monitoring.View.ContractContent
         private void SetupDataGridView()
         {
             dgvManager.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvManager.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvManager.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
             dgvManager.BackgroundColor = Color.White;
             dgvManager.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvManager.ReadOnly = true;
@@ -58,6 +63,67 @@ namespace Environmental_Monitoring.View.ContractContent
 
             dgvManager.CellPainting += DgvManager_CellPainting;
             dgvManager.CellContentClick += DgvManager_CellContentClick;
+        }
+
+        /// <summary>
+        /// Phương thức tìm kiếm được gọi từ Contract.cs
+        /// Tìm theo: ID, Mã đơn, Ngày, Công ty, Đại diện, Nhân viên, Mẫu
+        /// </summary>
+        public void PerformSearch(string keyword)
+        {
+            if (dgvManager.DataSource is DataTable dt)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(keyword))
+                    {
+                        dt.DefaultView.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        string safeKeyword = keyword.Replace("'", "''")
+                                                    .Replace("[", "[[]")
+                                                    .Replace("]", "[]]")
+                                                    .Replace("%", "[%]")
+                                                    .Replace("*", "[*]")
+                                                    .Trim();
+
+                        List<string> filterParts = new List<string>();
+
+                        // 1. Tìm theo ID và Mã Hợp Đồng
+                        if (dt.Columns.Contains("ContractID"))
+                            filterParts.Add($"Convert(ContractID, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("MaDon"))
+                            filterParts.Add($"MaDon LIKE '%{safeKeyword}%'");
+
+                        // 2. Tìm theo Ngày (Convert sang chuỗi để tìm tương đối)
+                        if (dt.Columns.Contains("NgayKy"))
+                            filterParts.Add($"Convert(NgayKy, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("NgayTraKetQua"))
+                            filterParts.Add($"Convert(NgayTraKetQua, 'System.String') LIKE '%{safeKeyword}%'");
+
+                        // 3. Tìm theo Khách hàng
+                        if (dt.Columns.Contains("TenDoanhNghiep"))
+                            filterParts.Add($"TenDoanhNghiep LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("TenNguoiDaiDien"))
+                            filterParts.Add($"TenNguoiDaiDien LIKE '%{safeKeyword}%'");
+
+                        // 4. Tìm theo Nhân viên phụ trách
+                        if (dt.Columns.Contains("TenNhanVien"))
+                            filterParts.Add($"TenNhanVien LIKE '%{safeKeyword}%'");
+
+                        // 5. Tìm theo Mẫu
+                        if (dt.Columns.Contains("MaMau"))
+                            filterParts.Add($"MaMau LIKE '%{safeKeyword}%'");
+
+                        dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Search Error: " + ex.Message);
+                }
+            }
         }
 
         private void ManagerContent_Load(object sender, EventArgs e)
@@ -179,7 +245,7 @@ namespace Environmental_Monitoring.View.ContractContent
             bool isSampleColumn = dgvManager.Columns[e.ColumnIndex].Name == "MaMau";
 
             Color backColor = Color.White;
-            Color textColor = Color.Black; 
+            Color textColor = Color.Black;
 
             if (isSelected && isSampleColumn)
             {
@@ -247,6 +313,7 @@ namespace Environmental_Monitoring.View.ContractContent
                         groupRect.Y + (groupRect.Height - btnH) / 2,
                         btnW, btnH);
 
+
                     using (Brush btnBrush = new SolidBrush(Color.FromArgb(40, 167, 69)))
                     {
                         e.Graphics.FillRectangle(btnBrush, btnRect);
@@ -261,10 +328,10 @@ namespace Environmental_Monitoring.View.ContractContent
                     TextRenderer.DrawText(e.Graphics, val, e.CellStyle.Font, groupRect, textColor, flags);
                 }
 
-                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom); 
+                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
                 if (e.RowIndex == endIndex)
                 {
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1); // Kẻ ngang đáy
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1); 
                 }
             }
         }

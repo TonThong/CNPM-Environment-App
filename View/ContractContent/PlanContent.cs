@@ -37,6 +37,98 @@ namespace Environmental_Monitoring.View.ContractContent
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
+        /// <summary>
+        /// Phương thức được gọi từ Contract.cs thông qua Reflection khi nhấn Enter ở ô tìm kiếm.
+        /// CẬP NHẬT: Xử lý ký tự đặc biệt (%, *, [, ]) để tìm kiếm chính xác.
+        /// </summary>
+        /// <param name="keyword">Từ khóa tìm kiếm</param>
+        public void PerformSearch(string keyword)
+        {
+            // Kiểm tra xem Grid có dữ liệu DataTable không để thực hiện lọc
+            if (roundedDataGridView1.DataSource is DataTable dt)
+            {
+                try
+                {
+                    // 1. Áp dụng bộ lọc (Filter)
+                    if (string.IsNullOrWhiteSpace(keyword))
+                    {
+                        // Nếu từ khóa rỗng, bỏ lọc -> hiện tất cả
+                        dt.DefaultView.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        // XỬ LÝ QUAN TRỌNG: Escape các ký tự đặc biệt của RowFilter
+                        // % -> [%], [ -> [[]], ] -> []], * -> [*], ' -> ''
+                        string safeKeyword = keyword.Replace("'", "''")
+                                                    .Replace("[", "[[]")
+                                                    .Replace("]", "[]]")
+                                                    .Replace("%", "[%]")
+                                                    .Replace("*", "[*]")
+                                                    .Trim();
+
+                        string lowerKey = keyword.ToLower(); // Dùng bản gốc để check mapping từ khóa
+
+                        // Tạo danh sách các điều kiện lọc (OR)
+                        List<string> filterParts = new List<string>();
+
+                        // a. Tìm theo Tên Thông Số
+                        filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
+
+                        // b. Tìm theo Đơn Vị (Mới)
+                        filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
+
+                        // c. Tìm theo Min/Max
+                        filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
+                        filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
+
+                        // d. Tìm theo Phụ Trách
+                        filterParts.Add($"PhuTrach LIKE '%{safeKeyword}%'");
+
+                        // Mapping thông minh cho Phòng Phụ Trách
+                        if (lowerKey.Contains("hiện") || lowerKey.Contains("hien") ||
+                            lowerKey.Contains("trường") || lowerKey.Contains("truong") ||
+                            lowerKey.Contains("scene") || lowerKey.Contains("field"))
+                        {
+                            filterParts.Add("PhuTrach = 'HienTruong'");
+                            filterParts.Add("PhuTrach = 'Field'");
+                            filterParts.Add("PhuTrach = 'Scene'");
+                        }
+
+                        if (lowerKey.Contains("thí") || lowerKey.Contains("thi") ||
+                            lowerKey.Contains("nghiệm") || lowerKey.Contains("nghiem") ||
+                            lowerKey.Contains("lab"))
+                        {
+                            filterParts.Add("PhuTrach = 'ThiNghiem'");
+                            filterParts.Add("PhuTrach = 'Laboratory'");
+                        }
+
+                        // Kết hợp tất cả điều kiện bằng toán tử OR
+                        dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
+                    }
+
+                    // 2. Khôi phục trạng thái Checkbox
+                    if (_currentViewingTemplateId != -1 && _selectedParamsMap.ContainsKey(_currentViewingTemplateId))
+                    {
+                        HashSet<int> selectedForThis = _selectedParamsMap[_currentViewingTemplateId];
+
+                        foreach (DataGridViewRow row in roundedDataGridView1.Rows)
+                        {
+                            if (row.Cells["ParameterID"].Value != null)
+                            {
+                                int pId = Convert.ToInt32(row.Cells["ParameterID"].Value);
+                                bool isSelected = selectedForThis.Contains(pId);
+                                row.Cells[CHECKBOX_COLUMN_NAME].Value = isSelected;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Filter Error: " + ex.Message);
+                }
+            }
+        }
+
         private void ShowAlert(string message, AlertPanel.AlertType type)
         {
             var mainLayout = this.FindForm() as Mainlayout;
@@ -52,7 +144,7 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // ... [Giữ nguyên các hàm Helper GetLocalizedDepartment, GetLocalizedTemplateName] ...
+        // ... [Keep Helper methods GetLocalizedDepartment, GetLocalizedTemplateName] ...
         private string GetLocalizedDepartment(string dbValue)
         {
             if (string.IsNullOrEmpty(dbValue)) return "";
@@ -82,7 +174,7 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             culture = Thread.CurrentThread.CurrentUICulture;
 
-            if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+            if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + (currentContractId != 0 ? " " + currentContractId : "");
             if (btnContracts != null) btnContracts.Text = rm.GetString("Plan_ContractListButton", culture);
             if (btnAddParameter != null) btnAddParameter.Text = rm.GetString("Plan_AddParamButton", culture);
             if (roundedButton2 != null) roundedButton2.Text = rm.GetString("Button_Save", culture);
@@ -97,7 +189,7 @@ namespace Environmental_Monitoring.View.ContractContent
 
             if (currentContractId != 0)
             {
-                LoadSampleTemplates();
+                // Reload templates logic if needed, but usually kept static
             }
         }
 
@@ -219,7 +311,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // ... [Giữ nguyên các hàm Event Handler của Grid, ResetForm, LoadParameters...] ...
         private void roundedDataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0 &&

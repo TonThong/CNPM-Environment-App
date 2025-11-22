@@ -34,6 +34,50 @@ namespace Environmental_Monitoring.View.ContractContent
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
+        public void PerformSearch(string keyword)
+        {
+            if (roundedDataGridView2.DataSource is DataTable dt)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(keyword))
+                    {
+                        dt.DefaultView.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        string safeKeyword = keyword.Replace("'", "''")
+                                                    .Replace("[", "[[]")
+                                                    .Replace("]", "[]]")
+                                                    .Replace("%", "[%]")
+                                                    .Replace("*", "[*]")
+                                                    .Trim();
+
+                        List<string> filterParts = new List<string>();
+
+                        if (dt.Columns.Contains("SampleCode"))
+                            filterParts.Add($"SampleCode LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("TenThongSo"))
+                            filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("DonVi"))
+                            filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GioiHanMin"))
+                            filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GioiHanMax"))
+                            filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("Status"))
+                            filterParts.Add($"Status LIKE '%{safeKeyword}%'");
+
+                        dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Search Error: " + ex.Message);
+                }
+            }
+        }
+
         private void ShowAlert(string message, AlertPanel.AlertType type)
         {
             var mainLayout = this.FindForm() as Mainlayout;
@@ -242,15 +286,7 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 roundedDataGridView2.Columns["Status"].ReadOnly = true;
                 roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture);
-                foreach (DataGridViewRow dgRow in roundedDataGridView2.Rows)
-                {
-                    DataRowView drv = dgRow.DataBoundItem as DataRowView;
-                    if (drv != null)
-                    {
-                        string statusValue = drv["Status"]?.ToString() ?? string.Empty;
-                        UpdateStatusCellStyle(dgRow.Index, statusValue);
-                    }
-                }
+                // Không cần gọi UpdateStatusCellStyle ở đây nữa, CellFormatting sẽ lo
             }
             if (roundedDataGridView2.Columns["SampleCode"] != null) roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
             if (roundedDataGridView2.Columns["TenThongSo"] != null) roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
@@ -322,8 +358,9 @@ namespace Environmental_Monitoring.View.ContractContent
                 if (drv != null)
                 {
                     object newValue = roundedDataGridView2.Rows[e.RowIndex].Cells["GiaTri"].Value;
-                    string newStatus = SetStatusForRow(drv.Row, newValue);
-                    UpdateStatusCellStyle(e.RowIndex, newStatus);
+                    // Chỉ cập nhật dữ liệu Text của Status trong DataTable
+                    // Việc tô màu sẽ do CellFormatting tự động xử lý khi Grid vẽ lại
+                    SetStatusForRow(drv.Row, newValue);
                 }
             }
             catch (Exception ex)
@@ -332,25 +369,115 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        private void UpdateStatusCellStyle(int rowIndex, string val)
+        // CẬP NHẬT: Logic tô màu nằm ở đây để đảm bảo bền vững khi lọc/sort
+        private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (rowIndex < 0 || rowIndex >= roundedDataGridView2.Rows.Count) return;
-            var cell = roundedDataGridView2.Rows[rowIndex].Cells["Status"];
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            string passed = rm.GetString("Status_Passed", culture);
-            string outOfRange = rm.GetString("Status_OutOfRange", culture);
-            string invalidFormat = rm.GetString("Status_InvalidFormat", culture);
-
-            if (string.IsNullOrEmpty(val))
+            // 1. Tô màu vùng chọn cho cột GiaTri
+            string valueColName = "GiaTri";
+            if (roundedDataGridView2.Columns.Contains(valueColName))
             {
-                cell.Style.BackColor = Color.Gray;
-                cell.Style.ForeColor = Color.White;
-                return;
+                if (roundedDataGridView2.Columns[e.ColumnIndex].Name != valueColName)
+                {
+                    e.CellStyle.SelectionBackColor = e.CellStyle.BackColor;
+                    e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor;
+                }
+                else if (roundedDataGridView2.Columns[e.ColumnIndex].Name == valueColName)
+                {
+                    e.CellStyle.SelectionBackColor = Color.FromArgb(170, 200, 230);
+                }
             }
 
-            if (val == passed) { cell.Style.BackColor = Color.Green; cell.Style.ForeColor = Color.White; }
-            else if (val == outOfRange || val == invalidFormat) { cell.Style.BackColor = Color.Red; cell.Style.ForeColor = Color.White; }
-            else { cell.Style.BackColor = Color.Orange; cell.Style.ForeColor = Color.White; }
+            // 2. Tô màu cột Status dựa trên giá trị text (QUAN TRỌNG)
+            if (roundedDataGridView2.Columns[e.ColumnIndex].Name == "Status")
+            {
+                string val = e.Value?.ToString() ?? "";
+                string passed = rm.GetString("Status_Passed", culture);
+                string outOfRange = rm.GetString("Status_OutOfRange", culture);
+                string invalidFormat = rm.GetString("Status_InvalidFormat", culture);
+
+                // Mặc định màu chữ trắng
+                e.CellStyle.ForeColor = Color.White;
+
+                if (string.IsNullOrEmpty(val))
+                {
+                    e.CellStyle.BackColor = Color.Gray;
+                }
+                else if (val == passed)
+                {
+                    e.CellStyle.BackColor = Color.Green;
+                }
+                else if (val == outOfRange || val == invalidFormat)
+                {
+                    e.CellStyle.BackColor = Color.Red;
+                }
+                else
+                {
+                    // Trường hợp còn lại (VD: NotAvailable) -> Màu cam
+                    e.CellStyle.BackColor = Color.Orange;
+                }
+            }
+        }
+
+        private void roundedDataGridView2_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            e.Handled = true;
+            e.PaintBackground(e.CellBounds, true);
+
+            string colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
+            bool isMergeColumn = (colName == "SampleCode");
+
+            using (Pen gridPen = new Pen(Color.Black, 1))
+            {
+                if (isMergeColumn)
+                {
+                    string rawValue = e.Value?.ToString() ?? "";
+                    string displayValue = rawValue;
+                    if (!string.IsNullOrEmpty(displayValue))
+                    {
+                        int index = displayValue.IndexOf(" - Template");
+                        if (index > 0) displayValue = displayValue.Substring(0, index);
+                    }
+
+                    int startIndex = e.RowIndex;
+                    while (startIndex > 0)
+                    {
+                        object prevVal = roundedDataGridView2.Rows[startIndex - 1].Cells[e.ColumnIndex].Value;
+                        if (prevVal != null && prevVal.ToString() == rawValue) startIndex--; else break;
+                    }
+
+                    int endIndex = e.RowIndex;
+                    while (endIndex < roundedDataGridView2.Rows.Count - 1)
+                    {
+                        object nextVal = roundedDataGridView2.Rows[endIndex + 1].Cells[e.ColumnIndex].Value;
+                        if (nextVal != null && nextVal.ToString() == rawValue) endIndex++; else break;
+                    }
+
+                    int totalHeight = 0;
+                    for (int i = startIndex; i <= endIndex; i++) totalHeight += roundedDataGridView2.Rows[i].Height;
+
+                    int offsetY = 0;
+                    for (int i = startIndex; i < e.RowIndex; i++) offsetY -= roundedDataGridView2.Rows[i].Height;
+
+                    Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
+
+                    TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak | TextFormatFlags.PreserveGraphicsClipping;
+                    TextRenderer.DrawText(e.Graphics, displayValue, e.CellStyle.Font, groupRect, Color.Black, flags);
+
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                    if (e.RowIndex == endIndex) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+                else
+                {
+                    // Quan trọng: Vẽ nội dung nhưng giữ định dạng Style (bao gồm màu nền)
+                    e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.Border);
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+            }
         }
 
         private void btnContracts_Click(object sender, EventArgs e)
@@ -437,83 +564,6 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView2.DataSource = null;
             lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
             this.currentContractId = 0;
-        }
-
-        private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            string valueColName = "GiaTri";
-            if (roundedDataGridView2.Columns.Contains(valueColName))
-            {
-                if (roundedDataGridView2.Columns[e.ColumnIndex].Name != valueColName)
-                {
-                    e.CellStyle.SelectionBackColor = e.CellStyle.BackColor;
-                    e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor;
-                }
-                else if (roundedDataGridView2.Columns[e.ColumnIndex].Name == valueColName)
-                {
-                    e.CellStyle.SelectionBackColor = Color.FromArgb(170, 200, 230);
-                }
-            }
-        }
-
-        private void roundedDataGridView2_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            e.Handled = true;
-            e.PaintBackground(e.CellBounds, true);
-
-            string colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
-            bool isMergeColumn = (colName == "SampleCode");
-
-            using (Pen gridPen = new Pen(Color.Black, 1))
-            {
-                if (isMergeColumn)
-                {
-                    string rawValue = e.Value?.ToString() ?? "";
-                    string displayValue = rawValue;
-                    if (!string.IsNullOrEmpty(displayValue))
-                    {
-                        int index = displayValue.IndexOf(" - Template");
-                        if (index > 0) displayValue = displayValue.Substring(0, index);
-                    }
-
-                    int startIndex = e.RowIndex;
-                    while (startIndex > 0)
-                    {
-                        object prevVal = roundedDataGridView2.Rows[startIndex - 1].Cells[e.ColumnIndex].Value;
-                        if (prevVal != null && prevVal.ToString() == rawValue) startIndex--; else break;
-                    }
-
-                    int endIndex = e.RowIndex;
-                    while (endIndex < roundedDataGridView2.Rows.Count - 1)
-                    {
-                        object nextVal = roundedDataGridView2.Rows[endIndex + 1].Cells[e.ColumnIndex].Value;
-                        if (nextVal != null && nextVal.ToString() == rawValue) endIndex++; else break;
-                    }
-
-                    int totalHeight = 0;
-                    for (int i = startIndex; i <= endIndex; i++) totalHeight += roundedDataGridView2.Rows[i].Height;
-
-                    int offsetY = 0;
-                    for (int i = startIndex; i < e.RowIndex; i++) offsetY -= roundedDataGridView2.Rows[i].Height;
-
-                    Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
-
-                    TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak | TextFormatFlags.PreserveGraphicsClipping;
-                    TextRenderer.DrawText(e.Graphics, displayValue, e.CellStyle.Font, groupRect, Color.Black, flags);
-
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
-                    if (e.RowIndex == endIndex) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-                }
-                else
-                {
-                    e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.Border);
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-                }
-            }
         }
     }
 }

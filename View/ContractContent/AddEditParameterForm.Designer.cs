@@ -197,6 +197,7 @@
             // 
             // cbbPhuTrach
             // 
+            cbbPhuTrach.BackColor = Color.White;
             cbbPhuTrach.BorderRadius = 12;
             cbbPhuTrach.BorderThickness = 2;
             tableLayoutPanel1.SetColumnSpan(cbbPhuTrach, 2);
@@ -205,11 +206,11 @@
             cbbPhuTrach.DisplayMember = "";
             cbbPhuTrach.Dock = DockStyle.Fill;
             cbbPhuTrach.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbbPhuTrach.FocusBorderColor = Color.FromArgb(52, 168, 83);
-            cbbPhuTrach.HoverBorderColor = Color.FromArgb(52, 168, 83);
+            cbbPhuTrach.FocusBorderColor = Color.DimGray;
+            cbbPhuTrach.HoverBorderColor = Color.DarkGray;
             cbbPhuTrach.Location = new Point(190, 253);
             cbbPhuTrach.Name = "cbbPhuTrach";
-            cbbPhuTrach.NormalBorderColor = Color.LightGray;
+            cbbPhuTrach.NormalBorderColor = Color.Gray;
             cbbPhuTrach.SelectedIndex = -1;
             cbbPhuTrach.SelectedItem = null;
             cbbPhuTrach.SelectedValue = null;
@@ -220,6 +221,7 @@
             // 
             // cbbTemplate
             // 
+            cbbTemplate.BackColor = Color.White;
             cbbTemplate.BorderRadius = 12;
             cbbTemplate.BorderThickness = 2;
             tableLayoutPanel1.SetColumnSpan(cbbTemplate, 2);
@@ -228,11 +230,11 @@
             cbbTemplate.DisplayMember = "";
             cbbTemplate.Dock = DockStyle.Fill;
             cbbTemplate.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbbTemplate.FocusBorderColor = Color.FromArgb(52, 168, 83);
-            cbbTemplate.HoverBorderColor = Color.FromArgb(52, 168, 83);
+            cbbTemplate.FocusBorderColor = Color.DimGray;
+            cbbTemplate.HoverBorderColor = Color.DarkGray;
             cbbTemplate.Location = new Point(190, 310);
             cbbTemplate.Name = "cbbTemplate";
-            cbbTemplate.NormalBorderColor = Color.LightGray;
+            cbbTemplate.NormalBorderColor = Color.Gray;
             cbbTemplate.SelectedIndex = -1;
             cbbTemplate.SelectedItem = null;
             cbbTemplate.SelectedValue = null;

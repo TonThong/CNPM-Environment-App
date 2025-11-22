@@ -41,6 +41,70 @@ namespace Environmental_Monitoring.View
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
+        /// <summary>
+        /// Phương thức được gọi từ Contract.cs thông qua Reflection khi nhấn Enter ở ô tìm kiếm.
+        /// Tìm kiếm theo: Mẫu, Thông số, Đơn vị, Min, Max, Giá trị.
+        /// </summary>
+        /// <param name="keyword">Từ khóa tìm kiếm</param>
+        public void PerformSearch(string keyword)
+        {
+            // Kiểm tra xem Grid có dữ liệu DataTable không để thực hiện lọc
+            if (roundedDataGridView2.DataSource is DataTable dt)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(keyword))
+                    {
+                        // Nếu từ khóa rỗng, bỏ lọc -> hiện tất cả
+                        dt.DefaultView.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        // Xử lý ký tự đặc biệt cho RowFilter (%, *, [, ])
+                        string safeKeyword = keyword.Replace("'", "''")
+                                                    .Replace("[", "[[]")
+                                                    .Replace("]", "[]]")
+                                                    .Replace("%", "[%]")
+                                                    .Replace("*", "[*]")
+                                                    .Trim();
+
+                        List<string> filterParts = new List<string>();
+
+                        // 1. Tìm theo Mã Mẫu (SampleCode)
+                        if (dt.Columns.Contains("SampleCode"))
+                            filterParts.Add($"SampleCode LIKE '%{safeKeyword}%'");
+
+                        // 2. Tìm theo Tên Thông Số (TenThongSo)
+                        if (dt.Columns.Contains("TenThongSo"))
+                            filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
+
+                        // 3. Tìm theo Đơn Vị (DonVi)
+                        if (dt.Columns.Contains("DonVi"))
+                            filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
+
+                        // 4. Tìm theo Min
+                        if (dt.Columns.Contains("GioiHanMin"))
+                            filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
+
+                        // 5. Tìm theo Max
+                        if (dt.Columns.Contains("GioiHanMax"))
+                            filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
+
+                        // 6. Tìm theo Giá Trị Kết Quả (GiaTri)
+                        if (dt.Columns.Contains("GiaTri"))
+                            filterParts.Add($"Convert(GiaTri, 'System.String') LIKE '%{safeKeyword}%'");
+
+                        // Kết hợp tất cả điều kiện bằng toán tử OR
+                        dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Search Error: " + ex.Message);
+                }
+            }
+        }
+
         private void ShowAlert(string message, AlertPanel.AlertType type)
         {
             if (this.InvokeRequired)
@@ -76,6 +140,7 @@ namespace Environmental_Monitoring.View
             if (btnCancel != null)
                 btnCancel.Text = rm.GetString("Button_Cancel", culture);
 
+            // Cập nhật tiêu đề cột nếu cột đã tồn tại
             if (roundedDataGridView2.Columns.Contains("SampleCode"))
                 roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
             if (roundedDataGridView2.Columns.Contains("TenThongSo"))
@@ -102,6 +167,11 @@ namespace Environmental_Monitoring.View
         private void ExperimentContent_Load_1(object sender, EventArgs e)
         {
             roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            // CẬP NHẬT: Tự động giãn hàng theo nội dung
+            roundedDataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            // CẬP NHẬT: Tự động xuống dòng nếu text quá dài
+            roundedDataGridView2.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
             roundedDataGridView2.ForeColor = Color.Black;
             roundedDataGridView2.AllowUserToAddRows = false;
             roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.None;
@@ -303,12 +373,18 @@ namespace Environmental_Monitoring.View
 
                 roundedDataGridView2.DataSource = dt;
 
+                // Ẩn các cột ID và phụ trợ
                 if (roundedDataGridView2.Columns["ParameterID"] != null) roundedDataGridView2.Columns["ParameterID"].Visible = false;
                 if (roundedDataGridView2.Columns["SampleID"] != null) roundedDataGridView2.Columns["SampleID"].Visible = false;
                 if (roundedDataGridView2.Columns["PhuTrach"] != null) roundedDataGridView2.Columns["PhuTrach"].Visible = false;
                 if (roundedDataGridView2.Columns["ONhiem"] != null) roundedDataGridView2.Columns["ONhiem"].Visible = false;
 
+                // CẬP NHẬT: Đồng bộ Header ngay sau khi gán DataSource để tránh hiển thị tên cột DB
                 if (roundedDataGridView2.Columns["SampleCode"] != null) roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
+                if (roundedDataGridView2.Columns["TenThongSo"] != null) roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
+                if (roundedDataGridView2.Columns["DonVi"] != null) roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
+                if (roundedDataGridView2.Columns["GioiHanMin"] != null) roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
+                if (roundedDataGridView2.Columns["GioiHanMax"] != null) roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
                 if (roundedDataGridView2.Columns["GiaTri"] != null) roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
 
                 EnsureCheckBoxColumn(COL_ONHIEM, rm.GetString("Grid_Polluted", culture), 10);
@@ -565,7 +641,7 @@ namespace Environmental_Monitoring.View
                     while (startIndex > 0)
                     {
                         object prevVal = roundedDataGridView2.Rows[startIndex - 1].Cells[e.ColumnIndex].Value;
-                       
+
                         if (prevVal != null && prevVal.ToString() == rawValue)
                             startIndex--;
                         else
