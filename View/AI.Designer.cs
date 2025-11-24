@@ -31,6 +31,12 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblTitle = new Label();
             lblPanelResign = new Label();
             panelPollution = new RoundedPanel();
@@ -39,13 +45,17 @@ namespace Environmental_Monitoring.View
             lblPanelPollution = new Label();
             cmbLocation = new CustomComboBox();
             panelResign = new RoundedPanel();
+            chartResign = new System.Windows.Forms.DataVisualization.Charting.Chart();
             txtCustomerName = new RoundedTextBox();
             btnPredictResign = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             txtSearch = new RoundedTextBox();
+            chartPollution = new System.Windows.Forms.DataVisualization.Charting.Chart();
             panelPollution.SuspendLayout();
             panelResign.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chartResign).BeginInit();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chartPollution).BeginInit();
             SuspendLayout();
             // 
             // lblTitle
@@ -74,6 +84,7 @@ namespace Environmental_Monitoring.View
             panelPollution.BorderColor = Color.Transparent;
             panelPollution.BorderRadius = 20;
             panelPollution.BorderSize = 0;
+            panelPollution.Controls.Add(chartPollution);
             panelPollution.Controls.Add(btnPredictPollution);
             panelPollution.Controls.Add(lblPollutionLevel);
             panelPollution.Controls.Add(lblPanelPollution);
@@ -152,6 +163,7 @@ namespace Environmental_Monitoring.View
             panelResign.BorderColor = Color.Transparent;
             panelResign.BorderRadius = 20;
             panelResign.BorderSize = 0;
+            panelResign.Controls.Add(chartResign);
             panelResign.Controls.Add(txtCustomerName);
             panelResign.Controls.Add(btnPredictResign);
             panelResign.Controls.Add(lblPanelResign);
@@ -160,6 +172,23 @@ namespace Environmental_Monitoring.View
             panelResign.Name = "panelResign";
             panelResign.Size = new Size(531, 554);
             panelResign.TabIndex = 8;
+            // 
+            // chartResign
+            // 
+            chartArea2.Name = "ChartArea1";
+            chartResign.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            chartResign.Legends.Add(legend2);
+            chartResign.Location = new Point(0, 155);
+            chartResign.Name = "chartResign";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            chartResign.Series.Add(series2);
+            chartResign.Size = new Size(531, 399);
+            chartResign.TabIndex = 22;
+            chartResign.Text = "chart1";
             // 
             // txtCustomerName
             // 
@@ -242,6 +271,23 @@ namespace Environmental_Monitoring.View
             txtSearch.TabIndex = 21;
             txtSearch.UseSystemPasswordChar = false;
             // 
+            // chartPollution
+            // 
+            chartArea1.Name = "ChartArea1";
+            chartPollution.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chartPollution.Legends.Add(legend1);
+            chartPollution.Location = new Point(3, 155);
+            chartPollution.Name = "chartPollution";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chartPollution.Series.Add(series1);
+            chartPollution.Size = new Size(528, 399);
+            chartPollution.TabIndex = 23;
+            chartPollution.Text = "chart1";
+            // 
             // AI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -254,8 +300,10 @@ namespace Environmental_Monitoring.View
             panelPollution.PerformLayout();
             panelResign.ResumeLayout(false);
             panelResign.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chartResign).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chartPollution).EndInit();
             ResumeLayout(false);
         }
 
@@ -275,9 +323,10 @@ namespace Environmental_Monitoring.View
         private RoundedTextBox txtSearch;
         private RoundedTextBox txtCustomerName;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartPollution;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartResign;
         private CustomComboBox cmbLocation;
         private CustomDateTimePicker customDateTimePicker1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartResign;
+        private System.Windows.Forms.DataVisualization.Charting.Chart PollutionChart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartPollution;
     }
 }

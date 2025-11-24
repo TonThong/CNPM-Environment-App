@@ -3,40 +3,43 @@
   "WorkspaceRootPath": "C:\\Github\\CNPM-Environment-App\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\contractcontent\\managercontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\managercontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\ai.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\ai.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\controller\\airqualityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\airqualityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\contractcontent\\businesscontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\businesscontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\controller\\dataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\dataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98AEEA8E-209E-7785-3DA8-7EFFBB4A327D}|..\\ResignModel_ConsoleApp1\\ResignModel_ConsoleApp1.csproj|c:\\github\\resignmodel_consoleapp1\\resignmodel.consumption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\contractcontent\\experimentcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\experimentcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\strings.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:strings.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|C:\\Github\\CNPM-Environment-App\\view\\contractcontent\\experimentcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\experimentcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\contractcontent\\realcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\realcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\contract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\mainlayout.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|C:\\Github\\CNPM-Environment-App\\view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
@@ -45,10 +48,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\controller\\data\\contractrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\data\\contractrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\controller\\dataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\dataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|c:\\github\\cnpm-environment-app\\model\\contract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -110,7 +109,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -122,7 +121,71 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
+              "Title": "AI.cs [Design]",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\AI.cs",
+              "RelativeDocumentMoniker": "View\\AI.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\AI.cs [Design]",
+              "RelativeToolTip": "View\\AI.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T07:07:49.131Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AI.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\AI.cs",
+              "RelativeDocumentMoniker": "View\\AI.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\AI.cs",
+              "RelativeToolTip": "View\\AI.cs",
+              "ViewState": "AgIAAG8BAAAAAAAAAAAAAJgBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T07:00:56.653Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AirQualityService.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Controller\\AirQualityService.cs",
+              "RelativeDocumentMoniker": "Controller\\AirQualityService.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Controller\\AirQualityService.cs",
+              "RelativeToolTip": "Controller\\AirQualityService.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAcwEYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T07:00:20.16Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BusinessContent.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\BusinessContent.cs",
+              "RelativeDocumentMoniker": "View\\ContractContent\\BusinessContent.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\BusinessContent.cs",
+              "RelativeToolTip": "View\\ContractContent\\BusinessContent.cs",
+              "ViewState": "AgIAAOQAAAAAAAAAAAAkwP4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T05:14:41.756Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AI.Designer.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\AI.Designer.cs",
+              "RelativeDocumentMoniker": "View\\AI.Designer.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\AI.Designer.cs",
+              "RelativeToolTip": "View\\AI.Designer.cs",
+              "ViewState": "AgIAABsBAAAAAAAAAAAowEsBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T03:58:28.481Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "PlanContent.cs",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\PlanContent.cs",
               "RelativeDocumentMoniker": "View\\ContractContent\\PlanContent.cs",
@@ -135,72 +198,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Mainlayout.cs",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs",
-              "RelativeDocumentMoniker": "View\\Mainlayout.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Mainlayout.cs",
-              "RelativeToolTip": "View\\Mainlayout.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAALUCAAABAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "DataProvider.cs",
+              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Controller\\DataProvider.cs",
+              "RelativeDocumentMoniker": "Controller\\DataProvider.cs",
+              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Controller\\DataProvider.cs",
+              "RelativeToolTip": "Controller\\DataProvider.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAApwHoAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T17:56:45.725Z",
+              "WhenOpened": "2025-11-19T03:32:10.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ResignModel.consumption.cs",
+              "DocumentMoniker": "C:\\Github\\ResignModel_ConsoleApp1\\ResignModel.consumption.cs",
+              "RelativeDocumentMoniker": "..\\ResignModel_ConsoleApp1\\ResignModel.consumption.cs",
+              "ToolTip": "C:\\Github\\ResignModel_ConsoleApp1\\ResignModel.consumption.cs",
+              "RelativeToolTip": "..\\ResignModel_ConsoleApp1\\ResignModel.consumption.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwBAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T03:42:11.221Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "Contract.cs",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\Contract.cs",
-              "RelativeDocumentMoniker": "View\\Contract.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Contract.cs",
-              "RelativeToolTip": "View\\Contract.cs",
-              "ViewState": "AgIAAB8BAAAAAAAAAAAcwC8BAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:45:17.538Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "RealContent.cs",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\RealContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\RealContent.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\RealContent.cs",
-              "RelativeToolTip": "View\\ContractContent\\RealContent.cs",
-              "ViewState": "AgIAABACAAAAAAAAAAAAAC4CAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T17:46:43.321Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ResultContent.cs",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ResultContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\ResultContent.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ResultContent.cs",
-              "RelativeToolTip": "View\\ContractContent\\ResultContent.cs",
-              "ViewState": "AgIAAN4BAAAAAAAAAAAmwAQCAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T18:19:32.287Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ManagerContent.cs",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ManagerContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\ManagerContent.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ManagerContent.cs",
-              "RelativeToolTip": "View\\ContractContent\\ManagerContent.cs",
-              "ViewState": "AgIAACoBAAAAAAAAAAAAwFMBAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T04:42:55.252Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "ExperimentContent.cs",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ExperimentContent.cs",
               "RelativeDocumentMoniker": "View\\ContractContent\\ExperimentContent.cs",
@@ -213,19 +237,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Strings.resx",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Strings.resx",
-              "RelativeDocumentMoniker": "Strings.resx",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Strings.resx",
-              "RelativeToolTip": "Strings.resx",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2025-11-22T10:27:52.845Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "ExperimentContent.cs [Design]",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ExperimentContent.cs",
               "RelativeDocumentMoniker": "View\\ContractContent\\ExperimentContent.cs",
@@ -237,7 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ContractRepo.cs",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Controller\\Data\\ContractRepo.cs",
               "RelativeDocumentMoniker": "Controller\\Data\\ContractRepo.cs",
@@ -245,30 +257,20 @@
               "RelativeToolTip": "Controller\\Data\\ContractRepo.cs",
               "ViewState": "AgIAAEMAAAAAAAAAAAAIwE4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:32:02.588Z"
+              "WhenOpened": "2025-11-19T03:32:02.588Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "DataProvider.cs",
-              "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\Controller\\DataProvider.cs",
-              "RelativeDocumentMoniker": "Controller\\DataProvider.cs",
-              "ToolTip": "C:\\Github\\CNPM-Environment-App\\Controller\\DataProvider.cs",
-              "RelativeToolTip": "Controller\\DataProvider.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHoAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:32:10.363Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ResultContent.cs [Design]",
               "DocumentMoniker": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ResultContent.cs",
               "RelativeDocumentMoniker": "View\\ContractContent\\ResultContent.cs",
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\ContractContent\\ResultContent.cs [Design]",
               "RelativeToolTip": "View\\ContractContent\\ResultContent.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T16:15:19.549Z"
+              "WhenOpened": "2025-11-19T16:15:19.549Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
@@ -279,7 +281,8 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Setting.cs [Design]",
               "RelativeToolTip": "View\\Setting.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:17:26.77Z"
+              "WhenOpened": "2025-11-19T03:17:26.77Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
@@ -289,9 +292,10 @@
               "RelativeDocumentMoniker": "Model\\Contract.cs",
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\Model\\Contract.cs",
               "RelativeToolTip": "Model\\Contract.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAIwCsAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAACAAAAAAAAAAAADwvysAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:38:02.7Z"
+              "WhenOpened": "2025-11-19T03:38:02.7Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -302,7 +306,8 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Introduce.cs [Design]",
               "RelativeToolTip": "View\\Introduce.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:17:19.916Z"
+              "WhenOpened": "2025-11-19T03:17:19.916Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
@@ -313,7 +318,8 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Components\\CreateUpdateEmployee.cs [Design]",
               "RelativeToolTip": "View\\Components\\CreateUpdateEmployee.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:16:46.046Z"
+              "WhenOpened": "2025-11-19T03:16:46.046Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
@@ -325,7 +331,8 @@
               "RelativeToolTip": "View\\Components\\ForgotPasswordForm.cs",
               "ViewState": "AgIAABoAAAAAAAAAAAAQwJABAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:21:25.748Z"
+              "WhenOpened": "2025-11-19T03:21:25.748Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -337,7 +344,8 @@
               "RelativeToolTip": "Controller\\Data\\EmployeeRepo.cs",
               "ViewState": "AgIAAAsBAAAAAAAAAAAwwCEBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T04:07:56.365Z"
+              "WhenOpened": "2025-11-18T04:07:56.365Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -349,7 +357,8 @@
               "RelativeToolTip": "View\\Stats.cs",
               "ViewState": "AgIAAB4BAAAAAAAAAAAqwFQBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T12:55:14.992Z"
+              "WhenOpened": "2025-11-17T12:55:14.992Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -361,7 +370,8 @@
               "RelativeToolTip": "View\\Notification.cs",
               "ViewState": "AgIAAKQAAAAAAAAAAAAqwM4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T12:52:56.981Z"
+              "WhenOpened": "2025-11-17T12:52:56.981Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -372,7 +382,8 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\View\\Components\\NotificationItem.cs [Design]",
               "RelativeToolTip": "View\\Components\\NotificationItem.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T12:30:55.403Z"
+              "WhenOpened": "2025-11-17T12:30:55.403Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
@@ -384,7 +395,8 @@
               "RelativeToolTip": "Controller\\NotificationService.cs",
               "ViewState": "AgIAAAEAAAAAAAAAAAAqwCIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T12:31:13.004Z"
+              "WhenOpened": "2025-11-17T12:31:13.004Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -396,7 +408,8 @@
               "RelativeToolTip": "View\\Components\\NotificationItem.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T11:42:36.292Z"
+              "WhenOpened": "2025-11-17T11:42:36.292Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -407,7 +420,8 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\Properties\\Settings.settings",
               "RelativeToolTip": "Properties\\Settings.settings",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002767|",
-              "WhenOpened": "2025-11-17T10:47:03.796Z"
+              "WhenOpened": "2025-11-17T10:47:03.796Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -418,7 +432,8 @@
               "ToolTip": "C:\\Github\\CNPM-Environment-App\\Environmental_Monitoring.csproj",
               "RelativeToolTip": "Environmental_Monitoring.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-17T10:11:10.375Z"
+              "WhenOpened": "2025-11-17T10:11:10.375Z",
+              "EditorCaption": ""
             }
           ]
         },

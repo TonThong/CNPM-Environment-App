@@ -39,6 +39,14 @@ namespace Environmental_Monitoring
             [ColumnName(@"Label")]
             public bool Label { get; set; }
 
+            [LoadColumn(3)]
+            [ColumnName(@"CorrectionCount")]
+            public float CorrectionCount { get; set; }
+
+            [LoadColumn(4)]
+            [ColumnName(@"DaysOverdue")]
+            public float DaysOverdue { get; set; }
+
         }
 
         #endregion

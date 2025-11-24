@@ -655,6 +655,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chi Tiết Hợp đồng: {0}.
+        /// </summary>
+        internal static string ContractDetail_Title {
+            get {
+                return ResourceManager.GetString("ContractDetail_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quý.
         /// </summary>
         internal static string ContractType_Quarterly {
@@ -1173,6 +1182,15 @@ namespace Environmental_Monitoring {
         internal static string Grid_Department {
             get {
                 return ResourceManager.GetString("Grid_Department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chi Tiết.
+        /// </summary>
+        internal static string Grid_Detail {
+            get {
+                return ResourceManager.GetString("Grid_Detail", resourceCulture);
             }
         }
         

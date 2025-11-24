@@ -1000,4 +1000,10 @@ Green Flow Team&lt;/p&gt;</value>
   <data name="Business_Employee" xml:space="preserve">
     <value>Employee</value>
   </data>
+  <data name="Grid_Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="ContractDetail_Title" xml:space="preserve">
+    <value>Contract Detail: {0}</value>
+  </data>
 </root>

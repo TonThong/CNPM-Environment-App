@@ -120,6 +120,7 @@ namespace Environmental_Monitoring.View
 
             NotificationService.OnNotificationCreated += RefreshNotificationCount;
 
+
         }
 
         #endregion

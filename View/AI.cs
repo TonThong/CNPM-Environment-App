@@ -13,6 +13,7 @@ using System.Resources;
 using Environmental_Monitoring.View.Components;
 using Environmental_Monitoring.View;
 using Environmental_Monitoring.Controller;
+using Environmental_Monitoring.Controller.Data;
 using System.Windows.Forms.DataVisualization.Charting;
 using Environmental_Monitoring;
 
@@ -20,21 +21,35 @@ namespace Environmental_Monitoring.View
 {
     public partial class AI : UserControl
     {
+        // Cache data to redraw chart without re-fetching API
+        private List<PollutionData> _cachedData;
+
         public AI()
         {
             InitializeComponent();
             this.Load += new System.EventHandler(this.AI_Load);
 
-
+            // Default items, will be cleared and re-populated in LoadProvinces
             cmbLocation.Items.Add("HaNoi");
             cmbLocation.Items.Add("HCM");
-            cmbLocation.SelectedIndex = 0;
+            if (cmbLocation.Items.Count > 0) cmbLocation.SelectedIndex = 0;
         }
 
         private void AI_Load(object sender, EventArgs e)
         {
-
             UpdateUIText();
+            LoadProvinces();
+        }
+
+        private void LoadProvinces()
+        {
+            cmbLocation.Items.Clear();
+            // Get province list from Service
+            foreach (var province in AirQualityService.Provinces.Keys)
+            {
+                cmbLocation.Items.Add(province);
+            }
+            if (cmbLocation.Items.Count > 0) cmbLocation.SelectedIndex = 0;
         }
 
         public void UpdateUIText()
@@ -49,124 +64,320 @@ namespace Environmental_Monitoring.View
                 txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
                 lblPanelResign.Text = rm.GetString("AI_Panel_Resign", culture);
-                txtCustomerName.PlaceholderText = rm.GetString("AI_Placeholder_Customer", culture);
+                txtCustomerName.PlaceholderText = "Nhập mã khách hàng (ID)...";
                 btnPredictResign.Text = rm.GetString("AI_Button_Predict", culture);
 
                 lblPanelPollution.Text = rm.GetString("AI_Panel_Pollution", culture);
                 lblPollutionLevel.Text = rm.GetString("AI_Label_PollutionLevel", culture);
                 btnPredictPollution.Text = rm.GetString("AI_Button_Predict", culture);
 
+                // Apply Theme Colors
                 this.BackColor = ThemeManager.BackgroundColor;
                 lblTitle.ForeColor = ThemeManager.TextColor;
-
                 txtSearch.BackColor = ThemeManager.PanelColor;
                 txtSearch.ForeColor = ThemeManager.TextColor;
-
                 panelResign.BackColor = ThemeManager.PanelColor;
                 lblPanelResign.ForeColor = ThemeManager.TextColor;
                 txtCustomerName.BackColor = ThemeManager.BackgroundColor;
                 txtCustomerName.ForeColor = ThemeManager.TextColor;
                 btnPredictResign.BackColor = ThemeManager.AccentColor;
                 btnPredictResign.ForeColor = Color.White;
-
                 panelPollution.BackColor = ThemeManager.PanelColor;
                 lblPanelPollution.ForeColor = ThemeManager.TextColor;
                 lblPollutionLevel.ForeColor = ThemeManager.TextColor;
                 btnPredictPollution.BackColor = ThemeManager.AccentColor;
                 btnPredictPollution.ForeColor = Color.White;
-
             }
             catch (Exception ex)
             {
-                string errorMsg = rm.GetString("Alert_LoadLanguageError", culture);
-                mainForm?.ShowGlobalAlert(errorMsg + ex.Message, AlertPanel.AlertType.Error);
+                
+            }
+        }
+        private async void btnPredictResign_Click(object sender, EventArgs e)
+        {
+            string inputID = txtCustomerName.Text.Trim();
+            if (string.IsNullOrEmpty(inputID) || !int.TryParse(inputID, out int customerId))
+            {
+                MessageBox.Show("Vui lòng nhập Mã khách hàng (số nguyên) hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            btnPredictResign.Enabled = false;
+            string originalText = btnPredictResign.Text;
+            btnPredictResign.Text = "phân tích...";
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    CustomerStats stats = GetCustomerStats(customerId);
+
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        if (stats == null)
+                        {
+                            MessageBox.Show($"Không tìm thấy khách hàng có ID: {customerId}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        var inputData = new ResignModel.ModelInput()
+                        {
+                            ContractType = "Quarterly",
+                            WasOnTime = stats.WasOnTime,
+                            TotalContracts = stats.TotalContracts,
+                            CorrectionCount = stats.CorrectionCount,
+                            DaysOverdue = stats.DaysOverdue,
+                            Label = false
+                        };
+
+                        ResignModel.ModelOutput prediction = ResignModel.Predict(inputData);
+                        UpdateResignChart(prediction, stats);
+                    });
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi phân tích AI: " + ex.Message);
+            }
+            finally
+            {
+                btnPredictResign.Enabled = true;
+                btnPredictResign.Text = originalText;
             }
         }
 
-        private void btnPredictResign_Click(object sender, EventArgs e)
+        private void UpdateResignChart(ResignModel.ModelOutput prediction, CustomerStats stats)
         {
-            var inputData = new ResignModel.ModelInput()
-            {
-                ContractType = "Quy",
-                WasOnTime = "Completed",
-                PollutionCount = 0,
-                WarningCount = 1,
-                TotalContracts = 3
-            };
+            float currentScore = prediction.Score;
 
-            ResignModel.ModelOutput prediction = ResignModel.Predict(inputData);
+            // --- HYBRID SCORING LOGIC ---
+            float contractBonus = Math.Min(stats.TotalContracts * 0.4f, 3.0f);
+            float overduePenalty = stats.DaysOverdue * 0.1f;
+            float correctionPenalty = stats.CorrectionCount * 0.4f;
 
+            float reputationBonus = 0;
+            if (stats.WasOnTime == "OnTime" && stats.DaysOverdue == 0)
+                reputationBonus = 2.0f;
 
-            bool predictedLabel = prediction.PredictedLabel; 
-            float probability = prediction.Score; 
+            float finalScore = currentScore + contractBonus + reputationBonus - overduePenalty - correctionPenalty;
 
-            int percentTrue, percentFalse;
+            // Sigmoid function
+            float finalProbability = 1f / (1f + (float)Math.Exp(-finalScore));
+            if (finalProbability > 0.98f) finalProbability = 0.98f;
+            if (finalProbability < 0.02f) finalProbability = 0.02f;
 
-            if (predictedLabel == true)
-            {
-                percentTrue = (int)(probability * 100);
-                percentFalse = 100 - percentTrue;
-            }
-            else
-            {
-                percentFalse = (int)(probability * 100);
-                percentTrue = 100 - percentFalse;
-            }
+            int percentTaiky = (int)(finalProbability * 100);
+            int percentRoibo = 100 - percentTaiky;
 
-            if (this.Controls.Find("chartResign", true).FirstOrDefault() is Chart chartResign)
+            if (chartResign != null)
             {
                 chartResign.Series.Clear();
                 Series series = chartResign.Series.Add("ResignRate");
                 series.ChartType = SeriesChartType.Pie;
 
-                series.Points.Add(percentTrue);
-                series.Points.Add(percentFalse);
+                DataPoint dpTaiky = new DataPoint(0, percentTaiky);
+                dpTaiky.LegendText = "Tái ký";
+                dpTaiky.Label = $"{percentTaiky}%";
+                dpTaiky.Color = Color.FromArgb(113, 110, 226);
+                dpTaiky.LabelForeColor = Color.White;
 
-                DataPoint dpTrue = series.Points[0];
-                dpTrue.LegendText = "Khả năng tái ký";
-                dpTrue.Label = $"{percentTrue}%";
-                dpTrue.Color = Color.FromArgb(106, 90, 205); 
+                DataPoint dpRoibo = new DataPoint(0, percentRoibo);
+                dpRoibo.LegendText = "Rời bỏ";
+                dpRoibo.Label = $"{percentRoibo}%";
+                dpRoibo.Color = Color.FromArgb(255, 127, 127);
+                dpRoibo.LabelForeColor = Color.White;
 
-                DataPoint dpFalse = series.Points[1];
-                dpFalse.LegendText = "Khả năng không tái ký";
-                dpFalse.Label = $"{percentFalse}%";
-                dpFalse.Color = Color.FromArgb(250, 128, 114); 
+                series.Points.Add(dpTaiky);
+                series.Points.Add(dpRoibo);
 
                 if (chartResign.Legends.Count == 0) chartResign.Legends.Add("Default");
                 chartResign.Legends[0].Docking = Docking.Right;
+                chartResign.Legends[0].Alignment = StringAlignment.Center;
             }
         }
 
-        private void btnPredictPollution_Click(object sender, EventArgs e)
+        private CustomerStats GetCustomerStats(int customerId)
         {
-            PollutionModel.ModelOutput prediction = PollutionModel.Predict(horizon: 6);
+            string queryCheck = "SELECT COUNT(*) FROM Customers WHERE CustomerID = @cid";
+            object checkObj = DataProvider.Instance.ExecuteScalar(queryCheck, new object[] { customerId });
+            if (checkObj == null || Convert.ToInt32(checkObj) == 0) return null;
 
-            float[] forecasts = prediction.Value;
+            var stats = new CustomerStats();
+            string queryTotal = "SELECT COUNT(*) FROM Contracts WHERE CustomerID = @cid";
+            stats.TotalContracts = Convert.ToSingle(DataProvider.Instance.ExecuteScalar(queryTotal, new object[] { customerId }));
 
-            if (this.Controls.Find("chartPollution", true).FirstOrDefault() is Chart chartPollution)
+            string queryCorrection = @"SELECT COUNT(*) FROM Notifications n 
+                                       JOIN Contracts c ON n.ContractID = c.ContractID 
+                                       WHERE c.CustomerID = @cid AND n.LoaiThongBao = 'ChinhSua'";
+            stats.CorrectionCount = Convert.ToSingle(DataProvider.Instance.ExecuteScalar(queryCorrection, new object[] { customerId }));
+
+            string queryLatestStatus = @"SELECT Status FROM Contracts WHERE CustomerID = @cid ORDER BY ContractID DESC LIMIT 1";
+            object latestStatusObj = DataProvider.Instance.ExecuteScalar(queryLatestStatus, new object[] { customerId });
+            string latestStatus = latestStatusObj?.ToString() ?? "";
+
+            if (latestStatus == "Completed" || latestStatus == "Active")
             {
-                chartPollution.Series.Clear();
-                Series series = chartPollution.Series.Add("PollutionLevel");
-                series.ChartType = SeriesChartType.Line;
-                series.BorderWidth = 3;
-                series.Color = Color.FromArgb(106, 90, 205); 
-                series.MarkerStyle = MarkerStyle.Circle;
-                series.MarkerSize = 8;
+                stats.WasOnTime = "OnTime";
+                stats.DaysOverdue = 0;
+            }
+            else
+            {
+                string queryMaxDays = @"SELECT MAX(DATEDIFF(CURRENT_DATE, NgayTraKetQua)) FROM Contracts 
+                                        WHERE CustomerID = @cid AND Status = 'Expired'";
+                object maxDaysObj = DataProvider.Instance.ExecuteScalar(queryMaxDays, new object[] { customerId });
 
-                DateTime currentDate = DateTime.Now;
-
-                for (int i = 0; i < forecasts.Length; i++)
+                if (maxDaysObj != null && maxDaysObj != DBNull.Value)
                 {
-                    string monthLabel = $"Th {currentDate.AddMonths(i + 1).Month}";
-                    series.Points.AddXY(monthLabel, forecasts[i]);
+                    stats.WasOnTime = "Late";
+                    stats.DaysOverdue = Convert.ToSingle(maxDaysObj);
+                    if (stats.DaysOverdue < 0) stats.DaysOverdue = 0;
                 }
-
-                chartPollution.ChartAreas[0].AxisY.Minimum = 0;
-                if (chartPollution.Legends.Count > 0)
+                else
                 {
-                    chartPollution.Legends[0].Enabled = false;
+                    string queryHistory = "SELECT COUNT(*) FROM Contracts WHERE CustomerID = @cid AND Status = 'Expired Complete'";
+                    int hist = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(queryHistory, new object[] { customerId }));
+                    if (hist > 0)
+                    {
+                        stats.WasOnTime = "Late";
+                        stats.DaysOverdue = 5;
+                    }
+                    else
+                    {
+                        stats.WasOnTime = "OnTime";
+                        stats.DaysOverdue = 0;
+                    }
                 }
             }
+            return stats;
         }
+
+
+        private async void btnPredictPollution_Click(object sender, EventArgs e)
+        {
+            string selectedProvince = cmbLocation.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedProvince)) return;
+
+            var coords = AirQualityService.Provinces[selectedProvince];
+
+            btnPredictPollution.Enabled = false;
+            btnPredictPollution.Text = "Đang tải...";
+
+            try
+            {
+                var data = await AirQualityService.GetPollutionForecastAsync(coords.Lat, coords.Lon);
+
+                if (data != null && data.list != null)
+                {
+                    _cachedData = data.list;
+                    UpdatePollutionChart();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi API: " + ex.Message);
+            }
+            finally
+            {
+                btnPredictPollution.Enabled = true;
+                btnPredictPollution.Text = "Dự đoán";
+            }
+        }
+
+        private void UpdatePollutionChart()
+        {
+            if (_cachedData == null || chartPollution == null) return;
+
+            chartPollution.Series.Clear();
+            chartPollution.ChartAreas.Clear();
+
+            // 1. Cấu hình giao diện Chart
+            ChartArea area = new ChartArea("MainArea");
+            area.BorderWidth = 0;
+            area.BackColor = Color.White;
+
+            area.AxisX.MajorGrid.LineColor = Color.FromArgb(240, 240, 240);
+            area.AxisY.MajorGrid.LineColor = Color.FromArgb(230, 230, 230);
+
+            area.AxisX.LineColor = Color.Transparent;
+            area.AxisY.LineColor = Color.Transparent;
+
+            area.AxisX.LabelStyle.ForeColor = Color.Gray;
+            area.AxisY.LabelStyle.ForeColor = Color.Gray;
+
+            area.AxisX.LabelStyle.Format = "dd/MM";
+            area.AxisX.Interval = 1;
+            area.AxisX.IntervalType = DateTimeIntervalType.Days;
+
+            area.AxisY.Minimum = 0;
+            area.AxisY.Maximum = 6;
+            area.AxisY.Interval = 1;
+
+            chartPollution.ChartAreas.Add(area);
+
+            Series series = new Series("AQI");
+            series.ChartType = SeriesChartType.Spline; 
+            series.BorderWidth = 3;
+            series.Color = Color.FromArgb(255, 100, 0); 
+            series.MarkerStyle = MarkerStyle.Circle;
+            series.MarkerSize = 10;
+            series.MarkerColor = Color.White;
+            series.MarkerBorderColor = series.Color;
+            series.MarkerBorderWidth = 2;
+
+            series.XValueType = ChartValueType.DateTime;
+
+            var dailyData = new Dictionary<DateTime, int>(); 
+            DateTime now = DateTime.Now;
+
+            foreach (var item in _cachedData)
+            {
+                DateTime t = DateTimeOffset.FromUnixTimeSeconds(item.dt).LocalDateTime;
+
+                if (t.Date >= now.Date)
+                {
+                    DateTime dayKey = t.Date; 
+
+                    if (!dailyData.ContainsKey(dayKey) || t.Hour == 12)
+                    {
+                        dailyData[dayKey] = item.main.aqi;
+                    }
+                }
+            }
+
+            int count = 0;
+            foreach (var kvp in dailyData.OrderBy(k => k.Key)) 
+            {
+                int pointIndex = series.Points.AddXY(kvp.Key, kvp.Value);
+
+                string status = "";
+                switch (kvp.Value)
+                {
+                    case 1: status = "Tốt"; break;
+                    case 2: status = "Khá"; break;
+                    case 3: status = "TB"; break;
+                    case 4: status = "Kém"; break;
+                    case 5: status = "Nguy hại"; break;
+                }
+                series.Points[pointIndex].ToolTip = $"Ngày {kvp.Key:dd/MM}: AQI {kvp.Value} ({status})";
+
+                count++;
+                if (count >= 5) break;
+            }
+
+            chartPollution.Series.Add(series);
+        }
+
+        private void chartPollution_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+    public class CustomerStats
+    {
+        public float TotalContracts { get; set; }
+        public float CorrectionCount { get; set; }
+        public string WasOnTime { get; set; }
+        public float DaysOverdue { get; set; }
     }
 }

@@ -165,8 +165,8 @@ namespace Environmental_Monitoring.View.ContractContent
                     txtEmailCustomer.Focus();
                     return;
                 }
-                string maDon = txtboxIDContract.Text.Trim();
 
+                string maDon = txtboxIDContract.Text.Trim();
                 string tenKhachHang = txtboxCustomerName.Text.Trim();
                 string kyHieuDoanhNghiep = txtboxPhone.Text.Trim();
                 string diaChi = txtboxAddress.Text.Trim();
@@ -182,17 +182,38 @@ namespace Environmental_Monitoring.View.ContractContent
                     return;
                 }
 
-                string insertCustomer = @"INSERT INTO Customers (TenDoanhNghiep, KyHieuDoanhNghiep, DiaChi, TenNguoiDaiDien, Email)
-                                            VALUES (@ten, @kyhieu, @diaChi, @nguoiDaiDien, @email) 
-                                            ON DUPLICATE KEY UPDATE CustomerID=LAST_INSERT_ID(CustomerID);";
+                int customerIdToUse = 0;
 
-                DataProvider.Instance.ExecuteNonQuery(insertCustomer, new object[] { tenKhachHang, kyHieuDoanhNghiep, diaChi, nguoiDaiDien, email });
+                string checkCustomerQuery = @"SELECT CustomerID FROM Customers 
+                                              WHERE (Email = @email AND Email <> '') 
+                                                 AND (KyHieuDoanhNghiep = @kyhieu AND KyHieuDoanhNghiep <> '') 
+                                              LIMIT 1";
 
-                int newCustomerId = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
+                object existingIdObj = DataProvider.Instance.ExecuteScalar(checkCustomerQuery, new object[] { email, kyHieuDoanhNghiep });
+
+                if (existingIdObj != null && existingIdObj != DBNull.Value)
+                {
+                    customerIdToUse = Convert.ToInt32(existingIdObj);
+
+                    string updateCustomer = @"UPDATE Customers 
+                                              SET TenDoanhNghiep = @ten, DiaChi = @diachi, TenNguoiDaiDien = @daidien 
+                                              WHERE CustomerID = @cid";
+                    DataProvider.Instance.ExecuteNonQuery(updateCustomer, new object[] { tenKhachHang, diaChi, nguoiDaiDien, customerIdToUse });
+                }
+                else
+                {
+                    string insertCustomer = @"INSERT INTO Customers (TenDoanhNghiep, KyHieuDoanhNghiep, DiaChi, TenNguoiDaiDien, Email)
+                                              VALUES (@ten, @kyhieu, @diaChi, @nguoiDaiDien, @email)";
+
+                    DataProvider.Instance.ExecuteNonQuery(insertCustomer, new object[] { tenKhachHang, kyHieuDoanhNghiep, diaChi, nguoiDaiDien, email });
+
+                    customerIdToUse = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
+                }
+
 
                 string insertContract = @"INSERT INTO Contracts (MaDon, CustomerID, EmployeeID, NgayKy, NgayTraKetQua, ContractType, Status, TienTrinh)
-                                            VALUES (@maDon, @customerID, @employeeID, @ngayKy, @ngayTra, @loai, 'Active', 1)";
-                DataProvider.Instance.ExecuteNonQuery(insertContract, new object[] { maDon, newCustomerId, employeeId, ngayKy, ngayTraKetQua, loaiHopDong });
+                                          VALUES (@maDon, @customerID, @employeeID, @ngayKy, @ngayTra, @loai, 'Active', 1)";
+                DataProvider.Instance.ExecuteNonQuery(insertContract, new object[] { maDon, customerIdToUse, employeeId, ngayKy, ngayTraKetQua, loaiHopDong });
 
                 int newContractId = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
 
@@ -212,11 +233,10 @@ namespace Environmental_Monitoring.View.ContractContent
                 }
 
                 ShowAlert(rm.GetString("Business_SaveSuccess", culture), AlertPanel.AlertType.Success);
-                ClearFields();
-
                 ShowAlert(rm.GetString("Success_ContractCreated", culture), AlertPanel.AlertType.Success);
 
                 ClearFields();
+                txtboxIDContract.Text = GenerateNewMaDon();
             }
             catch (Exception ex)
             {

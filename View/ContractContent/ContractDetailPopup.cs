@@ -17,6 +17,7 @@ namespace Environmental_Monitoring.View.ContractContent
     {
         private int _contractId;
         private int _initialEmployeeId;
+        private string _maDon; // Lưu mã đơn để dùng khi format tiêu đề
         private RoundedDataGridView dgvDetails;
         private ResourceManager rm;
         private CultureInfo culture;
@@ -34,7 +35,8 @@ namespace Environmental_Monitoring.View.ContractContent
         public ContractDetailPopup(int contractId, string maDon, int employeeId)
         {
             _contractId = contractId;
-            _initialEmployeeId = employeeId; 
+            _maDon = maDon;
+            _initialEmployeeId = employeeId;
 
             InitializeComponentCustom(maDon);
             InitializeLocalization();
@@ -58,6 +60,28 @@ namespace Environmental_Monitoring.View.ContractContent
 
             if (btnSave != null) btnSave.Text = rm.GetString("Button_Save", culture) ?? "Lưu";
             if (btnCancel != null) btnCancel.Text = rm.GetString("Button_Cancel", culture) ?? "Hủy";
+
+            // CẬP NHẬT: Đồng bộ tiêu đề Popup
+            if (lblTitle != null)
+            {
+                // Định dạng trong Resource nên là: "Chi tiết Hợp đồng: {0}" hoặc "Contract Details: {0}"
+                string titleFormat = rm.GetString("ContractDetail_Title", culture) ?? "Chi tiết Hợp đồng: {0}";
+                try
+                {
+                    lblTitle.Text = string.Format(titleFormat, _maDon);
+                }
+                catch
+                {
+                    lblTitle.Text = titleFormat + " " + _maDon;
+                }
+            }
+
+            // CẬP NHẬT: Đồng bộ nhãn Nhân viên
+            if (lblEmployeeTitle != null)
+            {
+                // Sử dụng key Business_Employee ("Nhân viên thụ lý" / "Handling Employee")
+                lblEmployeeTitle.Text = rm.GetString("Business_Employee", culture) ?? "Nhân viên thụ lý:";
+            }
         }
 
         private void InitializeComponentCustom(string maDon)
@@ -95,6 +119,7 @@ namespace Environmental_Monitoring.View.ContractContent
             headerPanel.Controls.Add(lblClose);
 
             lblTitle = new Label();
+            // Giá trị mặc định, sẽ được ghi đè bởi InitializeLocalization
             lblTitle.Text = $"Chi tiết Hợp đồng: {maDon}";
             lblTitle.Font = new Font("Segoe UI", 18, FontStyle.Bold);
             lblTitle.ForeColor = Color.FromArgb(0, 128, 0);
@@ -485,7 +510,7 @@ namespace Environmental_Monitoring.View.ContractContent
                         for (int i = startRow; i <= endRow; i++)
                         {
                             int h = dgvDetails.Rows[i].Height;
-                            if (i < e.RowIndex) yOffset += h; 
+                            if (i < e.RowIndex) yOffset += h;
                             totalHeight += h;
                         }
 
