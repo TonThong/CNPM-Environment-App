@@ -264,14 +264,18 @@ namespace Environmental_Monitoring.View.ContractContent
                 roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
             }
 
-            checkedListBox1.CheckOnClick = true;
-            checkedListBox1.SelectedIndexChanged -= checkedListBox1_SelectedIndexChanged_1;
-            checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged_1;
-            checkedListBox1.ItemCheck -= checkedListBox1_ItemCheck;
-            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
-            checkedListBox1.MouseUp += CheckedListBox1_MouseUp;
+            checkedListBox1.CheckOnClick = false;
+
             checkedListBox1.SelectionMode = SelectionMode.One;
             checkedListBox1.Cursor = Cursors.Hand;
+
+            checkedListBox1.SelectedIndexChanged -= checkedListBox1_SelectedIndexChanged_1;
+            checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged_1;
+
+            checkedListBox1.ItemCheck -= checkedListBox1_ItemCheck;
+            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
+
+            checkedListBox1.MouseUp -= CheckedListBox1_MouseUp;
 
             try
             {
@@ -559,7 +563,9 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts WHERE TienTrinh = 1";
+                // Đã thêm: IsUnlocked
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
+                         FROM Contracts WHERE TienTrinh = 1";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
@@ -567,10 +573,8 @@ namespace Environmental_Monitoring.View.ContractContent
                     {
                         this.currentContractId = contractId;
                         lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
-
                         LoadSampleTemplates();
-
-                        UpdateAddButtonState(); // Cập nhật trạng thái nút ngay khi chọn HĐ
+                        UpdateAddButtonState();
                     };
                     popup.ShowDialog();
                 }

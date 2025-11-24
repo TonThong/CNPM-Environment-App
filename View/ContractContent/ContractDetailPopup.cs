@@ -30,6 +30,9 @@ namespace Environmental_Monitoring.View.ContractContent
         private ComboBox cboEmployeeSelect;
         private Label lblEmployeeTitle;
 
+        private Label lblProgressTitle;
+        private TextBox txtProgress;
+
         public event Action OnDataSaved;
 
         public ContractDetailPopup(int contractId, string maDon, int employeeId)
@@ -47,9 +50,7 @@ namespace Environmental_Monitoring.View.ContractContent
         private void ContractDetailPopup_Load(object sender, EventArgs e)
         {
             LoadEmployeesToComboBox();
-
             SetSelectedEmployee(_initialEmployeeId);
-
             LoadContractDetails();
         }
 
@@ -61,27 +62,18 @@ namespace Environmental_Monitoring.View.ContractContent
             if (btnSave != null) btnSave.Text = rm.GetString("Button_Save", culture) ?? "Lưu";
             if (btnCancel != null) btnCancel.Text = rm.GetString("Button_Cancel", culture) ?? "Hủy";
 
-            // CẬP NHẬT: Đồng bộ tiêu đề Popup
             if (lblTitle != null)
             {
-                // Định dạng trong Resource nên là: "Chi tiết Hợp đồng: {0}" hoặc "Contract Details: {0}"
                 string titleFormat = rm.GetString("ContractDetail_Title", culture) ?? "Chi tiết Hợp đồng: {0}";
-                try
-                {
-                    lblTitle.Text = string.Format(titleFormat, _maDon);
-                }
-                catch
-                {
-                    lblTitle.Text = titleFormat + " " + _maDon;
-                }
+                try { lblTitle.Text = string.Format(titleFormat, _maDon); }
+                catch { lblTitle.Text = titleFormat + " " + _maDon; }
             }
 
-            // CẬP NHẬT: Đồng bộ nhãn Nhân viên
             if (lblEmployeeTitle != null)
-            {
-                // Sử dụng key Business_Employee ("Nhân viên thụ lý" / "Handling Employee")
                 lblEmployeeTitle.Text = rm.GetString("Business_Employee", culture) ?? "Nhân viên thụ lý:";
-            }
+
+            if (lblProgressTitle != null)
+                lblProgressTitle.Text = rm.GetString("Progress_Title", culture) ?? "Tiến độ hiện tại:";
         }
 
         private void InitializeComponentCustom(string maDon)
@@ -119,7 +111,6 @@ namespace Environmental_Monitoring.View.ContractContent
             headerPanel.Controls.Add(lblClose);
 
             lblTitle = new Label();
-            // Giá trị mặc định, sẽ được ghi đè bởi InitializeLocalization
             lblTitle.Text = $"Chi tiết Hợp đồng: {maDon}";
             lblTitle.Font = new Font("Segoe UI", 18, FontStyle.Bold);
             lblTitle.ForeColor = Color.FromArgb(0, 128, 0);
@@ -128,19 +119,18 @@ namespace Environmental_Monitoring.View.ContractContent
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             headerPanel.Controls.Add(lblTitle);
 
-            // --- CHỌN NHÂN VIÊN ---
+            // --- NHÂN VIÊN ---
             lblEmployeeTitle = new Label();
             lblEmployeeTitle.Text = "Nhân viên thụ lý:";
             lblEmployeeTitle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
             lblEmployeeTitle.AutoSize = true;
-            lblEmployeeTitle.Location = new Point(120, 90);
+            lblEmployeeTitle.Location = new Point(50, 90);
             headerPanel.Controls.Add(lblEmployeeTitle);
-            lblEmployeeTitle.BringToFront();
 
             Panel borderPanel = new Panel();
             borderPanel.BackColor = Color.White;
-            borderPanel.Size = new Size(320, 35);
-            borderPanel.Location = new Point(300, 85);
+            borderPanel.Size = new Size(300, 35);
+            borderPanel.Location = new Point(190, 85);
 
             borderPanel.Paint += (s, e) =>
             {
@@ -152,7 +142,7 @@ namespace Environmental_Monitoring.View.ContractContent
 
             cboEmployeeSelect = new ComboBox();
             cboEmployeeSelect.Font = new Font("Segoe UI", 11);
-            cboEmployeeSelect.Width = 318;
+            cboEmployeeSelect.Width = 298;
             cboEmployeeSelect.Location = new Point(1, 1);
             cboEmployeeSelect.DropDownStyle = ComboBoxStyle.DropDownList;
             cboEmployeeSelect.FlatStyle = FlatStyle.Flat;
@@ -161,6 +151,24 @@ namespace Environmental_Monitoring.View.ContractContent
             borderPanel.Controls.Add(cboEmployeeSelect);
             headerPanel.Controls.Add(borderPanel);
             borderPanel.BringToFront();
+
+            // --- TIẾN TRÌNH ---
+            lblProgressTitle = new Label();
+            lblProgressTitle.Text = "Tiến độ hiện tại:";
+            lblProgressTitle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            lblProgressTitle.AutoSize = true;
+            lblProgressTitle.Location = new Point(600, 90);
+            headerPanel.Controls.Add(lblProgressTitle);
+
+            txtProgress = new TextBox();
+            txtProgress.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            txtProgress.Location = new Point(800, 87);
+            txtProgress.Size = new Size(300, 30);
+            txtProgress.ReadOnly = true;
+            txtProgress.BackColor = Color.WhiteSmoke;
+            txtProgress.TextAlign = HorizontalAlignment.Center;
+            txtProgress.ForeColor = Color.Black;
+            headerPanel.Controls.Add(txtProgress);
 
             // --- FOOTER ---
             Panel footerPanel = new Panel();
@@ -204,9 +212,12 @@ namespace Environmental_Monitoring.View.ContractContent
 
             dgvDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dgvDetails.RowHeadersVisible = false;
+
+            // CẬP NHẬT: Dùng None để CellPainting tự vẽ viền chuẩn, tránh lỗi gộp ô
             dgvDetails.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            dgvDetails.BackgroundColor = Color.White;
+
             dgvDetails.GridColor = Color.Black;
+            dgvDetails.BackgroundColor = Color.White;
             dgvDetails.AllowUserToAddRows = false;
             dgvDetails.ReadOnly = false;
             dgvDetails.EditMode = DataGridViewEditMode.EditOnEnter;
@@ -221,6 +232,18 @@ namespace Environmental_Monitoring.View.ContractContent
 
             dgvDetails.CellPainting += DgvDetails_CellPainting;
             dgvDetails.DataError += (s, e) => { e.ThrowException = false; };
+
+            // CẬP NHẬT: Sự kiện để xử lý giao diện khi nhập liệu
+            dgvDetails.EditingControlShowing += DgvDetails_EditingControlShowing;
+        }
+
+        private void DgvDetails_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is TextBox tb)
+            {
+                tb.BorderStyle = BorderStyle.None;
+                tb.BackColor = Color.White;
+            }
         }
 
         private void LoadEmployeesToComboBox()
@@ -229,36 +252,26 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 string query = "SELECT EmployeeID, HoTen FROM Employees";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
-
                 cboEmployeeSelect.DataSource = dt;
                 cboEmployeeSelect.DisplayMember = "HoTen";
                 cboEmployeeSelect.ValueMember = "EmployeeID";
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi tải nhân viên: " + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show("Lỗi tải nhân viên: " + ex.Message); }
         }
 
         private void SetSelectedEmployee(int targetEmployeeId)
         {
             if (targetEmployeeId <= 0) return;
-
             cboEmployeeSelect.SelectedValue = targetEmployeeId;
-
             if (cboEmployeeSelect.SelectedValue == null || Convert.ToInt32(cboEmployeeSelect.SelectedValue) != targetEmployeeId)
             {
                 for (int i = 0; i < cboEmployeeSelect.Items.Count; i++)
                 {
                     DataRowView drv = cboEmployeeSelect.Items[i] as DataRowView;
-                    if (drv != null)
+                    if (drv != null && Convert.ToInt32(drv["EmployeeID"]) == targetEmployeeId)
                     {
-                        int idInList = Convert.ToInt32(drv["EmployeeID"]);
-                        if (idInList == targetEmployeeId)
-                        {
-                            cboEmployeeSelect.SelectedIndex = i;
-                            break;
-                        }
+                        cboEmployeeSelect.SelectedIndex = i;
+                        break;
                     }
                 }
             }
@@ -268,9 +281,13 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
+                string tienTrinhQuery = "SELECT TienTrinh FROM Contracts WHERE ContractID = @id";
+                object ttObj = DataProvider.Instance.ExecuteScalar(tienTrinhQuery, new object[] { _contractId });
+                int tienTrinh = (ttObj != null && ttObj != DBNull.Value) ? Convert.ToInt32(ttObj) : 0;
+                txtProgress.Text = GetProgressName(tienTrinh);
+
                 string q = QueryRepository.LoadContractResults;
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { _contractId });
-
                 if (dt == null) dt = new DataTable();
 
                 if (!dt.Columns.Contains("KetQua")) dt.Columns.Add("KetQua", typeof(string));
@@ -293,34 +310,26 @@ namespace Environmental_Monitoring.View.ContractContent
                             case 2: row["KetQua"] = soonPolluted; break;
                             default: row["KetQua"] = notPolluted; break;
                         }
-
                         int pheDuyetStatus = 0;
                         if (row["TrangThaiPheDuyet"] != DBNull.Value) int.TryParse(row["TrangThaiPheDuyet"].ToString(), out pheDuyetStatus);
                         row["TrangThaiHienThi"] = (pheDuyetStatus == 1) ? approved : notApproved;
 
                         string rawSample = row["MauKiemNghiem"].ToString();
                         int idx = rawSample.IndexOf(" - Template");
-                        if (idx > 0)
-                        {
-                            row["MauKiemNghiem"] = rawSample.Substring(0, idx);
-                        }
+                        if (idx > 0) row["MauKiemNghiem"] = rawSample.Substring(0, idx);
                     }
                 }
 
                 if (dt.Rows.Count > 0 && dt.Columns.Contains("MauKiemNghiem") && dt.Columns.Contains("TenThongSo"))
-                {
                     dt.DefaultView.Sort = "MauKiemNghiem ASC, TenThongSo ASC";
-                }
 
                 dgvDetails.DataSource = dt.DefaultView.ToTable();
 
                 string[] hiddenCols = { "SampleID", "ParameterID", "ONhiem", "TrangThaiPheDuyet", "Status", "ContractID", "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "TrangThaiHopDong", "EmployeeID" };
-                foreach (string col in hiddenCols)
-                {
-                    if (dgvDetails.Columns.Contains(col)) dgvDetails.Columns[col].Visible = false;
-                }
+                foreach (string col in hiddenCols) if (dgvDetails.Columns.Contains(col)) dgvDetails.Columns[col].Visible = false;
 
-                string[] readOnlyCols = { "MauKiemNghiem", "TenThongSo", "DonVi", "KetQua", "TrangThaiHienThi" };
+                // CẬP NHẬT: Thêm GioiHanMin, GioiHanMax vào danh sách ReadOnly
+                string[] readOnlyCols = { "MauKiemNghiem", "TenThongSo", "DonVi", "KetQua", "TrangThaiHienThi", "GioiHanMin", "GioiHanMax" };
                 foreach (string col in readOnlyCols)
                 {
                     if (dgvDetails.Columns.Contains(col))
@@ -330,7 +339,8 @@ namespace Environmental_Monitoring.View.ContractContent
                     }
                 }
 
-                string[] editableCols = { "GiaTri", "GioiHanMin", "GioiHanMax" };
+                // CẬP NHẬT: Cột GiaTri là Editable và có Padding để hiện viền khi nhập
+                string[] editableCols = { "GiaTri" };
                 foreach (string col in editableCols)
                 {
                     if (dgvDetails.Columns.Contains(col))
@@ -338,6 +348,9 @@ namespace Environmental_Monitoring.View.ContractContent
                         dgvDetails.Columns[col].ReadOnly = false;
                         dgvDetails.Columns[col].DefaultCellStyle.BackColor = Color.White;
                         dgvDetails.Columns[col].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+                        // Padding(2) giúp TextBox khi hiện lên sẽ nhỏ hơn ô Grid, lộ ra viền đen
+                        dgvDetails.Columns[col].DefaultCellStyle.Padding = new Padding(2);
                     }
                 }
 
@@ -351,15 +364,23 @@ namespace Environmental_Monitoring.View.ContractContent
                 if (dgvDetails.Columns.Contains("TrangThaiHienThi")) dgvDetails.Columns["TrangThaiHienThi"].HeaderText = rm.GetString("Grid_ApprovalStatus", culture) ?? "Trạng thái";
 
                 if (dgvDetails.Columns.Contains("cboEmployee")) dgvDetails.Columns.Remove("cboEmployee");
-
                 UpdateResultColors();
-
                 if (dgvDetails.Columns.Contains("TenThongSo")) dgvDetails.Columns["TenThongSo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 if (dgvDetails.Columns.Contains("MauKiemNghiem")) dgvDetails.Columns["MauKiemNghiem"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
-            catch (Exception ex)
+            catch (Exception ex) { MessageBox.Show("Lỗi tải chi tiết: " + ex.Message); }
+        }
+
+        private string GetProgressName(int tienTrinh)
+        {
+            switch (tienTrinh)
             {
-                MessageBox.Show("Lỗi tải chi tiết: " + ex.Message);
+                case 1: return "Phòng Kế Hoạch (Planning)";
+                case 2: return "Phòng Hiện Trường (Scene)";
+                case 3: return "Phòng Thí Nghiệm (Laboratory)";
+                case 4: return "Phòng Kết Quả (Result)";
+                case 5: return "Hoàn Thành (Completed)";
+                default: return "Chưa xác định (Unknown)";
             }
         }
 
@@ -367,11 +388,9 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             string polluted = rm.GetString("Grid_Polluted", culture) ?? "Ô nhiễm";
             string soonPolluted = rm.GetString("Grid_SoonPolluted", culture) ?? "Sắp ô nhiễm";
-
             foreach (DataGridViewRow dgRow in dgvDetails.Rows)
             {
                 if (dgRow.Cells["KetQua"] == null || dgRow.Cells["KetQua"].Value == null) continue;
-
                 var cell = dgRow.Cells["KetQua"];
                 string v = cell.Value?.ToString() ?? string.Empty;
                 if (v == polluted) { cell.Style.BackColor = Color.Red; cell.Style.ForeColor = Color.White; }
@@ -385,64 +404,40 @@ namespace Environmental_Monitoring.View.ContractContent
             try
             {
                 this.Cursor = Cursors.WaitCursor;
-
                 if (cboEmployeeSelect.SelectedValue != null)
                 {
                     int newEmpID = Convert.ToInt32(cboEmployeeSelect.SelectedValue);
                     string updateContractQuery = "UPDATE Contracts SET EmployeeID = @EmpID WHERE ContractID = @ContractID";
                     DataProvider.Instance.ExecuteNonQuery(updateContractQuery, new object[] { newEmpID, _contractId });
                 }
-
                 foreach (DataGridViewRow row in dgvDetails.Rows)
                 {
                     if (row.IsNewRow) continue;
-
                     int sampleId = Convert.ToInt32(row.Cells["SampleID"].Value);
                     int paramId = Convert.ToInt32(row.Cells["ParameterID"].Value);
-
                     object valObj = row.Cells["GiaTri"].Value;
                     double? giaTri = (valObj != null && valObj != DBNull.Value && double.TryParse(valObj.ToString(), out double v)) ? v : (double?)null;
 
+                    // Min/Max là ReadOnly nên không cần lấy giá trị từ Grid để update, nhưng giữ query cũng không sao
+                    // (Chỉ cần lưu ý là người dùng không sửa được trên giao diện)
                     object minObj = row.Cells["GioiHanMin"].Value;
                     double? minVal = (minObj != null && minObj != DBNull.Value && double.TryParse(minObj.ToString(), out double min)) ? min : (double?)null;
-
                     object maxObj = row.Cells["GioiHanMax"].Value;
                     double? maxVal = (maxObj != null && maxObj != DBNull.Value && double.TryParse(maxObj.ToString(), out double max)) ? max : (double?)null;
 
-                    string updateResultQuery = @"
-                        UPDATE Results 
-                        SET GiaTri = @GiaTri 
-                        WHERE SampleID = @SampleID AND ParameterID = @ParameterID";
+                    string updateResultQuery = @"UPDATE Results SET GiaTri = @GiaTri WHERE SampleID = @SampleID AND ParameterID = @ParameterID";
+                    DataProvider.Instance.ExecuteNonQuery(updateResultQuery, new object[] { giaTri.HasValue ? (object)giaTri.Value : DBNull.Value, sampleId, paramId });
 
-                    DataProvider.Instance.ExecuteNonQuery(updateResultQuery, new object[] {
-                        giaTri.HasValue ? (object)giaTri.Value : DBNull.Value,
-                        sampleId,
-                        paramId
-                    });
-
-                    string updateParamQuery = @"
-                        UPDATE Parameters 
-                        SET GioiHanMin = @Min, GioiHanMax = @Max 
-                        WHERE ParameterID = @ParameterID";
-
-                    DataProvider.Instance.ExecuteNonQuery(updateParamQuery, new object[] {
-                        minVal.HasValue ? (object)minVal.Value : DBNull.Value,
-                        maxVal.HasValue ? (object)maxVal.Value : DBNull.Value,
-                        paramId
-                    });
+                    // Vẫn giữ code update Param dù cột đã khóa, để đảm bảo logic đồng bộ
+                    string updateParamQuery = @"UPDATE Parameters SET GioiHanMin = @Min, GioiHanMax = @Max WHERE ParameterID = @ParameterID";
+                    DataProvider.Instance.ExecuteNonQuery(updateParamQuery, new object[] { minVal.HasValue ? (object)minVal.Value : DBNull.Value, maxVal.HasValue ? (object)maxVal.Value : DBNull.Value, paramId });
                 }
-
                 this.Cursor = Cursors.Default;
                 MessageBox.Show($"Đã lưu thành công dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 OnDataSaved?.Invoke();
                 LoadContractDetails();
             }
-            catch (Exception ex)
-            {
-                this.Cursor = Cursors.Default;
-                MessageBox.Show("Lỗi khi lưu dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex) { this.Cursor = Cursors.Default; MessageBox.Show("Lỗi khi lưu dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void DgvDetails_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
@@ -466,66 +461,36 @@ namespace Environmental_Monitoring.View.ContractContent
                         if (currVal == nextVal) drawBottomLine = false;
                     }
                 }
-
                 e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
-                if (e.ColumnIndex == 0)
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Left, e.CellBounds.Bottom);
-                if (drawBottomLine)
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-                if (e.RowIndex == 0)
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Top);
+                if (e.ColumnIndex == 0) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Left, e.CellBounds.Bottom);
+                if (drawBottomLine) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                if (e.RowIndex == 0) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Top);
             }
 
             if (e.Value != null)
             {
                 string textToDraw = e.Value.ToString();
-
                 using (Brush textBrush = new SolidBrush(Color.Black))
                 {
-                    StringFormat sf = new StringFormat
-                    {
-                        Alignment = StringAlignment.Center,
-                        LineAlignment = StringAlignment.Center,
-                        FormatFlags = StringFormatFlags.NoWrap,
-                        Trimming = StringTrimming.EllipsisCharacter
-                    };
-
+                    StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.NoWrap, Trimming = StringTrimming.EllipsisCharacter };
                     if (isMergeColumn)
                     {
                         int startRow = e.RowIndex;
-                        while (startRow > 0 && dgvDetails.Rows[startRow - 1].Cells[e.ColumnIndex].Value?.ToString() == textToDraw)
-                        {
-                            startRow--;
-                        }
-
+                        while (startRow > 0 && dgvDetails.Rows[startRow - 1].Cells[e.ColumnIndex].Value?.ToString() == textToDraw) startRow--;
                         int endRow = e.RowIndex;
-                        while (endRow < dgvDetails.Rows.Count - 1 && dgvDetails.Rows[endRow + 1].Cells[e.ColumnIndex].Value?.ToString() == textToDraw)
-                        {
-                            endRow++;
-                        }
-
+                        while (endRow < dgvDetails.Rows.Count - 1 && dgvDetails.Rows[endRow + 1].Cells[e.ColumnIndex].Value?.ToString() == textToDraw) endRow++;
                         int totalHeight = 0;
                         int yOffset = 0;
-
                         for (int i = startRow; i <= endRow; i++)
                         {
                             int h = dgvDetails.Rows[i].Height;
                             if (i < e.RowIndex) yOffset += h;
                             totalHeight += h;
                         }
-
-                        Rectangle groupRect = new Rectangle(
-                            e.CellBounds.X,
-                            e.CellBounds.Y - yOffset,
-                            e.CellBounds.Width,
-                            totalHeight);
-
+                        Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y - yOffset, e.CellBounds.Width, totalHeight);
                         e.Graphics.DrawString(textToDraw, e.CellStyle.Font, textBrush, groupRect, sf);
                     }
-                    else
-                    {
-                        e.Graphics.DrawString(textToDraw, e.CellStyle.Font, textBrush, e.CellBounds, sf);
-                    }
+                    else e.Graphics.DrawString(textToDraw, e.CellStyle.Font, textBrush, e.CellBounds, sf);
                 }
             }
         }

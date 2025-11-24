@@ -17,6 +17,7 @@ using Environmental_Monitoring.Model;
 using System.Resources;
 using System.Globalization;
 using System.Threading;
+using System.Text.RegularExpressions; // Cần thêm thư viện này để check Regex
 
 namespace Environmental_Monitoring.View
 {
@@ -53,6 +54,10 @@ namespace Environmental_Monitoring.View
         private void CreateUpdateEmployee_Load(object sender, EventArgs e)
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(CreateUpdateEmployee).Assembly);
+
+            // Cài đặt TextBox Mã NV thành chỉ đọc
+            txtMaNV.ReadOnly = true;
+
             UpdateUIText();
             LoadForm();
         }
@@ -61,21 +66,65 @@ namespace Environmental_Monitoring.View
         {
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
             LoadRole();
-            if (id == 0)
+
+            if (id == 0) // Chế độ Thêm mới
             {
                 this.Text = rm.GetString("Form_AddEmployee_Title", culture);
+
+                // 1. Tự động lấy mã tiếp theo để hiển thị (NV + ID tiếp theo)
+                txtMaNV.Text = GetNextEmployeeCode();
+                txtMaNV.Enabled = false; // Vô hiệu hóa ô nhập liệu để người dùng biết là tự động
+
+                // 2. Clear các ô khác (đề phòng)
+                txtHoTen.Text = "";
+                txtDiaChi.Text = "";
+                txtEmail.Text = "";
+                txtSDT.Text = "";
+                txtMatKhau.Text = "";
             }
-            else
+            else // Chế độ Cập nhật
             {
                 this.Text = rm.GetString("Form_UpdateEmployee_Title", culture);
                 employee = EmployeeRepo.Instance.GetById(id);
                 SetData(employee);
+                txtMaNV.ReadOnly = true; // Khi update thì không cho sửa mã nhân viên
             }
+
+            // 3. SET FOCUS VÀO Ô HỌ TÊN
+            // Sử dụng BeginInvoke để đảm bảo Form load xong mới focus được
+            this.BeginInvoke((MethodInvoker)delegate {
+                txtHoTen.Focus();
+                txtHoTen.Select();
+            });
         }
 
         /// <summary>
-        /// Tải danh sách vai trò vào ComboBox và dịch tên vai trò theo ngôn ngữ hiện tại.
+        /// Hàm lấy mã nhân viên dự kiến (NV + MaxID + 1)
         /// </summary>
+        private string GetNextEmployeeCode()
+        {
+            try
+            {
+                // Lấy ID lớn nhất hiện tại trong bảng Employees
+                string query = "SELECT MAX(EmployeeID) FROM Employees";
+                object result = DataProvider.Instance.ExecuteScalar(query);
+
+                int nextId = 1; // Mặc định là 1 nếu bảng rỗng
+
+                if (result != null && result != DBNull.Value)
+                {
+                    nextId = Convert.ToInt32(result) + 1;
+                }
+
+                // Format thành NV0001, NV0015...
+                return "NV" + nextId.ToString("D4");
+            }
+            catch
+            {
+                return "NV????"; // Trả về mã lỗi nếu kết nối DB có vấn đề
+            }
+        }
+
         private void LoadRole()
         {
             DataTable rolesTable = RoleRepo.Instance.GetAll();
@@ -106,14 +155,18 @@ namespace Environmental_Monitoring.View
             Model.Employee emp = new Model.Employee();
 
             emp.EmployeeID = id;
-            emp.MaNhanVien = txtMaNV.Text;
-            emp.HoTen = txtHoTen.Text;
+            // Nếu là thêm mới, Mã NV sẽ được xử lý sau khi Insert xong, ở đây lấy tạm giá trị hiển thị hoặc text tạm
+            // Quan trọng là bước UPDATE lại mã chuẩn theo ID thật sự bên dưới hàm Save()
+            emp.MaNhanVien = (id == 0) ? txtMaNV.Text : txtMaNV.Text;
+            emp.HoTen = txtHoTen.Text.Trim();
             emp.TruongBoPhan = chkTruongBoPhan.Checked ? 1 : 0;
-            emp.DiaChi = txtDiaChi.Text;
-            emp.SoDienThoai = txtSDT.Text;
-            emp.Email = txtEmail.Text;
+            emp.DiaChi = txtDiaChi.Text.Trim();
+            emp.SoDienThoai = txtSDT.Text.Trim();
+            emp.Email = txtEmail.Text.Trim();
             emp.PasswordHash = txtMatKhau.Text;
-            emp.RoleID = int.Parse(cbbRole.SelectedValue.ToString());
+
+            if (cbbRole.SelectedValue != null)
+                emp.RoleID = int.Parse(cbbRole.SelectedValue.ToString());
 
             emp.NamSinh = dtpNamSinh.Value;
 
@@ -146,45 +199,85 @@ namespace Environmental_Monitoring.View
             txtMatKhau.PlaceholderText = (id != 0) ? rm.GetString("Placeholder_Password_Update", culture) : placeholderPassword;
         }
 
+        // --- Logic Validate Dữ Liệu Chặt Chẽ ---
         private bool ValidateData()
         {
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
-            string validationTitle = rm.GetString("Validation_Title", culture);
+            string validationTitle = rm.GetString("Validation_Title", culture) ?? "Thông báo";
 
-            if (string.IsNullOrWhiteSpace(txtMaNV.Text))
+            // 1. Validate Họ Tên
+            if (string.IsNullOrWhiteSpace(txtHoTen.Text))
             {
-                MessageBox.Show(rm.GetString("Validation_EmployeeCodeRequired", culture), validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMaNV.Focus();
+                MessageBox.Show("Vui lòng nhập họ và tên nhân viên.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHoTen.Focus();
                 return false;
             }
 
-            string email = txtEmail.Text.Trim();
-            if (!string.IsNullOrWhiteSpace(email) && !ValidationHelper.IsValidEmailFormat(email))
+            // 2. Validate Năm Sinh (Tùy chọn: cảnh báo nếu < 18 tuổi)
+            if (dtpNamSinh.Value > DateTime.Now.AddYears(-18))
             {
-                MessageBox.Show("Định dạng email không hợp lệ.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // MessageBox.Show("Nhân viên chưa đủ 18 tuổi.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            // 3. Validate Địa chỉ
+            if (string.IsNullOrWhiteSpace(txtDiaChi.Text))
+            {
+                MessageBox.Show("Vui lòng nhập địa chỉ.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtDiaChi.Focus();
+                return false;
+            }
+
+            // 4. Validate Email (Định dạng & Không được để trống)
+            string email = txtEmail.Text.Trim();
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                MessageBox.Show("Vui lòng nhập Email.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEmail.Focus();
+                return false;
+            }
+            // Regex check email cơ bản
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            if (!Regex.IsMatch(email, emailPattern))
+            {
+                MessageBox.Show("Định dạng Email không hợp lệ (Ví dụ: abc@domain.com).", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtEmail.Focus();
                 return false;
             }
 
+            // 5. Validate Số điện thoại (Định dạng VN & Không để trống)
             string phone = txtSDT.Text.Trim();
-            if (!string.IsNullOrWhiteSpace(phone) && !ValidationHelper.IsValidVietnamesePhone(phone))
+            if (string.IsNullOrWhiteSpace(phone))
             {
-                MessageBox.Show("Số điện thoại không hợp lệ. (Phải là 10 số, bắt đầu bằng 0).", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập số điện thoại.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSDT.Focus();
+                return false;
+            }
+            // Regex check SĐT Việt Nam: 10 số, bắt đầu bằng 0
+            if (!Regex.IsMatch(phone, @"^0\d{9}$"))
+            {
+                MessageBox.Show("Số điện thoại không hợp lệ. Phải là 10 chữ số và bắt đầu bằng số 0.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtSDT.Focus();
                 return false;
             }
 
-            string password = txtMatKhau.Text;
+            // 6. Validate Vai trò
+            if (cbbRole.SelectedIndex == -1)
+            {
+                MessageBox.Show("Vui lòng chọn vai trò (Role).", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbbRole.Focus();
+                return false;
+            }
 
-            if (id == 0)
+            // 7. Validate Mật khẩu
+            string password = txtMatKhau.Text;
+            if (id == 0) // Thêm mới bắt buộc nhập
             {
                 if (string.IsNullOrWhiteSpace(password))
                 {
-                    MessageBox.Show("Mật khẩu là bắt buộc khi tạo mới nhân viên.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Mật khẩu là bắt buộc khi tạo mới.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtMatKhau.Focus();
                     return false;
                 }
-
                 if (password.Length < 6)
                 {
                     MessageBox.Show("Mật khẩu phải có tối thiểu 6 ký tự.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -192,11 +285,14 @@ namespace Environmental_Monitoring.View
                     return false;
                 }
             }
-            else if (id != 0 && !string.IsNullOrWhiteSpace(password) && password.Length < 6)
+            else // Cập nhật (có thể để trống nếu không đổi pass)
             {
-                MessageBox.Show("Mật khẩu mới phải có tối thiểu 6 ký tự.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMatKhau.Focus();
-                return false;
+                if (!string.IsNullOrWhiteSpace(password) && password.Length < 6)
+                {
+                    MessageBox.Show("Mật khẩu mới phải có tối thiểu 6 ký tự.", validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtMatKhau.Focus();
+                    return false;
+                }
             }
 
             return true;
@@ -206,41 +302,57 @@ namespace Environmental_Monitoring.View
         {
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
-            if (!ValidateData())
-            {
-                return;
-            }
+            if (!ValidateData()) return; // Dừng nếu validate thất bại
+
             Model.Employee emp = GetData();
 
-            if (EmployeeRepo.Instance.ExistsMaNhanVien(emp.MaNhanVien, id))
-            {
-                MessageBox.Show(rm.GetString("Validation_EmployeeCodeExists", culture), rm.GetString("Validation_Title", culture), MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
+            // Kiểm tra trùng Email (Trừ chính mình nếu đang edit)
             if (EmployeeRepo.Instance.ExistsEmail(emp.Email, id))
             {
                 MessageBox.Show(rm.GetString("Validation_EmailExists", culture), rm.GetString("Validation_Title", culture), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (id == 0)
+            if (id == 0) // --- TRƯỜNG HỢP THÊM MỚI ---
             {
+                // Hash mật khẩu
                 emp.PasswordHash = BCrypt.Net.BCrypt.HashPassword(emp.PasswordHash);
+
+                // 1. Insert nhân viên (Mã NV sẽ được cập nhật lại sau)
                 EmployeeRepo.Instance.InsertEmployee(emp);
 
+                // 2. Lấy ID vừa tạo ra
                 object empIdObj = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
                 int newEmployeeId = (empIdObj != null && int.TryParse(empIdObj.ToString(), out int eid)) ? eid : 0;
 
-                string noiDung = $"Nhân viên '{emp.HoTen}' (Mã: {emp.MaNhanVien}) vừa được thêm.";
-                int adminRoleID = 5;
-                NotificationService.CreateNotification("NhanVienMoi", noiDung, adminRoleID, null, newEmployeeId);
+                if (newEmployeeId > 0)
+                {
+                    // 3. Tạo Mã NV chuẩn xác: NV + 4 số ID (Ví dụ ID=2 -> NV0002)
+                    // Việc này đảm bảo mã NV luôn khớp với ID thật trong DB
+                    string finalCode = "NV" + newEmployeeId.ToString("D4");
+
+                    // 4. Update ngược lại vào Database
+                    string updateCodeQuery = "UPDATE Employees SET MaNhanVien = @code WHERE EmployeeID = @id";
+                    DataProvider.Instance.ExecuteNonQuery(updateCodeQuery, new object[] { finalCode, newEmployeeId });
+
+                    // Tạo thông báo
+                    string noiDung = $"Nhân viên '{emp.HoTen}' (Mã: {finalCode}) vừa được thêm.";
+                    int adminRoleID = 5;
+                    NotificationService.CreateNotification("NhanVienMoi", noiDung, adminRoleID, null, newEmployeeId);
+                }
             }
-            else
+            else // --- TRƯỜNG HỢP CẬP NHẬT ---
             {
+                // Kiểm tra trùng mã NV (đề phòng trường hợp hiếm)
+                if (EmployeeRepo.Instance.ExistsMaNhanVien(emp.MaNhanVien, id))
+                {
+                    MessageBox.Show(rm.GetString("Validation_EmployeeCodeExists", culture), rm.GetString("Validation_Title", culture), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (string.IsNullOrEmpty(txtMatKhau.Text))
                 {
-                    emp.PasswordHash = employee.PasswordHash;
+                    emp.PasswordHash = employee.PasswordHash; // Giữ nguyên pass cũ
                 }
                 else
                 {
@@ -271,13 +383,11 @@ namespace Environmental_Monitoring.View
             lblSDT.Text = rm.GetString("Phone", culture);
             lblRole.Text = rm.GetString("Role", culture);
 
-            txtMaNV.PlaceholderText = rm.GetString("Placeholder_EmployeeCode", culture);
+            // txtMaNV.PlaceholderText = rm.GetString("Placeholder_EmployeeCode", culture); // Ko cần placeholder nữa vì đã set tự động
             txtHoTen.PlaceholderText = rm.GetString("Placeholder_FullName", culture);
             txtDiaChi.PlaceholderText = rm.GetString("Placeholder_Address", culture);
             txtEmail.PlaceholderText = rm.GetString("Placeholder_Email", culture);
             txtMatKhau.PlaceholderText = rm.GetString("Placeholder_Password", culture);
-
-
             txtSDT.PlaceholderText = rm.GetString("Placeholder_Phone", culture);
 
             btnSave.Text = rm.GetString("Button_Save", culture);
@@ -289,14 +399,8 @@ namespace Environmental_Monitoring.View
 
                 foreach (Control c in this.Controls)
                 {
-                    if (c is Label)
-                    {
-                        c.ForeColor = ThemeManager.TextColor;
-                    }
-                    if (c is CheckBox)
-                    {
-                        c.ForeColor = ThemeManager.TextColor;
-                    }
+                    if (c is Label) c.ForeColor = ThemeManager.TextColor;
+                    if (c is CheckBox) c.ForeColor = ThemeManager.TextColor;
                 }
 
                 txtMaNV.BackColor = ThemeManager.PanelColor;
@@ -324,7 +428,6 @@ namespace Environmental_Monitoring.View
                 btnCancel.ForeColor = ThemeManager.TextColor;
             }
             catch (Exception) { }
-
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -341,26 +444,16 @@ namespace Environmental_Monitoring.View
         private string TranslateRoleName(string originalRoleName)
         {
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
-
             switch (originalRoleName.ToLower())
             {
-                case "admin":
-                    return rm.GetString("Role_Admin", culture);
-                case "business":
-                    return rm.GetString("Role_Business", culture);
-                case "field":
-                    return rm.GetString("Role_Field", culture);
-                case "lab":
-                    return rm.GetString("Role_Lab", culture);
-                case "plan":
-                    return rm.GetString("Role_Plan", culture);
-                case "result":
-                    return rm.GetString("Role_Result", culture);
-                default:
-                    return originalRoleName;
+                case "admin": return rm.GetString("Role_Admin", culture);
+                case "business": return rm.GetString("Role_Business", culture);
+                case "field": return rm.GetString("Role_Field", culture);
+                case "lab": return rm.GetString("Role_Lab", culture);
+                case "plan": return rm.GetString("Role_Plan", culture);
+                case "result": return rm.GetString("Role_Result", culture);
+                default: return originalRoleName;
             }
         }
-
-
     }
 }

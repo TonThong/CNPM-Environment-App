@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "gSLhxsJazDY=",
+  "dgSpecHash": "jss1Gm0+j6U=",
   "success": true,
   "projectFilePath": "C:\\Github\\CNPM-Environment-App\\Environmental_Monitoring.csproj",
   "expectedPackageFiles": [
@@ -135,6 +135,7 @@
     "C:\\Users\\chitu\\.nuget\\packages\\system.security.cryptography.protecteddata\\10.0.0\\system.security.cryptography.protecteddata.10.0.0.nupkg.sha512",
     "C:\\Users\\chitu\\.nuget\\packages\\system.security.cryptography.xml\\6.0.2\\system.security.cryptography.xml.6.0.2.nupkg.sha512",
     "C:\\Users\\chitu\\.nuget\\packages\\system.security.permissions\\8.0.0\\system.security.permissions.8.0.0.nupkg.sha512",
+    "C:\\Users\\chitu\\.nuget\\packages\\system.speech\\10.0.0\\system.speech.10.0.0.nupkg.sha512",
     "C:\\Users\\chitu\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\chitu\\.nuget\\packages\\system.text.encoding.codepages\\4.3.0\\system.text.encoding.codepages.4.3.0.nupkg.sha512",
     "C:\\Users\\chitu\\.nuget\\packages\\system.text.encoding.extensions\\4.3.0\\system.text.encoding.extensions.4.3.0.nupkg.sha512",

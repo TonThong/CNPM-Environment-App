@@ -37,7 +37,6 @@ namespace Environmental_Monitoring.View.ContractContent
         private void SetupDataGridView()
         {
             dgvManager.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             dgvManager.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvManager.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
@@ -51,6 +50,19 @@ namespace Environmental_Monitoring.View.ContractContent
             dgvManager.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvManager.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
 
+            // --- CẬP NHẬT: XỬ LÝ VIỀN VÀ MÀU HEADER ---
+            dgvManager.EnableHeadersVisualStyles = false; // Tắt style mặc định
+            dgvManager.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single; // Viền đơn
+            dgvManager.GridColor = Color.LightGray; // Màu lưới xám nhạt
+
+            // Cấu hình màu nền Header bình thường
+            dgvManager.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
+
+            // [MỚI] Cấu hình màu khi Header được chọn/focus -> Vẫn giữ màu trắng (để ko bị xanh)
+            dgvManager.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.White;
+            dgvManager.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.Black;
+            // ------------------------------------
+
             dgvManager.CellBorderStyle = DataGridViewCellBorderStyle.None;
 
             try
@@ -63,12 +75,34 @@ namespace Environmental_Monitoring.View.ContractContent
 
             dgvManager.CellPainting += DgvManager_CellPainting;
             dgvManager.CellContentClick += DgvManager_CellContentClick;
+
+            // Sự kiện rê chuột
+            dgvManager.CellMouseEnter += DgvManager_CellMouseEnter;
+            dgvManager.CellMouseLeave += DgvManager_CellMouseLeave;
         }
 
-        /// <summary>
-        /// Phương thức tìm kiếm được gọi từ Contract.cs
-        /// Tìm theo: ID, Mã đơn, Ngày, Công ty, Đại diện, Nhân viên, Mẫu
-        /// </summary>
+        private void DgvManager_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                if (dgvManager.Columns[e.ColumnIndex].Name == "Detail")
+                {
+                    dgvManager.Cursor = Cursors.Hand;
+                }
+            }
+        }
+
+        private void DgvManager_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                if (dgvManager.Columns[e.ColumnIndex].Name == "Detail")
+                {
+                    dgvManager.Cursor = Cursors.Default;
+                }
+            }
+        }
+
         public void PerformSearch(string keyword)
         {
             if (dgvManager.DataSource is DataTable dt)
@@ -90,29 +124,20 @@ namespace Environmental_Monitoring.View.ContractContent
 
                         List<string> filterParts = new List<string>();
 
-                        // 1. Tìm theo ID và Mã Hợp Đồng
                         if (dt.Columns.Contains("ContractID"))
                             filterParts.Add($"Convert(ContractID, 'System.String') LIKE '%{safeKeyword}%'");
                         if (dt.Columns.Contains("MaDon"))
                             filterParts.Add($"MaDon LIKE '%{safeKeyword}%'");
-
-                        // 2. Tìm theo Ngày (Convert sang chuỗi để tìm tương đối)
                         if (dt.Columns.Contains("NgayKy"))
                             filterParts.Add($"Convert(NgayKy, 'System.String') LIKE '%{safeKeyword}%'");
                         if (dt.Columns.Contains("NgayTraKetQua"))
                             filterParts.Add($"Convert(NgayTraKetQua, 'System.String') LIKE '%{safeKeyword}%'");
-
-                        // 3. Tìm theo Khách hàng
                         if (dt.Columns.Contains("TenDoanhNghiep"))
                             filterParts.Add($"TenDoanhNghiep LIKE '%{safeKeyword}%'");
                         if (dt.Columns.Contains("TenNguoiDaiDien"))
                             filterParts.Add($"TenNguoiDaiDien LIKE '%{safeKeyword}%'");
-
-                        // 4. Tìm theo Nhân viên phụ trách
                         if (dt.Columns.Contains("TenNhanVien"))
                             filterParts.Add($"TenNhanVien LIKE '%{safeKeyword}%'");
-
-                        // 5. Tìm theo Mẫu
                         if (dt.Columns.Contains("MaMau"))
                             filterParts.Add($"MaMau LIKE '%{safeKeyword}%'");
 
@@ -237,6 +262,7 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void DgvManager_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
+            // Bỏ qua header (RowIndex < 0) để dùng style mặc định (đã set màu trắng ở trên)
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
             e.Handled = true;
@@ -247,6 +273,7 @@ namespace Environmental_Monitoring.View.ContractContent
             Color backColor = Color.White;
             Color textColor = Color.Black;
 
+            // CHỈ highlight màu xanh cho cột "MaMau" khi hàng được chọn
             if (isSelected && isSampleColumn)
             {
                 backColor = SystemColors.Highlight;
@@ -331,7 +358,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
                 if (e.RowIndex == endIndex)
                 {
-                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1); 
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                 }
             }
         }

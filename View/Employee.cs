@@ -93,20 +93,21 @@ namespace Environmental_Monitoring.View
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Employee).Assembly);
             CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
 
-            dgvEmployee.Columns["EmployeeID"].Visible = false;
-            dgvEmployee.Columns["RoleID"].Visible = false;
+            if (dgvEmployee.Columns.Contains("EmployeeID")) dgvEmployee.Columns["EmployeeID"].Visible = false;
+            if (dgvEmployee.Columns.Contains("RoleID")) dgvEmployee.Columns["RoleID"].Visible = false;
 
-            dgvEmployee.Columns["MaNhanVien"].HeaderText = rm.GetString("EmployeeID", culture);
-            dgvEmployee.Columns["HoTen"].HeaderText = rm.GetString("FullName", culture);
-            dgvEmployee.Columns["NamSinh"].HeaderText = rm.GetString("BirthYear", culture);
+            if (dgvEmployee.Columns.Contains("MaNhanVien")) dgvEmployee.Columns["MaNhanVien"].HeaderText = rm.GetString("EmployeeID", culture);
+            if (dgvEmployee.Columns.Contains("HoTen")) dgvEmployee.Columns["HoTen"].HeaderText = rm.GetString("FullName", culture);
+            if (dgvEmployee.Columns.Contains("NamSinh")) dgvEmployee.Columns["NamSinh"].HeaderText = rm.GetString("BirthYear", culture);
 
             string headerDeptHead = rm.GetString("IsDepartmentHead", culture);
-            dgvEmployee.Columns["TruongBoPhan"].HeaderText = (headerDeptHead == "IsDepartmentHead") ? "Manager" : headerDeptHead; 
+            if (dgvEmployee.Columns.Contains("TruongBoPhan"))
+                dgvEmployee.Columns["TruongBoPhan"].HeaderText = (headerDeptHead == "IsDepartmentHead") ? "Manager" : headerDeptHead;
 
-            dgvEmployee.Columns["DiaChi"].HeaderText = rm.GetString("Address", culture);
-            dgvEmployee.Columns["SoDienThoai"].HeaderText = rm.GetString("Phone", culture);
-            dgvEmployee.Columns["Email"].HeaderText = rm.GetString("Email", culture);
-            dgvEmployee.Columns["RoleName"].HeaderText = rm.GetString("Role", culture);
+            if (dgvEmployee.Columns.Contains("DiaChi")) dgvEmployee.Columns["DiaChi"].HeaderText = rm.GetString("Address", culture);
+            if (dgvEmployee.Columns.Contains("SoDienThoai")) dgvEmployee.Columns["SoDienThoai"].HeaderText = rm.GetString("Phone", culture);
+            if (dgvEmployee.Columns.Contains("Email")) dgvEmployee.Columns["Email"].HeaderText = rm.GetString("Email", culture);
+            if (dgvEmployee.Columns.Contains("RoleName")) dgvEmployee.Columns["RoleName"].HeaderText = rm.GetString("Role", culture);
         }
 
         /// <summary>
@@ -192,32 +193,44 @@ namespace Environmental_Monitoring.View
             }
             else if (columnName == "colDelete")
             {
+                // --- CẬP NHẬT LOGIC KIỂM TRA XÓA ---
                 UsageDetails usage = EmployeeRepo.Instance.GetEmployeeUsageDetails(employeeId);
 
                 if (usage != null)
                 {
-                    string baseErrorMsg = rm.GetString("Alert_DeleteError_InUse_Specific", culture);
-                    if (string.IsNullOrEmpty(baseErrorMsg) || baseErrorMsg == "Alert_DeleteError_InUse_Specific")
+                    string msg = "";
+
+                    // Hiển thị thông báo tổng quan dựa trên Key trả về từ EmployeeRepo
+                    if (usage.ReasonKey == "Usage_ContractCount")
                     {
-                        baseErrorMsg = "Cannot delete. Data in use: {0}";
+                        msg = culture.Name == "vi-VN"
+                            ? $"Không thể xóa. Nhân viên này đang phụ trách {usage.Value} hợp đồng."
+                            : $"Cannot delete. This employee is in charge of {usage.Value} contracts.";
+                    }
+                    else if (usage.ReasonKey == "Usage_SampleHTCount")
+                    {
+                        msg = culture.Name == "vi-VN"
+                            ? $"Không thể xóa. Nhân viên này đang lấy mẫu cho {usage.Value} mẫu hiện trường."
+                            : $"Cannot delete. This employee is assigned to {usage.Value} field samples.";
+                    }
+                    else if (usage.ReasonKey == "Usage_SamplePTNCount")
+                    {
+                        msg = culture.Name == "vi-VN"
+                            ? $"Không thể xóa. Nhân viên này đang phân tích {usage.Value} mẫu thí nghiệm."
+                            : $"Cannot delete. This employee is analyzing {usage.Value} lab samples.";
+                    }
+                    else
+                    {
+                        // Fallback cho các trường hợp khác (nếu có)
+                        msg = $"Cannot delete. Data in use (Code: {usage.ReasonKey}, Val: {usage.Value})";
                     }
 
-                    string reasonTemplate = rm.GetString(usage.ReasonKey, culture);
-                    if (string.IsNullOrEmpty(reasonTemplate) || reasonTemplate == usage.ReasonKey)
-                    {
-                        reasonTemplate = "{0}";
-                    }
-
-                    string specificReason = string.Format(reasonTemplate, usage.Value);
-
-                    string errorMsg = string.Format(baseErrorMsg, specificReason);
-
-                    mainForm?.ShowGlobalAlert(errorMsg, AlertPanel.AlertType.Error);
+                    mainForm?.ShowGlobalAlert(msg, AlertPanel.AlertType.Error);
                     return;
                 }
 
+                // Nếu không bị ràng buộc -> Xác nhận xóa
                 string code = dgvEmployee.Rows[e.RowIndex].Cells["MaNhanVien"].Value.ToString();
-
                 string confirmTitle = rm.GetString("Alert_DeleteConfirm_Title", culture);
                 string confirmMsg = string.Format(rm.GetString("Alert_DeleteConfirm_Message", culture), code);
 

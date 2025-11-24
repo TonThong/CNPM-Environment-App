@@ -369,3 +369,5 @@ C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.Components.NotificationItem.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.ManagerContent.resources
 C:\Github\CNPM-Environment-App\obj\Debug\net8.0-windows\Environmental_Monitoring.View.ContractContent.ContractDetailPopup.resources
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\System.Speech.dll
+C:\Github\CNPM-Environment-App\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Speech.dll

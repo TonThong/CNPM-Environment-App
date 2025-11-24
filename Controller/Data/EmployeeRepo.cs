@@ -177,28 +177,38 @@ namespace Environmental_Monitoring.Controller.Data
         }
         public UsageDetails GetEmployeeUsageDetails(int employeeId)
         {
-            string contractQuery = "SELECT MaDon FROM Contracts WHERE EmployeeId = @id LIMIT 1";
-            object contractResult = DataProvider.Instance.ExecuteScalar(contractQuery, new object[] { employeeId });
-            if (contractResult != null && contractResult != DBNull.Value)
+            // 1. Kiểm tra bảng Contracts (Đếm số lượng)
+            string contractQuery = "SELECT COUNT(*) FROM Contracts WHERE EmployeeId = @id";
+            object contractCountObj = DataProvider.Instance.ExecuteScalar(contractQuery, new object[] { employeeId });
+            int contractCount = (contractCountObj != null) ? Convert.ToInt32(contractCountObj) : 0;
+
+            if (contractCount > 0)
             {
-                return new UsageDetails { ReasonKey = "Usage_Contract", Value = contractResult.ToString() };
+                // Trả về số lượng hợp đồng
+                return new UsageDetails { ReasonKey = "Usage_ContractCount", Value = contractCount.ToString() };
             }
 
-            string sampleHTQuery = "SELECT MaMau FROM EnvironmentalSamples WHERE AssignedToHT = @id LIMIT 1";
-            object sampleHTResult = DataProvider.Instance.ExecuteScalar(sampleHTQuery, new object[] { employeeId });
-            if (sampleHTResult != null && sampleHTResult != DBNull.Value)
+            // 2. Kiểm tra bảng EnvironmentalSamples (Hiện trường)
+            string sampleHTQuery = "SELECT COUNT(*) FROM EnvironmentalSamples WHERE AssignedToHT = @id";
+            object sampleHTCountObj = DataProvider.Instance.ExecuteScalar(sampleHTQuery, new object[] { employeeId });
+            int sampleHTCount = (sampleHTCountObj != null) ? Convert.ToInt32(sampleHTCountObj) : 0;
+
+            if (sampleHTCount > 0)
             {
-                return new UsageDetails { ReasonKey = "Usage_SampleHT", Value = sampleHTResult.ToString() };
+                return new UsageDetails { ReasonKey = "Usage_SampleHTCount", Value = sampleHTCount.ToString() };
             }
 
-            string samplePTNQuery = "SELECT MaMau FROM EnvironmentalSamples WHERE AssignedToPTN = @id LIMIT 1";
-            object samplePTNResult = DataProvider.Instance.ExecuteScalar(samplePTNQuery, new object[] { employeeId });
-            if (samplePTNResult != null && samplePTNResult != DBNull.Value)
+            // 3. Kiểm tra bảng EnvironmentalSamples (Phòng thí nghiệm)
+            string samplePTNQuery = "SELECT COUNT(*) FROM EnvironmentalSamples WHERE AssignedToPTN = @id";
+            object samplePTNCountObj = DataProvider.Instance.ExecuteScalar(samplePTNQuery, new object[] { employeeId });
+            int samplePTNCount = (samplePTNCountObj != null) ? Convert.ToInt32(samplePTNCountObj) : 0;
+
+            if (samplePTNCount > 0)
             {
-                return new UsageDetails { ReasonKey = "Usage_SamplePTN", Value = samplePTNResult.ToString() };
+                return new UsageDetails { ReasonKey = "Usage_SamplePTNCount", Value = samplePTNCount.ToString() };
             }
 
-            return null;
+            return null; // Không bị ràng buộc
         }
 
         public bool ExistsAnotherTable(int id)

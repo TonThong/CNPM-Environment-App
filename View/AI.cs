@@ -234,7 +234,7 @@ namespace Environmental_Monitoring.View
                 }
                 else
                 {
-                    string queryHistory = "SELECT COUNT(*) FROM Contracts WHERE CustomerID = @cid AND Status = 'Expired Complete'";
+                    string queryHistory = "SELECT COUNT(*) FROM Contracts WHERE CustomerID = @cid AND Status = 'Late Completion'";
                     int hist = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(queryHistory, new object[] { customerId }));
                     if (hist > 0)
                     {

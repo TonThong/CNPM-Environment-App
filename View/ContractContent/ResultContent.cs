@@ -476,17 +476,39 @@ namespace Environmental_Monitoring.View.ContractContent
             if (this.currentContractId == 0) { ShowAlert(rm.GetString("Result_SelectContractBeforeApprove", culture), AlertPanel.AlertType.Error); return; }
             try
             {
+                // 1. Duyệt tất cả các kết quả chi tiết (Results)
                 DataProvider.Instance.ExecuteNonQuery(QueryRepository.ApproveAllResults, new object[] { this.currentContractId });
 
-                DataProvider.Instance.ExecuteNonQuery(QueryRepository.CompleteContractStatus, new object[] { this.currentContractId });
+                // 2. [LOGIC MỚI] Kiểm tra ngày hiện tại để xác định trạng thái Hợp Đồng
+                string getDateQuery = "SELECT NgayTraKetQua FROM Contracts WHERE ContractID = @id";
+                object dateObj = DataProvider.Instance.ExecuteScalar(getDateQuery, new object[] { this.currentContractId });
 
+                string newStatus = "Completed"; // Mặc định là Hoàn thành đúng hạn
+
+                if (dateObj != null && dateObj != DBNull.Value)
+                {
+                    DateTime ngayTraKetQua = Convert.ToDateTime(dateObj);
+                    // Nếu ngày hiện tại (Now) lớn hơn ngày trả (Deadline) -> Trễ hạn
+                    if (DateTime.Now.Date > ngayTraKetQua.Date)
+                    {
+                        newStatus = "Late Completion";
+                    }
+                }
+
+                // 3. Cập nhật Status mới và Tiến độ (TienTrinh = 5) vào Database
+                string updateStatusQuery = "UPDATE Contracts SET Status = @status, TienTrinh = 5 WHERE ContractID = @id";
+                DataProvider.Instance.ExecuteNonQuery(updateStatusQuery, new object[] { newStatus, this.currentContractId });
+
+                // 4. Tạo thông báo
                 int adminRoleID = (int)UserRole.Admin;
                 string maDon = DataProvider.Instance.ExecuteScalar(QueryRepository.GetMaDon, new object[] { this.currentContractId }).ToString();
-                string noiDungAdmin = $"Hợp đồng '{maDon}' đã được duyệt và hoàn thành.";
+                // Thông báo ghi rõ trạng thái (Completed hoặc Late Completion)
+                string noiDungAdmin = $"Hợp đồng '{maDon}' đã được duyệt và hoàn thành ({newStatus}).";
                 NotificationService.CreateNotification("ChinhSua", noiDungAdmin, adminRoleID, this.currentContractId, null);
 
                 ShowAlert(rm.GetString("Result_ApproveSuccess", culture), AlertPanel.AlertType.Success);
 
+                // Load lại để thấy thay đổi
                 LoadContract(this.currentContractId);
             }
             catch (Exception ex) { ShowAlert(rm.GetString("Result_ApproveError", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
@@ -496,7 +518,9 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts WHERE TienTrinh >= 4";
+                // Đã thêm: IsUnlocked
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
+                         FROM Contracts WHERE TienTrinh >= 4";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {

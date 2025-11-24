@@ -189,7 +189,21 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView2.CellFormatting -= roundedDataGridView2_CellFormatting;
             roundedDataGridView2.CellFormatting += roundedDataGridView2_CellFormatting;
 
+            // [CẬP NHẬT]: Đăng ký sự kiện EditingControlShowing để xử lý viền TextBox
+            roundedDataGridView2.EditingControlShowing += RoundedDataGridView2_EditingControlShowing;
+
             UpdateUIText();
+        }
+
+        // [CẬP NHẬT]: Hàm xử lý bỏ viền TextBox khi edit
+        private void RoundedDataGridView2_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is TextBox tb)
+            {
+                tb.BorderStyle = BorderStyle.None;
+                // Có thể set thêm margin/padding nếu cần thiết, nhưng BorderStyle.None thường là đủ
+                tb.BackColor = Color.FromArgb(224, 224, 224); // Đồng bộ màu nền với ô GiaTri
+            }
         }
 
         private void roundedDataGridView2_CellClick(object? sender, DataGridViewCellEventArgs e)
@@ -276,6 +290,9 @@ namespace Environmental_Monitoring.View.ContractContent
                 roundedDataGridView2.Columns["GiaTri"].ReadOnly = false;
                 roundedDataGridView2.Columns["GiaTri"].DefaultCellStyle.BackColor = Color.FromArgb(224, 224, 224);
                 roundedDataGridView2.Columns["GiaTri"].CellTemplate = new DataGridViewTextBoxCell();
+
+                // [CẬP NHẬT]: Thêm Padding cho cột Giá Trị để hiện viền khi nhập liệu
+                roundedDataGridView2.Columns["GiaTri"].DefaultCellStyle.Padding = new Padding(2);
             }
 
             if (roundedDataGridView2.Columns["ParameterID"] != null) roundedDataGridView2.Columns["ParameterID"].Visible = false;
@@ -286,7 +303,6 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 roundedDataGridView2.Columns["Status"].ReadOnly = true;
                 roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture);
-                // Không cần gọi UpdateStatusCellStyle ở đây nữa, CellFormatting sẽ lo
             }
             if (roundedDataGridView2.Columns["SampleCode"] != null) roundedDataGridView2.Columns["SampleCode"].HeaderText = rm.GetString("Grid_Sample", culture);
             if (roundedDataGridView2.Columns["TenThongSo"] != null) roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
@@ -358,8 +374,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 if (drv != null)
                 {
                     object newValue = roundedDataGridView2.Rows[e.RowIndex].Cells["GiaTri"].Value;
-                    // Chỉ cập nhật dữ liệu Text của Status trong DataTable
-                    // Việc tô màu sẽ do CellFormatting tự động xử lý khi Grid vẽ lại
                     SetStatusForRow(drv.Row, newValue);
                 }
             }
@@ -369,12 +383,10 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // CẬP NHẬT: Logic tô màu nằm ở đây để đảm bảo bền vững khi lọc/sort
         private void roundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            // 1. Tô màu vùng chọn cho cột GiaTri
             string valueColName = "GiaTri";
             if (roundedDataGridView2.Columns.Contains(valueColName))
             {
@@ -389,7 +401,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 }
             }
 
-            // 2. Tô màu cột Status dựa trên giá trị text (QUAN TRỌNG)
             if (roundedDataGridView2.Columns[e.ColumnIndex].Name == "Status")
             {
                 string val = e.Value?.ToString() ?? "";
@@ -397,7 +408,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 string outOfRange = rm.GetString("Status_OutOfRange", culture);
                 string invalidFormat = rm.GetString("Status_InvalidFormat", culture);
 
-                // Mặc định màu chữ trắng
                 e.CellStyle.ForeColor = Color.White;
 
                 if (string.IsNullOrEmpty(val))
@@ -414,7 +424,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 }
                 else
                 {
-                    // Trường hợp còn lại (VD: NotAvailable) -> Màu cam
                     e.CellStyle.BackColor = Color.Orange;
                 }
             }
@@ -472,7 +481,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 }
                 else
                 {
-                    // Quan trọng: Vẽ nội dung nhưng giữ định dạng Style (bao gồm màu nền)
                     e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.Border);
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
@@ -484,7 +492,8 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts WHERE TienTrinh = 2";
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
+                         FROM Contracts WHERE TienTrinh = 2";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
