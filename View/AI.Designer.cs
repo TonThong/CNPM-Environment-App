@@ -31,15 +31,16 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblTitle = new Label();
             lblPanelResign = new Label();
             panelPollution = new RoundedPanel();
+            chartPollution = new System.Windows.Forms.DataVisualization.Charting.Chart();
             btnPredictPollution = new RoundedButton();
             lblPollutionLevel = new Label();
             lblPanelPollution = new Label();
@@ -50,12 +51,11 @@ namespace Environmental_Monitoring.View
             btnPredictResign = new RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             txtSearch = new RoundedTextBox();
-            chartPollution = new System.Windows.Forms.DataVisualization.Charting.Chart();
             panelPollution.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chartPollution).BeginInit();
             panelResign.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartResign).BeginInit();
             tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)chartPollution).BeginInit();
             SuspendLayout();
             // 
             // lblTitle
@@ -95,6 +95,23 @@ namespace Environmental_Monitoring.View
             panelPollution.Size = new Size(531, 554);
             panelPollution.TabIndex = 9;
             // 
+            // chartPollution
+            // 
+            chartArea1.Name = "ChartArea1";
+            chartPollution.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chartPollution.Legends.Add(legend1);
+            chartPollution.Location = new Point(3, 155);
+            chartPollution.Name = "chartPollution";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chartPollution.Series.Add(series1);
+            chartPollution.Size = new Size(528, 399);
+            chartPollution.TabIndex = 23;
+            chartPollution.Text = "chart1";
+            // 
             // btnPredictPollution
             // 
             btnPredictPollution.BackColor = Color.FromArgb(0, 113, 0);
@@ -107,9 +124,9 @@ namespace Environmental_Monitoring.View
             btnPredictPollution.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnPredictPollution.ForeColor = Color.White;
             btnPredictPollution.HoverColor = Color.FromArgb(34, 139, 34);
-            btnPredictPollution.Location = new Point(369, 66);
+            btnPredictPollution.Location = new Point(350, 66);
             btnPredictPollution.Name = "btnPredictPollution";
-            btnPredictPollution.Size = new Size(120, 40);
+            btnPredictPollution.Size = new Size(150, 40);
             btnPredictPollution.TabIndex = 18;
             btnPredictPollution.Text = "Dự Đoán";
             btnPredictPollution.UseVisualStyleBackColor = false;
@@ -220,9 +237,9 @@ namespace Environmental_Monitoring.View
             btnPredictResign.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnPredictResign.ForeColor = Color.White;
             btnPredictResign.HoverColor = Color.FromArgb(34, 139, 34);
-            btnPredictResign.Location = new Point(389, 60);
+            btnPredictResign.Location = new Point(359, 60);
             btnPredictResign.Name = "btnPredictResign";
-            btnPredictResign.Size = new Size(105, 40);
+            btnPredictResign.Size = new Size(150, 40);
             btnPredictResign.TabIndex = 20;
             btnPredictResign.Text = "Dự Đoán";
             btnPredictResign.UseVisualStyleBackColor = false;
@@ -271,23 +288,6 @@ namespace Environmental_Monitoring.View
             txtSearch.TabIndex = 21;
             txtSearch.UseSystemPasswordChar = false;
             // 
-            // chartPollution
-            // 
-            chartArea1.Name = "ChartArea1";
-            chartPollution.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            chartPollution.Legends.Add(legend1);
-            chartPollution.Location = new Point(3, 155);
-            chartPollution.Name = "chartPollution";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            chartPollution.Series.Add(series1);
-            chartPollution.Size = new Size(528, 399);
-            chartPollution.TabIndex = 23;
-            chartPollution.Text = "chart1";
-            // 
             // AI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -298,12 +298,12 @@ namespace Environmental_Monitoring.View
             Size = new Size(1227, 715);
             panelPollution.ResumeLayout(false);
             panelPollution.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chartPollution).EndInit();
             panelResign.ResumeLayout(false);
             panelResign.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)chartResign).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)chartPollution).EndInit();
             ResumeLayout(false);
         }
 

@@ -50,18 +50,14 @@ namespace Environmental_Monitoring.View.ContractContent
             dgvManager.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvManager.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
 
-            // --- CẬP NHẬT: XỬ LÝ VIỀN VÀ MÀU HEADER ---
-            dgvManager.EnableHeadersVisualStyles = false; // Tắt style mặc định
-            dgvManager.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single; // Viền đơn
-            dgvManager.GridColor = Color.LightGray; // Màu lưới xám nhạt
+            // --- CẤU HÌNH GIAO DIỆN GRID ---
+            dgvManager.EnableHeadersVisualStyles = false;
+            dgvManager.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dgvManager.GridColor = Color.LightGray;
 
-            // Cấu hình màu nền Header bình thường
             dgvManager.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
-
-            // [MỚI] Cấu hình màu khi Header được chọn/focus -> Vẫn giữ màu trắng (để ko bị xanh)
             dgvManager.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.White;
             dgvManager.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.Black;
-            // ------------------------------------
 
             dgvManager.CellBorderStyle = DataGridViewCellBorderStyle.None;
 
@@ -73,13 +69,86 @@ namespace Environmental_Monitoring.View.ContractContent
             }
             catch { }
 
+            // Đăng ký các sự kiện
             dgvManager.CellPainting += DgvManager_CellPainting;
             dgvManager.CellContentClick += DgvManager_CellContentClick;
-
-            // Sự kiện rê chuột
             dgvManager.CellMouseEnter += DgvManager_CellMouseEnter;
             dgvManager.CellMouseLeave += DgvManager_CellMouseLeave;
+
+            // [QUAN TRỌNG] Đăng ký sự kiện Formatting để dịch ngôn ngữ
+            dgvManager.CellFormatting += DgvManager_CellFormatting_Translation;
         }
+
+        // --- CÁC HÀM HỖ TRỢ DỊCH ---
+        private string GetLocalizedTemplateName(string dbName)
+        {
+            if (string.IsNullOrEmpty(dbName)) return "";
+
+            // Nếu đang là tiếng Việt thì giữ nguyên
+            if (culture.Name == "vi-VN") return dbName;
+
+            // Xử lý tách chuỗi dựa trên ký tự phân cách " - " để giữ lại phần "HD-xx"
+            if (dbName.Contains(" - "))
+            {
+                // Tách thành 2 phần tối đa: [Tiền tố] - [Phần còn lại]
+                string[] parts = dbName.Split(new string[] { " - " }, 2, StringSplitOptions.RemoveEmptyEntries);
+
+                if (parts.Length == 2)
+                {
+                    string prefix = parts[0];
+                    string coreName = parts[1];
+
+                    // Nếu tiền tố là "Template cho...", dịch sang "Template for..."
+                    if (prefix.ToLower().StartsWith("template cho"))
+                    {
+                        prefix = prefix.Replace("Template cho", "Template for");
+                    }
+                    // Nếu tiền tố chỉ là "HD-..." thì giữ nguyên
+
+                    // Chỉ dịch phần tên môi trường phía sau
+                    string translatedCore = TranslateCoreTemplateName(coreName);
+
+                    // Ghép lại: "HD-38 - Air Environment"
+                    return $"{prefix} - {translatedCore}";
+                }
+            }
+
+            // Trường hợp không có dấu gạch ngang, dịch toàn bộ chuỗi
+            return TranslateCoreTemplateName(dbName);
+        }
+
+        private string TranslateCoreTemplateName(string name)
+        {
+            string lower = name.ToLower();
+            if (lower.Contains("không khí") || lower.Contains("air"))
+                return rm.GetString("Template_Air", culture) ?? "Air Environment";
+            if (lower.Contains("nước") || lower.Contains("water"))
+                return rm.GetString("Template_Water", culture) ?? "Water Environment";
+            if (lower.Contains("đất") || lower.Contains("soil"))
+                return rm.GetString("Template_Soil", culture) ?? "Soil Environment";
+            if (lower.Contains("tiếng ồn") || lower.Contains("độ rung") || lower.Contains("noise") || lower.Contains("vibration"))
+                return rm.GetString("Template_Noise", culture) ?? "Noise & Vibration";
+
+            return name;
+        }
+
+        // --- SỰ KIỆN CELL FORMATTING ---
+        private void DgvManager_CellFormatting_Translation(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            // Chỉ dịch cột "MaMau" (Mẫu)
+            if (dgvManager.Columns[e.ColumnIndex].Name == "MaMau")
+            {
+                if (e.Value != null)
+                {
+                    // Gọi hàm dịch thông minh đã cập nhật
+                    e.Value = GetLocalizedTemplateName(e.Value.ToString());
+                    e.FormattingApplied = true;
+                }
+            }
+        }
+        // ----------------------------------------------
 
         private void DgvManager_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -262,7 +331,6 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void DgvManager_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            // Bỏ qua header (RowIndex < 0) để dùng style mặc định (đã set màu trắng ở trên)
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
             e.Handled = true;
@@ -273,7 +341,6 @@ namespace Environmental_Monitoring.View.ContractContent
             Color backColor = Color.White;
             Color textColor = Color.Black;
 
-            // CHỈ highlight màu xanh cho cột "MaMau" khi hàng được chọn
             if (isSelected && isSampleColumn)
             {
                 backColor = SystemColors.Highlight;
@@ -299,7 +366,8 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 if (!isMergeColumn)
                 {
-                    string val = e.Value?.ToString();
+                    // LƯU Ý: Sử dụng e.FormattedValue để hiển thị giá trị ĐÃ DỊCH
+                    string val = e.FormattedValue?.ToString();
                     if (e.Value is DateTime dtVal) val = dtVal.ToString("dd/MM/yyyy");
 
                     TextRenderer.DrawText(e.Graphics, val, e.CellStyle.Font, e.CellBounds, textColor, flags);
@@ -349,6 +417,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 }
                 else
                 {
+                    // Với các cột merge, ta lấy Value gốc (vì thường là ID, Ngày, Tên công ty không cần dịch)
                     string val = e.Value?.ToString();
                     if (e.Value is DateTime dtVal) val = dtVal.ToString("dd/MM/yyyy");
 

@@ -104,7 +104,7 @@ namespace Environmental_Monitoring.View
 
             btnPredictResign.Enabled = false;
             string originalText = btnPredictResign.Text;
-            btnPredictResign.Text = "phân tích...";
+            btnPredictResign.Text = "Phân Tích";
 
             try
             {

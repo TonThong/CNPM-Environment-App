@@ -130,7 +130,7 @@ namespace Environmental_Monitoring.View.ContractContent
             Panel borderPanel = new Panel();
             borderPanel.BackColor = Color.White;
             borderPanel.Size = new Size(300, 35);
-            borderPanel.Location = new Point(190, 85);
+            borderPanel.Location = new Point(220, 85);
 
             borderPanel.Paint += (s, e) =>
             {
@@ -143,7 +143,7 @@ namespace Environmental_Monitoring.View.ContractContent
             cboEmployeeSelect = new ComboBox();
             cboEmployeeSelect.Font = new Font("Segoe UI", 11);
             cboEmployeeSelect.Width = 298;
-            cboEmployeeSelect.Location = new Point(1, 1);
+            cboEmployeeSelect.Location = new Point(3, 1);
             cboEmployeeSelect.DropDownStyle = ComboBoxStyle.DropDownList;
             cboEmployeeSelect.FlatStyle = FlatStyle.Flat;
             cboEmployeeSelect.BackColor = Color.White;
@@ -157,7 +157,7 @@ namespace Environmental_Monitoring.View.ContractContent
             lblProgressTitle.Text = "Tiến độ hiện tại:";
             lblProgressTitle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
             lblProgressTitle.AutoSize = true;
-            lblProgressTitle.Location = new Point(600, 90);
+            lblProgressTitle.Location = new Point(650, 90);
             headerPanel.Controls.Add(lblProgressTitle);
 
             txtProgress = new TextBox();

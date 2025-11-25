@@ -37,28 +37,18 @@ namespace Environmental_Monitoring.View.ContractContent
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        /// <summary>
-        /// Phương thức được gọi từ Contract.cs thông qua Reflection khi nhấn Enter ở ô tìm kiếm.
-        /// CẬP NHẬT: Xử lý ký tự đặc biệt (%, *, [, ]) để tìm kiếm chính xác.
-        /// </summary>
-        /// <param name="keyword">Từ khóa tìm kiếm</param>
         public void PerformSearch(string keyword)
         {
-            // Kiểm tra xem Grid có dữ liệu DataTable không để thực hiện lọc
             if (roundedDataGridView1.DataSource is DataTable dt)
             {
                 try
                 {
-                    // 1. Áp dụng bộ lọc (Filter)
                     if (string.IsNullOrWhiteSpace(keyword))
                     {
-                        // Nếu từ khóa rỗng, bỏ lọc -> hiện tất cả
                         dt.DefaultView.RowFilter = string.Empty;
                     }
                     else
                     {
-                        // XỬ LÝ QUAN TRỌNG: Escape các ký tự đặc biệt của RowFilter
-                        // % -> [%], [ -> [[]], ] -> []], * -> [*], ' -> ''
                         string safeKeyword = keyword.Replace("'", "''")
                                                     .Replace("[", "[[]")
                                                     .Replace("]", "[]]")
@@ -66,32 +56,21 @@ namespace Environmental_Monitoring.View.ContractContent
                                                     .Replace("*", "[*]")
                                                     .Trim();
 
-                        string lowerKey = keyword.ToLower(); // Dùng bản gốc để check mapping từ khóa
-
-                        // Tạo danh sách các điều kiện lọc (OR)
+                        string lowerKey = keyword.ToLower();
                         List<string> filterParts = new List<string>();
 
-                        // a. Tìm theo Tên Thông Số
                         filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
-
-                        // b. Tìm theo Đơn Vị (Mới)
                         filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
-
-                        // c. Tìm theo Min/Max
                         filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
                         filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
-
-                        // d. Tìm theo Phụ Trách
                         filterParts.Add($"PhuTrach LIKE '%{safeKeyword}%'");
 
-                        // Mapping thông minh cho Phòng Phụ Trách
                         if (lowerKey.Contains("hiện") || lowerKey.Contains("hien") ||
                             lowerKey.Contains("trường") || lowerKey.Contains("truong") ||
                             lowerKey.Contains("scene") || lowerKey.Contains("field"))
                         {
                             filterParts.Add("PhuTrach = 'HienTruong'");
                             filterParts.Add("PhuTrach = 'Field'");
-                            filterParts.Add("PhuTrach = 'Scene'");
                         }
 
                         if (lowerKey.Contains("thí") || lowerKey.Contains("thi") ||
@@ -102,11 +81,9 @@ namespace Environmental_Monitoring.View.ContractContent
                             filterParts.Add("PhuTrach = 'Laboratory'");
                         }
 
-                        // Kết hợp tất cả điều kiện bằng toán tử OR
                         dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
                     }
 
-                    // 2. Khôi phục trạng thái Checkbox
                     if (_currentViewingTemplateId != -1 && _selectedParamsMap.ContainsKey(_currentViewingTemplateId))
                     {
                         HashSet<int> selectedForThis = _selectedParamsMap[_currentViewingTemplateId];
@@ -144,7 +121,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // ... [Keep Helper methods GetLocalizedDepartment, GetLocalizedTemplateName] ...
         private string GetLocalizedDepartment(string dbValue)
         {
             if (string.IsNullOrEmpty(dbValue)) return "";
@@ -155,19 +131,46 @@ namespace Environmental_Monitoring.View.ContractContent
             return dbValue;
         }
 
+        // --- CẬP NHẬT: Hàm dịch tên Template để hiển thị ---
         private string GetLocalizedTemplateName(string dbName)
         {
             if (string.IsNullOrEmpty(dbName)) return "";
+
+            // Nếu đang là tiếng Việt thì giữ nguyên (vì DB lưu tiếng Việt)
+            if (culture.Name == "vi-VN") return dbName;
+
             string lowerName = dbName.ToLower();
-            if (lowerName.Contains("không khí") || lowerName.Contains("air"))
+
+            // Xử lý mẫu tên dài: "Template cho HD-xx - [Loại]"
+            if (lowerName.StartsWith("template cho"))
+            {
+                // Tách phần loại môi trường phía sau dấu " - "
+                string[] parts = dbName.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length >= 2)
+                {
+                    string prefix = parts[0].Replace("Template cho", "Template for"); // Dịch prefix
+                    string coreType = parts[1];
+                    string translatedCore = TranslateCoreTemplateName(coreType); // Dịch phần lõi
+                    return $"{prefix} - {translatedCore}";
+                }
+            }
+
+            return TranslateCoreTemplateName(dbName);
+        }
+
+        private string TranslateCoreTemplateName(string name)
+        {
+            string lower = name.ToLower();
+            if (lower.Contains("không khí") || lower.Contains("air"))
                 return rm.GetString("Template_Air", culture) ?? "Air Environment";
-            if (lowerName.Contains("nước") || lowerName.Contains("water"))
+            if (lower.Contains("nước") || lower.Contains("water"))
                 return rm.GetString("Template_Water", culture) ?? "Water Environment";
-            if (lowerName.Contains("đất") || lowerName.Contains("soil"))
+            if (lower.Contains("đất") || lower.Contains("soil"))
                 return rm.GetString("Template_Soil", culture) ?? "Soil Environment";
-            if (lowerName.Contains("tiếng ồn") || lowerName.Contains("độ rung") || lowerName.Contains("noise") || lowerName.Contains("vibration"))
+            if (lower.Contains("tiếng ồn") || lower.Contains("độ rung") || lower.Contains("noise") || lower.Contains("vibration"))
                 return rm.GetString("Template_Noise", culture) ?? "Noise & Vibration";
-            return dbName;
+
+            return name;
         }
 
         public void UpdateUIText()
@@ -187,9 +190,11 @@ namespace Environmental_Monitoring.View.ContractContent
 
             UpdateGridHeaders();
 
+            // Reload lại listbox để cập nhật ngôn ngữ hiển thị
             if (currentContractId != 0)
             {
-                // Reload templates logic if needed, but usually kept static
+                // Nếu muốn reload tên template theo ngôn ngữ mới ngay lập tức:
+                LoadSampleTemplates();
             }
         }
 
@@ -231,17 +236,15 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void PlanContent_Load(object sender, EventArgs e)
         {
-            // --- Cấu hình giao diện ---
             roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Đăng ký sự kiện cho các nút (Đảm bảo nút Save được đăng ký)
             btnAddParameter.Click -= btnAddParameter_Click;
             btnAddParameter.Click += btnAddParameter_Click;
 
             if (roundedButton2 != null)
             {
-                roundedButton2.Click -= roundedButton2_Click; // Xóa sự kiện cũ nếu có
-                roundedButton2.Click += roundedButton2_Click; // Đăng ký sự kiện mới
+                roundedButton2.Click -= roundedButton2_Click;
+                roundedButton2.Click += roundedButton2_Click;
             }
 
             roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
@@ -265,7 +268,6 @@ namespace Environmental_Monitoring.View.ContractContent
             }
 
             checkedListBox1.CheckOnClick = false;
-
             checkedListBox1.SelectionMode = SelectionMode.One;
             checkedListBox1.Cursor = Cursors.Hand;
 
@@ -292,7 +294,6 @@ namespace Environmental_Monitoring.View.ContractContent
             UpdateUIText();
             ResetForm();
 
-            // Đảm bảo các nút hiển thị
             if (roundedButton2 != null) roundedButton2.Visible = true;
             if (btnAddParameter != null) btnAddParameter.Visible = true;
             if (btnCancel != null) btnCancel.Visible = true;
@@ -308,7 +309,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 btnAddParameter.Enabled = (isContractSelected && isAnyTemplateChecked);
             }
 
-            // SỬA LỖI: Bật/Tắt nút Save dựa trên việc đã chọn hợp đồng hay chưa
             if (roundedButton2 != null)
             {
                 roundedButton2.Enabled = isContractSelected;
@@ -451,7 +451,7 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // --- XỬ LÝ NÚT LƯU ---
+        // --- XỬ LÝ NÚT LƯU (CẬP NHẬT: Luôn lưu Tiếng Việt) ---
         private void roundedButton2_Click(object sender, EventArgs e)
         {
             if (currentContractId == 0)
@@ -468,12 +468,11 @@ namespace Environmental_Monitoring.View.ContractContent
                 return;
             }
 
-            // Kiểm tra xem mẫu đã chọn có thông số nào được tick chưa
             foreach (var tpl in selectedBaseTemplates)
             {
                 if (!_selectedParamsMap.ContainsKey(tpl.TemplateID) || _selectedParamsMap[tpl.TemplateID].Count == 0)
                 {
-                    string templateName = tpl.TenMau;
+                    string templateName = tpl.TenMauHienThi; // Hiển thị tên theo ngôn ngữ đang chọn để báo lỗi
                     string errorMsg = culture.Name == "vi-VN"
                         ? $"Mẫu '{templateName}' được chọn nhưng chưa có thông số nào được chọn."
                         : $"Template '{templateName}' is selected but no parameters are selected.";
@@ -484,7 +483,6 @@ namespace Environmental_Monitoring.View.ContractContent
 
             try
             {
-                // 1. Lấy mã đơn từ ID hợp đồng
                 string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @contractId", new object[] { currentContractId }).ToString();
                 if (string.IsNullOrEmpty(maDon))
                 {
@@ -492,25 +490,32 @@ namespace Environmental_Monitoring.View.ContractContent
                     return;
                 }
 
-                // 2. Duyệt qua các mẫu được chọn để tạo EnvironmentalSamples
                 foreach (var baseTemplate in selectedBaseTemplates)
                 {
-                    string sampleCode = $"{maDon} - {baseTemplate.TenMau}";
                     int baseTemplateId = baseTemplate.TemplateID;
 
-                    // Kiểm tra trùng
+                    // --- LOGIC MỚI: Luôn lấy tên gốc (Tiếng Việt) để lưu ---
+                    string mauGocTiengViet = baseTemplate.TenMauGoc;
+
+                    // Chuẩn hóa về Tiếng Việt nếu lỡ DB cũ có tiếng Anh
+                    if (mauGocTiengViet.Contains("Air")) mauGocTiengViet = "Môi trường không khí";
+                    else if (mauGocTiengViet.Contains("Water")) mauGocTiengViet = "Môi trường nước";
+                    else if (mauGocTiengViet.Contains("Soil")) mauGocTiengViet = "Môi trường đất";
+                    else if (mauGocTiengViet.Contains("Noise") || mauGocTiengViet.Contains("Vibration")) mauGocTiengViet = "Tiếng ồn và độ rung";
+                    // -----------------------------------------------------
+
+                    string sampleCode = $"{maDon} - {mauGocTiengViet}";
+
                     string checkSampleQuery = "SELECT COUNT(*) FROM EnvironmentalSamples WHERE MaMau = @mamau AND ContractID = @contractId";
                     object sampleExists = DataProvider.Instance.ExecuteScalar(checkSampleQuery, new object[] { sampleCode, currentContractId });
                     if (Convert.ToInt32(sampleExists) > 0) continue;
 
-                    // Tạo Template riêng cho mẫu này
-                    string newSpecificTemplateName = $"Template cho {maDon} - {baseTemplate.TenMau}";
+                    string newSpecificTemplateName = $"Template cho {maDon} - {mauGocTiengViet}";
                     string insertTemplateQuery = "INSERT INTO SampleTemplates (TenMau) VALUES (@tenmau)";
                     DataProvider.Instance.ExecuteNonQuery(insertTemplateQuery, new object[] { newSpecificTemplateName });
 
                     int newSpecificTemplateId = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
 
-                    // Copy các thông số đã tick sang Template mới
                     if (_selectedParamsMap.ContainsKey(baseTemplateId))
                     {
                         HashSet<int> paramsForThisSample = _selectedParamsMap[baseTemplateId];
@@ -522,16 +527,13 @@ namespace Environmental_Monitoring.View.ContractContent
                         }
                     }
 
-                    // Insert mẫu vào bảng EnvironmentalSamples
                     string insertSampleQuery = "INSERT INTO EnvironmentalSamples (MaMau, ContractID, TemplateID) VALUES (@mamau, @contractId, @templateId)";
                     DataProvider.Instance.ExecuteNonQuery(insertSampleQuery, new object[] { sampleCode, currentContractId, newSpecificTemplateId });
                 }
 
-                // 3. CẬP NHẬT TIẾN TRÌNH HỢP ĐỒNG (Sang bước 2 - Hiện trường)
                 string updateContractQuery = @"UPDATE Contracts SET TienTrinh = 2 WHERE ContractID = @contractId;";
                 DataProvider.Instance.ExecuteNonQuery(updateContractQuery, new object[] { this.currentContractId });
 
-                // 4. Tạo thông báo cho phòng Hiện trường
                 int hienTruongRoleID = 10;
                 string noiDungHienTruong = $"Hợp đồng '{maDon}' đã lập kế hoạch xong, cần lấy mẫu hiện trường.";
                 NotificationService.CreateNotification("ChinhSua", noiDungHienTruong, hienTruongRoleID, this.currentContractId, null);
@@ -563,9 +565,8 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                // Đã thêm: IsUnlocked
                 string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
-                         FROM Contracts WHERE TienTrinh = 1";
+                          FROM Contracts WHERE TienTrinh = 1";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
@@ -585,6 +586,7 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
+        // --- CẬP NHẬT: Load Template tách biệt Tên Gốc và Tên Hiển Thị ---
         private void LoadSampleTemplates()
         {
             try
@@ -603,11 +605,12 @@ namespace Environmental_Monitoring.View.ContractContent
                     var list = dt.AsEnumerable().Select(r => new SampleTemplateDisplayItem
                     {
                         TemplateID = r.Field<int>("TemplateID"),
-                        TenMau = GetLocalizedTemplateName(r.Field<string>("TenMau"))
+                        TenMauGoc = r.Field<string>("TenMau"), // Giữ nguyên tiếng Việt từ DB
+                        TenMauHienThi = GetLocalizedTemplateName(r.Field<string>("TenMau")) // Dịch để hiển thị
                     }).ToList();
 
                     checkedListBox1.DataSource = list;
-                    checkedListBox1.DisplayMember = "TenMau";
+                    checkedListBox1.DisplayMember = "TenMauHienThi"; // Hiển thị tên đã dịch
                     checkedListBox1.ValueMember = "TemplateID";
 
                     for (int i = 0; i < checkedListBox1.Items.Count; i++) checkedListBox1.SetItemChecked(i, false);
@@ -711,11 +714,17 @@ namespace Environmental_Monitoring.View.ContractContent
         private void cbbParameters_SelectedIndexChanged(object sender, EventArgs e) { }
         private void checkedListBox1_ItemCheck_1(object sender, ItemCheckEventArgs e) { }
 
+        // --- CẬP NHẬT: Class hỗ trợ hiển thị ---
         public class SampleTemplateDisplayItem
         {
             public int TemplateID { get; set; }
-            public string TenMau { get; set; }
-            public override string ToString() { return TenMau; }
+            public string TenMauHienThi { get; set; } // Tên theo ngôn ngữ (Anh/Việt) để hiển thị
+            public string TenMauGoc { get; set; }     // Tên gốc (Tiếng Việt) để lưu DB
+
+            public override string ToString()
+            {
+                return TenMauHienThi;
+            }
         }
     }
 }
