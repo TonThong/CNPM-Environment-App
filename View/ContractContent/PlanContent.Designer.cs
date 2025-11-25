@@ -91,9 +91,9 @@
             tableLayoutPanel1.RowCount = 7;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 6F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Size = new Size(1215, 521);
@@ -113,7 +113,7 @@
             btnAddParameter.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             btnAddParameter.ForeColor = Color.White;
             btnAddParameter.HoverColor = Color.FromArgb(64, 64, 64);
-            btnAddParameter.Location = new Point(366, 419);
+            btnAddParameter.Location = new Point(366, 418);
             btnAddParameter.Name = "btnAddParameter";
             btnAddParameter.Size = new Size(237, 72);
             btnAddParameter.TabIndex = 70;
@@ -126,14 +126,14 @@
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             label1.Location = new Point(63, 104);
             label1.Name = "label1";
-            label1.Size = new Size(252, 26);
+            label1.Size = new Size(252, 31);
             label1.TabIndex = 58;
             label1.Text = "Chọn mẫu môi trường";
             // 
             // checkedListBox1
             // 
             checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Location = new Point(63, 133);
+            checkedListBox1.Location = new Point(63, 138);
             checkedListBox1.Name = "checkedListBox1";
             checkedListBox1.Size = new Size(267, 136);
             checkedListBox1.TabIndex = 68;
@@ -146,7 +146,7 @@
             label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             label2.Location = new Point(366, 104);
             label2.Name = "label2";
-            label2.Size = new Size(206, 26);
+            label2.Size = new Size(206, 31);
             label2.TabIndex = 59;
             label2.Text = "Chọn thông số đo";
             // 
@@ -164,7 +164,7 @@
             roundedButton2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             roundedButton2.ForeColor = Color.White;
             roundedButton2.HoverColor = Color.FromArgb(34, 139, 34);
-            roundedButton2.Location = new Point(609, 419);
+            roundedButton2.Location = new Point(609, 418);
             roundedButton2.Name = "roundedButton2";
             roundedButton2.Size = new Size(267, 72);
             roundedButton2.TabIndex = 55;
@@ -180,7 +180,7 @@
             roundedDataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             tableLayoutPanel1.SetColumnSpan(roundedDataGridView1, 3);
             roundedDataGridView1.EnableHeadersVisualStyles = false;
-            roundedDataGridView1.Location = new Point(366, 133);
+            roundedDataGridView1.Location = new Point(366, 138);
             roundedDataGridView1.Name = "roundedDataGridView1";
             roundedDataGridView1.RowHeadersWidth = 51;
             roundedDataGridView1.Size = new Size(783, 254);
@@ -200,7 +200,7 @@
             btnCancel.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.DarkGray;
-            btnCancel.Location = new Point(882, 419);
+            btnCancel.Location = new Point(882, 418);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(267, 72);
             btnCancel.TabIndex = 56;

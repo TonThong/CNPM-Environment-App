@@ -94,6 +94,10 @@ namespace Environmental_Monitoring.View
 
         private async void Mainlayout_Load(object sender, EventArgs e)
         {
+            // 1. Cập nhật trạng thái Hợp đồng ngay khi mở App
+            // Việc này đảm bảo hợp đồng quá hạn sẽ chuyển thành Expired -> Giao diện sẽ tô đỏ và khóa lại
+            await UpdateContractStatuses();
+
             ApplyPermissions();
             LoadHomePageForRole();
             UpdateUIText();
@@ -107,20 +111,19 @@ namespace Environmental_Monitoring.View
                 lblUserName.Text = "Guest";
             }
 
+            // 2. Chạy các tác vụ thông báo hàng ngày
             await RunDailyNotificationChecks();
 
             CheckForUnreadNotifications();
 
             if (this.timerNotifications != null)
             {
-                timerNotifications.Interval = 60000; 
+                timerNotifications.Interval = 60000;
                 timerNotifications.Tick += TimerNotifications_Tick;
                 timerNotifications.Start();
             }
 
             NotificationService.OnNotificationCreated += RefreshNotificationCount;
-
-
         }
 
         #endregion
@@ -457,16 +460,16 @@ namespace Environmental_Monitoring.View
         #region Notification Logic
 
         /// <summary>
-        /// (ĐÃ SỬA) Sự kiện chạy mỗi phút:
-        /// 1. Kiểm tra thông báo mới (cho event).
-        /// 2. Kích hoạt tác vụ hàng ngày lúc 00:01.
+        /// Sự kiện chạy mỗi phút để kiểm tra thông báo và cập nhật trạng thái hợp đồng.
         /// </summary>
         private async void TimerNotifications_Tick(object sender, EventArgs e)
         {
             CheckForUnreadNotifications();
 
-            DateTime now = DateTime.Now;
+            // Cập nhật trạng thái Expired định kỳ (đề phòng treo máy qua đêm)
+            await UpdateContractStatuses();
 
+            DateTime now = DateTime.Now;
             if (now.Hour == 0 && now.Minute == 1)
             {
                 if (Settings.Default.LastNotificationCheck.Date < now.Date)
@@ -483,10 +486,29 @@ namespace Environmental_Monitoring.View
             }
         }
 
-
         /// <summary>
-        /// Kiểm tra CSDL xem có thông báo chưa đọc CỦA NGƯỜI DÙNG NÀY không.
+        /// HÀM MỚI: Cập nhật trạng thái hợp đồng thành Expired nếu quá hạn.
+        /// Hàm này sẽ chạy mỗi khi mở App và trong Timer.
         /// </summary>
+        private async Task UpdateContractStatuses()
+        {
+            try
+            {
+                // Cập nhật tất cả hợp đồng Active mà có ngày trả < hôm nay -> Expired
+                string updateExpiredQuery = @"
+                    UPDATE Contracts
+                    SET Status = 'Expired'
+                    WHERE NgayTraKetQua < CURDATE()
+                      AND Status = 'Active';";
+
+                await Task.Run(() => DataProvider.Instance.ExecuteNonQuery(updateExpiredQuery));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi cập nhật trạng thái hợp đồng: " + ex.Message);
+            }
+        }
+
         public void CheckForUnreadNotifications()
         {
             if (UserSession.CurrentUser == null || UserSession.CurrentUser.RoleID == null)
@@ -516,9 +538,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Cập nhật hình ảnh chuông (và/hoặc Badge)
-        /// </summary>
         private void UpdateBellIcon()
         {
             if (unreadCount > 0)
@@ -535,10 +554,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// (ĐÃ SỬA) Chạy kiểm tra hàng ngày KHI ADMIN ĐĂNG NHẬP.
-        /// Chỉ là dự phòng nếu timer 00:01 bị lỡ.
-        /// </summary>
         private async Task RunDailyNotificationChecks()
         {
             if (!UserSession.IsAdmin() || UserSession.CurrentUser?.RoleID.Value != 5)
@@ -562,20 +577,14 @@ namespace Environmental_Monitoring.View
         }
 
         /// <summary>
-        /// (HÀM MỚI) Logic cốt lõi: Cập nhật Status và Tạo thông báo hàng ngày.
-        /// Được gọi bởi Timer (00:01) hoặc khi Admin đăng nhập (lần đầu trong ngày).
+        /// Tạo thông báo hàng ngày.
         /// </summary>
         private async Task RunDailyTasksInternal()
         {
-            string updateExpiredQuery = @"
-                UPDATE Contracts
-                SET Status = 'Expired'
-                WHERE NgayTraKetQua < CURDATE()
-                  AND Status = 'Active';";
+            // Đảm bảo trạng thái đã được cập nhật trước khi tạo thông báo
+            await UpdateContractStatuses();
 
-            await Task.Run(() => DataProvider.Instance.ExecuteNonQuery(updateExpiredQuery));
-
-            int adminRoleID = 5; 
+            int adminRoleID = 5;
 
             string overdueQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
                                     WHERE Status = 'Expired' 
@@ -613,10 +622,6 @@ namespace Environmental_Monitoring.View
             Settings.Default.Save();
         }
 
-
-        /// <summary>
-        /// Hàm phụ: Đảm bảo chỉ tạo 1 thông báo/ngày cho mỗi loại VÀ MỖI ROLE.
-        /// </summary>
         private async Task CreateDailyNotificationOnce(int contractId, string loai, string noiDung, int recipientRoleID)
         {
             string checkQuery = @"SELECT COUNT(*) FROM Notifications 
@@ -676,10 +681,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Hàm này được gọi bằng Event mỗi khi có thông báo mới được tạo
-        /// từ BẤT CỨ ĐÂU trong ứng dụng.
-        /// </summary>
         private void RefreshNotificationCount()
         {
             if (this.InvokeRequired)
