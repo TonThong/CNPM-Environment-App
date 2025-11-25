@@ -117,7 +117,7 @@ namespace Environmental_Monitoring.View
                 }
 
                 // Format thành NV0001, NV0015...
-                return "NV" + nextId.ToString("D4");
+                return "NV" + nextId.ToString("D3");
             }
             catch
             {
@@ -329,7 +329,7 @@ namespace Environmental_Monitoring.View
                 {
                     // 3. Tạo Mã NV chuẩn xác: NV + 4 số ID (Ví dụ ID=2 -> NV0002)
                     // Việc này đảm bảo mã NV luôn khớp với ID thật trong DB
-                    string finalCode = "NV" + newEmployeeId.ToString("D4");
+                    string finalCode = "NV" + newEmployeeId.ToString("D3");
 
                     // 4. Update ngược lại vào Database
                     string updateCodeQuery = "UPDATE Employees SET MaNhanVien = @code WHERE EmployeeID = @id";

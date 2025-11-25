@@ -53,21 +53,14 @@ namespace Environmental_Monitoring.View
                     }
                     else
                     {
-                        string safeKeyword = keyword.Replace("'", "''")
-                                                    .Replace("[", "[[]")
-                                                    .Replace("]", "[]]")
-                                                    .Replace("%", "[%]")
-                                                    .Replace("*", "[*]")
-                                                    .Trim();
-
+                        string safeKeyword = keyword.Replace("'", "''").Replace("[", "[[]").Replace("]", "[]]").Replace("%", "[%]").Replace("*", "[*]").Trim();
                         List<string> filterParts = new List<string>();
 
                         if (dt.Columns.Contains("SampleCode")) filterParts.Add($"SampleCode LIKE '%{safeKeyword}%'");
                         if (dt.Columns.Contains("TenThongSo")) filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
                         if (dt.Columns.Contains("DonVi")) filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("GioiHanMin")) filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("GioiHanMax")) filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
                         if (dt.Columns.Contains("GiaTri")) filterParts.Add($"Convert(GiaTri, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("Status")) filterParts.Add($"Status LIKE '%{safeKeyword}%'");
 
                         dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
                     }
@@ -103,6 +96,7 @@ namespace Environmental_Monitoring.View
             if (roundedDataGridView2.Columns.Contains("GioiHanMin")) roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
             if (roundedDataGridView2.Columns.Contains("GioiHanMax")) roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
             if (roundedDataGridView2.Columns.Contains("GiaTri")) roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
+            if (roundedDataGridView2.Columns.Contains("Status")) roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture) ?? "Status";
 
             if (roundedDataGridView2.Columns.Contains(COL_ONHIEM)) roundedDataGridView2.Columns[COL_ONHIEM].HeaderText = rm.GetString("Grid_Polluted", culture);
             if (roundedDataGridView2.Columns.Contains(COL_SAPONHIEM)) roundedDataGridView2.Columns[COL_SAPONHIEM].HeaderText = rm.GetString("Grid_SoonPolluted", culture);
@@ -116,7 +110,6 @@ namespace Environmental_Monitoring.View
             roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             roundedDataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             roundedDataGridView2.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
             roundedDataGridView2.ForeColor = Color.Black;
             roundedDataGridView2.AllowUserToAddRows = false;
             roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.None;
@@ -125,25 +118,63 @@ namespace Environmental_Monitoring.View
             roundedDataGridView2.CurrentCellDirtyStateChanged += RoundedDataGridView2_CurrentCellDirtyStateChanged;
             roundedDataGridView2.CellValueChanged += RoundedDataGridView2_CellValueChanged;
             roundedDataGridView2.CellEndEdit += RoundedDataGridView2_CellEndEdit_SaveGiaTri;
+            roundedDataGridView2.EditingControlShowing += RoundedDataGridView2_EditingControlShowing;
+
+            roundedDataGridView2.CellPainting -= RoundedDataGridView2_CellPainting;
+            roundedDataGridView2.CellPainting += RoundedDataGridView2_CellPainting;
+
+            // Đăng ký sự kiện Formatting
+            roundedDataGridView2.CellFormatting -= RoundedDataGridView2_CellFormatting;
+            roundedDataGridView2.CellFormatting += RoundedDataGridView2_CellFormatting;
+
+            roundedDataGridView2.CellMouseEnter += RoundedDataGridView2_CellMouseEnter;
+            roundedDataGridView2.CellMouseLeave += RoundedDataGridView2_CellMouseLeave;
 
             if (btnContracts != null) { btnContracts.Click -= btnContracts_Click; btnContracts.Click += btnContracts_Click; }
             if (btnSave != null) { btnSave.Click -= btnSave_Click; btnSave.Click += btnSave_Click; }
             if (btnCancel != null) { btnCancel.Click -= btnCancel_Click; btnCancel.Click += btnCancel_Click; }
 
-            roundedDataGridView2.CellPainting -= RoundedDataGridView2_CellPainting;
-            roundedDataGridView2.CellPainting += RoundedDataGridView2_CellPainting;
-
-            // Đăng ký sự kiện để bỏ viền TextBox khi nhập
-            roundedDataGridView2.EditingControlShowing += RoundedDataGridView2_EditingControlShowing;
-
-            // --- CẬP NHẬT: Đăng ký sự kiện chuột để hiện bàn tay ---
-            roundedDataGridView2.CellMouseEnter += RoundedDataGridView2_CellMouseEnter;
-            roundedDataGridView2.CellMouseLeave += RoundedDataGridView2_CellMouseLeave;
-
             UpdateUIText();
         }
 
-        // CẬP NHẬT: Xử lý hiện bàn tay khi rê vào checkbox
+        // --- CẬP NHẬT: Tô màu và Tắt Highlight ---
+        private void RoundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            // Xử lý cho cột Status
+            if (roundedDataGridView2.Columns[e.ColumnIndex].Name == "Status")
+            {
+                string val = e.Value?.ToString() ?? "";
+                string passed = rm.GetString("Status_Passed", culture) ?? "Passed"; // Màu Xanh
+
+                // Lấy text Not Available từ resource, nếu không có thì mặc định
+                string notAvail = rm.GetString("Status_NotAvailable", culture) ?? "Not Available";
+
+                e.CellStyle.ForeColor = Color.White;
+
+                // Logic tô màu
+                if (string.IsNullOrEmpty(val) || val.Contains("N/A") || val == notAvail)
+                {
+                    e.CellStyle.BackColor = Color.Orange; // [CẬP NHẬT] Màu Cam cho Not Available
+                }
+                else if (val == passed)
+                {
+                    e.CellStyle.BackColor = Color.Green;
+                }
+                else
+                {
+                    // Out of Range hoặc Invalid -> Màu Đỏ
+                    e.CellStyle.BackColor = Color.Red;
+                }
+
+                // [QUAN TRỌNG] Tắt Highlight khi chọn dòng
+                // Bằng cách set màu Selection giống hệt màu nền bình thường
+                e.CellStyle.SelectionBackColor = e.CellStyle.BackColor;
+                e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor;
+            }
+        }
+
         private void RoundedDataGridView2_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
@@ -198,12 +229,49 @@ namespace Environmental_Monitoring.View
             return false;
         }
 
+        private string SetStatusForRow(DataRow row)
+        {
+            object gObj = row["GiaTri"];
+            string status = CalculateStatus(gObj, row["GioiHanMin"], row["GioiHanMax"]);
+            row["Status"] = status;
+            return status;
+        }
+
+        private string CalculateStatus(object valueObj, object minObj, object maxObj)
+        {
+            if (valueObj == DBNull.Value || valueObj == null || string.IsNullOrWhiteSpace(valueObj.ToString()))
+            {
+                return rm.GetString("Status_NotAvailable", culture) ?? "Not Available";
+            }
+
+            if (!TryParseDecimalString(valueObj.ToString(), out decimal val))
+            {
+                return rm.GetString("Status_InvalidFormat", culture) ?? "Invalid Format";
+            }
+
+            decimal? min = null, max = null;
+            if (minObj != DBNull.Value && minObj != null) min = Convert.ToDecimal(minObj);
+            if (maxObj != DBNull.Value && maxObj != null) max = Convert.ToDecimal(maxObj);
+
+            if (min.HasValue && val < min.Value) return rm.GetString("Status_OutOfRange", culture) ?? "Out of Range";
+            if (max.HasValue && val > max.Value) return rm.GetString("Status_OutOfRange", culture) ?? "Out of Range";
+
+            return rm.GetString("Status_Passed", culture) ?? "Passed";
+        }
+
         private async void RoundedDataGridView2_CellEndEdit_SaveGiaTri(object? sender, DataGridViewCellEventArgs e)
         {
             if (isUpdatingCell || e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
             var col = roundedDataGridView2.Columns[e.ColumnIndex];
             if (col == null || col.Name != "GiaTri") return;
+
+            DataRowView drv = roundedDataGridView2.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            if (drv != null)
+            {
+                SetStatusForRow(drv.Row);
+                roundedDataGridView2.InvalidateRow(e.RowIndex);
+            }
 
             var row = roundedDataGridView2.Rows[e.RowIndex];
             object val = row.Cells["GiaTri"].Value;
@@ -298,6 +366,13 @@ namespace Environmental_Monitoring.View
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
                 if (dt == null) { roundedDataGridView2.DataSource = null; return; }
 
+                if (!dt.Columns.Contains("Status")) dt.Columns.Add("Status", typeof(string));
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    SetStatusForRow(row);
+                }
+
                 dt.Columns.Add(COL_ONHIEM, typeof(bool));
                 dt.Columns.Add(COL_SAPONHIEM, typeof(bool));
                 dt.Columns.Add(COL_KHONGONHIEM, typeof(bool));
@@ -328,13 +403,26 @@ namespace Environmental_Monitoring.View
                     roundedDataGridView2.Columns["GiaTri"].DefaultCellStyle.Padding = new Padding(2);
                 }
 
-                EnsureCheckBoxColumn(COL_ONHIEM, rm.GetString("Grid_Polluted", culture), 10);
-                EnsureCheckBoxColumn(COL_SAPONHIEM, rm.GetString("Grid_SoonPolluted", culture), 11);
-                EnsureCheckBoxColumn(COL_KHONGONHIEM, rm.GetString("Grid_NotPolluted", culture), 12);
+                // Cấu hình cột Status
+                if (roundedDataGridView2.Columns["Status"] != null)
+                {
+                    roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture) ?? "Status";
+                    roundedDataGridView2.Columns["Status"].ReadOnly = true;
+                    // Đặt vị trí cột Status giữa GiaTri và Checkbox
+                    // DisplayIndex tăng dần: Sample->Param->...->GiaTri(Index=X) -> Status(Index=X+1) -> Polluted(Index=X+2)...
+                    if (roundedDataGridView2.Columns["GiaTri"] != null)
+                    {
+                        roundedDataGridView2.Columns["Status"].DisplayIndex = roundedDataGridView2.Columns["GiaTri"].DisplayIndex + 1;
+                    }
+                }
+
+                EnsureCheckBoxColumn(COL_ONHIEM, rm.GetString("Grid_Polluted", culture), 12); // Index cao hơn để nằm sau Status
+                EnsureCheckBoxColumn(COL_SAPONHIEM, rm.GetString("Grid_SoonPolluted", culture), 13);
+                EnsureCheckBoxColumn(COL_KHONGONHIEM, rm.GetString("Grid_NotPolluted", culture), 14);
 
                 foreach (DataGridViewColumn col in roundedDataGridView2.Columns) col.SortMode = DataGridViewColumnSortMode.NotSortable;
 
-                string[] readOnlyCols = { "SampleCode", "TenThongSo", "DonVi", "GioiHanMin", "GioiHanMax" };
+                string[] readOnlyCols = { "SampleCode", "TenThongSo", "DonVi", "GioiHanMin", "GioiHanMax", "Status" };
                 foreach (string colName in readOnlyCols)
                 {
                     if (roundedDataGridView2.Columns.Contains(colName))
@@ -383,19 +471,19 @@ namespace Environmental_Monitoring.View
                 Width = 120,
                 DefaultCellStyle = { BackColor = Color.White, ForeColor = Color.Black, SelectionBackColor = Color.White, SelectionForeColor = Color.Black }
             };
-            int insertAt = Math.Min(desiredIndex, roundedDataGridView2.Columns.Count);
-            roundedDataGridView2.Columns.Insert(insertAt, chk);
+
+            // Thêm cột vào cuối danh sách hiển thị
+            roundedDataGridView2.Columns.Add(chk);
+            // Sau khi thêm, ta có thể set DisplayIndex nếu muốn sắp xếp chính xác tuyệt đối
+            // Nhưng ở trên hàm LoadExperimentContract đã có logic thêm tuần tự
         }
 
         private void btnContracts_Click(object sender, EventArgs e)
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
-                         FROM Contracts 
-                         WHERE TienTrinh = 3";
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked FROM Contracts WHERE TienTrinh = 3";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
-
                 using (ContractContent.PopUpContract popup = new ContractContent.PopUpContract(dt))
                 {
                     popup.ContractSelected += (contractId) =>
@@ -406,10 +494,7 @@ namespace Environmental_Monitoring.View
                     popup.ShowDialog();
                 }
             }
-            catch (Exception ex)
-            {
-                ShowAlert(rm.GetString("Error_LoadContracts", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
-            }
+            catch (Exception ex) { ShowAlert(rm.GetString("Error_LoadContracts", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -417,39 +502,26 @@ namespace Environmental_Monitoring.View
             try
             {
                 var dt = roundedDataGridView2.DataSource as DataTable;
-                if (dt == null || currentContractId == 0)
-                {
-                    ShowAlert(rm.GetString("Exp_NoDataToSave", culture), AlertPanel.AlertType.Error);
-                    return;
-                }
+                if (dt == null || currentContractId == 0) { ShowAlert(rm.GetString("Exp_NoDataToSave", culture), AlertPanel.AlertType.Error); return; }
 
                 foreach (DataGridViewRow row in roundedDataGridView2.Rows)
                 {
                     if (row.IsNewRow) continue;
-                    if (row.Cells["ParameterID"].Value == DBNull.Value || row.Cells["ParameterID"].Value == null) continue;
+                    if (row.Cells["ParameterID"].Value == DBNull.Value) continue;
 
                     object gObj = row.Cells["GiaTri"].Value;
                     if (gObj == DBNull.Value || gObj == null || string.IsNullOrWhiteSpace(gObj.ToString()))
                     {
-                        ShowAlert("Vui lòng nhập đầy đủ giá trị kết quả (ValueEntry) cho tất cả các thông số!", AlertPanel.AlertType.Error);
+                        ShowAlert("Vui lòng nhập đầy đủ giá trị kết quả!", AlertPanel.AlertType.Error);
                         return;
                     }
-
-                    if (!TryParseDecimalString(gObj.ToString(), out decimal temp))
-                    {
-                        ShowAlert("Giá trị nhập vào không hợp lệ. Vui lòng chỉ nhập số!", AlertPanel.AlertType.Error);
-                        return;
-                    }
+                    if (!TryParseDecimalString(gObj.ToString(), out decimal temp)) { ShowAlert("Giá trị không hợp lệ!", AlertPanel.AlertType.Error); return; }
 
                     bool oNhiem = Convert.ToBoolean(row.Cells[COL_ONHIEM].Value);
                     bool sapONhiem = Convert.ToBoolean(row.Cells[COL_SAPONHIEM].Value);
                     bool khongONhiem = Convert.ToBoolean(row.Cells[COL_KHONGONHIEM].Value);
 
-                    if (!oNhiem && !sapONhiem && !khongONhiem)
-                    {
-                        ShowAlert("Vui lòng chọn trạng thái đánh giá (Ô nhiễm/Sắp ô nhiễm/Không ô nhiễm) cho tất cả các thông số!", AlertPanel.AlertType.Error);
-                        return;
-                    }
+                    if (!oNhiem && !sapONhiem && !khongONhiem) { ShowAlert("Vui lòng chọn trạng thái đánh giá!", AlertPanel.AlertType.Error); return; }
                 }
 
                 int savedCount = 0;
@@ -458,11 +530,10 @@ namespace Environmental_Monitoring.View
                 foreach (DataGridViewRow row in roundedDataGridView2.Rows)
                 {
                     if (row.IsNewRow) continue;
-                    if (row.Cells["ParameterID"].Value == DBNull.Value || row.Cells["ParameterID"].Value == null) continue;
+                    if (row.Cells["ParameterID"].Value == DBNull.Value) continue;
 
                     int parameterId = Convert.ToInt32(row.Cells["ParameterID"].Value);
                     int sampleId = Convert.ToInt32(row.Cells["SampleID"].Value);
-
                     object gObj = row.Cells["GiaTri"].Value;
                     TryParseDecimalString(gObj.ToString(), out decimal g);
 
@@ -484,14 +555,11 @@ namespace Environmental_Monitoring.View
                     {
                         bool oNhiem = Convert.ToBoolean(row.Cells[COL_ONHIEM].Value);
                         bool sapONhiem = Convert.ToBoolean(row.Cells[COL_SAPONHIEM].Value);
-
                         int flag = 0;
-                        if (oNhiem) flag = 1;
-                        else if (sapONhiem) flag = 2;
+                        if (oNhiem) flag = 1; else if (sapONhiem) flag = 2;
 
                         string updateQuery = "UPDATE Parameters SET ONhiem = @flag WHERE ParameterID = @paramId";
                         DataProvider.Instance.ExecuteNonQuery(updateQuery, new object[] { flag, parameterId });
-
                         parametersToUpdate.Add(parameterId);
                         savedCount++;
                     }
@@ -501,33 +569,23 @@ namespace Environmental_Monitoring.View
                 DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.currentContractId });
 
                 int ketQuaRoleID = 8;
-                if (ketQuaRoleID != 0)
-                {
-                    string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @id", new object[] { this.currentContractId }).ToString();
-                    string noiDungKetQua = $"Hợp đồng '{maDon}' đã phân tích xong, cần xem xét và duyệt kết quả.";
-                    NotificationService.CreateNotification("ChinhSua", noiDungKetQua, ketQuaRoleID, this.currentContractId, null);
-                }
+                string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @id", new object[] { this.currentContractId }).ToString();
+                string noiDungKetQua = $"Hợp đồng '{maDon}' đã phân tích xong, cần xem xét và duyệt kết quả.";
+                NotificationService.CreateNotification("ChinhSua", noiDungKetQua, ketQuaRoleID, this.currentContractId, null);
 
                 string successMsg = string.Format(rm.GetString("Exp_SaveSuccess", culture), savedCount);
                 ShowAlert(successMsg, AlertPanel.AlertType.Success);
-
                 roundedDataGridView2.DataSource = null;
                 lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
                 this.currentContractId = 0;
             }
-            catch (Exception ex)
-            {
-                ShowAlert(rm.GetString("Error_SaveData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
-            }
+            catch (Exception ex) { ShowAlert(rm.GetString("Error_SaveData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             roundedDataGridView2.DataSource = null;
-            if (lbContractID != null)
-            {
-                lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
-            }
+            if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
             this.currentContractId = 0;
         }
 
@@ -546,61 +604,38 @@ namespace Environmental_Monitoring.View
                 if (isMergeColumn)
                 {
                     string rawValue = e.Value?.ToString() ?? "";
-
                     string displayValue = rawValue;
                     if (!string.IsNullOrEmpty(displayValue))
                     {
                         int index = displayValue.IndexOf(" - Template");
-                        if (index > 0)
-                        {
-                            displayValue = displayValue.Substring(0, index);
-                        }
+                        if (index > 0) displayValue = displayValue.Substring(0, index);
                     }
 
                     int startIndex = e.RowIndex;
                     while (startIndex > 0)
                     {
                         object prevVal = roundedDataGridView2.Rows[startIndex - 1].Cells[e.ColumnIndex].Value;
-
-                        if (prevVal != null && prevVal.ToString() == rawValue)
-                            startIndex--;
-                        else
-                            break;
+                        if (prevVal != null && prevVal.ToString() == rawValue) startIndex--; else break;
                     }
 
                     int endIndex = e.RowIndex;
                     while (endIndex < roundedDataGridView2.Rows.Count - 1)
                     {
                         object nextVal = roundedDataGridView2.Rows[endIndex + 1].Cells[e.ColumnIndex].Value;
-                        if (nextVal != null && nextVal.ToString() == rawValue)
-                            endIndex++;
-                        else
-                            break;
+                        if (nextVal != null && nextVal.ToString() == rawValue) endIndex++; else break;
                     }
 
                     int totalHeight = 0;
-                    for (int i = startIndex; i <= endIndex; i++)
-                        totalHeight += roundedDataGridView2.Rows[i].Height;
-
+                    for (int i = startIndex; i <= endIndex; i++) totalHeight += roundedDataGridView2.Rows[i].Height;
                     int offsetY = 0;
-                    for (int i = startIndex; i < e.RowIndex; i++)
-                        offsetY -= roundedDataGridView2.Rows[i].Height;
+                    for (int i = startIndex; i < e.RowIndex; i++) offsetY -= roundedDataGridView2.Rows[i].Height;
 
                     Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
-
-                    TextFormatFlags flags = TextFormatFlags.HorizontalCenter |
-                                            TextFormatFlags.VerticalCenter |
-                                            TextFormatFlags.WordBreak |
-                                            TextFormatFlags.PreserveGraphicsClipping;
-
+                    TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak | TextFormatFlags.PreserveGraphicsClipping;
                     TextRenderer.DrawText(e.Graphics, displayValue, e.CellStyle.Font, groupRect, Color.Black, flags);
 
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
-
-                    if (e.RowIndex == endIndex)
-                    {
-                        e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-                    }
+                    if (e.RowIndex == endIndex) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                 }
                 else
                 {
