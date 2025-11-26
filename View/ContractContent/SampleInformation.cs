@@ -241,14 +241,20 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             if (e.RowIndex < 0 || e.RowIndex >= _currentParams.Count) return;
 
+            // Lấy object tại dòng đang chọn
             var paramToEdit = _currentParams[e.RowIndex];
+
+            // Truyền object này vào form -> Form sẽ hiểu là chê độ SỬA (EDIT)
             using (var frm = new AddEditParameterForm(paramToEdit, isFixedName: false))
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    // BindingList tự update UI khi object thay đổi (nếu object implement INotifyPropertyChanged)
-                    // Hoặc ta gán lại thủ công:
+                    // QUAN TRỌNG: Gán đè kết quả trả về vào đúng vị trí cũ (index cũ)
+                    // Không gọi AddParameterSafe ở đây để tránh tạo dòng mới
                     _currentParams[e.RowIndex] = frm.ResultParameter;
+
+                    // Refresh lại dòng đó trên lưới (đôi khi binding list ko tự refresh nếu object ko đổi reference)
+                    dgvParams.InvalidateRow(e.RowIndex);
                 }
             }
         }
@@ -324,14 +330,22 @@ namespace Environmental_Monitoring.View.ContractContent
         }
 
         // --- CÁC NÚT KHÁC ---
+        // SỰ KIỆN 1: Bấm nút "Thêm thông số" -> Tạo mới hoàn toàn
         private void btnThemThongSo_Click_1(object sender, EventArgs e)
         {
-            // roundedButton2
+            // Truyền null để báo hiệu là THÊM MỚI
             using (var frm = new AddEditParameterForm(null, isFixedName: false))
             {
-                if (frm.ShowDialog() == DialogResult.OK) AddParameterSafe(frm.ResultParameter);
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    // Logic: Luôn Add mới vào danh sách
+                    // Dùng AddParameterSafe để kiểm tra trùng tên nếu cần, hoặc Add thẳng
+                    AddParameterSafe(frm.ResultParameter); 
+                }
             }
         }
+
+     
 
         // Class phụ trợ cho ComboBox
         public class ParameterCbbItem

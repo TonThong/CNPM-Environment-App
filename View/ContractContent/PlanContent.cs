@@ -27,23 +27,23 @@ namespace Environmental_Monitoring.View.ContractContent
             InitializeLocalization();
         }
 
-        // Khởi tạo đa ngôn ngữ
+        // Khởi tạo ResourceManager để hỗ trợ đa ngôn ngữ
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(PlanContent).Assembly);
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        // Sự kiện khi UserControl được tải
+        // Sự kiện chạy khi UserControl được load lên giao diện
         private void PlanContent_Load(object sender, EventArgs e)
         {
-            // Tìm FlowLayoutPanel chứa các nút mẫu
+            // Lấy control panel chứa nút mẫu
             flpTemplates = this.Controls.Find("flpTemplates", true).FirstOrDefault() as FlowLayoutPanel;
 
-            // Cấu hình bảng hiển thị (Grid)
+            // Thiết lập cột và giao diện cho bảng (Grid)
             SetupMainGrid();
 
-            // Đăng ký sự kiện cho nút Lưu để tránh gán trùng lặp
+            // Đăng ký sự kiện nút Lưu (tránh đăng ký kép)
             if (roundedButton2 != null)
             {
                 roundedButton2.Click -= btnSaveContract_Click;
@@ -54,15 +54,15 @@ namespace Environmental_Monitoring.View.ContractContent
             var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
             if (btnCancel != null) btnCancel.Click += btnCancel_Click;
 
-            // Tải danh sách các mẫu môi trường lên giao diện
+            // Tải danh sách các nút chọn mẫu môi trường
             LoadSampleTemplates();
 
-            // Cập nhật ngôn ngữ và trạng thái nút
+            // Cập nhật text và trạng thái nút theo ngữ cảnh
             UpdateUIText();
             UpdateSaveButtonState();
         }
 
-        // Cấu hình hiển thị cho bảng dữ liệu chính (DataGridView)
+        // Cấu hình các cột, header và style cho DataGridView hiển thị danh sách mẫu
         private void SetupMainGrid()
         {
             roundedDataGridView1.AutoGenerateColumns = false;
@@ -71,20 +71,21 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView1.RowHeadersVisible = false;
             roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            roundedDataGridView1.GridColor = Color.Black; // Đặt màu lưới là Đen
+            // Style đường kẻ lưới
+            roundedDataGridView1.GridColor = Color.Black;
             roundedDataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single;
 
-            // --- 1. CỘT NỀN MẪU (Đưa lên đầu tiên, căn giữa để gộp ô đẹp hơn) ---
+            // Cột 1: Nền mẫu (Dùng để gộp ô)
             var colNenMau = new DataGridViewTextBoxColumn
             {
                 HeaderText = "Nền mẫu",
                 DataPropertyName = "TenNenMau",
                 Width = 150
             };
-            colNenMau.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // Căn giữa
+            colNenMau.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             roundedDataGridView1.Columns.Add(colNenMau);
 
-            // --- 2. CÁC CỘT CÒN LẠI ---
+            // Các cột thông tin khác
             roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ký hiệu", DataPropertyName = "KyHieuMau", Width = 80 });
             roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Vị trí lấy mẫu", DataPropertyName = "ViTri", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
             roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "SL Thông số", Name = "colCount", Width = 100 });
@@ -100,11 +101,11 @@ namespace Environmental_Monitoring.View.ContractContent
             btnDel.DefaultCellStyle.ForeColor = Color.Red;
             roundedDataGridView1.Columns.Add(btnDel);
 
-            // Style chung: Chữ đen, Header in đậm
+            // Style font chữ
             roundedDataGridView1.DefaultCellStyle.ForeColor = Color.Black;
             roundedDataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
 
-            // Đăng ký lại các sự kiện click, format
+            // Đăng ký các sự kiện thao tác trên Grid
             roundedDataGridView1.CellContentClick -= roundedDataGridView1_CellContentClick;
             roundedDataGridView1.CellContentClick += roundedDataGridView1_CellContentClick;
 
@@ -114,29 +115,26 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView1.CellDoubleClick -= roundedDataGridView1_CellDoubleClick;
             roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
 
-            // --- QUAN TRỌNG: Đăng ký sự kiện vẽ lại ô để thực hiện Gộp ô (Merge) ---
+            // Sự kiện vẽ lại ô để xử lý Merge (Gộp ô) cột Nền mẫu
             roundedDataGridView1.CellPainting -= roundedDataGridView1_CellPainting;
             roundedDataGridView1.CellPainting += roundedDataGridView1_CellPainting;
         }
 
-        // Hàm vẽ lại ô để Gộp các dòng giống nhau ở cột "Nền mẫu"
-        // Thay thế hàm roundedDataGridView1_CellPainting cũ bằng hàm này
+        // Xử lý vẽ giao diện Gộp ô (Merge Cells) cho cột "Nền mẫu" nếu các dòng liên tiếp có cùng giá trị
         private void roundedDataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            // 1. Chỉ xử lý cột "Nền mẫu" (Index 0)
             if (e.RowIndex < 0 || e.ColumnIndex != 0) return;
 
-            e.Handled = true; // Ngăn Grid vẽ mặc định để ta tự vẽ
+            e.Handled = true; // Chặn vẽ mặc định
 
-            // 2. Vẽ nền trắng
             using (Brush backBrush = new SolidBrush(Color.White))
             {
                 e.Graphics.FillRectangle(backBrush, e.CellBounds);
             }
 
-            // 3. Logic tìm nhóm gộp (Giữ nguyên logic cũ)
             string currentValue = e.Value?.ToString();
 
+            // Tìm dòng bắt đầu và kết thúc của nhóm cần gộp
             int startIndex = e.RowIndex;
             while (startIndex > 0)
             {
@@ -153,7 +151,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 endIndex++;
             }
 
-            // 4. Tính toán vị trí vẽ chữ (Giữ nguyên logic cũ)
+            // Tính toán kích thước ô gộp
             int totalHeight = 0;
             for (int i = startIndex; i <= endIndex; i++)
             {
@@ -172,7 +170,7 @@ namespace Environmental_Monitoring.View.ContractContent
                 e.CellBounds.Width,
                 totalHeight);
 
-            // 5. Vẽ chữ
+            // Vẽ text vào giữa ô gộp
             TextFormatFlags flags = TextFormatFlags.HorizontalCenter |
                                     TextFormatFlags.VerticalCenter |
                                     TextFormatFlags.WordBreak |
@@ -185,15 +183,10 @@ namespace Environmental_Monitoring.View.ContractContent
                                   e.CellStyle.ForeColor,
                                   flags);
 
-            // 6. VẼ ĐƯỜNG KẺ MÀU ĐEN (Sửa đoạn này)
-            // Dùng Color.Black thay vì Color.LightGray
+            // Vẽ đường kẻ khung
             using (Pen gridPen = new Pen(Color.Black, 1))
             {
-                // Vẽ đường dọc bên phải (ngăn cách với cột Ký hiệu)
                 e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
-
-                // Vẽ đường ngang bên dưới (CHỈ vẽ nếu là dòng cuối cùng của nhóm)
-                // Đây chính là logic "trừ các dòng cùng cột ô của cột nền mẫu"
                 if (e.RowIndex == endIndex)
                 {
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
@@ -201,15 +194,13 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // Tải danh sách nút bấm chọn mẫu môi trường
-        // Thay thế hàm LoadSampleTemplates cũ bằng hàm này
+        // Tải danh sách 3 nút chọn mẫu cơ bản (Không khí, Nước, Đất) từ Database lên giao diện
         private void LoadSampleTemplates()
         {
             if (flpTemplates == null) return;
 
             try
             {
-                // 1. Lấy tất cả template từ DB
                 string q = "SELECT TemplateID, TenMau FROM SampleTemplates WHERE TenMau NOT LIKE 'Template cho %'";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q);
 
@@ -217,60 +208,27 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 if (dt == null || dt.Rows.Count == 0) return;
 
-                // 2. Định nghĩa danh sách 3 môi trường cố định cần hiển thị
-                // Key: Tên hiển thị chuẩn, Value: Dữ liệu tìm được từ DB
                 var targetEnvs = new string[] { "Air Environment", "Water Environment", "Soil Environment" };
                 var foundTemplates = new Dictionary<string, (int id, string originalName)>();
 
-                // 3. Quét DB để tìm ID tương ứng cho từng môi trường
                 foreach (DataRow row in dt.Rows)
                 {
                     int id = Convert.ToInt32(row["TemplateID"]);
                     string nameGoc = row["TenMau"].ToString();
-                    string nameChuan = GetLocalizedTemplateName(nameGoc); // Hàm này sẽ quy về Air/Water/Soil
+                    string nameChuan = GetLocalizedTemplateName(nameGoc);
 
-                    // Nếu tên thuộc 1 trong 3 loại kia VÀ chưa tìm thấy trước đó (tránh trùng lặp)
                     if (targetEnvs.Contains(nameChuan) && !foundTemplates.ContainsKey(nameChuan))
                     {
                         foundTemplates[nameChuan] = (id, nameGoc);
                     }
                 }
 
-                // 4. Tạo nút bấm theo đúng thứ tự cố định (Air -> Water -> Soil)
                 foreach (string envName in targetEnvs)
                 {
-                    // Chỉ tạo nút nếu trong DB có template tương ứng
                     if (foundTemplates.ContainsKey(envName))
                     {
                         var data = foundTemplates[envName];
-
-                        Button btn = new Button();
-                        btn.Text = envName; // Luôn hiển thị tên chuẩn (Air Environment...)
-
-                        // Tag lưu ID thật lấy từ DB
-                        btn.Tag = new SampleTemplateDisplayItem
-                        {
-                            TemplateID = data.id,
-                            TenMauHienThi = envName,
-                            TenMauGoc = data.originalName
-                        };
-
-                        // --- Style nút bấm (Giữ nguyên style cũ) ---
-                        btn.Size = new Size(200, 40);
-                        btn.BackColor = Color.White;
-                        btn.ForeColor = Color.DarkGreen;
-                        btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                        btn.FlatStyle = FlatStyle.Flat;
-                        btn.FlatAppearance.BorderColor = Color.LightGray;
-                        btn.FlatAppearance.BorderSize = 1;
-                        btn.Cursor = Cursors.Hand;
-                        btn.Margin = new Padding(8);
-
-                        btn.MouseEnter += (s, e) => { btn.BackColor = Color.FromArgb(220, 248, 220); };
-                        btn.MouseLeave += (s, e) => { btn.BackColor = Color.White; };
-
-                        btn.Click += TemplateButton_Click;
-
+                        Button btn = CreateTemplateButton(envName, data.id, data.originalName);
                         flpTemplates.Controls.Add(btn);
                     }
                 }
@@ -281,7 +239,33 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // Xử lý khi bấm nút chọn mẫu (Mở form SampleInformation)
+        // Tạo nút bấm cho từng loại mẫu
+        private Button CreateTemplateButton(string displayText, int id, string originalName)
+        {
+            Button btn = new Button();
+            btn.Text = displayText;
+            btn.Tag = new SampleTemplateDisplayItem
+            {
+                TemplateID = id,
+                TenMauHienThi = displayText,
+                TenMauGoc = originalName
+            };
+            btn.Size = new Size(200, 40);
+            btn.BackColor = Color.White;
+            btn.ForeColor = Color.DarkGreen;
+            btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderColor = Color.LightGray;
+            btn.FlatAppearance.BorderSize = 1;
+            btn.Cursor = Cursors.Hand;
+            btn.Margin = new Padding(8);
+            btn.MouseEnter += (s, e) => { btn.BackColor = Color.FromArgb(220, 248, 220); };
+            btn.MouseLeave += (s, e) => { btn.BackColor = Color.White; };
+            btn.Click += TemplateButton_Click;
+            return btn;
+        }
+
+        // Sự kiện Click nút chọn Mẫu: Mở form nhập thông tin mẫu
         private void TemplateButton_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
@@ -304,7 +288,7 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // Xử lý double click để sửa mẫu
+        // Sự kiện Double Click vào dòng trong Grid để Sửa thông tin mẫu
         private void roundedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -320,7 +304,7 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // Xử lý nút xóa mẫu
+        // Sự kiện Click vào nút Xóa trong Grid
         private void roundedDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && roundedDataGridView1.Columns[e.ColumnIndex].Name == "colDelete")
@@ -333,7 +317,7 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // Hiển thị số lượng thông số trong cột Grid
+        // Định dạng hiển thị cột số lượng thông số
         private void roundedDataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex >= 0 && roundedDataGridView1.Columns[e.ColumnIndex].Name == "colCount")
@@ -343,19 +327,19 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // Hàm cập nhật dữ liệu cho Grid
+        // Refresh lại dữ liệu trên Grid từ danh sách _listSamples
         private void BindMainGrid()
         {
-
+            // Sắp xếp để hỗ trợ gộp ô
             _listSamples = _listSamples.OrderBy(x => x.TenNenMau)
-                               .ThenBy(x => x.KyHieuMau)
-                               .ToList();
+                                       .ThenBy(x => x.KyHieuMau)
+                                       .ToList();
 
             roundedDataGridView1.DataSource = null;
             roundedDataGridView1.DataSource = _listSamples;
         }
 
-        // Logic Lưu Hợp Đồng vào Database
+        // [QUAN TRỌNG] Lưu toàn bộ dữ liệu Hợp đồng và Mẫu vào Database
         private void btnSaveContract_Click(object sender, EventArgs e)
         {
             if (currentContractId == 0) return;
@@ -371,35 +355,37 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 foreach (var sample in _listSamples)
                 {
-                    // 1. Tạo Template riêng cho mẫu này
-                    // Logic mới: Ưu tiên dùng tên người dùng nhập, nếu trống thì tự sinh tên
-                    string specificTemplateName = !string.IsNullOrEmpty(sample.TenNenMau)
-                                                  ? sample.TenNenMau
-                                                  : $"Template cho {maDon} - {sample.KyHieuMau}";
-
+                    // 1. Tạo Template riêng cho mẫu cụ thể này
+                    string specificTemplateName = $"Template cho {maDon} - {sample.KyHieuMau}";
                     string insertTempQ = "INSERT INTO SampleTemplates (TenMau) VALUES (@name)";
                     DataProvider.Instance.ExecuteNonQuery(insertTempQ, new object[] { specificTemplateName });
                     int newTemplateID = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
 
-                    // 2. Lưu các thông số của mẫu
+                    // 2. Xử lý lưu các thông số
                     foreach (var p in sample.Parameters)
                     {
-                        string insertParam = @"INSERT INTO Parameters (TenThongSo, DonVi, GioiHanMin, GioiHanMax, PhuongPhap, QuyChuan, PhuTrach, ONhiem)
-                                               VALUES (@ten, @dv, @min, @max, @pp, @qc, @pt, 0)";
-                        DataProvider.Instance.ExecuteNonQuery(insertParam, new object[] {
-                            p.TenThongSo, p.DonVi, p.Min, p.Max, p.PhuongPhap, p.QuyChuan, p.PhuTrach
-                        });
-                        int newParamID = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
+                        int finalParamID = p.ParameterID;
 
-                        // Link thông số vào Template
+                        // Nếu ID = 0 (tức là thông số mới thêm thủ công), cần Insert vào DB để tạo ID mới
+                        if (finalParamID == 0)
+                        {
+                            string insertParam = @"INSERT INTO Parameters (TenThongSo, DonVi, GioiHanMin, GioiHanMax, PhuongPhap, QuyChuan, PhuTrach, ONhiem)
+                                                   VALUES (@ten, @dv, @min, @max, @pp, @qc, @pt, 0)";
+                            DataProvider.Instance.ExecuteNonQuery(insertParam, new object[] {
+                                p.TenThongSo, p.DonVi, p.Min, p.Max, p.PhuongPhap, p.QuyChuan, p.PhuTrach
+                            });
+                            // Lấy ID vừa tạo
+                            finalParamID = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
+                        }
+                        // Nếu ID > 0 (chọn từ list có sẵn), giữ nguyên ID đó để tái sử dụng, không Insert mới
+
+                        // 3. Liên kết thông số (dù cũ hay mới) vào Template
                         string linkQ = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@tid, @pid)";
-                        DataProvider.Instance.ExecuteNonQuery(linkQ, new object[] { newTemplateID, newParamID });
+                        DataProvider.Instance.ExecuteNonQuery(linkQ, new object[] { newTemplateID, finalParamID });
                     }
 
-                    // 3. Tạo Mẫu môi trường (Lưu vào bảng EnvironmentalSamples)
+                    // 4. Lưu thông tin Mẫu môi trường
                     string maMauFull = $"{maDon} - {sample.KyHieuMau}";
-
-                    // Logic mới: Lưu thêm cột TenNenMau để phục vụ xuất PDF
                     string insertSampleQ = @"INSERT INTO EnvironmentalSamples 
                                            (MaMau, ContractID, TemplateID, KyHieuMau, ViTriLayMau, ToaDoX, ToaDoY, TenNenMau)
                                            VALUES (@ma, @cid, @tid, @kyhieu, @vitri, @x, @y, @tennen)";
@@ -412,15 +398,15 @@ namespace Environmental_Monitoring.View.ContractContent
                         sample.ViTri,
                         sample.ToaDoX,
                         sample.ToaDoY,
-                        sample.TenNenMau // Lưu giá trị thực tế của textbox vào cột này
+                        sample.TenNenMau
                     });
                 }
 
-                // Cập nhật tiến trình Hợp đồng
+                // Cập nhật trạng thái Hợp đồng
                 string updateContract = "UPDATE Contracts SET TienTrinh = 2 WHERE ContractID = @id";
                 DataProvider.Instance.ExecuteNonQuery(updateContract, new object[] { currentContractId });
 
-                // Gửi thông báo
+                // Gửi thông báo hệ thống
                 int hienTruongRoleID = 10;
                 string noiDung = $"Hợp đồng '{maDon}' đã lập kế hoạch lấy mẫu xong.";
                 NotificationService.CreateNotification("ChinhSua", noiDung, hienTruongRoleID, this.currentContractId, null);
@@ -428,11 +414,11 @@ namespace Environmental_Monitoring.View.ContractContent
                 string successMsg = string.Format(rm.GetString("Plan_SaveSuccess", culture) ?? "Lưu thành công cho HĐ {0}", maDon);
                 ShowAlert(successMsg, AlertPanel.AlertType.Success);
 
-                // Reset giao diện sau khi lưu
+                // Reset giao diện
                 _listSamples.Clear();
                 BindMainGrid();
                 currentContractId = 0;
-                lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+                lbContractID.Text = "Khách Hàng:";
                 UpdateSaveButtonState();
             }
             catch (Exception ex)
@@ -441,51 +427,38 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // Cập nhật text trên giao diện (đa ngôn ngữ)
+        // Cập nhật ngôn ngữ hiển thị
         public void UpdateUIText()
         {
             culture = Thread.CurrentThread.CurrentUICulture;
-            //if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + (currentContractId != 0 ? " " + currentContractId : "");
 
-            if (currentContractId == 0)
-            {
-                lbContractID.Text = "Khách Hàng:"; // Hoặc lấy từ Resource nếu muốn đa ngôn ngữ
-            }
-
+            if (currentContractId == 0) lbContractID.Text = "Khách Hàng:";
             if (btnContracts != null) btnContracts.Text = rm.GetString("Plan_ContractListButton", culture);
             if (roundedButton2 != null) roundedButton2.Text = rm.GetString("Button_Save", culture);
             LoadSampleTemplates();
         }
 
-        // Xử lý mở popup chọn hợp đồng
+        // Sự kiện mở Popup chọn Hợp đồng
         private void btnContracts_Click(object sender, EventArgs e)
         {
             try
             {
-                // Query lấy danh sách hợp đồng cho Popup (Giữ nguyên)
                 string query = "SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked FROM Contracts WHERE TienTrinh = 1";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
-
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
                     popup.ContractSelected += (contractId) =>
                     {
                         this.currentContractId = contractId;
-
-                        // --- THÊM ĐOẠN NÀY ĐỂ LẤY TÊN KHÁCH HÀNG ---
-                        string cusQuery = @"
-                    SELECT cus.TenDoanhNghiep 
-                    FROM Contracts c
-                    JOIN Customers cus ON c.CustomerID = cus.CustomerID
-                    WHERE c.ContractID = @cid";
-
+                        // Lấy tên khách hàng hiển thị
+                        string cusQuery = @"SELECT cus.TenDoanhNghiep 
+                                            FROM Contracts c
+                                            JOIN Customers cus ON c.CustomerID = cus.CustomerID
+                                            WHERE c.ContractID = @cid";
                         object result = DataProvider.Instance.ExecuteScalar(cusQuery, new object[] { contractId });
                         string tenCongTy = result != null ? result.ToString() : "Không xác định";
 
-                        // Hiển thị lên Label
                         lbContractID.Text = "Khách Hàng: " + tenCongTy;
-                        // -------------------------------------------
-
                         UpdateSaveButtonState();
                     };
                     popup.ShowDialog();
@@ -494,24 +467,24 @@ namespace Environmental_Monitoring.View.ContractContent
             catch (Exception ex) { ShowAlert("Lỗi tải HĐ: " + ex.Message, AlertPanel.AlertType.Error); }
         }
 
-        // Xử lý nút Hủy bỏ toàn bộ thao tác
+        // Nút Hủy bỏ
         private void btnCancel_Click(object sender, EventArgs e)
         {
             _listSamples.Clear();
             BindMainGrid();
             currentContractId = 0;
-            lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+            lbContractID.Text = "Khách Hàng:";
             UpdateSaveButtonState();
         }
 
-        // Cập nhật trạng thái nút Lưu (chỉ sáng khi đã chọn HĐ)
+        // Cập nhật trạng thái Enable/Disable cho nút Lưu
         private void UpdateSaveButtonState()
         {
             bool isContractSelected = (currentContractId != 0);
             if (roundedButton2 != null) roundedButton2.Enabled = isContractSelected;
         }
 
-        // Hàm hiển thị thông báo chung
+        // Hàm tiện ích hiển thị thông báo
         private void ShowAlert(string message, AlertPanel.AlertType type)
         {
             var mainLayout = this.FindForm() as Mainlayout;
@@ -519,7 +492,7 @@ namespace Environmental_Monitoring.View.ContractContent
             else MessageBox.Show(message, type.ToString(), MessageBoxButtons.OK, type == AlertPanel.AlertType.Success ? MessageBoxIcon.Information : MessageBoxIcon.Error);
         }
 
-        // Hàm dịch tên Template (nếu cần)
+        // Hàm chuyển đổi tên Template sang ngôn ngữ chuẩn (Air/Water/Soil)
         private string GetLocalizedTemplateName(string dbName)
         {
             if (string.IsNullOrEmpty(dbName)) return "";
@@ -531,7 +504,7 @@ namespace Environmental_Monitoring.View.ContractContent
             return dbName;
         }
 
-        // Class phụ trợ để chứa thông tin hiển thị nút
+        // Class DTO phụ trợ lưu thông tin nút Template
         public class SampleTemplateDisplayItem
         {
             public int TemplateID { get; set; }

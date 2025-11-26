@@ -108,22 +108,28 @@ namespace Environmental_Monitoring.View.ContractContent
         // Sự kiện nút Lưu
         private void btnOK_Click(object sender, EventArgs e)
         {
+            // Validate dữ liệu
             if (string.IsNullOrWhiteSpace(txtTenThongSo.Text))
             {
                 MessageBox.Show("Vui lòng nhập Tên thông số!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            // Nếu ResultParameter chưa được khởi tạo (trường hợp hiếm), khởi tạo mới
             if (ResultParameter == null) ResultParameter = new ParameterDTO();
 
+            // Cập nhật các giá trị từ giao diện vào Object
             ResultParameter.TenThongSo = txtTenThongSo.Text.Trim();
             ResultParameter.DonVi = txtDonVi.Text.Trim();
             ResultParameter.Min = numGioiHanMin.Value;
             ResultParameter.Max = numGioiHanMax.Value;
             if (txtPhuongPhap != null) ResultParameter.PhuongPhap = txtPhuongPhap.Text.Trim();
 
-            if (cbbPhuTrach.SelectedItem is DepartmentItem dept) ResultParameter.PhuTrach = dept.Value;
-            else ResultParameter.PhuTrach = "ThiNghiem";
+            // Xử lý ComboBox Phụ trách
+            if (cbbPhuTrach.SelectedItem is DepartmentItem dept)
+                ResultParameter.PhuTrach = dept.Value;
+            else
+                ResultParameter.PhuTrach = "ThiNghiem"; // Giá trị mặc định
 
             this.DialogResult = DialogResult.OK;
             this.Close();
