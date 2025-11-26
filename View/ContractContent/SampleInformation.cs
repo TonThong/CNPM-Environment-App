@@ -2,7 +2,7 @@
 using Environmental_Monitoring.Controller.Data;
 using Environmental_Monitoring.Model;
 using System;
-using System.ComponentModel; // Cần cho BindingList
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -12,16 +12,10 @@ namespace Environmental_Monitoring.View.ContractContent
 {
     public partial class SampleInformation : Form
     {
-        // Output result
         public SampleDTO ResultSample { get; private set; }
-
-        // Dùng BindingList thay vì List thường để Grid tự cập nhật an toàn
         private BindingList<ParameterDTO> _currentParams;
-
         private int _baseTemplateId;
         private string _baseTemplateName;
-
-        // Cờ chặn sự kiện
         private bool _isReady = false;
 
         public SampleInformation(int baseTemplateId, string baseTemplateName, SampleDTO editSample = null)
@@ -34,7 +28,6 @@ namespace Environmental_Monitoring.View.ContractContent
             _baseTemplateId = baseTemplateId;
             _baseTemplateName = baseTemplateName;
 
-            // 1. Khởi tạo danh sách an toàn
             if (editSample != null && editSample.Parameters != null)
             {
                 _currentParams = new BindingList<ParameterDTO>(editSample.Parameters);
@@ -44,31 +37,60 @@ namespace Environmental_Monitoring.View.ContractContent
                 _currentParams = new BindingList<ParameterDTO>();
             }
 
-            // 2. Setup giao diện tĩnh
             SetupUI(editSample);
-            SetupGridView(); // Chỉ setup cột, KHÔNG bind data ở đây
+            SetupGridView();
         }
 
-        // --- LOGIC MỚI: CHỈ NẠP DỮ LIỆU KHI FORM ĐÃ SẴN SÀNG ---
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            // Bind Grid an toàn trong OnLoad
             BindParamsGrid();
+            LoadComboBoxDataSafe();     // Load thông số
+            LoadNenMauComboBox();       // <--- MỚI: Load danh sách tên nền mẫu
 
-            // Nạp ComboBox
-            LoadComboBoxDataSafe();
-
-            // Đánh dấu Form đã sẵn sàng nhận sự kiện
             _isReady = true;
+        }
+
+        // --- HÀM MỚI: LOAD TÊN NỀN MẪU TỪ DB ---
+        private void LoadNenMauComboBox()
+        {
+            try
+            {
+                if (cbbNenMau == null) return;
+
+                // Query lấy dữ liệu Duy Nhất (DISTINCT) để tránh trùng lặp
+                // Giả sử bảng lưu tên nền mẫu là EnvironmentalSamples
+                string query = "SELECT DISTINCT TenNenMau FROM EnvironmentalSamples WHERE TenNenMau IS NOT NULL AND TenNenMau <> '' ORDER BY TenNenMau ASC";
+
+                DataTable dt = DataProvider.Instance.ExecuteQuery(query);
+
+                cbbNenMau.Items.Clear();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        cbbNenMau.Items.Add(row["TenNenMau"].ToString());
+                    }
+                }
+
+                // Cấu hình gợi ý khi gõ (Auto Complete)
+                //cbbNenMau.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                //cbbNenMau.AutoCompleteSource = AutoCompleteSource.ListItems;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải danh sách nền mẫu: " + ex.Message);
+            }
         }
 
         private void SetupUI(SampleDTO editSample)
         {
-            if (txtNenMau != null)
+            // SỬA: Dùng cbbNenMau thay vì txtNenMau
+            if (cbbNenMau != null)
             {
-                txtNenMau.Text = editSample != null ? editSample.TenNenMau : _baseTemplateName;
+                // Nếu đang sửa thì hiện tên cũ, nếu thêm mới thì hiện tên template mặc định
+                cbbNenMau.Text = editSample != null ? editSample.TenNenMau : _baseTemplateName;
             }
 
             if (editSample != null)
@@ -92,12 +114,10 @@ namespace Environmental_Monitoring.View.ContractContent
             dgvParams.AllowUserToAddRows = false;
             dgvParams.Columns.Clear();
 
-            // Định nghĩa cột thủ công
             dgvParams.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tên thông số", DataPropertyName = "TenThongSo", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
             dgvParams.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Đơn vị", DataPropertyName = "DonVi", Width = 80 });
             dgvParams.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Giới hạn", DataPropertyName = "HienThiMinMax", Width = 90 });
             dgvParams.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Phương pháp", DataPropertyName = "PhuongPhap", Width = 140 });
-
             dgvParams.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Phụ trách", DataPropertyName = "PhuTrach", Width = 100 });
 
             DataGridViewButtonColumn btnDel = new DataGridViewButtonColumn
@@ -111,14 +131,12 @@ namespace Environmental_Monitoring.View.ContractContent
             btnDel.DefaultCellStyle.ForeColor = Color.Red;
             dgvParams.Columns.Add(btnDel);
 
-            // Đăng ký sự kiện
             dgvParams.CellContentClick += dgvParams_CellContentClick;
             dgvParams.CellDoubleClick += dgvParams_CellDoubleClick;
         }
 
         private void BindParamsGrid()
         {
-            // Reset DataSource an toàn
             dgvParams.DataSource = null;
             if (_currentParams.Count > 0)
             {
@@ -130,7 +148,6 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                // Ngắt sự kiện tạm thời
                 cbbThongSo.SelectedIndexChanged -= cbbThongSo_SelectedIndexChanged;
                 cbbThongSo.DataSource = null;
                 cbbThongSo.Items.Clear();
@@ -144,33 +161,26 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    // Convert DataTable sang List Object để tránh lỗi BindingContext
                     var listItems = dt.AsEnumerable().Select(row => new ParameterCbbItem
                     {
                         Text = row["TenThongSo"].ToString(),
                         RowData = row
                     }).ToList();
 
-                    // Gán DataSource mới
                     cbbThongSo.DisplayMember = "Text";
                     cbbThongSo.DataSource = listItems;
-                    cbbThongSo.SelectedIndex = -1; // Reset về trạng thái chưa chọn
+                    cbbThongSo.SelectedIndex = -1;
                 }
             }
-            catch (Exception ex)
-            {
-                // Log error
-            }
+            catch (Exception ex) { }
             finally
             {
-                // Đăng ký lại sự kiện
                 cbbThongSo.SelectedIndexChanged += cbbThongSo_SelectedIndexChanged;
             }
         }
 
         private void cbbThongSo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // 1. Kiểm tra an toàn tuyệt đối
             if (!_isReady) return;
             if (cbbThongSo.SelectedIndex == -1) return;
             if (cbbThongSo.SelectedItem == null) return;
@@ -199,7 +209,6 @@ namespace Environmental_Monitoring.View.ContractContent
                         }
                     }
 
-                    // Reset ComboBox về -1 nhưng phải ngắt sự kiện để tránh lặp vô tận
                     cbbThongSo.SelectedIndexChanged -= cbbThongSo_SelectedIndexChanged;
                     cbbThongSo.SelectedIndex = -1;
                     cbbThongSo.SelectedIndexChanged += cbbThongSo_SelectedIndexChanged;
@@ -213,17 +222,14 @@ namespace Environmental_Monitoring.View.ContractContent
             var existing = _currentParams.FirstOrDefault(p => p.TenThongSo == newParam.TenThongSo);
             if (existing != null)
             {
-                // Update
                 int index = _currentParams.IndexOf(existing);
                 _currentParams[index] = newParam;
             }
             else
             {
-                // Add
                 _currentParams.Add(newParam);
             }
 
-            // Vì dùng BindingList, Grid sẽ tự cập nhật, nhưng ta bind lại cho chắc chắn nếu Grid đang null
             if (dgvParams.DataSource == null) BindParamsGrid();
         }
 
@@ -232,7 +238,6 @@ namespace Environmental_Monitoring.View.ContractContent
             if (e.RowIndex >= 0 && dgvParams.Columns[e.ColumnIndex].Name == "colDelete")
             {
                 _currentParams.RemoveAt(e.RowIndex);
-                // Nếu xóa hết, set DataSource về null để tránh lỗi hiển thị Grid
                 if (_currentParams.Count == 0) dgvParams.DataSource = null;
             }
         }
@@ -241,19 +246,13 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             if (e.RowIndex < 0 || e.RowIndex >= _currentParams.Count) return;
 
-            // Lấy object tại dòng đang chọn
             var paramToEdit = _currentParams[e.RowIndex];
 
-            // Truyền object này vào form -> Form sẽ hiểu là chê độ SỬA (EDIT)
             using (var frm = new AddEditParameterForm(paramToEdit, isFixedName: false))
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    // QUAN TRỌNG: Gán đè kết quả trả về vào đúng vị trí cũ (index cũ)
-                    // Không gọi AddParameterSafe ở đây để tránh tạo dòng mới
                     _currentParams[e.RowIndex] = frm.ResultParameter;
-
-                    // Refresh lại dòng đó trên lưới (đôi khi binding list ko tự refresh nếu object ko đổi reference)
                     dgvParams.InvalidateRow(e.RowIndex);
                 }
             }
@@ -261,11 +260,12 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void btnLuuMau_Click_1(object sender, EventArgs e)
         {
-            // 1. KIỂM TRA NHẬP LIỆU (VALIDATION)
-            if (string.IsNullOrWhiteSpace(txtNenMau.Text))
+            // 1. KIỂM TRA NHẬP LIỆU VỚI COMBOBOX
+            // SỬA: Kiểm tra cbbNenMau.Text thay vì txtNenMau.Text
+            if (string.IsNullOrWhiteSpace(cbbNenMau.Text))
             {
-                MessageBox.Show("Vui lòng nhập Tên Nền Mẫu!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNenMau.Focus();
+                MessageBox.Show("Vui lòng nhập hoặc chọn Tên Nền Mẫu!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbbNenMau.Focus();
                 return;
             }
 
@@ -290,7 +290,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 return;
             }
 
-            // 2. Kiểm tra danh sách thông số (Tùy chọn: bắt buộc phải có ít nhất 1 thông số)
             if (_currentParams.Count == 0)
             {
                 MessageBox.Show("Vui lòng thêm ít nhất một thông số!", "Thiếu dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -310,12 +309,13 @@ namespace Environmental_Monitoring.View.ContractContent
             ResultSample = new SampleDTO
             {
                 BaseTemplateID = _baseTemplateId,
-                TenNenMau = txtNenMau.Text.Trim(),
+                // SỬA: Lấy giá trị từ ComboBox
+                TenNenMau = cbbNenMau.Text.Trim(),
                 KyHieuMau = txtKyHieu.Text.Trim(),
                 ViTri = txtViTri.Text.Trim(),
                 ToaDoX = x,
                 ToaDoY = y,
-                Parameters = _currentParams.ToList() // Convert BindingList về List thường cho DTO
+                Parameters = _currentParams.ToList()
             };
 
             this.DialogResult = DialogResult.OK;
@@ -324,35 +324,29 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void btnHuy_Click_1(object sender, EventArgs e)
         {
-            // Nút Hủy (roundedButton3)
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
-        // --- CÁC NÚT KHÁC ---
-        // SỰ KIỆN 1: Bấm nút "Thêm thông số" -> Tạo mới hoàn toàn
         private void btnThemThongSo_Click_1(object sender, EventArgs e)
         {
-            // Truyền null để báo hiệu là THÊM MỚI
             using (var frm = new AddEditParameterForm(null, isFixedName: false))
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    // Logic: Luôn Add mới vào danh sách
-                    // Dùng AddParameterSafe để kiểm tra trùng tên nếu cần, hoặc Add thẳng
-                    AddParameterSafe(frm.ResultParameter); 
+                    AddParameterSafe(frm.ResultParameter);
                 }
             }
         }
 
-     
-
-        // Class phụ trợ cho ComboBox
         public class ParameterCbbItem
         {
             public string Text { get; set; }
             public DataRow RowData { get; set; }
         }
 
+        private void roundedButton1_Click(object sender, EventArgs e)
+        {
+        }
     }
 }

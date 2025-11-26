@@ -30,11 +30,9 @@
         {
             label1 = new Label();
             label2 = new Label();
-            txtNenMau = new Environmental_Monitoring.View.Components.RoundedTextBox();
             label3 = new Label();
             dgvParams = new Environmental_Monitoring.View.Components.RoundedDataGridView();
             tableLayoutPanel1 = new TableLayoutPanel();
-            btnLuuMau = new Environmental_Monitoring.View.Components.RoundedButton();
             btnHuy = new Environmental_Monitoring.View.Components.RoundedButton();
             cbbThongSo = new Environmental_Monitoring.View.Components.RoundedComboBox();
             label4 = new Label();
@@ -42,9 +40,13 @@
             txtViTri = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtKyHieu = new Environmental_Monitoring.View.Components.RoundedTextBox();
             label5 = new Label();
+            btnLuuMau = new Environmental_Monitoring.View.Components.RoundedButton();
             btnThemThongSo = new Environmental_Monitoring.View.Components.RoundedButton();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            cbbNenMau = new Environmental_Monitoring.View.Components.RoundedComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvParams).BeginInit();
             tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -66,24 +68,6 @@
             label2.Size = new Size(72, 20);
             label2.TabIndex = 1;
             label2.Text = "Thông Số";
-            // 
-            // txtNenMau
-            // 
-            txtNenMau.BorderRadius = 15;
-            txtNenMau.BorderThickness = 2;
-            txtNenMau.FocusBorderColor = Color.HotPink;
-            txtNenMau.HoverBorderColor = Color.DodgerBlue;
-            txtNenMau.Location = new Point(163, 18);
-            txtNenMau.Multiline = false;
-            txtNenMau.Name = "txtNenMau";
-            txtNenMau.NormalBorderColor = Color.Gray;
-            txtNenMau.Padding = new Padding(10);
-            txtNenMau.PasswordChar = '\0';
-            txtNenMau.PlaceholderText = "";
-            txtNenMau.ReadOnly = false;
-            txtNenMau.Size = new Size(214, 45);
-            txtNenMau.TabIndex = 2;
-            txtNenMau.UseSystemPasswordChar = false;
             // 
             // label3
             // 
@@ -124,11 +108,10 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
+            tableLayoutPanel1.Controls.Add(btnThemThongSo, 9, 3);
             tableLayoutPanel1.Controls.Add(dgvParams, 1, 5);
-            tableLayoutPanel1.Controls.Add(txtNenMau, 3, 1);
             tableLayoutPanel1.Controls.Add(label1, 1, 1);
             tableLayoutPanel1.Controls.Add(label2, 1, 3);
-            tableLayoutPanel1.Controls.Add(btnHuy, 9, 6);
             tableLayoutPanel1.Controls.Add(cbbThongSo, 3, 3);
             tableLayoutPanel1.Controls.Add(label4, 5, 3);
             tableLayoutPanel1.Controls.Add(label3, 5, 1);
@@ -136,8 +119,8 @@
             tableLayoutPanel1.Controls.Add(txtViTri, 7, 1);
             tableLayoutPanel1.Controls.Add(txtKyHieu, 9, 1);
             tableLayoutPanel1.Controls.Add(label5, 8, 1);
-            tableLayoutPanel1.Controls.Add(btnThemThongSo, 9, 3);
-            tableLayoutPanel1.Controls.Add(btnLuuMau, 7, 6);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 6);
+            tableLayoutPanel1.Controls.Add(cbbNenMau, 3, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -153,28 +136,9 @@
             tableLayoutPanel1.Size = new Size(1000, 515);
             tableLayoutPanel1.TabIndex = 6;
             // 
-            // btnLuuMau
-            // 
-            btnLuuMau.Anchor = AnchorStyles.Right;
-            btnLuuMau.BackColor = Color.SeaGreen;
-            btnLuuMau.BaseColor = Color.SeaGreen;
-            btnLuuMau.BorderColor = Color.Transparent;
-            btnLuuMau.BorderRadius = 15;
-            btnLuuMau.BorderSize = 0;
-            btnLuuMau.FlatAppearance.BorderSize = 0;
-            btnLuuMau.FlatStyle = FlatStyle.Flat;
-            btnLuuMau.ForeColor = Color.White;
-            btnLuuMau.HoverColor = Color.FromArgb(34, 139, 34);
-            btnLuuMau.Location = new Point(563, 448);
-            btnLuuMau.Name = "btnLuuMau";
-            btnLuuMau.Size = new Size(134, 45);
-            btnLuuMau.TabIndex = 11;
-            btnLuuMau.Text = "Lưu Mẫu";
-            btnLuuMau.UseVisualStyleBackColor = false;
-            // 
             // btnHuy
             // 
-            btnHuy.Anchor = AnchorStyles.Left;
+            btnHuy.Anchor = AnchorStyles.Right;
             btnHuy.BackColor = Color.Gray;
             btnHuy.BaseColor = Color.Gray;
             btnHuy.BorderColor = Color.Transparent;
@@ -184,9 +148,9 @@
             btnHuy.FlatStyle = FlatStyle.Flat;
             btnHuy.ForeColor = Color.White;
             btnHuy.HoverColor = Color.DarkGray;
-            btnHuy.Location = new Point(823, 448);
+            btnHuy.Location = new Point(816, 3);
             btnHuy.Name = "btnHuy";
-            btnHuy.Size = new Size(134, 45);
+            btnHuy.Size = new Size(135, 39);
             btnHuy.TabIndex = 13;
             btnHuy.Text = "Hủy";
             btnHuy.UseVisualStyleBackColor = false;
@@ -284,6 +248,25 @@
             label5.TabIndex = 17;
             label5.Text = "Ký Hiệu";
             // 
+            // btnLuuMau
+            // 
+            btnLuuMau.Anchor = AnchorStyles.Right;
+            btnLuuMau.BackColor = Color.SeaGreen;
+            btnLuuMau.BaseColor = Color.SeaGreen;
+            btnLuuMau.BorderColor = Color.Transparent;
+            btnLuuMau.BorderRadius = 15;
+            btnLuuMau.BorderSize = 0;
+            btnLuuMau.FlatAppearance.BorderSize = 0;
+            btnLuuMau.FlatStyle = FlatStyle.Flat;
+            btnLuuMau.ForeColor = Color.White;
+            btnLuuMau.HoverColor = Color.FromArgb(34, 139, 34);
+            btnLuuMau.Location = new Point(576, 3);
+            btnLuuMau.Name = "btnLuuMau";
+            btnLuuMau.Size = new Size(135, 39);
+            btnLuuMau.TabIndex = 11;
+            btnLuuMau.Text = "Lưu Mẫu";
+            btnLuuMau.UseVisualStyleBackColor = false;
+            // 
             // btnThemThongSo
             // 
             btnThemThongSo.Anchor = AnchorStyles.None;
@@ -304,6 +287,43 @@
             btnThemThongSo.UseVisualStyleBackColor = false;
             btnThemThongSo.Click += btnThemThongSo_Click_1;
             // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 4;
+            tableLayoutPanel1.SetColumnSpan(tableLayoutPanel2, 9);
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.Controls.Add(btnLuuMau, 2, 0);
+            tableLayoutPanel2.Controls.Add(btnHuy, 3, 0);
+            tableLayoutPanel2.Location = new Point(23, 448);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.Size = new Size(954, 45);
+            tableLayoutPanel2.TabIndex = 19;
+            // 
+            // cbbNenMau
+            // 
+            cbbNenMau.BorderRadius = 12;
+            cbbNenMau.BorderThickness = 2;
+            cbbNenMau.DataSource = null;
+            cbbNenMau.DisplayMember = "";
+            cbbNenMau.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbNenMau.FocusBorderColor = Color.FromArgb(52, 168, 83);
+            cbbNenMau.HoverBorderColor = Color.FromArgb(52, 168, 83);
+            cbbNenMau.Location = new Point(163, 18);
+            cbbNenMau.Name = "cbbNenMau";
+            cbbNenMau.NormalBorderColor = Color.LightGray;
+            cbbNenMau.SelectedIndex = -1;
+            cbbNenMau.SelectedItem = null;
+            cbbNenMau.SelectedValue = null;
+            cbbNenMau.Size = new Size(214, 45);
+            cbbNenMau.TabIndex = 20;
+            cbbNenMau.ValueMember = "";
+            // 
             // SampleInformation
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -315,6 +335,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvParams).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -322,7 +343,6 @@
 
         private Label label1;
         private Label label2;
-        private Components.RoundedTextBox txtNenMau;
         private Label label3;
         private Components.RoundedDataGridView dgvParams;
         private TableLayoutPanel tableLayoutPanel1;
@@ -335,5 +355,7 @@
         private Components.RoundedTextBox txtKyHieu;
         private Components.RoundedComboBox cbbThongSo;
         private Label label5;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Components.RoundedComboBox cbbNenMau;
     }
 }

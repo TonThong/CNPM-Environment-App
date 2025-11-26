@@ -108,10 +108,34 @@ namespace Environmental_Monitoring.View.ContractContent
         // Sự kiện nút Lưu
         private void btnOK_Click(object sender, EventArgs e)
         {
-            // Validate dữ liệu
             if (string.IsNullOrWhiteSpace(txtTenThongSo.Text))
             {
-                MessageBox.Show("Vui lòng nhập Tên thông số!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập Tên thông số!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenThongSo.Focus();
+                return;
+            }
+
+            // 2. Kiểm tra Đơn vị
+            if (string.IsNullOrWhiteSpace(txtDonVi.Text))
+            {
+                MessageBox.Show("Vui lòng nhập Đơn vị tính!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtDonVi.Focus();
+                return;
+            }
+
+            // 3. Kiểm tra Phương pháp (Nếu form có trường này)
+            if (txtPhuongPhap != null && string.IsNullOrWhiteSpace(txtPhuongPhap.Text))
+            {
+                MessageBox.Show("Vui lòng nhập Phương pháp!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPhuongPhap.Focus();
+                return;
+            }
+
+            // 4. (Tùy chọn) Kiểm tra logic Min/Max: Max không được nhỏ hơn Min
+            if (numGioiHanMax.Value < numGioiHanMin.Value)
+            {
+                MessageBox.Show("Giới hạn Tối đa không được nhỏ hơn Tối thiểu!", "Sai lệch dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                numGioiHanMax.Focus();
                 return;
             }
 
