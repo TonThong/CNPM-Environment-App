@@ -134,23 +134,24 @@
             // 
             // lbContractID
             // 
+            lbContractID.Anchor = AnchorStyles.Right;
             lbContractID.BackColor = Color.FromArgb(217, 217, 217);
             lbContractID.BaseColor = Color.FromArgb(217, 217, 217);
             lbContractID.BorderColor = Color.Transparent;
             lbContractID.BorderRadius = 25;
             lbContractID.BorderSize = 0;
-            lbContractID.Dock = DockStyle.Fill;
+            tableLayoutPanel1.SetColumnSpan(lbContractID, 2);
             lbContractID.Enabled = false;
             lbContractID.FlatAppearance.BorderSize = 0;
             lbContractID.FlatStyle = FlatStyle.Flat;
             lbContractID.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             lbContractID.ForeColor = Color.Black;
             lbContractID.HoverColor = Color.FromArgb(34, 139, 34);
-            lbContractID.Location = new Point(912, 26);
+            lbContractID.Location = new Point(633, 26);
             lbContractID.Name = "lbContractID";
-            lbContractID.Size = new Size(273, 52);
+            lbContractID.Size = new Size(552, 52);
             lbContractID.TabIndex = 52;
-            lbContractID.Text = "Mã Hợp Đồng: ";
+            lbContractID.Text = "Khách Hàng:";
             lbContractID.UseVisualStyleBackColor = false;
             // 
             // btnCancel
@@ -206,13 +207,13 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
             tableLayoutPanel1.Controls.Add(roundedButton2, 4, 7);
-            tableLayoutPanel1.Controls.Add(lbContractID, 5, 1);
             tableLayoutPanel1.Controls.Add(btnContracts, 1, 1);
             tableLayoutPanel1.Controls.Add(roundedDataGridView1, 3, 3);
             tableLayoutPanel1.Controls.Add(label1, 1, 2);
             tableLayoutPanel1.Controls.Add(label2, 3, 2);
             tableLayoutPanel1.Controls.Add(btnCancel, 5, 7);
             tableLayoutPanel1.Controls.Add(flpTemplates, 1, 3);
+            tableLayoutPanel1.Controls.Add(lbContractID, 4, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";

@@ -98,6 +98,8 @@ namespace Environmental_Monitoring.View.ContractContent
             dgvParams.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Giới hạn", DataPropertyName = "HienThiMinMax", Width = 90 });
             dgvParams.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Phương pháp", DataPropertyName = "PhuongPhap", Width = 140 });
 
+            dgvParams.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Phụ trách", DataPropertyName = "PhuTrach", Width = 100 });
+
             DataGridViewButtonColumn btnDel = new DataGridViewButtonColumn
             {
                 Name = "colDelete",
@@ -253,13 +255,39 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void btnLuuMau_Click_1(object sender, EventArgs e)
         {
-            // Nút Lưu Mẫu (Tìm tên nút của bạn và gán sự kiện này vào)
-            // Trong code cũ tên là btnLuuMau hoặc roundedButton1
-            // Bạn cần vào Designer gán sự kiện Click của nút Lưu vào hàm này
+            // 1. KIỂM TRA NHẬP LIỆU (VALIDATION)
+            if (string.IsNullOrWhiteSpace(txtNenMau.Text))
+            {
+                MessageBox.Show("Vui lòng nhập Tên Nền Mẫu!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNenMau.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtViTri.Text))
+            {
+                MessageBox.Show("Vui lòng nhập Vị Trí Quan Trắc!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtViTri.Focus();
+                return;
+            }
 
             if (string.IsNullOrWhiteSpace(txtKyHieu.Text))
             {
-                MessageBox.Show("Vui lòng nhập Ký hiệu mẫu!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập Ký Hiệu!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtKyHieu.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtToaDo.Text))
+            {
+                MessageBox.Show("Vui lòng nhập Tọa Độ!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtToaDo.Focus();
+                return;
+            }
+
+            // 2. Kiểm tra danh sách thông số (Tùy chọn: bắt buộc phải có ít nhất 1 thông số)
+            if (_currentParams.Count == 0)
+            {
+                MessageBox.Show("Vui lòng thêm ít nhất một thông số!", "Thiếu dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

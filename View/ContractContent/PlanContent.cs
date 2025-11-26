@@ -202,12 +202,14 @@ namespace Environmental_Monitoring.View.ContractContent
         }
 
         // Tải danh sách nút bấm chọn mẫu môi trường
+        // Thay thế hàm LoadSampleTemplates cũ bằng hàm này
         private void LoadSampleTemplates()
         {
             if (flpTemplates == null) return;
 
             try
             {
+                // 1. Lấy tất cả template từ DB
                 string q = "SELECT TemplateID, TenMau FROM SampleTemplates WHERE TenMau NOT LIKE 'Template cho %'";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q);
 
@@ -215,35 +217,62 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 if (dt == null || dt.Rows.Count == 0) return;
 
+                // 2. Định nghĩa danh sách 3 môi trường cố định cần hiển thị
+                // Key: Tên hiển thị chuẩn, Value: Dữ liệu tìm được từ DB
+                var targetEnvs = new string[] { "Air Environment", "Water Environment", "Soil Environment" };
+                var foundTemplates = new Dictionary<string, (int id, string originalName)>();
+
+                // 3. Quét DB để tìm ID tương ứng cho từng môi trường
                 foreach (DataRow row in dt.Rows)
                 {
                     int id = Convert.ToInt32(row["TemplateID"]);
                     string nameGoc = row["TenMau"].ToString();
-                    string nameHienThi = GetLocalizedTemplateName(nameGoc);
+                    string nameChuan = GetLocalizedTemplateName(nameGoc); // Hàm này sẽ quy về Air/Water/Soil
 
-                    // Tạo nút bấm
-                    Button btn = new Button();
-                    btn.Text = nameHienThi;
-                    btn.Tag = new SampleTemplateDisplayItem { TemplateID = id, TenMauHienThi = nameHienThi, TenMauGoc = nameGoc };
+                    // Nếu tên thuộc 1 trong 3 loại kia VÀ chưa tìm thấy trước đó (tránh trùng lặp)
+                    if (targetEnvs.Contains(nameChuan) && !foundTemplates.ContainsKey(nameChuan))
+                    {
+                        foundTemplates[nameChuan] = (id, nameGoc);
+                    }
+                }
 
-                    // Style nút: Giảm kích thước còn 1/3 (150x40) như yêu cầu
-                    btn.Size = new Size(200, 40);
-                    btn.BackColor = Color.White;
-                    btn.ForeColor = Color.DarkGreen;
-                    btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                    btn.FlatStyle = FlatStyle.Flat;
-                    btn.FlatAppearance.BorderColor = Color.LightGray;
-                    btn.FlatAppearance.BorderSize = 1;
-                    btn.Cursor = Cursors.Hand;
-                    btn.Margin = new Padding(8);
+                // 4. Tạo nút bấm theo đúng thứ tự cố định (Air -> Water -> Soil)
+                foreach (string envName in targetEnvs)
+                {
+                    // Chỉ tạo nút nếu trong DB có template tương ứng
+                    if (foundTemplates.ContainsKey(envName))
+                    {
+                        var data = foundTemplates[envName];
 
-                    // Hiệu ứng di chuột
-                    btn.MouseEnter += (s, e) => { btn.BackColor = Color.FromArgb(220, 248, 220); };
-                    btn.MouseLeave += (s, e) => { btn.BackColor = Color.White; };
+                        Button btn = new Button();
+                        btn.Text = envName; // Luôn hiển thị tên chuẩn (Air Environment...)
 
-                    btn.Click += TemplateButton_Click;
+                        // Tag lưu ID thật lấy từ DB
+                        btn.Tag = new SampleTemplateDisplayItem
+                        {
+                            TemplateID = data.id,
+                            TenMauHienThi = envName,
+                            TenMauGoc = data.originalName
+                        };
 
-                    flpTemplates.Controls.Add(btn);
+                        // --- Style nút bấm (Giữ nguyên style cũ) ---
+                        btn.Size = new Size(200, 40);
+                        btn.BackColor = Color.White;
+                        btn.ForeColor = Color.DarkGreen;
+                        btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                        btn.FlatStyle = FlatStyle.Flat;
+                        btn.FlatAppearance.BorderColor = Color.LightGray;
+                        btn.FlatAppearance.BorderSize = 1;
+                        btn.Cursor = Cursors.Hand;
+                        btn.Margin = new Padding(8);
+
+                        btn.MouseEnter += (s, e) => { btn.BackColor = Color.FromArgb(220, 248, 220); };
+                        btn.MouseLeave += (s, e) => { btn.BackColor = Color.White; };
+
+                        btn.Click += TemplateButton_Click;
+
+                        flpTemplates.Controls.Add(btn);
+                    }
                 }
             }
             catch (Exception ex)
@@ -317,6 +346,11 @@ namespace Environmental_Monitoring.View.ContractContent
         // Hàm cập nhật dữ liệu cho Grid
         private void BindMainGrid()
         {
+
+            _listSamples = _listSamples.OrderBy(x => x.TenNenMau)
+                               .ThenBy(x => x.KyHieuMau)
+                               .ToList();
+
             roundedDataGridView1.DataSource = null;
             roundedDataGridView1.DataSource = _listSamples;
         }
@@ -411,7 +445,13 @@ namespace Environmental_Monitoring.View.ContractContent
         public void UpdateUIText()
         {
             culture = Thread.CurrentThread.CurrentUICulture;
-            if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + (currentContractId != 0 ? " " + currentContractId : "");
+            //if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + (currentContractId != 0 ? " " + currentContractId : "");
+
+            if (currentContractId == 0)
+            {
+                lbContractID.Text = "Khách Hàng:"; // Hoặc lấy từ Resource nếu muốn đa ngôn ngữ
+            }
+
             if (btnContracts != null) btnContracts.Text = rm.GetString("Plan_ContractListButton", culture);
             if (roundedButton2 != null) roundedButton2.Text = rm.GetString("Button_Save", culture);
             LoadSampleTemplates();
@@ -422,14 +462,30 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
+                // Query lấy danh sách hợp đồng cho Popup (Giữ nguyên)
                 string query = "SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked FROM Contracts WHERE TienTrinh = 1";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
+
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
                     popup.ContractSelected += (contractId) =>
                     {
                         this.currentContractId = contractId;
-                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
+
+                        // --- THÊM ĐOẠN NÀY ĐỂ LẤY TÊN KHÁCH HÀNG ---
+                        string cusQuery = @"
+                    SELECT cus.TenDoanhNghiep 
+                    FROM Contracts c
+                    JOIN Customers cus ON c.CustomerID = cus.CustomerID
+                    WHERE c.ContractID = @cid";
+
+                        object result = DataProvider.Instance.ExecuteScalar(cusQuery, new object[] { contractId });
+                        string tenCongTy = result != null ? result.ToString() : "Không xác định";
+
+                        // Hiển thị lên Label
+                        lbContractID.Text = "Khách Hàng: " + tenCongTy;
+                        // -------------------------------------------
+
                         UpdateSaveButtonState();
                     };
                     popup.ShowDialog();
