@@ -128,7 +128,6 @@
             tableLayoutPanel1.Controls.Add(txtNenMau, 3, 1);
             tableLayoutPanel1.Controls.Add(label1, 1, 1);
             tableLayoutPanel1.Controls.Add(label2, 1, 3);
-            tableLayoutPanel1.Controls.Add(btnLuuMau, 7, 6);
             tableLayoutPanel1.Controls.Add(btnHuy, 9, 6);
             tableLayoutPanel1.Controls.Add(cbbThongSo, 3, 3);
             tableLayoutPanel1.Controls.Add(label4, 5, 3);
@@ -138,6 +137,7 @@
             tableLayoutPanel1.Controls.Add(txtKyHieu, 9, 1);
             tableLayoutPanel1.Controls.Add(label5, 8, 1);
             tableLayoutPanel1.Controls.Add(btnThemThongSo, 9, 3);
+            tableLayoutPanel1.Controls.Add(btnLuuMau, 7, 6);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -155,7 +155,7 @@
             // 
             // btnLuuMau
             // 
-            btnLuuMau.Anchor = AnchorStyles.None;
+            btnLuuMau.Anchor = AnchorStyles.Right;
             btnLuuMau.BackColor = Color.SeaGreen;
             btnLuuMau.BaseColor = Color.SeaGreen;
             btnLuuMau.BorderColor = Color.Transparent;
@@ -165,7 +165,7 @@
             btnLuuMau.FlatStyle = FlatStyle.Flat;
             btnLuuMau.ForeColor = Color.White;
             btnLuuMau.HoverColor = Color.FromArgb(34, 139, 34);
-            btnLuuMau.Location = new Point(553, 448);
+            btnLuuMau.Location = new Point(563, 448);
             btnLuuMau.Name = "btnLuuMau";
             btnLuuMau.Size = new Size(134, 45);
             btnLuuMau.TabIndex = 11;
@@ -174,7 +174,7 @@
             // 
             // btnHuy
             // 
-            btnHuy.Anchor = AnchorStyles.None;
+            btnHuy.Anchor = AnchorStyles.Left;
             btnHuy.BackColor = Color.Gray;
             btnHuy.BaseColor = Color.Gray;
             btnHuy.BorderColor = Color.Transparent;
@@ -184,7 +184,7 @@
             btnHuy.FlatStyle = FlatStyle.Flat;
             btnHuy.ForeColor = Color.White;
             btnHuy.HoverColor = Color.DarkGray;
-            btnHuy.Location = new Point(833, 448);
+            btnHuy.Location = new Point(823, 448);
             btnHuy.Name = "btnHuy";
             btnHuy.Size = new Size(134, 45);
             btnHuy.TabIndex = 13;
@@ -296,9 +296,9 @@
             btnThemThongSo.FlatStyle = FlatStyle.Flat;
             btnThemThongSo.ForeColor = Color.White;
             btnThemThongSo.HoverColor = Color.FromArgb(34, 139, 34);
-            btnThemThongSo.Location = new Point(833, 84);
+            btnThemThongSo.Location = new Point(823, 84);
             btnThemThongSo.Name = "btnThemThongSo";
-            btnThemThongSo.Size = new Size(134, 45);
+            btnThemThongSo.Size = new Size(154, 45);
             btnThemThongSo.TabIndex = 12;
             btnThemThongSo.Text = "Thêm Thông Số";
             btnThemThongSo.UseVisualStyleBackColor = false;
