@@ -227,7 +227,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     btn.Tag = new SampleTemplateDisplayItem { TemplateID = id, TenMauHienThi = nameHienThi, TenMauGoc = nameGoc };
 
                     // Style nút: Giảm kích thước còn 1/3 (150x40) như yêu cầu
-                    btn.Size = new Size(170, 40);
+                    btn.Size = new Size(200, 40);
                     btn.BackColor = Color.White;
                     btn.ForeColor = Color.DarkGreen;
                     btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
