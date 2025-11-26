@@ -5,10 +5,10 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Environmental_Monitoring.Controller.Data;
+using Environmental_Monitoring.Model;
 using System.Resources;
 using System.Globalization;
 using System.Threading;
-using Environmental_Monitoring.Model;
 using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.View.Components;
 
@@ -16,12 +16,8 @@ namespace Environmental_Monitoring.View.ContractContent
 {
     public partial class PlanContent : UserControl
     {
-        private int currentContractId;
-        private const string CHECKBOX_COLUMN_NAME = "SelectParameter";
-
-        private Dictionary<int, HashSet<int>> _selectedParamsMap = new Dictionary<int, HashSet<int>>();
-        private int _currentViewingTemplateId = -1;
-
+        private int currentContractId = 0;
+        private List<SampleDTO> _listSamples = new List<SampleDTO>();
         private ResourceManager rm;
         private CultureInfo culture;
 
@@ -31,542 +27,402 @@ namespace Environmental_Monitoring.View.ContractContent
             InitializeLocalization();
         }
 
+        // Khởi tạo đa ngôn ngữ
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(PlanContent).Assembly);
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        public void PerformSearch(string keyword)
-        {
-            if (roundedDataGridView1.DataSource is DataTable dt)
-            {
-                try
-                {
-                    if (string.IsNullOrWhiteSpace(keyword))
-                    {
-                        dt.DefaultView.RowFilter = string.Empty;
-                    }
-                    else
-                    {
-                        string safeKeyword = keyword.Replace("'", "''")
-                                                    .Replace("[", "[[]")
-                                                    .Replace("]", "[]]")
-                                                    .Replace("%", "[%]")
-                                                    .Replace("*", "[*]")
-                                                    .Trim();
-
-                        string lowerKey = keyword.ToLower();
-                        List<string> filterParts = new List<string>();
-
-                        filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
-                        filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
-                        filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
-                        filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
-                        filterParts.Add($"PhuTrach LIKE '%{safeKeyword}%'");
-
-                        if (lowerKey.Contains("hiện") || lowerKey.Contains("hien") ||
-                            lowerKey.Contains("trường") || lowerKey.Contains("truong") ||
-                            lowerKey.Contains("scene") || lowerKey.Contains("field"))
-                        {
-                            filterParts.Add("PhuTrach = 'HienTruong'");
-                            filterParts.Add("PhuTrach = 'Field'");
-                        }
-
-                        if (lowerKey.Contains("thí") || lowerKey.Contains("thi") ||
-                            lowerKey.Contains("nghiệm") || lowerKey.Contains("nghiem") ||
-                            lowerKey.Contains("lab"))
-                        {
-                            filterParts.Add("PhuTrach = 'ThiNghiem'");
-                            filterParts.Add("PhuTrach = 'Laboratory'");
-                        }
-
-                        dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
-                    }
-
-                    if (_currentViewingTemplateId != -1 && _selectedParamsMap.ContainsKey(_currentViewingTemplateId))
-                    {
-                        HashSet<int> selectedForThis = _selectedParamsMap[_currentViewingTemplateId];
-
-                        foreach (DataGridViewRow row in roundedDataGridView1.Rows)
-                        {
-                            if (row.Cells["ParameterID"].Value != null)
-                            {
-                                int pId = Convert.ToInt32(row.Cells["ParameterID"].Value);
-                                bool isSelected = selectedForThis.Contains(pId);
-                                row.Cells[CHECKBOX_COLUMN_NAME].Value = isSelected;
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Filter Error: " + ex.Message);
-                }
-            }
-        }
-
-        private void ShowAlert(string message, AlertPanel.AlertType type)
-        {
-            var mainLayout = this.FindForm() as Mainlayout;
-            if (mainLayout != null)
-            {
-                mainLayout.ShowGlobalAlert(message, type);
-            }
-            else
-            {
-                string title = (type == AlertPanel.AlertType.Success) ? rm.GetString("Alert_SuccessTitle", culture) : rm.GetString("Alert_ErrorTitle", culture);
-                MessageBox.Show(message, title, MessageBoxButtons.OK,
-                    (type == AlertPanel.AlertType.Success) ? MessageBoxIcon.Information : MessageBoxIcon.Error);
-            }
-        }
-
-        private string GetLocalizedDepartment(string dbValue)
-        {
-            if (string.IsNullOrEmpty(dbValue)) return "";
-            if (dbValue.Equals("HienTruong", StringComparison.OrdinalIgnoreCase) || dbValue.Equals("Field", StringComparison.OrdinalIgnoreCase))
-                return rm.GetString("Dept_Field", culture) ?? "Field";
-            if (dbValue.Equals("ThiNghiem", StringComparison.OrdinalIgnoreCase) || dbValue.Equals("Laboratory", StringComparison.OrdinalIgnoreCase))
-                return rm.GetString("Dept_Lab", culture) ?? "Laboratory";
-            return dbValue;
-        }
-
-        // --- CẬP NHẬT: Hàm dịch tên Template để hiển thị ---
-        private string GetLocalizedTemplateName(string dbName)
-        {
-            if (string.IsNullOrEmpty(dbName)) return "";
-
-            // Nếu đang là tiếng Việt thì giữ nguyên (vì DB lưu tiếng Việt)
-            if (culture.Name == "vi-VN") return dbName;
-
-            string lowerName = dbName.ToLower();
-
-            // Xử lý mẫu tên dài: "Template cho HD-xx - [Loại]"
-            if (lowerName.StartsWith("template cho"))
-            {
-                // Tách phần loại môi trường phía sau dấu " - "
-                string[] parts = dbName.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length >= 2)
-                {
-                    string prefix = parts[0].Replace("Template cho", "Template for"); // Dịch prefix
-                    string coreType = parts[1];
-                    string translatedCore = TranslateCoreTemplateName(coreType); // Dịch phần lõi
-                    return $"{prefix} - {translatedCore}";
-                }
-            }
-
-            return TranslateCoreTemplateName(dbName);
-        }
-
-        private string TranslateCoreTemplateName(string name)
-        {
-            string lower = name.ToLower();
-            if (lower.Contains("không khí") || lower.Contains("air"))
-                return rm.GetString("Template_Air", culture) ?? "Air Environment";
-            if (lower.Contains("nước") || lower.Contains("water"))
-                return rm.GetString("Template_Water", culture) ?? "Water Environment";
-            if (lower.Contains("đất") || lower.Contains("soil"))
-                return rm.GetString("Template_Soil", culture) ?? "Soil Environment";
-            if (lower.Contains("tiếng ồn") || lower.Contains("độ rung") || lower.Contains("noise") || lower.Contains("vibration"))
-                return rm.GetString("Template_Noise", culture) ?? "Noise & Vibration";
-
-            return name;
-        }
-
-        public void UpdateUIText()
-        {
-            culture = Thread.CurrentThread.CurrentUICulture;
-
-            if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + (currentContractId != 0 ? " " + currentContractId : "");
-            if (btnContracts != null) btnContracts.Text = rm.GetString("Plan_ContractListButton", culture);
-            if (btnAddParameter != null) btnAddParameter.Text = rm.GetString("Plan_AddParamButton", culture);
-            if (roundedButton2 != null) roundedButton2.Text = rm.GetString("Button_Save", culture);
-
-            var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
-            if (btnCancel != null) btnCancel.Text = rm.GetString("Button_Cancel", culture);
-
-            if (label1 != null) label1.Text = rm.GetString("Plan_SampleTemplatesLabel", culture);
-            if (label2 != null) label2.Text = rm.GetString("Plan_ParametersLabel", culture);
-
-            UpdateGridHeaders();
-
-            // Reload lại listbox để cập nhật ngôn ngữ hiển thị
-            if (currentContractId != 0)
-            {
-                // Nếu muốn reload tên template theo ngôn ngữ mới ngay lập tức:
-                LoadSampleTemplates();
-            }
-        }
-
-        private void UpdateGridHeaders()
-        {
-            if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
-                roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].HeaderText = rm.GetString("Grid_Select", culture);
-            if (roundedDataGridView1.Columns.Contains("TenThongSo"))
-                roundedDataGridView1.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
-            if (roundedDataGridView1.Columns.Contains("DonVi"))
-                roundedDataGridView1.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
-            if (roundedDataGridView1.Columns.Contains("GioiHanMin"))
-                roundedDataGridView1.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
-            if (roundedDataGridView1.Columns.Contains("GioiHanMax"))
-                roundedDataGridView1.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
-            if (roundedDataGridView1.Columns.Contains("PhuTrach"))
-                roundedDataGridView1.Columns["PhuTrach"].HeaderText = rm.GetString("Grid_Department", culture);
-        }
-
-        private void AddCheckboxColumnToGrid()
-        {
-            if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME)) return;
-
-            Color defaultBackColor = roundedDataGridView1.DefaultCellStyle.BackColor;
-            if (defaultBackColor.IsEmpty) defaultBackColor = Color.White;
-
-            DataGridViewCheckBoxColumn chkCol = new DataGridViewCheckBoxColumn
-            {
-                Name = CHECKBOX_COLUMN_NAME,
-                HeaderText = rm.GetString("Grid_Select", culture),
-                Width = 60,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
-                Frozen = true,
-                DefaultCellStyle = { SelectionBackColor = defaultBackColor, Alignment = DataGridViewContentAlignment.MiddleCenter }
-            };
-            roundedDataGridView1.Columns.Add(chkCol);
-            roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].DisplayIndex = 0;
-        }
-
+        // Sự kiện khi UserControl được tải
         private void PlanContent_Load(object sender, EventArgs e)
         {
-            roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            // Tìm FlowLayoutPanel chứa các nút mẫu
+            flpTemplates = this.Controls.Find("flpTemplates", true).FirstOrDefault() as FlowLayoutPanel;
 
-            btnAddParameter.Click -= btnAddParameter_Click;
-            btnAddParameter.Click += btnAddParameter_Click;
+            // Cấu hình bảng hiển thị (Grid)
+            SetupMainGrid();
 
+            // Đăng ký sự kiện cho nút Lưu để tránh gán trùng lặp
             if (roundedButton2 != null)
             {
-                roundedButton2.Click -= roundedButton2_Click;
-                roundedButton2.Click += roundedButton2_Click;
+                roundedButton2.Click -= btnSaveContract_Click;
+                roundedButton2.Click += btnSaveContract_Click;
             }
 
-            roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
-            roundedDataGridView1.CellContentClick -= roundedDataGridView1_CellContentClick;
-            roundedDataGridView1.CellContentClick += roundedDataGridView1_CellContentClick;
-            roundedDataGridView1.CurrentCellDirtyStateChanged += RoundedDataGridView1_CurrentCellDirtyStateChanged;
-            roundedDataGridView1.CellMouseEnter += roundedDataGridView1_CellMouseEnter;
-            roundedDataGridView1.CellMouseLeave += roundedDataGridView1_CellMouseLeave;
-            roundedDataGridView1.CellFormatting += roundedDataGridView1_CellFormatting;
-
-            roundedDataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            roundedDataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            roundedDataGridView1.RowHeadersVisible = false;
-            roundedDataGridView1.AllowUserToAddRows = false;
-
-            AddCheckboxColumnToGrid();
-
-            if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
-            {
-                roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
-            }
-
-            checkedListBox1.CheckOnClick = false;
-            checkedListBox1.SelectionMode = SelectionMode.One;
-            checkedListBox1.Cursor = Cursors.Hand;
-
-            checkedListBox1.SelectedIndexChanged -= checkedListBox1_SelectedIndexChanged_1;
-            checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged_1;
-
-            checkedListBox1.ItemCheck -= checkedListBox1_ItemCheck;
-            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
-
-            checkedListBox1.MouseUp -= CheckedListBox1_MouseUp;
-
-            try
-            {
-                label1.Visible = true; label1.ForeColor = Color.Black; label1.BringToFront();
-                label2.Visible = true; label2.ForeColor = Color.Black; label2.BringToFront();
-            }
-            catch { }
-
-            roundedDataGridView1.DefaultCellStyle.ForeColor = Color.Black;
-
+            // Đăng ký sự kiện nút Hủy
             var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
             if (btnCancel != null) btnCancel.Click += btnCancel_Click;
 
+            // Tải danh sách các mẫu môi trường lên giao diện
+            LoadSampleTemplates();
+
+            // Cập nhật ngôn ngữ và trạng thái nút
             UpdateUIText();
-            ResetForm();
-
-            if (roundedButton2 != null) roundedButton2.Visible = true;
-            if (btnAddParameter != null) btnAddParameter.Visible = true;
-            if (btnCancel != null) btnCancel.Visible = true;
+            UpdateSaveButtonState();
         }
 
-        private void UpdateAddButtonState()
+        // Cấu hình hiển thị cho bảng dữ liệu chính (DataGridView)
+        private void SetupMainGrid()
         {
-            bool isContractSelected = (currentContractId != 0);
-            bool isAnyTemplateChecked = (checkedListBox1.CheckedItems.Count > 0);
+            roundedDataGridView1.AutoGenerateColumns = false;
+            roundedDataGridView1.AllowUserToAddRows = false;
+            roundedDataGridView1.Columns.Clear();
+            roundedDataGridView1.RowHeadersVisible = false;
+            roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            if (btnAddParameter != null)
+            roundedDataGridView1.GridColor = Color.Black; // Đặt màu lưới là Đen
+            roundedDataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+
+            // --- 1. CỘT NỀN MẪU (Đưa lên đầu tiên, căn giữa để gộp ô đẹp hơn) ---
+            var colNenMau = new DataGridViewTextBoxColumn
             {
-                btnAddParameter.Enabled = (isContractSelected && isAnyTemplateChecked);
+                HeaderText = "Nền mẫu",
+                DataPropertyName = "TenNenMau",
+                Width = 150
+            };
+            colNenMau.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // Căn giữa
+            roundedDataGridView1.Columns.Add(colNenMau);
+
+            // --- 2. CÁC CỘT CÒN LẠI ---
+            roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ký hiệu", DataPropertyName = "KyHieuMau", Width = 80 });
+            roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Vị trí lấy mẫu", DataPropertyName = "ViTri", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+            roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "SL Thông số", Name = "colCount", Width = 100 });
+
+            // Cột nút Xóa
+            DataGridViewButtonColumn btnDel = new DataGridViewButtonColumn();
+            btnDel.Name = "colDelete";
+            btnDel.HeaderText = "Xóa";
+            btnDel.Text = "X";
+            btnDel.UseColumnTextForButtonValue = true;
+            btnDel.Width = 50;
+            btnDel.FlatStyle = FlatStyle.Flat;
+            btnDel.DefaultCellStyle.ForeColor = Color.Red;
+            roundedDataGridView1.Columns.Add(btnDel);
+
+            // Style chung: Chữ đen, Header in đậm
+            roundedDataGridView1.DefaultCellStyle.ForeColor = Color.Black;
+            roundedDataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
+            // Đăng ký lại các sự kiện click, format
+            roundedDataGridView1.CellContentClick -= roundedDataGridView1_CellContentClick;
+            roundedDataGridView1.CellContentClick += roundedDataGridView1_CellContentClick;
+
+            roundedDataGridView1.CellFormatting -= roundedDataGridView1_CellFormatting;
+            roundedDataGridView1.CellFormatting += roundedDataGridView1_CellFormatting;
+
+            roundedDataGridView1.CellDoubleClick -= roundedDataGridView1_CellDoubleClick;
+            roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
+
+            // --- QUAN TRỌNG: Đăng ký sự kiện vẽ lại ô để thực hiện Gộp ô (Merge) ---
+            roundedDataGridView1.CellPainting -= roundedDataGridView1_CellPainting;
+            roundedDataGridView1.CellPainting += roundedDataGridView1_CellPainting;
+        }
+
+        // Hàm vẽ lại ô để Gộp các dòng giống nhau ở cột "Nền mẫu"
+        // Thay thế hàm roundedDataGridView1_CellPainting cũ bằng hàm này
+        private void roundedDataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            // 1. Chỉ xử lý cột "Nền mẫu" (Index 0)
+            if (e.RowIndex < 0 || e.ColumnIndex != 0) return;
+
+            e.Handled = true; // Ngăn Grid vẽ mặc định để ta tự vẽ
+
+            // 2. Vẽ nền trắng
+            using (Brush backBrush = new SolidBrush(Color.White))
+            {
+                e.Graphics.FillRectangle(backBrush, e.CellBounds);
             }
 
-            if (roundedButton2 != null)
+            // 3. Logic tìm nhóm gộp (Giữ nguyên logic cũ)
+            string currentValue = e.Value?.ToString();
+
+            int startIndex = e.RowIndex;
+            while (startIndex > 0)
             {
-                roundedButton2.Enabled = isContractSelected;
+                var prevValue = roundedDataGridView1.Rows[startIndex - 1].Cells[e.ColumnIndex].Value?.ToString();
+                if (prevValue != currentValue) break;
+                startIndex--;
+            }
+
+            int endIndex = e.RowIndex;
+            while (endIndex < roundedDataGridView1.Rows.Count - 1)
+            {
+                var nextValue = roundedDataGridView1.Rows[endIndex + 1].Cells[e.ColumnIndex].Value?.ToString();
+                if (nextValue != currentValue) break;
+                endIndex++;
+            }
+
+            // 4. Tính toán vị trí vẽ chữ (Giữ nguyên logic cũ)
+            int totalHeight = 0;
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                totalHeight += roundedDataGridView1.Rows[i].Height;
+            }
+
+            int offsetY = 0;
+            for (int i = startIndex; i < e.RowIndex; i++)
+            {
+                offsetY -= roundedDataGridView1.Rows[i].Height;
+            }
+
+            Rectangle groupRect = new Rectangle(
+                e.CellBounds.X,
+                e.CellBounds.Y + offsetY,
+                e.CellBounds.Width,
+                totalHeight);
+
+            // 5. Vẽ chữ
+            TextFormatFlags flags = TextFormatFlags.HorizontalCenter |
+                                    TextFormatFlags.VerticalCenter |
+                                    TextFormatFlags.WordBreak |
+                                    TextFormatFlags.PreserveGraphicsClipping;
+
+            TextRenderer.DrawText(e.Graphics,
+                                  e.FormattedValue?.ToString(),
+                                  e.CellStyle.Font,
+                                  groupRect,
+                                  e.CellStyle.ForeColor,
+                                  flags);
+
+            // 6. VẼ ĐƯỜNG KẺ MÀU ĐEN (Sửa đoạn này)
+            // Dùng Color.Black thay vì Color.LightGray
+            using (Pen gridPen = new Pen(Color.Black, 1))
+            {
+                // Vẽ đường dọc bên phải (ngăn cách với cột Ký hiệu)
+                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+
+                // Vẽ đường ngang bên dưới (CHỈ vẽ nếu là dòng cuối cùng của nhóm)
+                // Đây chính là logic "trừ các dòng cùng cột ô của cột nền mẫu"
+                if (e.RowIndex == endIndex)
+                {
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
             }
         }
 
-        private void roundedDataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        // Tải danh sách nút bấm chọn mẫu môi trường
+        private void LoadSampleTemplates()
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 &&
-                roundedDataGridView1.Columns[e.ColumnIndex].Name == "PhuTrach" && e.Value != null)
-            {
-                string originalValue = e.Value.ToString();
-                e.Value = GetLocalizedDepartment(originalValue);
-                e.FormattingApplied = true;
-            }
-        }
+            if (flpTemplates == null) return;
 
-        private void roundedDataGridView1_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && roundedDataGridView1.Columns[e.ColumnIndex].Name == CHECKBOX_COLUMN_NAME)
-                roundedDataGridView1.Cursor = Cursors.Hand;
-        }
-
-        private void roundedDataGridView1_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            roundedDataGridView1.Cursor = Cursors.Default;
-        }
-
-        private void CheckedListBox1_MouseUp(object sender, MouseEventArgs e)
-        {
-            int index = checkedListBox1.IndexFromPoint(e.Location);
-            if (index != -1)
-            {
-                var item = checkedListBox1.Items[index] as SampleTemplateDisplayItem;
-                if (item != null) LoadParametersForSingleTemplate(item.TemplateID);
-            }
-        }
-
-        private void ResetForm()
-        {
-            currentContractId = 0;
-            _selectedParamsMap.Clear();
-            _currentViewingTemplateId = -1;
-            if (rm != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
-            checkedListBox1.DataSource = null;
-            checkedListBox1.Items.Clear();
-            roundedDataGridView1.DataSource = null;
-            if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
-                roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
-            ClearParameterControls();
-            UpdateAddButtonState();
-        }
-
-        private void RoundedDataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-        {
-            if (roundedDataGridView1.IsCurrentCellDirty) roundedDataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
-        }
-
-        private void roundedDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex != roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Index) return;
-            if (_currentViewingTemplateId == -1) return;
-
-            bool isChecked = Convert.ToBoolean(roundedDataGridView1.Rows[e.RowIndex].Cells[CHECKBOX_COLUMN_NAME].Value);
-            int paramId = Convert.ToInt32(roundedDataGridView1.Rows[e.RowIndex].Cells["ParameterID"].Value);
-
-            if (!_selectedParamsMap.ContainsKey(_currentViewingTemplateId))
-                _selectedParamsMap[_currentViewingTemplateId] = new HashSet<int>();
-
-            if (isChecked) _selectedParamsMap[_currentViewingTemplateId].Add(paramId);
-            else _selectedParamsMap[_currentViewingTemplateId].Remove(paramId);
-        }
-
-        private void checkedListBox1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
             try
             {
-                if (checkedListBox1.SelectedItem is SampleTemplateDisplayItem selectedItem)
+                string q = "SELECT TemplateID, TenMau FROM SampleTemplates WHERE TenMau NOT LIKE 'Template cho %'";
+                DataTable dt = DataProvider.Instance.ExecuteQuery(q);
+
+                flpTemplates.Controls.Clear();
+
+                if (dt == null || dt.Rows.Count == 0) return;
+
+                foreach (DataRow row in dt.Rows)
                 {
-                    LoadParametersForSingleTemplate(selectedItem.TemplateID);
+                    int id = Convert.ToInt32(row["TemplateID"]);
+                    string nameGoc = row["TenMau"].ToString();
+                    string nameHienThi = GetLocalizedTemplateName(nameGoc);
+
+                    // Tạo nút bấm
+                    Button btn = new Button();
+                    btn.Text = nameHienThi;
+                    btn.Tag = new SampleTemplateDisplayItem { TemplateID = id, TenMauHienThi = nameHienThi, TenMauGoc = nameGoc };
+
+                    // Style nút: Giảm kích thước còn 1/3 (150x40) như yêu cầu
+                    btn.Size = new Size(170, 40);
+                    btn.BackColor = Color.White;
+                    btn.ForeColor = Color.DarkGreen;
+                    btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.FlatAppearance.BorderColor = Color.LightGray;
+                    btn.FlatAppearance.BorderSize = 1;
+                    btn.Cursor = Cursors.Hand;
+                    btn.Margin = new Padding(8);
+
+                    // Hiệu ứng di chuột
+                    btn.MouseEnter += (s, e) => { btn.BackColor = Color.FromArgb(220, 248, 220); };
+                    btn.MouseLeave += (s, e) => { btn.BackColor = Color.White; };
+
+                    btn.Click += TemplateButton_Click;
+
+                    flpTemplates.Controls.Add(btn);
                 }
-            }
-            catch { }
-        }
-
-        private void LoadParametersForSingleTemplate(int templateId)
-        {
-            try
-            {
-                _currentViewingTemplateId = templateId;
-
-                string q = @"SELECT p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax, p.PhuTrach
-                             FROM TemplateParameters tp
-                             JOIN Parameters p ON tp.ParameterID = p.ParameterID
-                             WHERE tp.TemplateID = @templateID";
-
-                DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { templateId });
-
-                if (dt == null || dt.Rows.Count == 0)
-                {
-                    roundedDataGridView1.DataSource = null;
-                    if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
-                        roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
-                    ClearParameterControls();
-                    return;
-                }
-
-                roundedDataGridView1.DataSource = dt;
-
-                if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
-                    roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = true;
-
-                roundedDataGridView1.RowHeadersVisible = false;
-
-                if (roundedDataGridView1.Columns["ParameterID"] != null) roundedDataGridView1.Columns["ParameterID"].Visible = false;
-                if (roundedDataGridView1.Columns.Contains("GiaTri")) roundedDataGridView1.Columns["GiaTri"].Visible = false;
-
-                UpdateGridHeaders();
-
-                if (_selectedParamsMap.ContainsKey(templateId))
-                {
-                    HashSet<int> selectedForThis = _selectedParamsMap[templateId];
-                    foreach (DataGridViewRow row in roundedDataGridView1.Rows)
-                    {
-                        int pId = Convert.ToInt32(row.Cells["ParameterID"].Value);
-                        if (selectedForThis.Contains(pId)) row.Cells[CHECKBOX_COLUMN_NAME].Value = true;
-                        else row.Cells[CHECKBOX_COLUMN_NAME].Value = false;
-                    }
-                }
-                else
-                {
-                    foreach (DataGridViewRow row in roundedDataGridView1.Rows) row.Cells[CHECKBOX_COLUMN_NAME].Value = false;
-                }
-
-                ClearParameterControls();
             }
             catch (Exception ex)
             {
-                ShowAlert(rm.GetString("Error_LoadParameters", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
+                ShowAlert("Lỗi tải template: " + ex.Message, AlertPanel.AlertType.Error);
             }
         }
 
-        // --- XỬ LÝ NÚT LƯU (CẬP NHẬT: Luôn lưu Tiếng Việt) ---
-        private void roundedButton2_Click(object sender, EventArgs e)
+        // Xử lý khi bấm nút chọn mẫu (Mở form SampleInformation)
+        private void TemplateButton_Click(object sender, EventArgs e)
         {
+            Button btn = sender as Button;
+            var item = btn.Tag as SampleTemplateDisplayItem;
+            if (item == null) return;
+
             if (currentContractId == 0)
             {
-                ShowAlert(rm.GetString("Plan_SelectContract", culture), AlertPanel.AlertType.Error);
+                ShowAlert(rm.GetString("Plan_SelectContract", culture) ?? "Vui lòng chọn Hợp đồng trước!", AlertPanel.AlertType.Error);
                 return;
             }
 
-            var selectedBaseTemplates = checkedListBox1.CheckedItems.OfType<SampleTemplateDisplayItem>().ToList();
-
-            if (selectedBaseTemplates.Count == 0)
+            using (var frm = new SampleInformation(item.TemplateID, item.TenMauHienThi))
             {
-                ShowAlert(rm.GetString("Plan_SelectSampleTemplate", culture), AlertPanel.AlertType.Error);
-                return;
-            }
-
-            foreach (var tpl in selectedBaseTemplates)
-            {
-                if (!_selectedParamsMap.ContainsKey(tpl.TemplateID) || _selectedParamsMap[tpl.TemplateID].Count == 0)
+                if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    string templateName = tpl.TenMauHienThi; // Hiển thị tên theo ngôn ngữ đang chọn để báo lỗi
-                    string errorMsg = culture.Name == "vi-VN"
-                        ? $"Mẫu '{templateName}' được chọn nhưng chưa có thông số nào được chọn."
-                        : $"Template '{templateName}' is selected but no parameters are selected.";
-                    ShowAlert(errorMsg, AlertPanel.AlertType.Error);
-                    return;
+                    _listSamples.Add(frm.ResultSample);
+                    BindMainGrid();
                 }
+            }
+        }
+
+        // Xử lý double click để sửa mẫu
+        private void roundedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var sampleToEdit = _listSamples[e.RowIndex];
+
+            using (var frm = new SampleInformation(sampleToEdit.BaseTemplateID, sampleToEdit.TenNenMau, sampleToEdit))
+            {
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    _listSamples[e.RowIndex] = frm.ResultSample;
+                    BindMainGrid();
+                }
+            }
+        }
+
+        // Xử lý nút xóa mẫu
+        private void roundedDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && roundedDataGridView1.Columns[e.ColumnIndex].Name == "colDelete")
+            {
+                if (MessageBox.Show("Bạn có chắc muốn xóa mẫu này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    _listSamples.RemoveAt(e.RowIndex);
+                    BindMainGrid();
+                }
+            }
+        }
+
+        // Hiển thị số lượng thông số trong cột Grid
+        private void roundedDataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && roundedDataGridView1.Columns[e.ColumnIndex].Name == "colCount")
+            {
+                var sample = _listSamples[e.RowIndex];
+                e.Value = sample.Parameters.Count;
+            }
+        }
+
+        // Hàm cập nhật dữ liệu cho Grid
+        private void BindMainGrid()
+        {
+            roundedDataGridView1.DataSource = null;
+            roundedDataGridView1.DataSource = _listSamples;
+        }
+
+        // Logic Lưu Hợp Đồng vào Database
+        private void btnSaveContract_Click(object sender, EventArgs e)
+        {
+            if (currentContractId == 0) return;
+            if (_listSamples.Count == 0)
+            {
+                ShowAlert("Danh sách mẫu trống! Vui lòng thêm ít nhất 1 mẫu.", AlertPanel.AlertType.Error);
+                return;
             }
 
             try
             {
-                string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @contractId", new object[] { currentContractId }).ToString();
-                if (string.IsNullOrEmpty(maDon))
+                string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @id", new object[] { currentContractId }).ToString();
+
+                foreach (var sample in _listSamples)
                 {
-                    ShowAlert(rm.GetString("Plan_ContractCodeNotFound", culture), AlertPanel.AlertType.Error);
-                    return;
-                }
+                    // 1. Tạo Template riêng cho mẫu này
+                    // Logic mới: Ưu tiên dùng tên người dùng nhập, nếu trống thì tự sinh tên
+                    string specificTemplateName = !string.IsNullOrEmpty(sample.TenNenMau)
+                                                  ? sample.TenNenMau
+                                                  : $"Template cho {maDon} - {sample.KyHieuMau}";
 
-                foreach (var baseTemplate in selectedBaseTemplates)
-                {
-                    int baseTemplateId = baseTemplate.TemplateID;
+                    string insertTempQ = "INSERT INTO SampleTemplates (TenMau) VALUES (@name)";
+                    DataProvider.Instance.ExecuteNonQuery(insertTempQ, new object[] { specificTemplateName });
+                    int newTemplateID = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
 
-                    // --- LOGIC MỚI: Luôn lấy tên gốc (Tiếng Việt) để lưu ---
-                    string mauGocTiengViet = baseTemplate.TenMauGoc;
-
-                    // Chuẩn hóa về Tiếng Việt nếu lỡ DB cũ có tiếng Anh
-                    if (mauGocTiengViet.Contains("Air")) mauGocTiengViet = "Môi trường không khí";
-                    else if (mauGocTiengViet.Contains("Water")) mauGocTiengViet = "Môi trường nước";
-                    else if (mauGocTiengViet.Contains("Soil")) mauGocTiengViet = "Môi trường đất";
-                    else if (mauGocTiengViet.Contains("Noise") || mauGocTiengViet.Contains("Vibration")) mauGocTiengViet = "Tiếng ồn và độ rung";
-                    // -----------------------------------------------------
-
-                    string sampleCode = $"{maDon} - {mauGocTiengViet}";
-
-                    string checkSampleQuery = "SELECT COUNT(*) FROM EnvironmentalSamples WHERE MaMau = @mamau AND ContractID = @contractId";
-                    object sampleExists = DataProvider.Instance.ExecuteScalar(checkSampleQuery, new object[] { sampleCode, currentContractId });
-                    if (Convert.ToInt32(sampleExists) > 0) continue;
-
-                    string newSpecificTemplateName = $"Template cho {maDon} - {mauGocTiengViet}";
-                    string insertTemplateQuery = "INSERT INTO SampleTemplates (TenMau) VALUES (@tenmau)";
-                    DataProvider.Instance.ExecuteNonQuery(insertTemplateQuery, new object[] { newSpecificTemplateName });
-
-                    int newSpecificTemplateId = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
-
-                    if (_selectedParamsMap.ContainsKey(baseTemplateId))
+                    // 2. Lưu các thông số của mẫu
+                    foreach (var p in sample.Parameters)
                     {
-                        HashSet<int> paramsForThisSample = _selectedParamsMap[baseTemplateId];
+                        string insertParam = @"INSERT INTO Parameters (TenThongSo, DonVi, GioiHanMin, GioiHanMax, PhuongPhap, QuyChuan, PhuTrach, ONhiem)
+                                               VALUES (@ten, @dv, @min, @max, @pp, @qc, @pt, 0)";
+                        DataProvider.Instance.ExecuteNonQuery(insertParam, new object[] {
+                            p.TenThongSo, p.DonVi, p.Min, p.Max, p.PhuongPhap, p.QuyChuan, p.PhuTrach
+                        });
+                        int newParamID = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
 
-                        foreach (int paramId in paramsForThisSample)
-                        {
-                            string insertParamLinkQuery = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@TID, @PID)";
-                            DataProvider.Instance.ExecuteNonQuery(insertParamLinkQuery, new object[] { newSpecificTemplateId, paramId });
-                        }
+                        // Link thông số vào Template
+                        string linkQ = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@tid, @pid)";
+                        DataProvider.Instance.ExecuteNonQuery(linkQ, new object[] { newTemplateID, newParamID });
                     }
 
-                    string insertSampleQuery = "INSERT INTO EnvironmentalSamples (MaMau, ContractID, TemplateID) VALUES (@mamau, @contractId, @templateId)";
-                    DataProvider.Instance.ExecuteNonQuery(insertSampleQuery, new object[] { sampleCode, currentContractId, newSpecificTemplateId });
+                    // 3. Tạo Mẫu môi trường (Lưu vào bảng EnvironmentalSamples)
+                    string maMauFull = $"{maDon} - {sample.KyHieuMau}";
+
+                    // Logic mới: Lưu thêm cột TenNenMau để phục vụ xuất PDF
+                    string insertSampleQ = @"INSERT INTO EnvironmentalSamples 
+                                           (MaMau, ContractID, TemplateID, KyHieuMau, ViTriLayMau, ToaDoX, ToaDoY, TenNenMau)
+                                           VALUES (@ma, @cid, @tid, @kyhieu, @vitri, @x, @y, @tennen)";
+
+                    DataProvider.Instance.ExecuteNonQuery(insertSampleQ, new object[] {
+                        maMauFull,
+                        currentContractId,
+                        newTemplateID,
+                        sample.KyHieuMau,
+                        sample.ViTri,
+                        sample.ToaDoX,
+                        sample.ToaDoY,
+                        sample.TenNenMau // Lưu giá trị thực tế của textbox vào cột này
+                    });
                 }
 
-                string updateContractQuery = @"UPDATE Contracts SET TienTrinh = 2 WHERE ContractID = @contractId;";
-                DataProvider.Instance.ExecuteNonQuery(updateContractQuery, new object[] { this.currentContractId });
+                // Cập nhật tiến trình Hợp đồng
+                string updateContract = "UPDATE Contracts SET TienTrinh = 2 WHERE ContractID = @id";
+                DataProvider.Instance.ExecuteNonQuery(updateContract, new object[] { currentContractId });
 
+                // Gửi thông báo
                 int hienTruongRoleID = 10;
-                string noiDungHienTruong = $"Hợp đồng '{maDon}' đã lập kế hoạch xong, cần lấy mẫu hiện trường.";
-                NotificationService.CreateNotification("ChinhSua", noiDungHienTruong, hienTruongRoleID, this.currentContractId, null);
+                string noiDung = $"Hợp đồng '{maDon}' đã lập kế hoạch lấy mẫu xong.";
+                NotificationService.CreateNotification("ChinhSua", noiDung, hienTruongRoleID, this.currentContractId, null);
 
-                string successMsg = string.Format(rm.GetString("Plan_SaveSuccess", culture), maDon);
+                string successMsg = string.Format(rm.GetString("Plan_SaveSuccess", culture) ?? "Lưu thành công cho HĐ {0}", maDon);
                 ShowAlert(successMsg, AlertPanel.AlertType.Success);
 
-                ResetForm();
+                // Reset giao diện sau khi lưu
+                _listSamples.Clear();
+                BindMainGrid();
+                currentContractId = 0;
+                lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+                UpdateSaveButtonState();
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Duplicate entry") && ex.Message.Contains("MaMau"))
-                {
-                    ShowAlert(rm.GetString("Plan_DuplicateSampleError", culture), AlertPanel.AlertType.Error);
-                }
-                else
-                {
-                    ShowAlert(rm.GetString("Error_SavePlan", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
-                }
+                ShowAlert("Lỗi lưu dữ liệu: " + ex.Message, AlertPanel.AlertType.Error);
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        // Cập nhật text trên giao diện (đa ngôn ngữ)
+        public void UpdateUIText()
         {
-            ResetForm();
+            culture = Thread.CurrentThread.CurrentUICulture;
+            if (lbContractID != null) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + (currentContractId != 0 ? " " + currentContractId : "");
+            if (btnContracts != null) btnContracts.Text = rm.GetString("Plan_ContractListButton", culture);
+            if (roundedButton2 != null) roundedButton2.Text = rm.GetString("Button_Save", culture);
+            LoadSampleTemplates();
         }
 
+        // Xử lý mở popup chọn hợp đồng
         private void btnContracts_Click(object sender, EventArgs e)
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
-                          FROM Contracts WHERE TienTrinh = 1";
+                string query = "SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked FROM Contracts WHERE TienTrinh = 1";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
@@ -574,157 +430,57 @@ namespace Environmental_Monitoring.View.ContractContent
                     {
                         this.currentContractId = contractId;
                         lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
-                        LoadSampleTemplates();
-                        UpdateAddButtonState();
+                        UpdateSaveButtonState();
                     };
                     popup.ShowDialog();
                 }
             }
-            catch (Exception ex)
-            {
-                ShowAlert(rm.GetString("Error_LoadContracts", culture) + ": " + ex.Message, AlertPanel.AlertType.Error);
-            }
+            catch (Exception ex) { ShowAlert("Lỗi tải HĐ: " + ex.Message, AlertPanel.AlertType.Error); }
         }
 
-        // --- CẬP NHẬT: Load Template tách biệt Tên Gốc và Tên Hiển Thị ---
-        private void LoadSampleTemplates()
+        // Xử lý nút Hủy bỏ toàn bộ thao tác
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            try
-            {
-                string q = "SELECT TemplateID, TenMau FROM SampleTemplates WHERE TenMau NOT LIKE 'Template cho %'";
-                DataTable dt = DataProvider.Instance.ExecuteQuery(q);
-
-                checkedListBox1.BeginUpdate();
-                try
-                {
-                    checkedListBox1.DataSource = null;
-                    checkedListBox1.Items.Clear();
-
-                    if (dt == null || dt.Rows.Count == 0) { ClearParameterControls(); return; }
-
-                    var list = dt.AsEnumerable().Select(r => new SampleTemplateDisplayItem
-                    {
-                        TemplateID = r.Field<int>("TemplateID"),
-                        TenMauGoc = r.Field<string>("TenMau"), // Giữ nguyên tiếng Việt từ DB
-                        TenMauHienThi = GetLocalizedTemplateName(r.Field<string>("TenMau")) // Dịch để hiển thị
-                    }).ToList();
-
-                    checkedListBox1.DataSource = list;
-                    checkedListBox1.DisplayMember = "TenMauHienThi"; // Hiển thị tên đã dịch
-                    checkedListBox1.ValueMember = "TemplateID";
-
-                    for (int i = 0; i < checkedListBox1.Items.Count; i++) checkedListBox1.SetItemChecked(i, false);
-
-                    ClearParameterControls();
-                    roundedDataGridView1.DataSource = null;
-                    if (roundedDataGridView1.Columns.Contains(CHECKBOX_COLUMN_NAME))
-                        roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Visible = false;
-                }
-                finally { checkedListBox1.EndUpdate(); }
-            }
-            catch (Exception ex) { ShowAlert(rm.GetString("Error_LoadSampleTemplates", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
+            _listSamples.Clear();
+            BindMainGrid();
+            currentContractId = 0;
+            lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+            UpdateSaveButtonState();
         }
 
-        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+        // Cập nhật trạng thái nút Lưu (chỉ sáng khi đã chọn HĐ)
+        private void UpdateSaveButtonState()
         {
-            this.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                UpdateAddButtonState();
-            });
+            bool isContractSelected = (currentContractId != 0);
+            if (roundedButton2 != null) roundedButton2.Enabled = isContractSelected;
         }
 
-        private void ClearParameterControls()
+        // Hàm hiển thị thông báo chung
+        private void ShowAlert(string message, AlertPanel.AlertType type)
         {
-            lblParamNameValue.Text = string.Empty;
-            lblUnitValue.Text = string.Empty;
-            lblDeptValue.Text = string.Empty;
+            var mainLayout = this.FindForm() as Mainlayout;
+            if (mainLayout != null) mainLayout.ShowGlobalAlert(message, type);
+            else MessageBox.Show(message, type.ToString(), MessageBoxButtons.OK, type == AlertPanel.AlertType.Success ? MessageBoxIcon.Information : MessageBoxIcon.Error);
         }
 
-        private void roundedDataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        // Hàm dịch tên Template (nếu cần)
+        private string GetLocalizedTemplateName(string dbName)
         {
-            try
-            {
-                if (e.RowIndex < 0) return;
-                if (e.RowIndex == -1 && e.ColumnIndex == roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Index) return;
-
-                var row = roundedDataGridView1.Rows[e.RowIndex];
-                lblParamNameValue.Text = row.Cells["TenThongSo"].Value?.ToString() ?? string.Empty;
-                lblUnitValue.Text = row.Cells["DonVi"].Value?.ToString() ?? string.Empty;
-
-                string rawDept = row.Cells["PhuTrach"].Value?.ToString() ?? string.Empty;
-                lblDeptValue.Text = GetLocalizedDepartment(rawDept);
-            }
-            catch { }
+            if (string.IsNullOrEmpty(dbName)) return "";
+            if (culture.Name == "vi-VN") return dbName;
+            string lower = dbName.ToLower();
+            if (lower.Contains("không khí") || lower.Contains("air")) return "Air Environment";
+            if (lower.Contains("nước") || lower.Contains("water")) return "Water Environment";
+            if (lower.Contains("đất") || lower.Contains("soil")) return "Soil Environment";
+            return dbName;
         }
 
-        private void btnAddParameter_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new AddEditParameterForm())
-            {
-                dlg.SetPhuTrachOptions(new[] { "HienTruong", "ThiNghiem" });
-
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    ShowAlert(rm.GetString("Plan_AddParamSuccess", culture) ?? "Thêm thông số thành công.", AlertPanel.AlertType.Success);
-                    ReloadCurrentParameters();
-                }
-            }
-        }
-
-        private void ReloadCurrentParameters()
-        {
-            if (_currentViewingTemplateId != -1)
-            {
-                LoadParametersForSingleTemplate(_currentViewingTemplateId);
-            }
-        }
-
-        private void roundedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex == roundedDataGridView1.Columns[CHECKBOX_COLUMN_NAME].Index) return;
-            var row = roundedDataGridView1.Rows[e.RowIndex];
-            int paramId = Convert.ToInt32(row.Cells["ParameterID"].Value);
-            Parameter param = null;
-            try
-            {
-                string query = "SELECT * FROM Parameters WHERE ParameterID = @id";
-                DataTable dt = DataProvider.Instance.ExecuteQuery(query, new object[] { paramId });
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    DataRow dr = dt.Rows[0];
-                    param = new Parameter { ParameterID = Convert.ToInt32(dr["ParameterID"]), TenThongSo = dr["TenThongSo"].ToString(), DonVi = dr["DonVi"].ToString(), GioiHanMin = (dr["GioiHanMin"] == DBNull.Value) ? (decimal?)null : Convert.ToDecimal(dr["GioiHanMin"]), GioiHanMax = (dr["GioiHanMax"] == DBNull.Value) ? (decimal?)null : Convert.ToDecimal(dr["GioiHanMax"]), PhuTrach = dr["PhuTrach"].ToString() };
-                }
-            }
-            catch (Exception ex) { ShowAlert(rm.GetString("Error_LoadParamInfo", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); return; }
-            if (param == null) return;
-
-            using (var dlg = new AddEditParameterForm(param))
-            {
-                dlg.SetPhuTrachOptions(new[] { "HienTruong", "ThiNghiem" });
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    ReloadCurrentParameters();
-                }
-            }
-        }
-
-        private void lbCustomer_Click(object sender, EventArgs e) { }
-        private void lbContract_Click(object sender, EventArgs e) { }
-        private void panel1_Paint(object sender, PaintEventArgs e) { }
-        private void cbbParameters_SelectedIndexChanged(object sender, EventArgs e) { }
-        private void checkedListBox1_ItemCheck_1(object sender, ItemCheckEventArgs e) { }
-
-        // --- CẬP NHẬT: Class hỗ trợ hiển thị ---
+        // Class phụ trợ để chứa thông tin hiển thị nút
         public class SampleTemplateDisplayItem
         {
             public int TemplateID { get; set; }
-            public string TenMauHienThi { get; set; } // Tên theo ngôn ngữ (Anh/Việt) để hiển thị
-            public string TenMauGoc { get; set; }     // Tên gốc (Tiếng Việt) để lưu DB
-
-            public override string ToString()
-            {
-                return TenMauHienThi;
-            }
+            public string TenMauHienThi { get; set; }
+            public string TenMauGoc { get; set; }
         }
     }
 }

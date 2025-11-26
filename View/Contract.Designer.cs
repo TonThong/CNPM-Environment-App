@@ -68,11 +68,10 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 5;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 6F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 74F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 83F));
             tableLayoutPanel1.Size = new Size(1221, 709);
             tableLayoutPanel1.TabIndex = 32;
             // 
@@ -80,11 +79,11 @@ namespace Environmental_Monitoring.View
             // 
             lbContract.AutoSize = true;
             lbContract.BackColor = Color.Transparent;
-            lbContract.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lbContract.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lbContract.ForeColor = Color.Black;
             lbContract.Location = new Point(64, 21);
             lbContract.Name = "lbContract";
-            lbContract.Size = new Size(383, 50);
+            lbContract.Size = new Size(291, 38);
             lbContract.TabIndex = 26;
             lbContract.Text = "QUẢN LÍ HỢP ĐỒNG";
             lbContract.Click += lbContract_Click;
@@ -105,7 +104,7 @@ namespace Environmental_Monitoring.View
             roundedTextBox1.PasswordChar = '\0';
             roundedTextBox1.PlaceholderText = "Tìm Kiếm...";
             roundedTextBox1.ReadOnly = false;
-            roundedTextBox1.Size = new Size(531, 45);
+            roundedTextBox1.Size = new Size(531, 36);
             roundedTextBox1.TabIndex = 19;
             roundedTextBox1.UseSystemPasswordChar = false;
             // 
@@ -116,9 +115,9 @@ namespace Environmental_Monitoring.View
             pnContent.BorderRadius = 20;
             pnContent.BorderSize = 0;
             tableLayoutPanel1.SetColumnSpan(pnContent, 5);
-            pnContent.Location = new Point(3, 185);
+            pnContent.Location = new Point(3, 122);
             pnContent.Name = "pnContent";
-            pnContent.Size = new Size(1215, 521);
+            pnContent.Size = new Size(1215, 584);
             pnContent.TabIndex = 23;
             // 
             // tableLayoutPanel2
@@ -140,11 +139,11 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel2.Controls.Add(btnBusiness, 1, 0);
             tableLayoutPanel2.Controls.Add(btnResult, 5, 0);
             tableLayoutPanel2.Controls.Add(btnManager, 6, 0);
-            tableLayoutPanel2.Location = new Point(3, 115);
+            tableLayoutPanel2.Location = new Point(3, 87);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new Size(1215, 64);
+            tableLayoutPanel2.Size = new Size(1215, 29);
             tableLayoutPanel2.TabIndex = 21;
             // 
             // roundedButton1
@@ -157,13 +156,13 @@ namespace Environmental_Monitoring.View
             roundedButton1.Cursor = Cursors.Hand;
             roundedButton1.FlatAppearance.BorderSize = 0;
             roundedButton1.FlatStyle = FlatStyle.Flat;
-            roundedButton1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            roundedButton1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             roundedButton1.ForeColor = Color.Black;
             roundedButton1.HoverColor = Color.LightGray;
             roundedButton1.Location = new Point(609, 3);
             roundedButton1.Name = "roundedButton1";
             roundedButton1.Padding = new Padding(30, 15, 30, 15);
-            roundedButton1.Size = new Size(176, 58);
+            roundedButton1.Size = new Size(176, 23);
             roundedButton1.TabIndex = 31;
             roundedButton1.Text = "Phòng Thí Nghiệm";
             roundedButton1.UseVisualStyleBackColor = false;
@@ -179,13 +178,13 @@ namespace Environmental_Monitoring.View
             btnReal.Cursor = Cursors.Hand;
             btnReal.FlatAppearance.BorderSize = 0;
             btnReal.FlatStyle = FlatStyle.Flat;
-            btnReal.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnReal.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnReal.ForeColor = Color.Black;
             btnReal.HoverColor = Color.LightGray;
             btnReal.Location = new Point(427, 3);
             btnReal.Name = "btnReal";
             btnReal.Padding = new Padding(30, 15, 30, 15);
-            btnReal.Size = new Size(176, 58);
+            btnReal.Size = new Size(176, 23);
             btnReal.TabIndex = 29;
             btnReal.Text = "Hiện Trường";
             btnReal.UseVisualStyleBackColor = false;
@@ -201,13 +200,13 @@ namespace Environmental_Monitoring.View
             btnPlan.Cursor = Cursors.Hand;
             btnPlan.FlatAppearance.BorderSize = 0;
             btnPlan.FlatStyle = FlatStyle.Flat;
-            btnPlan.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPlan.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnPlan.ForeColor = Color.Black;
             btnPlan.HoverColor = Color.LightGray;
             btnPlan.Location = new Point(245, 3);
             btnPlan.Name = "btnPlan";
             btnPlan.Padding = new Padding(30, 15, 30, 15);
-            btnPlan.Size = new Size(176, 58);
+            btnPlan.Size = new Size(176, 23);
             btnPlan.TabIndex = 28;
             btnPlan.Text = "Kế Hoạch";
             btnPlan.UseVisualStyleBackColor = false;
@@ -223,13 +222,13 @@ namespace Environmental_Monitoring.View
             btnBusiness.Cursor = Cursors.Hand;
             btnBusiness.FlatAppearance.BorderSize = 0;
             btnBusiness.FlatStyle = FlatStyle.Flat;
-            btnBusiness.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnBusiness.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnBusiness.ForeColor = Color.Black;
             btnBusiness.HoverColor = Color.LightGray;
             btnBusiness.Location = new Point(63, 3);
             btnBusiness.Name = "btnBusiness";
             btnBusiness.Padding = new Padding(30, 15, 30, 15);
-            btnBusiness.Size = new Size(176, 58);
+            btnBusiness.Size = new Size(176, 23);
             btnBusiness.TabIndex = 27;
             btnBusiness.Text = "Kinh Doanh";
             btnBusiness.UseVisualStyleBackColor = false;
@@ -245,13 +244,13 @@ namespace Environmental_Monitoring.View
             btnResult.Cursor = Cursors.Hand;
             btnResult.FlatAppearance.BorderSize = 0;
             btnResult.FlatStyle = FlatStyle.Flat;
-            btnResult.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnResult.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnResult.ForeColor = Color.Black;
             btnResult.HoverColor = Color.LightGray;
             btnResult.Location = new Point(791, 3);
             btnResult.Name = "btnResult";
             btnResult.Padding = new Padding(30, 15, 30, 15);
-            btnResult.Size = new Size(176, 58);
+            btnResult.Size = new Size(176, 23);
             btnResult.TabIndex = 30;
             btnResult.Text = "Kết Quả";
             btnResult.UseVisualStyleBackColor = false;
@@ -267,13 +266,13 @@ namespace Environmental_Monitoring.View
             btnManager.Cursor = Cursors.Hand;
             btnManager.FlatAppearance.BorderSize = 0;
             btnManager.FlatStyle = FlatStyle.Flat;
-            btnManager.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnManager.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnManager.ForeColor = Color.Black;
             btnManager.HoverColor = Color.LightGray;
             btnManager.Location = new Point(973, 3);
             btnManager.Name = "btnManager";
             btnManager.Padding = new Padding(30, 15, 30, 15);
-            btnManager.Size = new Size(176, 58);
+            btnManager.Size = new Size(176, 23);
             btnManager.TabIndex = 32;
             btnManager.Text = "Quản Lý";
             btnManager.UseVisualStyleBackColor = false;

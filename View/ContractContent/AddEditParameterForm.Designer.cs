@@ -24,10 +24,10 @@
             txtDonVi = new Environmental_Monitoring.View.Components.RoundedTextBox();
             btnOK = new Environmental_Monitoring.View.Components.RoundedButton();
             btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
-            lblTemplate = new Label();
             cbbPhuTrach = new Environmental_Monitoring.View.Components.RoundedComboBox();
-            cbbTemplate = new Environmental_Monitoring.View.Components.RoundedComboBox();
             tableLayoutPanel1 = new TableLayoutPanel();
+            lblTemplate = new Label();
+            txtPhuongPhap = new Environmental_Monitoring.View.Components.RoundedTextBox();
             ((System.ComponentModel.ISupportInitialize)numGioiHanMin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numGioiHanMax).BeginInit();
             tableLayoutPanel1.SuspendLayout();
@@ -185,16 +185,6 @@
             btnCancel.Text = "Hủy";
             btnCancel.UseVisualStyleBackColor = false;
             // 
-            // lblTemplate
-            // 
-            lblTemplate.Dock = DockStyle.Fill;
-            lblTemplate.Location = new Point(26, 307);
-            lblTemplate.Name = "lblTemplate";
-            lblTemplate.Size = new Size(135, 44);
-            lblTemplate.TabIndex = 16;
-            lblTemplate.Text = "Mẫu Môi Trường";
-            lblTemplate.TextAlign = ContentAlignment.MiddleLeft;
-            // 
             // cbbPhuTrach
             // 
             cbbPhuTrach.BackColor = Color.White;
@@ -217,30 +207,7 @@
             cbbPhuTrach.Size = new Size(254, 38);
             cbbPhuTrach.TabIndex = 17;
             cbbPhuTrach.ValueMember = "";
-            cbbPhuTrach.SelectedIndexChanged += cbbPhuTrach_SelectedIndexChanged;
-            // 
-            // cbbTemplate
-            // 
-            cbbTemplate.BackColor = Color.White;
-            cbbTemplate.BorderRadius = 12;
-            cbbTemplate.BorderThickness = 2;
-            tableLayoutPanel1.SetColumnSpan(cbbTemplate, 2);
-            cbbTemplate.Cursor = Cursors.Hand;
-            cbbTemplate.DataSource = null;
-            cbbTemplate.DisplayMember = "";
-            cbbTemplate.Dock = DockStyle.Fill;
-            cbbTemplate.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbbTemplate.FocusBorderColor = Color.DimGray;
-            cbbTemplate.HoverBorderColor = Color.DarkGray;
-            cbbTemplate.Location = new Point(190, 310);
-            cbbTemplate.Name = "cbbTemplate";
-            cbbTemplate.NormalBorderColor = Color.Gray;
-            cbbTemplate.SelectedIndex = -1;
-            cbbTemplate.SelectedItem = null;
-            cbbTemplate.SelectedValue = null;
-            cbbTemplate.Size = new Size(254, 38);
-            cbbTemplate.TabIndex = 18;
-            cbbTemplate.ValueMember = "";
+            //cbbPhuTrach.SelectedIndexChanged += cbbPhuTrach_SelectedIndexChanged;
             // 
             // tableLayoutPanel1
             // 
@@ -252,7 +219,6 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 27.5F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(lblTenThongSo, 1, 1);
-            tableLayoutPanel1.Controls.Add(cbbTemplate, 3, 11);
             tableLayoutPanel1.Controls.Add(lblDonVi, 1, 3);
             tableLayoutPanel1.Controls.Add(cbbPhuTrach, 3, 9);
             tableLayoutPanel1.Controls.Add(lblGioiHanMin, 1, 5);
@@ -265,6 +231,7 @@
             tableLayoutPanel1.Controls.Add(txtTenThongSo, 3, 1);
             tableLayoutPanel1.Controls.Add(btnOK, 3, 13);
             tableLayoutPanel1.Controls.Add(btnCancel, 4, 13);
+            tableLayoutPanel1.Controls.Add(txtPhuongPhap, 3, 11);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -287,6 +254,35 @@
             tableLayoutPanel1.Size = new Size(473, 442);
             tableLayoutPanel1.TabIndex = 19;
             // 
+            // lblTemplate
+            // 
+            lblTemplate.Dock = DockStyle.Fill;
+            lblTemplate.Location = new Point(26, 307);
+            lblTemplate.Name = "lblTemplate";
+            lblTemplate.Size = new Size(135, 44);
+            lblTemplate.TabIndex = 16;
+            lblTemplate.Text = "Phương Pháp";
+            lblTemplate.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // txtPhuongPhap
+            // 
+            txtPhuongPhap.BorderRadius = 15;
+            txtPhuongPhap.BorderThickness = 2;
+            tableLayoutPanel1.SetColumnSpan(txtPhuongPhap, 2);
+            txtPhuongPhap.FocusBorderColor = Color.HotPink;
+            txtPhuongPhap.HoverBorderColor = Color.DodgerBlue;
+            txtPhuongPhap.Location = new Point(190, 310);
+            txtPhuongPhap.Multiline = false;
+            txtPhuongPhap.Name = "txtPhuongPhap";
+            txtPhuongPhap.NormalBorderColor = Color.Gray;
+            txtPhuongPhap.Padding = new Padding(10);
+            txtPhuongPhap.PasswordChar = '\0';
+            txtPhuongPhap.PlaceholderText = "";
+            txtPhuongPhap.ReadOnly = false;
+            txtPhuongPhap.Size = new Size(254, 38);
+            txtPhuongPhap.TabIndex = 18;
+            txtPhuongPhap.UseSystemPasswordChar = false;
+            // 
             // AddEditParameterForm
             // 
             BackColor = Color.White;
@@ -306,9 +302,9 @@
         private Components.RoundedTextBox txtDonVi;
         private Components.RoundedButton btnOK;
         private Components.RoundedButton btnCancel;
-        private Label lblTemplate;
         private Components.RoundedComboBox cbbPhuTrach;
-        private Components.RoundedComboBox cbbTemplate;
         private TableLayoutPanel tableLayoutPanel1;
+        private Label lblTemplate;
+        private Components.RoundedTextBox txtPhuongPhap;
     }
 }
