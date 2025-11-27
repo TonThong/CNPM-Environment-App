@@ -37,8 +37,8 @@
             btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
             roundedButton2 = new Environmental_Monitoring.View.Components.RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
-            mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
             btnThemMau = new Environmental_Monitoring.View.Components.RoundedButton();
+            mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -91,7 +91,7 @@
             btnContracts.BackColor = Color.FromArgb(0, 113, 0);
             btnContracts.BaseColor = Color.FromArgb(0, 113, 0);
             btnContracts.BorderColor = Color.Transparent;
-            btnContracts.BorderRadius = 25;
+            btnContracts.BorderRadius = 15;
             btnContracts.BorderSize = 0;
             btnContracts.Cursor = Cursors.Hand;
             btnContracts.Dock = DockStyle.Fill;
@@ -114,7 +114,7 @@
             lbContractID.BackColor = Color.FromArgb(217, 217, 217);
             lbContractID.BaseColor = Color.FromArgb(217, 217, 217);
             lbContractID.BorderColor = Color.Transparent;
-            lbContractID.BorderRadius = 25;
+            lbContractID.BorderRadius = 15;
             lbContractID.BorderSize = 0;
             tableLayoutPanel1.SetColumnSpan(lbContractID, 2);
             lbContractID.Enabled = false;
@@ -204,13 +204,6 @@
             tableLayoutPanel1.Size = new Size(1215, 584);
             tableLayoutPanel1.TabIndex = 71;
             // 
-            // mySqlCommand1
-            // 
-            mySqlCommand1.CacheAge = 0;
-            mySqlCommand1.Connection = null;
-            mySqlCommand1.EnableCaching = false;
-            mySqlCommand1.Transaction = null;
-            // 
             // btnThemMau
             // 
             btnThemMau.Anchor = AnchorStyles.None;
@@ -231,6 +224,13 @@
             btnThemMau.TabIndex = 68;
             btnThemMau.Text = "Thêm Mẫu";
             btnThemMau.UseVisualStyleBackColor = false;
+            // 
+            // mySqlCommand1
+            // 
+            mySqlCommand1.CacheAge = 0;
+            mySqlCommand1.Connection = null;
+            mySqlCommand1.EnableCaching = false;
+            mySqlCommand1.Transaction = null;
             // 
             // PlanContent
             // 

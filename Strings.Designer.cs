@@ -1822,7 +1822,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã Hợp đồng:.
+        ///   Looks up a localized string similar to Khách Hàng.
         /// </summary>
         internal static string Plan_ContractIDLabel {
             get {

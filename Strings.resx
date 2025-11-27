@@ -764,7 +764,7 @@
     <value>Lỗi khi tạo file PDF</value>
   </data>
   <data name="Plan_ContractIDLabel" xml:space="preserve">
-    <value>Mã Hợp đồng:</value>
+    <value>Khách Hàng</value>
   </data>
   <data name="Plan_ContractListButton" xml:space="preserve">
     <value>Danh Sách Hợp Đồng</value>

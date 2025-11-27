@@ -763,7 +763,7 @@
     <value>Error creating PDF file</value>
   </data>
   <data name="Plan_ContractIDLabel" xml:space="preserve">
-    <value>Contract ID:</value>
+    <value>Customer</value>
   </data>
   <data name="Plan_ContractListButton" xml:space="preserve">
     <value>Contract List</value>

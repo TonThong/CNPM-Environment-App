@@ -499,7 +499,17 @@ namespace Environmental_Monitoring.View.ContractContent
                 {
                     popup.ContractSelected += (contractId) =>
                     {
-                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
+                        // --- LOGIC MỚI: LẤY TÊN KHÁCH HÀNG ---
+                        string cusQuery = @"SELECT cus.TenDoanhNghiep 
+                                            FROM Contracts c 
+                                            JOIN Customers cus ON c.CustomerID = cus.CustomerID 
+                                            WHERE c.ContractID = @cid";
+                        object result = DataProvider.Instance.ExecuteScalar(cusQuery, new object[] { contractId });
+                        string tenCongTy = result != null ? result.ToString() : "Không xác định";
+
+                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + tenCongTy;
+                        // -------------------------------------
+
                         LoadContract(contractId);
                     };
                     popup.ShowDialog();

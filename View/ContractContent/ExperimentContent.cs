@@ -21,10 +21,6 @@ namespace Environmental_Monitoring.View
         private int currentContractId = 0;
         private bool isUpdatingCell = false;
 
-        private const string COL_ONHIEM = "ColONhiem";
-        private const string COL_SAPONHIEM = "ColSapONhiem";
-        private const string COL_KHONGONHIEM = "ColKhongONhiem";
-
         private ResourceManager rm;
         private CultureInfo culture;
 
@@ -98,10 +94,6 @@ namespace Environmental_Monitoring.View
             if (roundedDataGridView2.Columns.Contains("GiaTri")) roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_ValueEntry", culture);
             if (roundedDataGridView2.Columns.Contains("Status")) roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture) ?? "Status";
 
-            if (roundedDataGridView2.Columns.Contains(COL_ONHIEM)) roundedDataGridView2.Columns[COL_ONHIEM].HeaderText = rm.GetString("Grid_Polluted", culture);
-            if (roundedDataGridView2.Columns.Contains(COL_SAPONHIEM)) roundedDataGridView2.Columns[COL_SAPONHIEM].HeaderText = rm.GetString("Grid_SoonPolluted", culture);
-            if (roundedDataGridView2.Columns.Contains(COL_KHONGONHIEM)) roundedDataGridView2.Columns[COL_KHONGONHIEM].HeaderText = rm.GetString("Grid_NotPolluted", culture);
-
             roundedDataGridView2.GridColor = Color.Black;
         }
 
@@ -116,7 +108,6 @@ namespace Environmental_Monitoring.View
             roundedDataGridView2.EditMode = DataGridViewEditMode.EditOnEnter;
 
             roundedDataGridView2.CurrentCellDirtyStateChanged += RoundedDataGridView2_CurrentCellDirtyStateChanged;
-            roundedDataGridView2.CellValueChanged += RoundedDataGridView2_CellValueChanged;
             roundedDataGridView2.CellEndEdit += RoundedDataGridView2_CellEndEdit_SaveGiaTri;
             roundedDataGridView2.EditingControlShowing += RoundedDataGridView2_EditingControlShowing;
 
@@ -177,14 +168,7 @@ namespace Environmental_Monitoring.View
 
         private void RoundedDataGridView2_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            {
-                string colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
-                if (colName == COL_ONHIEM || colName == COL_SAPONHIEM || colName == COL_KHONGONHIEM)
-                {
-                    roundedDataGridView2.Cursor = Cursors.Hand;
-                }
-            }
+            // Đã xóa logic trỏ chuột cho checkbox
         }
 
         private void RoundedDataGridView2_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
@@ -321,32 +305,7 @@ namespace Environmental_Monitoring.View
                 roundedDataGridView2.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 
-        private void RoundedDataGridView2_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
-        {
-            if (isUpdatingCell || e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            string colName = roundedDataGridView2.Columns[e.ColumnIndex].Name;
-            var row = roundedDataGridView2.Rows[e.RowIndex];
-
-            if (colName == COL_ONHIEM || colName == COL_SAPONHIEM || colName == COL_KHONGONHIEM)
-            {
-                isUpdatingCell = true;
-                try
-                {
-                    bool isChecked = false;
-                    var cell = row.Cells[colName];
-                    if (cell.Value != null && bool.TryParse(cell.Value.ToString(), out bool b)) isChecked = b;
-
-                    if (isChecked)
-                    {
-                        if (colName != COL_ONHIEM) row.Cells[COL_ONHIEM].Value = false;
-                        if (colName != COL_SAPONHIEM) row.Cells[COL_SAPONHIEM].Value = false;
-                        if (colName != COL_KHONGONHIEM) row.Cells[COL_KHONGONHIEM].Value = false;
-                    }
-                }
-                finally { isUpdatingCell = false; }
-            }
-        }
+        // Đã xóa hàm RoundedDataGridView2_CellValueChanged vì nó xử lý logic checkbox
 
         private void LoadExperimentContract(int contractId)
         {
@@ -373,17 +332,6 @@ namespace Environmental_Monitoring.View
                     SetStatusForRow(row);
                 }
 
-                dt.Columns.Add(COL_ONHIEM, typeof(bool));
-                dt.Columns.Add(COL_SAPONHIEM, typeof(bool));
-                dt.Columns.Add(COL_KHONGONHIEM, typeof(bool));
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    row[COL_ONHIEM] = false;
-                    row[COL_SAPONHIEM] = false;
-                    row[COL_KHONGONHIEM] = false;
-                }
-
                 roundedDataGridView2.DataSource = dt;
 
                 if (roundedDataGridView2.Columns["ParameterID"] != null) roundedDataGridView2.Columns["ParameterID"].Visible = false;
@@ -408,17 +356,14 @@ namespace Environmental_Monitoring.View
                 {
                     roundedDataGridView2.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture) ?? "Status";
                     roundedDataGridView2.Columns["Status"].ReadOnly = true;
-                    // Đặt vị trí cột Status giữa GiaTri và Checkbox
-                    // DisplayIndex tăng dần: Sample->Param->...->GiaTri(Index=X) -> Status(Index=X+1) -> Polluted(Index=X+2)...
+                    // Đặt vị trí cột Status sau GiaTri
                     if (roundedDataGridView2.Columns["GiaTri"] != null)
                     {
                         roundedDataGridView2.Columns["Status"].DisplayIndex = roundedDataGridView2.Columns["GiaTri"].DisplayIndex + 1;
                     }
                 }
 
-                EnsureCheckBoxColumn(COL_ONHIEM, rm.GetString("Grid_Polluted", culture), 12); // Index cao hơn để nằm sau Status
-                EnsureCheckBoxColumn(COL_SAPONHIEM, rm.GetString("Grid_SoonPolluted", culture), 13);
-                EnsureCheckBoxColumn(COL_KHONGONHIEM, rm.GetString("Grid_NotPolluted", culture), 14);
+                // Đã xóa phần thêm cột Checkbox
 
                 foreach (DataGridViewColumn col in roundedDataGridView2.Columns) col.SortMode = DataGridViewColumnSortMode.NotSortable;
 
@@ -456,27 +401,7 @@ namespace Environmental_Monitoring.View
             catch (Exception ex) { ShowAlert(rm.GetString("Error_LoadExperimentData", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
         }
 
-        private void EnsureCheckBoxColumn(string name, string headerText, int desiredIndex)
-        {
-            if (roundedDataGridView2.Columns.Contains(name)) roundedDataGridView2.Columns.Remove(name);
-
-            var chk = new DataGridViewCheckBoxColumn()
-            {
-                Name = name,
-                DataPropertyName = name,
-                HeaderText = headerText,
-                TrueValue = true,
-                FalseValue = false,
-                ReadOnly = false,
-                Width = 120,
-                DefaultCellStyle = { BackColor = Color.White, ForeColor = Color.Black, SelectionBackColor = Color.White, SelectionForeColor = Color.Black }
-            };
-
-            // Thêm cột vào cuối danh sách hiển thị
-            roundedDataGridView2.Columns.Add(chk);
-            // Sau khi thêm, ta có thể set DisplayIndex nếu muốn sắp xếp chính xác tuyệt đối
-            // Nhưng ở trên hàm LoadExperimentContract đã có logic thêm tuần tự
-        }
+        // Đã xóa hàm EnsureCheckBoxColumn
 
         private void btnContracts_Click(object sender, EventArgs e)
         {
@@ -488,7 +413,18 @@ namespace Environmental_Monitoring.View
                 {
                     popup.ContractSelected += (contractId) =>
                     {
-                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + contractId.ToString();
+                        // --- LOGIC MỚI: LẤY TÊN KHÁCH HÀNG ---
+                        string cusQuery = @"SELECT cus.TenDoanhNghiep 
+                                            FROM Contracts c 
+                                            JOIN Customers cus ON c.CustomerID = cus.CustomerID 
+                                            WHERE c.ContractID = @cid";
+                        object result = DataProvider.Instance.ExecuteScalar(cusQuery, new object[] { contractId });
+                        string tenCongTy = result != null ? result.ToString() : "Không xác định";
+
+                        // Hiển thị tên công ty thay vì ID
+                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + tenCongTy;
+                        // -------------------------------------
+
                         LoadExperimentContract(contractId);
                     };
                     popup.ShowDialog();
@@ -516,16 +452,10 @@ namespace Environmental_Monitoring.View
                         return;
                     }
                     if (!TryParseDecimalString(gObj.ToString(), out decimal temp)) { ShowAlert("Giá trị không hợp lệ!", AlertPanel.AlertType.Error); return; }
-
-                    bool oNhiem = Convert.ToBoolean(row.Cells[COL_ONHIEM].Value);
-                    bool sapONhiem = Convert.ToBoolean(row.Cells[COL_SAPONHIEM].Value);
-                    bool khongONhiem = Convert.ToBoolean(row.Cells[COL_KHONGONHIEM].Value);
-
-                    if (!oNhiem && !sapONhiem && !khongONhiem) { ShowAlert("Vui lòng chọn trạng thái đánh giá!", AlertPanel.AlertType.Error); return; }
                 }
 
                 int savedCount = 0;
-                HashSet<int> parametersToUpdate = new HashSet<int>();
+                // HashSet<int> parametersToUpdate = new HashSet<int>(); // Không còn dùng vì đã xóa phần update Parameters.ONhiem
 
                 foreach (DataGridViewRow row in roundedDataGridView2.Rows)
                 {
@@ -551,18 +481,7 @@ namespace Environmental_Monitoring.View
                         DataProvider.Instance.ExecuteNonQuery(insertQ, new object[] { g, sampleId, parameterId });
                     }
 
-                    if (!parametersToUpdate.Contains(parameterId))
-                    {
-                        bool oNhiem = Convert.ToBoolean(row.Cells[COL_ONHIEM].Value);
-                        bool sapONhiem = Convert.ToBoolean(row.Cells[COL_SAPONHIEM].Value);
-                        int flag = 0;
-                        if (oNhiem) flag = 1; else if (sapONhiem) flag = 2;
-
-                        string updateQuery = "UPDATE Parameters SET ONhiem = @flag WHERE ParameterID = @paramId";
-                        DataProvider.Instance.ExecuteNonQuery(updateQuery, new object[] { flag, parameterId });
-                        parametersToUpdate.Add(parameterId);
-                        savedCount++;
-                    }
+                    savedCount++;
                 }
 
                 string query = @"UPDATE Contracts SET TienTrinh = 4 WHERE ContractID = @contractId;";
@@ -644,6 +563,11 @@ namespace Environmental_Monitoring.View
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                 }
             }
+        }
+
+        private void roundedDataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
