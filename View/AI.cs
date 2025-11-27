@@ -64,7 +64,7 @@ namespace Environmental_Monitoring.View
                 txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
                 lblPanelResign.Text = rm.GetString("AI_Panel_Resign", culture);
-                txtCustomerName.PlaceholderText = "Nhập mã khách hàng (ID)...";
+                txtCustomerName.PlaceholderText = "Nhập tên khách hàng...";
                 btnPredictResign.Text = rm.GetString("AI_Button_Predict", culture);
 
                 lblPanelPollution.Text = rm.GetString("AI_Panel_Pollution", culture);
@@ -93,33 +93,49 @@ namespace Environmental_Monitoring.View
                 
             }
         }
+        // SỰ KIỆN NÚT DỰ ĐOÁN (Đã sửa logic: Tìm theo Tên)
         private async void btnPredictResign_Click(object sender, EventArgs e)
         {
-            string inputID = txtCustomerName.Text.Trim();
-            if (string.IsNullOrEmpty(inputID) || !int.TryParse(inputID, out int customerId))
+            string inputName = txtCustomerName.Text.Trim(); // Đổi biến inputID -> inputName
+
+            // Validate đầu vào
+            if (string.IsNullOrEmpty(inputName))
             {
-                MessageBox.Show("Vui lòng nhập Mã khách hàng (số nguyên) hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập Tên khách hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             btnPredictResign.Enabled = false;
             string originalText = btnPredictResign.Text;
-            btnPredictResign.Text = "Phân Tích";
+            btnPredictResign.Text = "Đang Tải...";
 
             try
             {
                 await Task.Run(() =>
                 {
-                    CustomerStats stats = GetCustomerStats(customerId);
+                    // 1. Tìm ID dựa trên Tên nhập vào (Tìm gần đúng)
+                    int customerId = GetCustomerIDByName(inputName);
 
                     this.Invoke((MethodInvoker)delegate
                     {
-                        if (stats == null)
+                        // Nếu không tìm thấy ID nào
+                        if (customerId == -1)
                         {
-                            MessageBox.Show($"Không tìm thấy khách hàng có ID: {customerId}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"Không tìm thấy khách hàng nào có tên chứa: '{inputName}'", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
 
+                        // Nếu tìm thấy, tiếp tục logic cũ
+                        // (Lấy thống kê và dự đoán)
+                        CustomerStats stats = GetCustomerStats(customerId);
+
+                        if (stats == null)
+                        {
+                            MessageBox.Show($"Khách hàng '{inputName}' (ID: {customerId}) chưa có dữ liệu hợp đồng để phân tích.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        // Chuẩn bị dữ liệu cho AI
                         var inputData = new ResignModel.ModelInput()
                         {
                             ContractType = "Quarterly",
@@ -130,7 +146,10 @@ namespace Environmental_Monitoring.View
                             Label = false
                         };
 
+                        // Gọi AI dự đoán
                         ResignModel.ModelOutput prediction = ResignModel.Predict(inputData);
+
+                        // Cập nhật biểu đồ
                         UpdateResignChart(prediction, stats);
                     });
                 });
@@ -144,6 +163,27 @@ namespace Environmental_Monitoring.View
                 btnPredictResign.Enabled = true;
                 btnPredictResign.Text = originalText;
             }
+        }
+
+        // HÀM MỚI: TÌM ID KHÁCH HÀNG THEO TÊN (Tìm gần đúng với LIKE)
+        private int GetCustomerIDByName(string name)
+        {
+            try
+            {
+                // Tìm kiếm không phân biệt hoa thường, lấy khách hàng đầu tiên tìm thấy
+                string query = "SELECT CustomerID FROM Customers WHERE TenDoanhNghiep LIKE @name LIMIT 1";
+                object result = DataProvider.Instance.ExecuteScalar(query, new object[] { "%" + name + "%" });
+
+                if (result != null && result != DBNull.Value)
+                {
+                    return Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi nếu cần
+            }
+            return -1; // Trả về -1 nếu không tìm thấy
         }
 
         private void UpdateResignChart(ResignModel.ModelOutput prediction, CustomerStats stats)

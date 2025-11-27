@@ -80,8 +80,6 @@ namespace Environmental_Monitoring
                 cmbGiaoDien.SelectedIndex = 0;
             }
 
-            cbEmail.Checked = Properties.Settings.Default.NotifyByEmail;
-            cbUngDung.Checked = Properties.Settings.Default.NotifyInApp;
             isLoading = false;
         }
 
@@ -108,8 +106,6 @@ namespace Environmental_Monitoring
                 }
                 Properties.Settings.Default.Theme = themeToSave;
 
-                Properties.Settings.Default.NotifyByEmail = cbEmail.Checked;
-                Properties.Settings.Default.NotifyInApp = cbUngDung.Checked;
 
                 Properties.Settings.Default.Save();
 
@@ -147,13 +143,9 @@ namespace Environmental_Monitoring
                 lblSystemSettings.Text = rm.GetString("Settings_SystemSettings", culture);
                 lblLanguage.Text = rm.GetString("Settings_Language", culture);
                 lblTheme.Text = rm.GetString("Settings_Theme", culture);
-                lblNotification.Text = rm.GetString("Settings_Notification", culture);
-                cbEmail.Text = rm.GetString("Email", culture);
-                cbUngDung.Text = rm.GetString("Settings_App", culture);
                 btnSave.Text = rm.GetString("Settings_SaveButton", culture);
                 lblUserManual.Text = rm.GetString("Settings_UserManual", culture);
                 lblViewDocument.Text = rm.GetString("Settings_ViewDocument", culture);
-                lblQuestion.Text = rm.GetString("Settings_Question", culture);
                 txtSearch.PlaceholderText = rm.GetString("Search_Placeholder", culture);
 
                 this.BackColor = ThemeManager.BackgroundColor;
@@ -165,12 +157,8 @@ namespace Environmental_Monitoring
                 lblSystemSettings.ForeColor = ThemeManager.TextColor;
                 lblLanguage.ForeColor = ThemeManager.TextColor;
                 lblTheme.ForeColor = ThemeManager.TextColor;
-                lblNotification.ForeColor = ThemeManager.TextColor;
-                cbEmail.ForeColor = ThemeManager.TextColor;
-                cbUngDung.ForeColor = ThemeManager.TextColor;
                 lblUserManual.ForeColor = ThemeManager.TextColor;
                 lblViewDocument.ForeColor = ThemeManager.TextColor;
-                lblQuestion.ForeColor = ThemeManager.TextColor;
 
                 cmbNgonNgu.BackColor = ThemeManager.PanelColor;
                 cmbNgonNgu.ForeColor = ThemeManager.TextColor;
