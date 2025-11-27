@@ -51,7 +51,6 @@ namespace Environmental_Monitoring.View.ContractContent
             if (btnCancel != null) btnCancel.Click += btnCancel_Click;
 
             // --- [MỚI] ĐĂNG KÝ SỰ KIỆN CHO NÚT "THÊM MẪU" ---
-            // Giả sử tên nút trong Design là btnThemMau
             if (btnThemMau != null)
             {
                 btnThemMau.Click -= btnThemMau_Click;
@@ -63,7 +62,6 @@ namespace Environmental_Monitoring.View.ContractContent
         }
 
         // --- SỰ KIỆN MỚI: BẤM NÚT THÊM MẪU ---
-        // Thay vì bấm nút môi trường riêng lẻ, giờ bấm nút chung này để mở Popup
         private void btnThemMau_Click(object sender, EventArgs e)
         {
             // Kiểm tra đã chọn hợp đồng chưa
@@ -94,6 +92,15 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView1.RowHeadersVisible = false;
             roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
+            // --- CẤU HÌNH MÀU CHỮ ĐEN ---
+            roundedDataGridView1.DefaultCellStyle.ForeColor = Color.Black;
+            roundedDataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            roundedDataGridView1.RowsDefaultCellStyle.ForeColor = Color.Black;
+
+            // Style chung: Header in đậm
+            roundedDataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            // -----------------------------
+
             // Cột Nền Mẫu (sẽ được gộp ô nếu giống nhau)
             var colNenMau = new DataGridViewTextBoxColumn
             {
@@ -114,7 +121,7 @@ namespace Environmental_Monitoring.View.ContractContent
             btnDel.HeaderText = "Xóa";
             btnDel.Text = "X";
             btnDel.UseColumnTextForButtonValue = true;
-            btnDel.DefaultCellStyle.ForeColor = Color.Red;
+            btnDel.DefaultCellStyle.ForeColor = Color.Red; // Nút xóa màu đỏ
             roundedDataGridView1.Columns.Add(btnDel);
 
             // Đăng ký sự kiện
@@ -163,8 +170,8 @@ namespace Environmental_Monitoring.View.ContractContent
 
             Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
 
-            // Vẽ Text
-            TextRenderer.DrawText(e.Graphics, e.FormattedValue?.ToString(), e.CellStyle.Font, groupRect, e.CellStyle.ForeColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            // Vẽ Text - Ép buộc màu chữ là Color.Black
+            TextRenderer.DrawText(e.Graphics, e.FormattedValue?.ToString(), e.CellStyle.Font, groupRect, Color.Black, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
 
             // Vẽ đường kẻ
             using (Pen gridPen = new Pen(Color.Black, 1))
