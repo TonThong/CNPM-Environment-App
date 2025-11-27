@@ -210,7 +210,7 @@ namespace Environmental_Monitoring
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(217, 244, 227);
+            BackColor = Color.Transparent;
             Controls.Add(tableLayoutPanel1);
             Name = "Notification";
             Size = new Size(1227, 715);

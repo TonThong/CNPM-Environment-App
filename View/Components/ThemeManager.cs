@@ -16,6 +16,7 @@ namespace Environmental_Monitoring
             private static Color light_SecondaryText = Color.FromArgb(64, 64, 64);
             private static Color light_Accent = Color.FromArgb(42, 165, 90); // Màu xanh lá cây đậm (Green Flow)
             private static Color light_Border = Color.LightGray;
+            private static Color light_BackgroundColor_tab = Color.DarkGray;
 
             // === Dark Mode ===
             private static Color dark_Background = Color.FromArgb(30, 30, 30); // Màu nền tối
@@ -25,6 +26,7 @@ namespace Environmental_Monitoring
             private static Color dark_SecondaryText = Color.FromArgb(200, 200, 200);
             private static Color dark_Accent = Color.FromArgb(60, 179, 113); // Màu xanh lá cây sáng (MediumSeaGreen)
             private static Color dark_Border = Color.FromArgb(80, 80, 80);
+            
 
             public static Color BackgroundColor { get; private set; }
             public static Color BackgroundColor_Popup_QLNV { get; private set; }
@@ -35,6 +37,7 @@ namespace Environmental_Monitoring
             public static Color AccentColor { get; private set; }
             public static Color BorderColor { get; private set; }
             public static Image BackgroundImage { get; private set; } 
+            public static Color BackgroundColor_tab { get; private set; }
             static ThemeManager()
             {
                 ApplyTheme("light");
@@ -56,6 +59,7 @@ namespace Environmental_Monitoring
                 else 
                 {
                     BackgroundColor_Popup_QLNV = light_Background_Popup_QLNV;
+                    BackgroundColor_tab = light_BackgroundColor_tab;
                     BackgroundColor = light_Background;
                     PanelColor = light_Panel;
                     SecondaryPanelColor = light_SecondaryPanel;

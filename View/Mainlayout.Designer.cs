@@ -30,6 +30,7 @@ namespace Environmental_Monitoring.View
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainlayout));
             lblBigName = new Label();
             panelMenu = new Panel();
@@ -43,17 +44,21 @@ namespace Environmental_Monitoring.View
             btnSetting = new MenuButton();
             btnUser = new MenuButton();
             panelContent = new RoundedPanel();
+            globalAlertPanel = new AlertPanel();
             pictureBox1 = new PictureBox();
             panel = new Panel();
-            globalAlertPanel = new AlertPanel();
             pbLogout = new PictureBox();
             lblUserName = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
+            iconBell = new PictureBox();
+            timerNotifications = new System.Windows.Forms.Timer(components);
+            lblBadge = new Label();
             panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbLogout).BeginInit();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)iconBell).BeginInit();
             SuspendLayout();
             // 
             // lblBigName
@@ -305,6 +310,14 @@ namespace Environmental_Monitoring.View
             panelContent.Size = new Size(1227, 715);
             panelContent.TabIndex = 19;
             // 
+            // globalAlertPanel
+            // 
+            globalAlertPanel.Location = new Point(1009, 9);
+            globalAlertPanel.Name = "globalAlertPanel";
+            globalAlertPanel.Size = new Size(400, 100);
+            globalAlertPanel.TabIndex = 22;
+            globalAlertPanel.Visible = false;
+            // 
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.Transparent;
@@ -326,21 +339,13 @@ namespace Environmental_Monitoring.View
             panel.Size = new Size(537, 140);
             panel.TabIndex = 21;
             // 
-            // globalAlertPanel
-            // 
-            globalAlertPanel.Location = new Point(1009, 12);
-            globalAlertPanel.Name = "globalAlertPanel";
-            globalAlertPanel.Size = new Size(400, 100);
-            globalAlertPanel.TabIndex = 22;
-            globalAlertPanel.Visible = false;
-            // 
             // pbLogout
             // 
             pbLogout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pbLogout.BackColor = Color.Transparent;
             pbLogout.Cursor = Cursors.Hand;
             pbLogout.Image = Properties.Resources.image_removebg_preview;
-            pbLogout.Location = new Point(151, 3);
+            pbLogout.Location = new Point(239, 3);
             pbLogout.Name = "pbLogout";
             pbLogout.Size = new Size(32, 31);
             pbLogout.SizeMode = PictureBoxSizeMode.Zoom;
@@ -355,7 +360,7 @@ namespace Environmental_Monitoring.View
             lblUserName.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lblUserName.Location = new Point(3, 0);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(142, 37);
+            lblUserName.Size = new Size(226, 37);
             lblUserName.TabIndex = 24;
             lblUserName.Text = "User Name";
             lblUserName.TextAlign = ContentAlignment.MiddleRight;
@@ -364,16 +369,43 @@ namespace Environmental_Monitoring.View
             // 
             tableLayoutPanel1.BackColor = Color.Transparent;
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel1.Controls.Add(pbLogout, 1, 0);
             tableLayoutPanel1.Controls.Add(lblUserName, 0, 0);
-            tableLayoutPanel1.Location = new Point(1223, 12);
+            tableLayoutPanel1.Location = new Point(1135, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(186, 37);
+            tableLayoutPanel1.Size = new Size(274, 37);
             tableLayoutPanel1.TabIndex = 26;
+            // 
+            // iconBell
+            // 
+            iconBell.BackColor = Color.Transparent;
+            iconBell.Cursor = Cursors.Hand;
+            iconBell.Image = (Image)resources.GetObject("iconBell.Image");
+            iconBell.Location = new Point(1064, 10);
+            iconBell.Name = "iconBell";
+            iconBell.Size = new Size(40, 40);
+            iconBell.SizeMode = PictureBoxSizeMode.Zoom;
+            iconBell.TabIndex = 27;
+            iconBell.TabStop = false;
+            iconBell.Click += iconBell_Click;
+            // 
+            // lblBadge
+            // 
+            lblBadge.AutoSize = true;
+            lblBadge.BackColor = Color.Red;
+            lblBadge.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblBadge.ForeColor = Color.White;
+            lblBadge.Location = new Point(1085, 9);
+            lblBadge.Name = "lblBadge";
+            lblBadge.Size = new Size(18, 20);
+            lblBadge.TabIndex = 29;
+            lblBadge.Text = "0";
+            lblBadge.TextAlign = ContentAlignment.MiddleCenter;
+            lblBadge.Visible = false;
             // 
             // Mainlayout
             // 
@@ -383,6 +415,8 @@ namespace Environmental_Monitoring.View
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1421, 853);
             Controls.Add(globalAlertPanel);
+            Controls.Add(lblBadge);
+            Controls.Add(iconBell);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(panel);
             Controls.Add(panelContent);
@@ -396,7 +430,9 @@ namespace Environmental_Monitoring.View
             ((System.ComponentModel.ISupportInitialize)pbLogout).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)iconBell).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -420,5 +456,8 @@ namespace Environmental_Monitoring.View
         private PictureBox pbLogout;
         private Label lblUserName;
         private TableLayoutPanel tableLayoutPanel1;
+        private PictureBox iconBell;
+        private System.Windows.Forms.Timer timerNotifications;
+        private Label lblBadge;
     }
 }

@@ -14,6 +14,9 @@ using System.Threading;
 using System.Globalization;
 using System.Resources;
 using Environmental_Monitoring.Controller;
+using Environmental_Monitoring.Properties;
+using Environmental_Monitoring.Controller.Data;
+using System.IO;
 
 namespace Environmental_Monitoring.View
 {
@@ -36,6 +39,9 @@ namespace Environmental_Monitoring.View
         private Setting settingPage;
         private AI aiPage;
         private Introduce introducePage;
+
+        private int unreadCount = 0;
+        private NotificationBell notificationBell;
 
         #endregion
 
@@ -73,6 +79,9 @@ namespace Environmental_Monitoring.View
             btnAI.Click += new EventHandler(MenuButton_Click);
             btnIntroduce.Click += new EventHandler(MenuButton_Click);
 
+            iconBell.Click -= iconBell_Click;
+            iconBell.Click += new EventHandler(iconBell_Click);
+
             panel.MouseDown += new MouseEventHandler(panelHeadder_MouseDown);
             panel.MouseMove += new MouseEventHandler(panelHeadder_MouseMove);
             panel.MouseUp += new MouseEventHandler(panelHeadder_MouseUp);
@@ -83,12 +92,14 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        private void Mainlayout_Load(object sender, EventArgs e)
+        private async void Mainlayout_Load(object sender, EventArgs e)
         {
+            // 1. Cập nhật trạng thái Hợp đồng ngay khi mở App
+            // Việc này đảm bảo hợp đồng quá hạn sẽ chuyển thành Expired -> Giao diện sẽ tô đỏ và khóa lại
+            await UpdateContractStatuses();
+
             ApplyPermissions();
-
             LoadHomePageForRole();
-
             UpdateUIText();
 
             if (UserSession.CurrentUser != null)
@@ -99,6 +110,20 @@ namespace Environmental_Monitoring.View
             {
                 lblUserName.Text = "Guest";
             }
+
+            // 2. Chạy các tác vụ thông báo hàng ngày
+            await RunDailyNotificationChecks();
+
+            CheckForUnreadNotifications();
+
+            if (this.timerNotifications != null)
+            {
+                timerNotifications.Interval = 60000;
+                timerNotifications.Tick += TimerNotifications_Tick;
+                timerNotifications.Start();
+            }
+
+            NotificationService.OnNotificationCreated += RefreshNotificationCount;
         }
 
         #endregion
@@ -131,7 +156,7 @@ namespace Environmental_Monitoring.View
             MenuButton homeButton;
 
             string roleName = UserSession.CurrentUser?.Role?.RoleName ?? "";
-            string cleanRoleName = roleName.ToLowerInvariant().Trim(); 
+            string cleanRoleName = roleName.ToLowerInvariant().Trim();
 
             switch (cleanRoleName)
             {
@@ -157,13 +182,12 @@ namespace Environmental_Monitoring.View
 
             LoadPage(homePage);
             ResetAllButtons();
-            HighlightButton(homeButton); 
+            HighlightButton(homeButton);
         }
 
         public void LoadContractPageForEmployee()
         {
             LoadPage(GetOrCreatePage(ref contractPage));
-
             ResetAllButtons();
             HighlightButton(btnContracts);
         }
@@ -391,7 +415,6 @@ namespace Environmental_Monitoring.View
             }
         }
 
-
         #endregion
 
         #region Utilities & Form Events
@@ -433,5 +456,241 @@ namespace Environmental_Monitoring.View
         }
 
         #endregion
+
+        #region Notification Logic
+
+        /// <summary>
+        /// Sự kiện chạy mỗi phút để kiểm tra thông báo và cập nhật trạng thái hợp đồng.
+        /// </summary>
+        private async void TimerNotifications_Tick(object sender, EventArgs e)
+        {
+            CheckForUnreadNotifications();
+
+            // Cập nhật trạng thái Expired định kỳ (đề phòng treo máy qua đêm)
+            await UpdateContractStatuses();
+
+            DateTime now = DateTime.Now;
+            if (now.Hour == 0 && now.Minute == 1)
+            {
+                if (Settings.Default.LastNotificationCheck.Date < now.Date)
+                {
+                    try
+                    {
+                        await RunDailyTasksInternal();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Lỗi chạy tác vụ hàng ngày tự động: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// HÀM MỚI: Cập nhật trạng thái hợp đồng thành Expired nếu quá hạn.
+        /// Hàm này sẽ chạy mỗi khi mở App và trong Timer.
+        /// </summary>
+        private async Task UpdateContractStatuses()
+        {
+            try
+            {
+                // Cập nhật tất cả hợp đồng Active mà có ngày trả < hôm nay -> Expired
+                string updateExpiredQuery = @"
+                    UPDATE Contracts
+                    SET Status = 'Expired'
+                    WHERE NgayTraKetQua < CURDATE()
+                      AND Status = 'Active';";
+
+                await Task.Run(() => DataProvider.Instance.ExecuteNonQuery(updateExpiredQuery));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi cập nhật trạng thái hợp đồng: " + ex.Message);
+            }
+        }
+
+        public void CheckForUnreadNotifications()
+        {
+            if (UserSession.CurrentUser == null || UserSession.CurrentUser.RoleID == null)
+            {
+                if (iconBell != null) iconBell.Visible = false;
+                if (lblBadge != null) lblBadge.Visible = false;
+                return;
+            }
+
+            int currentUserRoleID = UserSession.CurrentUser.RoleID.Value;
+            iconBell.Visible = true;
+
+            try
+            {
+                string query = "SELECT COUNT(*) FROM Notifications WHERE DaDoc = 0 AND RecipientRoleID = @roleId";
+                int newCount = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query, new object[] { currentUserRoleID }));
+
+                if (newCount != unreadCount)
+                {
+                    unreadCount = newCount;
+                    UpdateBellIcon();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi kiểm tra thông báo: " + ex.Message);
+            }
+        }
+
+        private void UpdateBellIcon()
+        {
+            if (unreadCount > 0)
+            {
+                lblBadge.Text = unreadCount.ToString();
+                lblBadge.Visible = true;
+                lblBadge.BringToFront();
+                iconBell.BackColor = Color.Transparent;
+            }
+            else
+            {
+                lblBadge.Visible = false;
+                iconBell.BackColor = Color.Transparent;
+            }
+        }
+
+        private async Task RunDailyNotificationChecks()
+        {
+            if (!UserSession.IsAdmin() || UserSession.CurrentUser?.RoleID.Value != 5)
+            {
+                return;
+            }
+
+            if (DateTime.Now.Date <= Settings.Default.LastNotificationCheck.Date)
+            {
+                return;
+            }
+
+            try
+            {
+                await RunDailyTasksInternal();
+            }
+            catch (Exception ex)
+            {
+                ShowGlobalAlert("Lỗi khi chạy kiểm tra thông báo: " + ex.Message, AlertPanel.AlertType.Error);
+            }
+        }
+
+        /// <summary>
+        /// Tạo thông báo hàng ngày.
+        /// </summary>
+        private async Task RunDailyTasksInternal()
+        {
+            // Đảm bảo trạng thái đã được cập nhật trước khi tạo thông báo
+            await UpdateContractStatuses();
+
+            int adminRoleID = 5;
+
+            string overdueQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
+                                    WHERE Status = 'Expired' 
+                                    AND NgayTraKetQua < CURDATE()";
+
+            DataTable overdueContracts = await Task.Run(() => DataProvider.Instance.ExecuteQuery(overdueQuery));
+            foreach (DataRow row in overdueContracts.Rows)
+            {
+                int contractId = Convert.ToInt32(row["ContractID"]);
+                string maDon = row["MaDon"].ToString();
+                DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
+                int daysOverdue = (DateTime.Now.Date - ngayTra.Date).Days;
+
+                string noiDung = $"Hợp đồng '{maDon}' đã trễ hạn {daysOverdue} ngày.";
+                await CreateDailyNotificationOnce(contractId, "QuaHan", noiDung, adminRoleID);
+            }
+
+            string expiringQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
+                                     WHERE Status = 'Active' 
+                                     AND NgayTraKetQua BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
+
+            DataTable expiringContracts = await Task.Run(() => DataProvider.Instance.ExecuteQuery(expiringQuery));
+            foreach (DataRow row in expiringContracts.Rows)
+            {
+                int contractId = Convert.ToInt32(row["ContractID"]);
+                string maDon = row["MaDon"].ToString();
+                DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
+                int daysLeft = (ngayTra.Date - DateTime.Now.Date).Days;
+
+                string noiDung = $"Hợp đồng '{maDon}' sắp hết hạn, còn {daysLeft} ngày.";
+                await CreateDailyNotificationOnce(contractId, "SapHetHan", noiDung, adminRoleID);
+            }
+
+            Settings.Default.LastNotificationCheck = DateTime.Now;
+            Settings.Default.Save();
+        }
+
+        private async Task CreateDailyNotificationOnce(int contractId, string loai, string noiDung, int recipientRoleID)
+        {
+            string checkQuery = @"SELECT COUNT(*) FROM Notifications 
+                                  WHERE ContractID = @contractId 
+                                  AND LoaiThongBao = @loai 
+                                  AND RecipientRoleID = @roleId
+                                  AND DATE(ThoiGianGui) = CURDATE()";
+
+            int count = Convert.ToInt32(await Task.Run(() =>
+                DataProvider.Instance.ExecuteScalar(checkQuery, new object[] { contractId, loai, recipientRoleID })
+            ));
+
+            if (count == 0)
+            {
+                NotificationService.CreateNotification(loai, noiDung, recipientRoleID, contractId, null);
+            }
+        }
+
+        #endregion
+
+        private void iconBell_Click(object sender, EventArgs e)
+        {
+            if (UserSession.CurrentUser == null || UserSession.CurrentUser.RoleID == null) return;
+            int currentUserRoleID = UserSession.CurrentUser.RoleID.Value;
+
+            if (notificationBell == null || notificationBell.IsDisposed)
+            {
+                notificationBell = new NotificationBell();
+
+                Point bellScreenLocation = iconBell.PointToScreen(Point.Empty);
+
+                int formX = bellScreenLocation.X + iconBell.Width - notificationBell.Width;
+
+                int formY = bellScreenLocation.Y + iconBell.Height + 5;
+                notificationBell.Location = new Point(formX, formY);
+
+                notificationBell.Show();
+                notificationBell.LoadNotifications(currentUserRoleID);
+            }
+            else
+            {
+                notificationBell.Close();
+                return;
+            }
+
+            try
+            {
+                string query = "UPDATE Notifications SET DaDoc = 1 WHERE DaDoc = 0 AND RecipientRoleID = @roleId";
+                DataProvider.Instance.ExecuteNonQuery(query, new object[] { currentUserRoleID });
+
+                unreadCount = 0;
+                UpdateBellIcon();
+            }
+            catch (Exception ex)
+            {
+                ShowGlobalAlert("Lỗi đánh dấu đã đọc: " + ex.Message, AlertPanel.AlertType.Error);
+            }
+        }
+
+        private void RefreshNotificationCount()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(CheckForUnreadNotifications));
+            }
+            else
+            {
+                CheckForUnreadNotifications();
+            }
+        }
     }
 }

@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace Environmental_Monitoring.Controller.Data
 {
+    public class UsageDetails
+    {
+        public string ReasonKey { get; set; }
+        public string Value { get; set; }     
+    }
+
+
     public class EmployeeRepo
     {
         private static EmployeeRepo instance;
@@ -130,8 +137,31 @@ namespace Environmental_Monitoring.Controller.Data
 
         public void DeleteEmployee(int employeeId)
         {
-            string query = "DELETE FROM Employees WHERE EmployeeID = @EmployeeID";
-            DataProvider.Instance.ExecuteNonQuery(query, new object[] { employeeId });
+            object[] parameters = new object[] { employeeId };
+
+            try
+            {
+                string updateSamplesHT = "UPDATE EnvironmentalSamples SET AssignedToHT = NULL WHERE AssignedToHT = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(updateSamplesHT, parameters);
+
+                string updateSamplesPTN = "UPDATE EnvironmentalSamples SET AssignedToPTN = NULL WHERE AssignedToPTN = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(updateSamplesPTN, parameters);
+
+                string deleteNotifications = "DELETE FROM Notifications WHERE EmployeeID_LienQuan = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(deleteNotifications, parameters);
+
+                string deleteContracts = "DELETE FROM Contracts WHERE EmployeeID = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(deleteContracts, parameters);
+
+                string deleteEmployee = "DELETE FROM Employees WHERE EmployeeID = @EmployeeID";
+                DataProvider.Instance.ExecuteNonQuery(deleteEmployee, parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"LỖI khi xóa nhân viên {employeeId}: {ex.Message}");
+         
+                throw;
+            }
         }
 
         public bool ExistsMaNhanVien(string code, int? id = 0)
@@ -145,21 +175,45 @@ namespace Environmental_Monitoring.Controller.Data
             email = email.Trim().ToUpper();
             return DataProvider.Instance.ExecuteScalar("SELECT EmployeeId FROM Employees WHERE UPPER(Email) = @email AND EmployeeId != @id", new object[] { email, id }) != null;
         }
+        public UsageDetails GetEmployeeUsageDetails(int employeeId)
+        {
+            // 1. Kiểm tra bảng Contracts (Đếm số lượng)
+            string contractQuery = "SELECT COUNT(*) FROM Contracts WHERE EmployeeId = @id";
+            object contractCountObj = DataProvider.Instance.ExecuteScalar(contractQuery, new object[] { employeeId });
+            int contractCount = (contractCountObj != null) ? Convert.ToInt32(contractCountObj) : 0;
+
+            if (contractCount > 0)
+            {
+                // Trả về số lượng hợp đồng
+                return new UsageDetails { ReasonKey = "Usage_ContractCount", Value = contractCount.ToString() };
+            }
+
+            // 2. Kiểm tra bảng EnvironmentalSamples (Hiện trường)
+            string sampleHTQuery = "SELECT COUNT(*) FROM EnvironmentalSamples WHERE AssignedToHT = @id";
+            object sampleHTCountObj = DataProvider.Instance.ExecuteScalar(sampleHTQuery, new object[] { employeeId });
+            int sampleHTCount = (sampleHTCountObj != null) ? Convert.ToInt32(sampleHTCountObj) : 0;
+
+            if (sampleHTCount > 0)
+            {
+                return new UsageDetails { ReasonKey = "Usage_SampleHTCount", Value = sampleHTCount.ToString() };
+            }
+
+            // 3. Kiểm tra bảng EnvironmentalSamples (Phòng thí nghiệm)
+            string samplePTNQuery = "SELECT COUNT(*) FROM EnvironmentalSamples WHERE AssignedToPTN = @id";
+            object samplePTNCountObj = DataProvider.Instance.ExecuteScalar(samplePTNQuery, new object[] { employeeId });
+            int samplePTNCount = (samplePTNCountObj != null) ? Convert.ToInt32(samplePTNCountObj) : 0;
+
+            if (samplePTNCount > 0)
+            {
+                return new UsageDetails { ReasonKey = "Usage_SamplePTNCount", Value = samplePTNCount.ToString() };
+            }
+
+            return null; // Không bị ràng buộc
+        }
 
         public bool ExistsAnotherTable(int id)
         {
-            return DataProvider.Instance
-                       .ExecuteScalar(
-                       "SELECT ContractID FROM Contracts WHERE EmployeeId = @id",
-                       new object[] { id }) != null ||
-                   DataProvider.Instance
-                       .ExecuteScalar(
-                       "SELECT AssignedToHT FROM EnvironmentalSamples WHERE AssignedToHT = @id",
-                       new object[] { id }) != null ||
-                   DataProvider.Instance
-                       .ExecuteScalar(
-                       "SELECT AssignedToPTN FROM EnvironmentalSamples WHERE AssignedToPTN = @id",
-                       new object[] { id }) != null;
+            return GetEmployeeUsageDetails(id) != null;
         }
 
         public DataTable Filter(string keySearch)
@@ -229,7 +283,6 @@ namespace Environmental_Monitoring.Controller.Data
             return result;
         }
 
-        // --- CÁC HÀM MỚI CHO CHỨC NĂNG QUÊN MẬT KHẨU ---
 
         public bool PhoneNumberExists(string phoneNumber)
         {

@@ -3,36 +3,28 @@
   "WorkspaceRootPath": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\controller\\reportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\reportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\plancontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\strings.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:strings.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\experimentcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\experimentcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\controller\\queryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:controller\\queryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\addtemplateform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\addtemplateform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\realcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\realcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\realcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\realcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|E:\\TDTU\\CNPM\\Environmental_Monitoring\\view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\resultcontent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|e:\\tdtu\\cnpm\\environmental_monitoring\\view\\contractcontent\\resultcontent.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFD5A5B0-CCE8-4AFC-A522-103FCBFCAF93}|Environmental_Monitoring.csproj|solutionrelative:view\\contractcontent\\resultcontent.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,8 +34,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "QueryRepository.cs",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Controller\\QueryRepository.cs",
+              "RelativeDocumentMoniker": "Controller\\QueryRepository.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Controller\\QueryRepository.cs",
+              "RelativeToolTip": "Controller\\QueryRepository.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwCgAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T20:54:39.463Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
@@ -59,14 +64,52 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "PlanContent.cs [Design]",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\PlanContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\PlanContent.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\PlanContent.cs [Design]",
-              "RelativeToolTip": "View\\ContractContent\\PlanContent.cs [Design]",
+              "Title": "Strings.resx",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Strings.resx",
+              "RelativeDocumentMoniker": "Strings.resx",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Strings.resx",
+              "RelativeToolTip": "Strings.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T19:37:11.189Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ReportService.cs",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Controller\\ReportService.cs",
+              "RelativeDocumentMoniker": "Controller\\ReportService.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\Controller\\ReportService.cs",
+              "RelativeToolTip": "Controller\\ReportService.cs",
+              "ViewState": "AgIAAJgAAAAAAAAAAAAAwIsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T14:33:51.369Z",
+              "WhenOpened": "2025-11-27T19:31:51.189Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ResultContent.cs [Design]",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ResultContent.cs",
+              "RelativeDocumentMoniker": "View\\ContractContent\\ResultContent.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ResultContent.cs [Design]",
+              "RelativeToolTip": "View\\ContractContent\\ResultContent.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T19:17:43.099Z",
               "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ResultContent.Designer.cs",
+              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ResultContent.Designer.cs",
+              "RelativeDocumentMoniker": "View\\ContractContent\\ResultContent.Designer.cs",
+              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ResultContent.Designer.cs",
+              "RelativeToolTip": "View\\ContractContent\\ResultContent.Designer.cs",
+              "ViewState": "AgIAAIQAAAAAAAAAAAAlwJYAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T19:17:31.956Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -76,86 +119,10 @@
               "RelativeDocumentMoniker": "View\\ContractContent\\ResultContent.cs",
               "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ResultContent.cs",
               "RelativeToolTip": "View\\ContractContent\\ResultContent.cs",
-              "ViewState": "AgIAAAoBAAAAAAAAAAAWwCgBAABUAAAAAAAAAA==",
+              "ViewState": "AgIAAIEBAAAAAAAAAAAcwI4BAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:19:15.965Z",
+              "WhenOpened": "2025-11-27T19:16:49.244Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ExperimentContent.cs",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ExperimentContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\ExperimentContent.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ExperimentContent.cs",
-              "RelativeToolTip": "View\\ContractContent\\ExperimentContent.cs",
-              "ViewState": "AgIAAKgBAAAAAAAAAAAjwKcBAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:18:33.395Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AddTemplateForm.cs",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\AddTemplateForm.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\AddTemplateForm.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\AddTemplateForm.cs",
-              "RelativeToolTip": "View\\ContractContent\\AddTemplateForm.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAgwC4AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:02:34.188Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "RealContent.cs",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\RealContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\RealContent.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\RealContent.cs",
-              "RelativeToolTip": "View\\ContractContent\\RealContent.cs",
-              "ViewState": "AgIAAC0BAAAAAAAAAAAWwDoBAABUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T12:58:06.583Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PlanContent.cs",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\PlanContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\PlanContent.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\PlanContent.cs",
-              "RelativeToolTip": "View\\ContractContent\\PlanContent.cs",
-              "ViewState": "AgIAAI0BAAAAAAAAAAAlwJoBAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T12:46:24.904Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "RealContent.cs [Design]",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\RealContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\RealContent.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\RealContent.cs [Design]",
-              "RelativeToolTip": "View\\ContractContent\\RealContent.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T12:46:06.342Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ResultContent.cs [Design]",
-              "DocumentMoniker": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ResultContent.cs",
-              "RelativeDocumentMoniker": "View\\ContractContent\\ResultContent.cs",
-              "ToolTip": "E:\\TDTU\\CNPM\\Environmental_Monitoring\\View\\ContractContent\\ResultContent.cs [Design]",
-              "RelativeToolTip": "View\\ContractContent\\ResultContent.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T02:15:52.189Z",
-              "EditorCaption": " [Design]"
             }
           ]
         }

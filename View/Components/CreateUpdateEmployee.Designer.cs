@@ -47,7 +47,6 @@
             btnSave = new Environmental_Monitoring.View.Components.RoundedButton();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             txtMaNV = new Environmental_Monitoring.View.Components.RoundedTextBox();
-            txtNamSinh = new Environmental_Monitoring.View.Components.RoundedTextBox();
             txtDiaChi = new Environmental_Monitoring.View.Components.RoundedTextBox();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -59,6 +58,7 @@
             txtSDT = new Environmental_Monitoring.View.Components.RoundedTextBox();
             cbbRole = new Environmental_Monitoring.View.Components.RoundedComboBox();
             chkTruongBoPhan = new CheckBox();
+            dtpNamSinh = new Environmental_Monitoring.View.Components.CustomDateTimePicker();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -242,16 +242,17 @@
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.BackColor = Color.SeaGreen;
-            btnSave.BaseColor = Color.SeaGreen;
+            btnSave.BackColor = Color.FromArgb(0, 113, 0);
+            btnSave.BaseColor = Color.FromArgb(0, 113, 0);
             btnSave.BorderColor = Color.Transparent;
             btnSave.BorderRadius = 10;
             btnSave.BorderSize = 0;
+            btnSave.Cursor = Cursors.Hand;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
-            btnSave.HoverColor = Color.FromArgb(34, 139, 34);
+            btnSave.HoverColor = Color.FromArgb(0, 192, 0);
             btnSave.ImageAlign = ContentAlignment.MiddleLeft;
             btnSave.Location = new Point(190, 4);
             btnSave.Margin = new Padding(3, 4, 3, 4);
@@ -281,26 +282,6 @@
             txtMaNV.Size = new Size(224, 41);
             txtMaNV.TabIndex = 30;
             txtMaNV.UseSystemPasswordChar = false;
-            // 
-            // txtNamSinh
-            // 
-            txtNamSinh.BackColor = Color.White;
-            txtNamSinh.BorderRadius = 5;
-            txtNamSinh.BorderThickness = 2;
-            txtNamSinh.Dock = DockStyle.Fill;
-            txtNamSinh.FocusBorderColor = Color.DimGray;
-            txtNamSinh.HoverBorderColor = Color.DarkGray;
-            txtNamSinh.Location = new Point(618, 29);
-            txtNamSinh.Multiline = false;
-            txtNamSinh.Name = "txtNamSinh";
-            txtNamSinh.NormalBorderColor = Color.LightGray;
-            txtNamSinh.Padding = new Padding(7, 10, 5, 5);
-            txtNamSinh.PasswordChar = '\0';
-            txtNamSinh.PlaceholderText = "Nhập Năm Sinh";
-            txtNamSinh.ReadOnly = false;
-            txtNamSinh.Size = new Size(224, 41);
-            txtNamSinh.TabIndex = 31;
-            txtNamSinh.UseSystemPasswordChar = false;
             // 
             // txtDiaChi
             // 
@@ -357,7 +338,6 @@
             tableLayoutPanel1.Controls.Add(label17, 3, 9);
             tableLayoutPanel1.Controls.Add(label10, 7, 5);
             tableLayoutPanel1.Controls.Add(label5, 7, 3);
-            tableLayoutPanel1.Controls.Add(txtNamSinh, 6, 1);
             tableLayoutPanel1.Controls.Add(label6, 7, 1);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 5, 9);
             tableLayoutPanel1.Controls.Add(txtSDT, 6, 3);
@@ -365,6 +345,7 @@
             tableLayoutPanel1.Controls.Add(cbbRole, 6, 5);
             tableLayoutPanel1.Controls.Add(lblRole, 5, 5);
             tableLayoutPanel1.Controls.Add(chkTruongBoPhan, 5, 7);
+            tableLayoutPanel1.Controls.Add(dtpNamSinh, 6, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -469,6 +450,7 @@
             btnCancel.BorderColor = Color.Transparent;
             btnCancel.BorderRadius = 10;
             btnCancel.BorderSize = 0;
+            btnCancel.Cursor = Cursors.Hand;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -540,6 +522,20 @@
             chkTruongBoPhan.Text = "Trưởng Bộ Phận";
             chkTruongBoPhan.UseVisualStyleBackColor = true;
             // 
+            // dtpNamSinh
+            // 
+            dtpNamSinh.BorderColor = Color.FromArgb(171, 171, 171);
+            dtpNamSinh.BorderRadius = 5;
+            dtpNamSinh.BorderSize = 1;
+            dtpNamSinh.CustomFormat = null;
+            dtpNamSinh.Font = new Font("Segoe UI", 9.5F);
+            dtpNamSinh.Format = DateTimePickerFormat.Short;
+            dtpNamSinh.Location = new Point(618, 29);
+            dtpNamSinh.Name = "dtpNamSinh";
+            dtpNamSinh.Size = new Size(224, 41);
+            dtpNamSinh.TabIndex = 43;
+            dtpNamSinh.Value = new DateTime(2025, 11, 18, 11, 38, 21, 431);
+            // 
             // CreateUpdateEmployee
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -580,7 +576,6 @@
         private Components.RoundedButton btnSave;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Components.RoundedTextBox txtMaNV;
-        private Components.RoundedTextBox txtNamSinh;
         private Components.RoundedTextBox txtDiaChi;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
         private TableLayoutPanel tableLayoutPanel1;
@@ -592,5 +587,6 @@
         private Components.RoundedButton btnCancel;
         private TableLayoutPanel tableLayoutPanel2;
         private CheckBox chkTruongBoPhan;
+        private Components.CustomDateTimePicker dtpNamSinh;
     }
 }

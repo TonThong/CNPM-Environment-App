@@ -5,306 +5,550 @@ using System.Linq;
 using System.Windows.Forms;
 using Environmental_Monitoring.Controller;
 using System.IO;
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using iText.Layout.Properties;
-using iText.IO.Font;
-using iText.Kernel.Font;
-using iText.IO.Font.Constants;
-using Emgu.CV.Shape;
+using System.Threading.Tasks;
+using System.Resources;
+using System.Globalization;
+using System.Threading;
+using Environmental_Monitoring.View.Components;
+using Environmental_Monitoring.Controller.Data;
+using Environmental_Monitoring.Controller;
+using System.Reflection;
+using Environmental_Monitoring.View;
+using System.Collections.Generic;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
     public partial class ResultContent : UserControl
     {
         private int currentContractId = 0;
+        private bool isContractApproved = false;
+
+        private ResourceManager rm;
+        private CultureInfo culture;
 
         public ResultContent()
         {
             InitializeComponent();
-            roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            roundedDataGridView2.DefaultCellStyle.ForeColor = Color.Black;
+            InitializeLocalization();
+            this.Load += ResultContent_Load;
 
-            // wire buttons
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+            this.UpdateStyles();
+        }
+
+        private void InitializeLocalization()
+        {
+            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(ResultContent).Assembly);
+            culture = Thread.CurrentThread.CurrentUICulture;
+        }
+
+        /// <summary>
+        /// Phương thức được gọi từ Contract.cs thông qua Reflection khi nhấn Enter ở ô tìm kiếm.
+        /// Tìm kiếm theo: Mẫu, Thông số, Đơn vị, Min, Max, Giá trị, Kết quả.
+        /// </summary>
+        public void PerformSearch(string keyword)
+        {
+            if (roundedDataGridView2.DataSource is DataTable dt)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(keyword))
+                    {
+                        dt.DefaultView.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        string safeKeyword = keyword.Replace("'", "''")
+                                                    .Replace("[", "[[]")
+                                                    .Replace("]", "[]]")
+                                                    .Replace("%", "[%]")
+                                                    .Replace("*", "[*]")
+                                                    .Trim();
+
+                        List<string> filterParts = new List<string>();
+
+                        if (dt.Columns.Contains("MauKiemNghiem"))
+                            filterParts.Add($"MauKiemNghiem LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("TenThongSo"))
+                            filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("DonVi"))
+                            filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GioiHanMin"))
+                            filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GioiHanMax"))
+                            filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GiaTri"))
+                            filterParts.Add($"Convert(GiaTri, 'System.String') LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("KetQua"))
+                            filterParts.Add($"KetQua LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("TrangThaiHienThi"))
+                            filterParts.Add($"TrangThaiHienThi LIKE '%{safeKeyword}%'");
+
+                        dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Search Error: " + ex.Message);
+                }
+            }
+        }
+
+        private void ShowAlert(string message, AlertPanel.AlertType type)
+        {
+            var mainLayout = this.FindForm() as Mainlayout;
+            if (mainLayout != null)
+            {
+                mainLayout.ShowGlobalAlert(message, type);
+            }
+            else
+            {
+                string title;
+                MessageBoxIcon icon;
+                switch (type)
+                {
+                    case AlertPanel.AlertType.Success: title = rm.GetString("Alert_SuccessTitle", culture); icon = MessageBoxIcon.Information; break;
+                    case AlertPanel.AlertType.Error: title = rm.GetString("Alert_ErrorTitle", culture); icon = MessageBoxIcon.Error; break;
+                    default: title = rm.GetString("Alert_InfoTitle", culture) ?? "Information"; icon = MessageBoxIcon.Information; break;
+                }
+                MessageBox.Show(message, title, MessageBoxButtons.OK, icon);
+            }
+        }
+
+        public void UpdateUIText()
+        {
+            culture = Thread.CurrentThread.CurrentUICulture;
+
+            if (lbContractID != null)
+            {
+                if (currentContractId == 0)
+                    lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+                else
+                    lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + currentContractId.ToString();
+            }
+            if (btnContract != null) btnContract.Text = rm.GetString("Plan_ContractListButton", culture);
+            if (btnDuyet != null) btnDuyet.Text = rm.GetString("Result_Approve", culture);
+            if (btnRequest != null) btnRequest.Text = rm.GetString("Result_RequestEdit", culture);
+            if (btnPDF != null) btnPDF.Text = rm.GetString("Result_PDF", culture);
+            if (btnMail != null) btnMail.Text = rm.GetString("Result_Mail", culture);
+
+            var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
+            if (btnCancel != null) btnCancel.Text = rm.GetString("Button_Cancel", culture);
+
+            if (roundedDataGridView2.Columns.Contains("MaDon")) roundedDataGridView2.Columns["MaDon"].HeaderText = rm.GetString("Grid_ContractCode", culture);
+            if (roundedDataGridView2.Columns.Contains("NgayKy")) roundedDataGridView2.Columns["NgayKy"].HeaderText = rm.GetString("Grid_SignDate", culture);
+            if (roundedDataGridView2.Columns.Contains("NgayTraKetQua")) roundedDataGridView2.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture);
+            if (roundedDataGridView2.Columns.Contains("TenDoanhNghiep")) roundedDataGridView2.Columns["TenDoanhNghiep"].HeaderText = rm.GetString("PDF_Company", culture);
+            if (roundedDataGridView2.Columns.Contains("TenNguoiDaiDien")) roundedDataGridView2.Columns["TenNguoiDaiDien"].HeaderText = rm.GetString("PDF_Representative", culture);
+            if (roundedDataGridView2.Columns.Contains("TenNhanVien")) roundedDataGridView2.Columns["TenNhanVien"].HeaderText = rm.GetString("Grid_Employee", culture);
+            if (roundedDataGridView2.Columns.Contains("MauKiemNghiem")) roundedDataGridView2.Columns["MauKiemNghiem"].HeaderText = rm.GetString("Grid_Sample", culture);
+            if (roundedDataGridView2.Columns.Contains("TenThongSo")) roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
+            if (roundedDataGridView2.Columns.Contains("GioiHanMin")) roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
+            if (roundedDataGridView2.Columns.Contains("GioiHanMax")) roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
+            if (roundedDataGridView2.Columns.Contains("DonVi")) roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
+            if (roundedDataGridView2.Columns.Contains("GiaTri")) roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_Value", culture);
+            if (roundedDataGridView2.Columns.Contains("KetQua")) roundedDataGridView2.Columns["KetQua"].HeaderText = rm.GetString("Grid_Result", culture);
+            if (roundedDataGridView2.Columns.Contains("TrangThaiHienThi")) roundedDataGridView2.Columns["TrangThaiHienThi"].HeaderText = rm.GetString("Grid_ApprovalStatus", culture);
+            if (roundedDataGridView2.Columns.Contains("TrangThaiHopDong")) roundedDataGridView2.Columns["TrangThaiHopDong"].HeaderText = rm.GetString("Grid_ContractStatus", culture);
+
+            if (currentContractId != 0)
+            {
+                LoadContract(currentContractId);
+            }
+        }
+
+        private void ResultContent_Load(object sender, EventArgs e)
+        {
+            roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            roundedDataGridView2.RowHeadersVisible = false;
+            roundedDataGridView2.ScrollBars = ScrollBars.Both;
+
+            // Tự động giãn hàng và xuống dòng
+            roundedDataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            roundedDataGridView2.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            roundedDataGridView2.ReadOnly = true;
+            roundedDataGridView2.Scroll += roundedDataGridView2_Scroll;
+            roundedDataGridView2.GridColor = Color.Black;
+
+            // Đăng ký sự kiện vẽ và định dạng
+            roundedDataGridView2.CellPainting -= RoundedDataGridView2_CellPainting;
+            roundedDataGridView2.CellPainting += RoundedDataGridView2_CellPainting;
+
+            // QUAN TRỌNG: Đăng ký sự kiện CellFormatting để tô màu bền vững
+            roundedDataGridView2.CellFormatting -= RoundedDataGridView2_CellFormatting;
+            roundedDataGridView2.CellFormatting += RoundedDataGridView2_CellFormatting;
+
+            try { Type dgvType = roundedDataGridView2.GetType(); PropertyInfo pi = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic); if (pi != null) pi.SetValue(roundedDataGridView2, true, null); } catch { }
+
+            roundedDataGridView2.DefaultCellStyle.ForeColor = Color.Black;
+            roundedDataGridView2.AllowUserToAddRows = false;
+
             btnPDF.Click += BtnPDF_Click;
             btnMail.Click += BtnMail_Click;
             btnRequest.Click += BtnRequest_Click;
             btnDuyet.Click += BtnDuyet_Click;
+            btnContract.Click -= btnContract_Click;
+            btnContract.Click += btnContract_Click;
+
+            UpdateUIStates(false, false);
+            UpdateUIText();
         }
 
-        private void BtnContracts_Click(object? sender, EventArgs e)
+        // CẬP NHẬT: Logic tô màu nằm trong sự kiện này để đảm bảo không bị mất khi lọc
+        private void RoundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
+            // Tô màu cột "Kết quả" (Result)
+            if (roundedDataGridView2.Columns[e.ColumnIndex].Name == "KetQua")
+            {
+                string val = e.Value?.ToString() ?? "";
+                string polluted = rm.GetString("Grid_Polluted", culture);
+                string soonPolluted = rm.GetString("Grid_SoonPolluted", culture);
+                // string notPolluted = rm.GetString("Grid_NotPolluted", culture); // Mặc định là xanh
+
+                e.CellStyle.ForeColor = Color.White;
+
+                if (val == polluted)
+                {
+                    e.CellStyle.BackColor = Color.Red;
+                }
+                else if (val == soonPolluted)
+                {
+                    e.CellStyle.BackColor = Color.Orange;
+                }
+                else
+                {
+                    // Không ô nhiễm (Not Polluted)
+                    e.CellStyle.BackColor = Color.Green;
+                }
+            }
+        }
+
+        private void RoundedDataGridView2_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            e.Handled = true;
+            e.PaintBackground(e.CellBounds, true);
+
+            string[] mergeColumns = { "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "MauKiemNghiem", "TrangThaiHopDong" };
+            bool isMergeColumn = mergeColumns.Contains(roundedDataGridView2.Columns[e.ColumnIndex].Name);
+
+            using (Pen gridPen = new Pen(Color.Black, 1))
+            {
+                if (isMergeColumn)
+                {
+                    string rawValue = e.Value?.ToString() ?? "";
+                    string displayValue = rawValue;
+
+                    int startIndex = e.RowIndex;
+                    while (startIndex > 0)
+                    {
+                        object prevVal = roundedDataGridView2.Rows[startIndex - 1].Cells[e.ColumnIndex].Value;
+                        if (prevVal != null && prevVal.ToString() == rawValue) startIndex--; else break;
+                    }
+
+                    int endIndex = e.RowIndex;
+                    while (endIndex < roundedDataGridView2.Rows.Count - 1)
+                    {
+                        object nextVal = roundedDataGridView2.Rows[endIndex + 1].Cells[e.ColumnIndex].Value;
+                        if (nextVal != null && nextVal.ToString() == rawValue) endIndex++; else break;
+                    }
+
+                    int totalHeight = 0;
+                    for (int i = startIndex; i <= endIndex; i++) totalHeight += roundedDataGridView2.Rows[i].Height;
+
+                    int offsetY = 0;
+                    for (int i = startIndex; i < e.RowIndex; i++) offsetY -= roundedDataGridView2.Rows[i].Height;
+
+                    Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
+
+                    TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak | TextFormatFlags.PreserveGraphicsClipping;
+
+                    // Vẽ text với màu của style hiện tại (để hỗ trợ CellFormatting nếu sau này merge các ô màu)
+                    TextRenderer.DrawText(e.Graphics, displayValue, e.CellStyle.Font, groupRect, e.CellStyle.ForeColor, flags);
+
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                    if (e.RowIndex == endIndex) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+                else
+                {
+                    // Vẽ ô bình thường, giữ lại BackColor đã set trong CellFormatting
+                    e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.Border);
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                }
+            }
         }
 
         private void LoadContract(int contractId)
         {
             try
             {
-                // Get samples, parameters and result values
-                string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
-                                    p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,p.ONhiem,
-                                    r.GiaTri, r.TrangThaiPheDuyet
-                             FROM EnvironmentalSamples s
-                             JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
-                             JOIN Parameters p ON tp.ParameterID = p.ParameterID
-                             LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
-                             WHERE s.ContractID = @contractId
-                             ORDER BY s.MaMau, p.TenThongSo";
-                DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
                 this.currentContractId = contractId;
-                if (dt == null)
-                {
-                    roundedDataGridView2.DataSource = null;
-                    return;
-                }
 
-                // Add display column for result text
-                if (!dt.Columns.Contains("KetQua"))
-                    dt.Columns.Add("KetQua", typeof(string));
+                string q = QueryRepository.LoadContractResults;
+                DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
 
-                // Compute KetQua based on GiaTri vs limits
+                if (dt == null || dt.Rows.Count == 0) { roundedDataGridView2.DataSource = null; UpdateUIStates(false, false); return; }
+
+                if (!dt.Columns.Contains("KetQua")) dt.Columns.Add("KetQua", typeof(string));
+                if (!dt.Columns.Contains("TrangThaiHienThi")) dt.Columns.Add("TrangThaiHienThi", typeof(string));
+                if (!dt.Columns.Contains("TrangThaiHopDong")) dt.Columns.Add("TrangThaiHopDong", typeof(string));
+
+                string polluted = rm.GetString("Grid_Polluted", culture);
+                string soonPolluted = rm.GetString("Grid_SoonPolluted", culture);
+                string notPolluted = rm.GetString("Grid_NotPolluted", culture);
+                string approved = rm.GetString("Grid_Approved", culture);
+                string notApproved = rm.GetString("Grid_NotApproved", culture);
+                string status_Completed = rm.GetString("Status_Completed", culture);
+                string status_Expired = rm.GetString("Status_Expired", culture);
+                string status_Overdue = rm.GetString("Status_Overdue", culture);
+                string status_Active = rm.GetString("Status_Active", culture);
+
+                bool tatCaDaDuyet = true;
                 foreach (DataRow row in dt.Rows)
                 {
-                    string res = string.Empty;
-                    res = row["ONhiem"].ToString().Equals('1') ? "Ô Nhiễm" : "Không Ô Nhiễm";
-                    row["KetQua"] = res;
-                }
+                    string rawSample = row["MauKiemNghiem"] != DBNull.Value ? row["MauKiemNghiem"].ToString() : "";
+                    int idx = rawSample.IndexOf(" - Template");
+                    if (idx > 0) row["MauKiemNghiem"] = rawSample.Substring(0, idx);
 
-                roundedDataGridView2.DataSource = dt;
-
-                // Adjust headers
-                if (roundedDataGridView2.Columns["SampleCode"] != null)
-                    roundedDataGridView2.Columns["SampleCode"].HeaderText = "Mẫu";
-                if (roundedDataGridView2.Columns["TenThongSo"] != null)
-                    roundedDataGridView2.Columns["TenThongSo"].HeaderText = "Thông số";
-                if (roundedDataGridView2.Columns["DonVi"] != null)
-                    roundedDataGridView2.Columns["DonVi"].HeaderText = "Đơn vị đo";
-                if (roundedDataGridView2.Columns["GioiHanMin"] != null && roundedDataGridView2.Columns["GioiHanMax"] != null)
-                {
-                    roundedDataGridView2.Columns["GioiHanMin"].HeaderText = "Giới hạn (Min)";
-                    roundedDataGridView2.Columns["GioiHanMax"].HeaderText = "Giới hạn (Max)";
-                }
-                if (roundedDataGridView2.Columns["GiaTri"] != null)
-                    roundedDataGridView2.Columns["GiaTri"].HeaderText = "Giá trị đo";
-                if (roundedDataGridView2.Columns["KetQua"] != null)
-                {
-                    roundedDataGridView2.Columns["KetQua"].HeaderText = "Kết quả";
-                    roundedDataGridView2.Columns["KetQua"].ReadOnly = true;
-                }
-
-                // Style result column
-                if (roundedDataGridView2.Columns["KetQua"] != null)
-                {
-                    foreach (DataGridViewRow dgRow in roundedDataGridView2.Rows)
+                    int onhiemStatus = (row["ONhiem"] != DBNull.Value) ? Convert.ToInt32(row["ONhiem"]) : 0;
+                    switch (onhiemStatus)
                     {
-                        var cell = dgRow.Cells["KetQua"];
-                        string v = cell.Value?.ToString() ?? string.Empty;
-                        if (v == "Ô Nhiễm")
-                        {
-                            cell.Style.BackColor = Color.Red;
-                            cell.Style.ForeColor = Color.White;
-                        }
-                        else if (v == "Không Ô Nhiễm")
-                        {
-                            cell.Style.BackColor = Color.Green;
-                            cell.Style.ForeColor = Color.White;
-                        }
-                        else
-                        {
-                            cell.Style.BackColor = Color.Orange;
-                            cell.Style.ForeColor = Color.White;
-                        }
+                        case 1: row["KetQua"] = polluted; break;
+                        case 2: row["KetQua"] = soonPolluted; break;
+                        default: row["KetQua"] = notPolluted; break;
+                    }
+
+                    int pheDuyetStatus = 0;
+                    if (row["TrangThaiPheDuyet"] != DBNull.Value) int.TryParse(row["TrangThaiPheDuyet"].ToString(), out pheDuyetStatus);
+
+                    if (pheDuyetStatus == 1) row["TrangThaiHienThi"] = approved;
+                    else
+                    {
+                        row["TrangThaiHienThi"] = notApproved;
+                        tatCaDaDuyet = false;
+                    }
+
+                    string statusHopDongDB = row["Status"].ToString();
+                    DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
+                    if (statusHopDongDB == "Completed") row["TrangThaiHopDong"] = status_Completed;
+                    else if (statusHopDongDB == "Expired") row["TrangThaiHopDong"] = status_Expired;
+                    else if (DateTime.Now > ngayTra) row["TrangThaiHopDong"] = status_Overdue;
+                    else row["TrangThaiHopDong"] = status_Active;
+                }
+
+                dt.DefaultView.Sort = "MauKiemNghiem ASC, TenThongSo ASC";
+                roundedDataGridView2.DataSource = dt.DefaultView.ToTable();
+
+                isContractApproved = tatCaDaDuyet;
+                UpdateUIStates(true, isContractApproved);
+
+                foreach (DataGridViewColumn col in roundedDataGridView2.Columns) col.SortMode = DataGridViewColumnSortMode.NotSortable;
+
+                string[] noHighlightCols = { "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "MauKiemNghiem" };
+                foreach (string colName in noHighlightCols)
+                {
+                    if (roundedDataGridView2.Columns.Contains(colName))
+                    {
+                        roundedDataGridView2.Columns[colName].DefaultCellStyle.SelectionBackColor = Color.White;
+                        roundedDataGridView2.Columns[colName].DefaultCellStyle.SelectionForeColor = Color.Black;
                     }
                 }
 
-                // Hide internal ids
-                if (roundedDataGridView2.Columns["SampleID"] != null)
-                    roundedDataGridView2.Columns["SampleID"].Visible = false;
-                if (roundedDataGridView2.Columns["ParameterID"] != null)
-                    roundedDataGridView2.Columns["ParameterID"].Visible = false;
-                if (roundedDataGridView2.Columns["ONhiem"] != null)
-                    roundedDataGridView2.Columns["ONhiem"].Visible = false;
+                // Đã xóa vòng lặp tô màu thủ công ở đây để tránh xung đột với CellFormatting
+
+                string[] hiddenCols = { "SampleID", "ParameterID", "ONhiem", "TrangThaiPheDuyet", "Status" };
+                foreach (string col in hiddenCols) if (roundedDataGridView2.Columns.Contains(col)) roundedDataGridView2.Columns[col].Visible = false;
+
+                foreach (DataGridViewColumn col in roundedDataGridView2.Columns)
+                {
+                    if (col.Name == "TenThongSo" || col.Name == "MauKiemNghiem") { col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; col.MinimumWidth = 150; }
+                    else if (col.Visible) col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi khi tải kết quả: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex) { ShowAlert(rm.GetString("Result_LoadError", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); UpdateUIStates(false, false); }
+        }
+
+        private void roundedDataGridView2_Scroll(object sender, ScrollEventArgs e) { if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll) roundedDataGridView2.Invalidate(); }
+
+        private void UpdateUIStates(bool contractLoaded, bool isApproved)
+        {
+            bool enabled = contractLoaded;
+
+            btnDuyet.Enabled = enabled && !isApproved;
+            btnRequest.Enabled = enabled && !isApproved;
+
+            btnPDF.Enabled = enabled && isApproved;
+            btnMail.Enabled = enabled && isApproved;
+
+            btnDuyet.BackColor = btnDuyet.Enabled ? Color.Green : Color.Gray;
+            btnRequest.BackColor = btnRequest.Enabled ? Color.FromArgb(119, 136, 153) : Color.Gray;
+            btnPDF.BackColor = btnPDF.Enabled ? Color.FromArgb(220, 53, 69) : Color.Gray;
+            btnMail.BackColor = btnMail.Enabled ? Color.FromArgb(0, 123, 255) : Color.Gray;
         }
 
         private void BtnPDF_Click(object? sender, EventArgs e)
         {
-            if ( currentContractId == 0)
-            {
-                MessageBox.Show("Vui lòng chọn hợp đồng trước khi xuất PDF.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            SaveFileDialog saveDialog = new SaveFileDialog
-            {
-                Title = "Chọn nơi lưu hợp đồng",
-                Filter = "PDF files (*.pdf)|*.pdf",
-                FileName = "HopDongQuanTrac.pdf"
-            };
-
+            if (currentContractId == 0) { ShowAlert(rm.GetString("Result_SelectContractBeforePDF", culture), AlertPanel.AlertType.Error); return; }
+            SaveFileDialog saveDialog = new SaveFileDialog { Title = rm.GetString("Result_SavePDFTitle", culture), Filter = "PDF files (*.pdf)|*.pdf", FileName = $"HopDong_{currentContractId}.pdf" };
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
-                string filePath = saveDialog.FileName;
-
-                using (PdfWriter writer = new PdfWriter(filePath))
-                using (PdfDocument pdf = new PdfDocument(writer))
-                using (Document doc = new Document(pdf))
+                string savePath = saveDialog.FileName; string tempPdfPath = null;
+                try
                 {
-                    string fontPath = Path.Combine(Application.StartupPath, "Resources", "times.ttf");
-
-                    PdfFont font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H);
-                    string query = @"
-                    SELECT *
-                    FROM Contracts c
-                    JOIN Customers cu ON c.CustomerID = cu.CustomerID
-                    WHERE c.ContractID = @ContractID
-                    ";
-
-                    DataTable dt = DataProvider.Instance.ExecuteQuery(query, new object[] { currentContractId });
-
-                    // Lấy từng thông tin
-                    string nguoiDaiDien = dt.Rows[0]["TenNguoiDaiDien"].ToString();
-                    string diaChi = dt.Rows[0]["DiaChi"].ToString();
-                    string tenDoanhNghiep = dt.Rows[0]["TenDoanhNghiep"].ToString();
-                    string kyHieuDoanhNghiep = dt.Rows[0]["KyHieuDoanhNghiep"].ToString();
-                    doc.Add(new Paragraph("HỢP ĐỒNG QUAN TRẮC MÔI TRƯỜNG").SetFont(font).SetFontSize(16).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
-                    doc.Add(new Paragraph("Doanh Nghiệp: " + tenDoanhNghiep).SetFont(font));
-                    doc.Add(new Paragraph("Ký Hiệu Doanh Nghiệp: " + kyHieuDoanhNghiep).SetFont(font));
-                    doc.Add(new Paragraph("Đại diện bên A: " + nguoiDaiDien).SetFont(font));
-                    doc.Add(new Paragraph("Các Thông Số").SetFont(font).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
-
-                    // Danh sách cột (có thể đổi theo DataTable của bạn)
-                    string[] headers = { "Mã Mẫu", "Thông Số", "Đơn Vị", "Giới Hạn Min", "Giới Hạn Max", "Giá Trị", "Trạng Thái","Kết Quả" };
-
-                    // Tạo bảng có số cột = headers.Length
-                    Table table = new Table(headers.Length).UseAllAvailableWidth();
-                    foreach (string header in headers)
-                    {
-                        table.AddHeaderCell(
-                            new Cell().Add(new Paragraph(header).SetFont(font))
-                                      .SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY)
-                                      .SetTextAlignment(TextAlignment.CENTER)
-                                      .SetVerticalAlignment(VerticalAlignment.MIDDLE)
-                                      .SetPadding(5)
-                        );
-                    }
-
-                    string q = @"SELECT s.SampleID, s.MaMau AS SampleCode,
-                                    p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,p.ONhiem,
-                                    r.GiaTri, r.TrangThaiPheDuyet
-                             FROM EnvironmentalSamples s
-                             JOIN TemplateParameters tp ON s.TemplateID = tp.TemplateID
-                             JOIN Parameters p ON tp.ParameterID = p.ParameterID
-                             LEFT JOIN Results r ON r.SampleID = s.SampleID AND r.ParameterID = p.ParameterID
-                             WHERE s.ContractID = @contractId
-                             ORDER BY s.MaMau, p.TenThongSo";
-                    DataTable dtInfo = DataProvider.Instance.ExecuteQuery(q, new object[] { this.currentContractId });
-                    foreach (DataRow row in dtInfo.Rows)
-                    {
-                        table.AddCell(new Cell().Add(new Paragraph(row["SampleCode"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["TenThongSo"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["DonVi"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMin"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMax"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GiaTri"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["TrangThaiPheDuyet"].ToString()).SetFont(font)));
-                        table.AddCell(new Cell().Add(new Paragraph(row["ONhiem"].ToString().Equals('1')?"Ô Nhiễm" :"Không Ô Nhiễm" ).SetFont(font)));
-                    }
-                    doc.Add(table);
-                    DateTime now = DateTime.Now;
-                    string ngayThang = $"Ngày {now.Day} tháng {now.Month} năm {now.Year}";
-
-                    doc.Add(new Paragraph("\n\n")); // tạo cách dòng
-
-                    // Thêm phần ký tên
-                    doc.Add(new Paragraph(ngayThang)
-                        .SetFont(font)
-                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT)
-                        .SetMarginRight(40));
-
-                    doc.Add(new Paragraph("ĐẠI DIỆN DOANH NGHIỆP "+ tenDoanhNghiep)
-                        .SetFont(font)
-                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
-                        .SetMarginTop(30)
-                        .SetMarginRight(250));
-
-                    doc.Add(new Paragraph("ĐẠI DIỆN PHỤ TRÁCH")
-                        .SetFont(font)
-                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
-                        .SetMarginTop(-30)
-                        .SetMarginLeft(250));
+                    this.Cursor = Cursors.WaitCursor;
+                    var reportService = new ReportService(rm, culture);
+                    DataTable gridData = (DataTable)roundedDataGridView2.DataSource;
+                    tempPdfPath = reportService.GeneratePdfReport(currentContractId, gridData);
+                    File.Copy(tempPdfPath, savePath, true);
+                    this.Cursor = Cursors.Default;
+                    ShowAlert(rm.GetString("Result_PDFSaveSuccess", culture), AlertPanel.AlertType.Success);
                 }
-
-                MessageBox.Show("Đã lưu hợp đồng", "Thông báo");
-            }
-            else
-            {
-                MessageBox.Show("Bạn đã hủy thao tác lưu file", "Thông báo");
+                catch (Exception ex) { this.Cursor = Cursors.Default; ShowAlert(rm.GetString("Error_GeneratePDF", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
+                finally { if (!string.IsNullOrEmpty(tempPdfPath) && File.Exists(tempPdfPath)) File.Delete(tempPdfPath); }
             }
         }
 
-        private void BtnMail_Click(object? sender, EventArgs e)
+        private async void BtnMail_Click(object? sender, EventArgs e)
         {
-            MessageBox.Show("Tính năng gửi mail chưa được triển khai.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (currentContractId == 0) { ShowAlert(rm.GetString("Result_SelectContractBeforeMail", culture), AlertPanel.AlertType.Error); return; }
+            string tempPdfPath = null;
+            try
+            {
+                object emailObj = DataProvider.Instance.ExecuteScalar(QueryRepository.GetCustomerEmail, new object[] { currentContractId });
+                if (emailObj == null || emailObj == DBNull.Value) { ShowAlert(rm.GetString("Result_EmailNotFound", culture), AlertPanel.AlertType.Error); return; }
+                string customerEmail = emailObj.ToString();
+                this.Cursor = Cursors.WaitCursor;
+                ShowAlert(rm.GetString("Result_GeneratingPDF", culture), AlertPanel.AlertType.Error);
+                var reportService = new ReportService(rm, culture);
+                DataTable gridData = (DataTable)roundedDataGridView2.DataSource;
+                tempPdfPath = await Task.Run(() => reportService.GeneratePdfReport(currentContractId, gridData));
+                string maDon = DataProvider.Instance.ExecuteScalar(QueryRepository.GetMaDon, new object[] { currentContractId }).ToString();
+                string subject = string.Format(rm.GetString("Mail_Subject", culture), maDon);
+                string body = string.Format(rm.GetString("Mail_Body", culture), maDon, currentContractId);
+                ShowAlert(string.Format(rm.GetString("Result_SendingMailTo", culture), customerEmail), AlertPanel.AlertType.Error);
+                bool success = await EmailService.SendEmailAsync(customerEmail, subject, body, tempPdfPath);
+                if (success) ShowAlert(rm.GetString("Result_MailSendSuccess", culture), AlertPanel.AlertType.Success);
+            }
+            catch (Exception ex) { ShowAlert(rm.GetString("Error_General", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
+            finally { this.Cursor = Cursors.Default; if (!string.IsNullOrEmpty(tempPdfPath) && File.Exists(tempPdfPath)) File.Delete(tempPdfPath); }
         }
 
         private void BtnRequest_Click(object? sender, EventArgs e)
         {
-            MessageBox.Show("Tính năng yêu cầu chỉnh sửa chưa được triển khai.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (this.currentContractId == 0) { ShowAlert(rm.GetString("Result_SelectContract", culture), AlertPanel.AlertType.Error); return; }
+            using (var form = new Requestforcorrection())
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    int newTienTrinh = form.SelectedTienTrinh; if (newTienTrinh == 0) return;
+                    try
+                    {
+                        DataProvider.Instance.ExecuteNonQuery(QueryRepository.ResetResultsOnRequest, new object[] { this.currentContractId });
+                        DataProvider.Instance.ExecuteNonQuery(QueryRepository.UpdateContractTienTrinh, new object[] { newTienTrinh, this.currentContractId });
+                        int recipientRoleID = (newTienTrinh == (int)ContractProcess.Sampling) ? (int)UserRole.Planning : (int)UserRole.Lab;
+                        string maDon = DataProvider.Instance.ExecuteScalar(QueryRepository.GetMaDon, new object[] { this.currentContractId }).ToString();
+                        string noiDung = $"Hợp đồng '{maDon}' yêu cầu bạn chỉnh sửa.";
+                        NotificationService.CreateNotification("ChinhSua", noiDung, recipientRoleID, this.currentContractId, null);
+                        string noiDungAdmin = $"Hợp đồng '{maDon}' đã được gửi yêu cầu chỉnh sửa cho {form.SelectedPhongBan}.";
+                        NotificationService.CreateNotification("ChinhSua", noiDungAdmin, (int)UserRole.Admin, this.currentContractId, null);
+                        string successMsg = string.Format(rm.GetString("Result_RequestSuccess", culture), form.SelectedPhongBan);
+                        ShowAlert(successMsg, AlertPanel.AlertType.Success);
+
+                        roundedDataGridView2.DataSource = null;
+                        if (lbContractID != null)
+                            lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+                        UpdateUIStates(false, false);
+                        this.currentContractId = 0;
+                    }
+                    catch (Exception ex) { ShowAlert(rm.GetString("Result_RequestError", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
+                }
+            }
         }
 
         private void BtnDuyet_Click(object? sender, EventArgs e)
         {
-            if (this.currentContractId == 0)
+            if (this.currentContractId == 0) { ShowAlert(rm.GetString("Result_SelectContractBeforeApprove", culture), AlertPanel.AlertType.Error); return; }
+            try
             {
-                MessageBox.Show("Vui lòng chọn hợp đồng trước khi duyệt.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                // 1. Duyệt tất cả các kết quả chi tiết (Results)
+                DataProvider.Instance.ExecuteNonQuery(QueryRepository.ApproveAllResults, new object[] { this.currentContractId });
+
+                // 2. [LOGIC MỚI] Kiểm tra ngày hiện tại để xác định trạng thái Hợp Đồng
+                string getDateQuery = "SELECT NgayTraKetQua FROM Contracts WHERE ContractID = @id";
+                object dateObj = DataProvider.Instance.ExecuteScalar(getDateQuery, new object[] { this.currentContractId });
+
+                string newStatus = "Completed"; // Mặc định là Hoàn thành đúng hạn
+
+                if (dateObj != null && dateObj != DBNull.Value)
+                {
+                    DateTime ngayTraKetQua = Convert.ToDateTime(dateObj);
+                    // Nếu ngày hiện tại (Now) lớn hơn ngày trả (Deadline) -> Trễ hạn
+                    if (DateTime.Now.Date > ngayTraKetQua.Date)
+                    {
+                        newStatus = "Late Completion";
+                    }
+                }
+
+                // 3. Cập nhật Status mới và Tiến độ (TienTrinh = 5) vào Database
+                string updateStatusQuery = "UPDATE Contracts SET Status = @status, TienTrinh = 5 WHERE ContractID = @id";
+                DataProvider.Instance.ExecuteNonQuery(updateStatusQuery, new object[] { newStatus, this.currentContractId });
+
+                // 4. Tạo thông báo
+                int adminRoleID = (int)UserRole.Admin;
+                string maDon = DataProvider.Instance.ExecuteScalar(QueryRepository.GetMaDon, new object[] { this.currentContractId }).ToString();
+                // Thông báo ghi rõ trạng thái (Completed hoặc Late Completion)
+                string noiDungAdmin = $"Hợp đồng '{maDon}' đã được duyệt và hoàn thành ({newStatus}).";
+                NotificationService.CreateNotification("ChinhSua", noiDungAdmin, adminRoleID, this.currentContractId, null);
+
+                ShowAlert(rm.GetString("Result_ApproveSuccess", culture), AlertPanel.AlertType.Success);
+
+                // Load lại để thấy thay đổi
+                LoadContract(this.currentContractId);
             }
-            this.currentContractId = 0;
-            roundedDataGridView2.DataSource = null;
-            MessageBox.Show("Đã duyệt hợp đồng", "Thông báo", MessageBoxButtons.OK);
-        }
-
-        // designer event placeholders (wired from designer)
-        private void btnSearch_Click(object sender, EventArgs e) { }
-        private void roundedButton1_Click(object sender, EventArgs e) { }
-        private void btnMail_Click(object sender, EventArgs e) { }
-        private void btnCancel_Click(object sender, EventArgs e) { }
-        private void btnSearch_Click_1(object sender, EventArgs e)
-        {
-
+            catch (Exception ex) { ShowAlert(rm.GetString("Result_ApproveError", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
         }
 
         private void btnContract_Click(object sender, EventArgs e)
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts";
+                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
+                         FROM Contracts WHERE TienTrinh >= 4";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
-
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
-                    // Khi người dùng chọn một hợp đồng trong popup
                     popup.ContractSelected += (contractId) =>
                     {
-                        // Load parameters for the selected contract into this RealContent
-                        lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
                         LoadContract(contractId);
-                    };
 
+                        // --- LOGIC MỚI: LẤY TÊN KHÁCH HÀNG ---
+                        string cusQuery = @"SELECT cus.TenDoanhNghiep 
+                                            FROM Contracts c 
+                                            JOIN Customers cus ON c.CustomerID = cus.CustomerID 
+                                            WHERE c.ContractID = @cid";
+                        object result = DataProvider.Instance.ExecuteScalar(cusQuery, new object[] { contractId });
+                        string tenCongTy = result != null ? result.ToString() : "Không xác định";
+
+                        lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + tenCongTy;
+                        // -------------------------------------
+
+                        // Lưu ý: Không gọi UpdateUIText() ở đây nữa để tránh bị reset về ID
+                    };
                     popup.ShowDialog();
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi khi lấy danh sách hợp đồng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex) { ShowAlert(rm.GetString("Error_LoadContracts", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
         }
+
+        private void btnSearch_Click(object sender, EventArgs e) { }
+        private void roundedButton1_Click(object sender, EventArgs e) { }
+        private void btnSearch_Click_1(object sender, EventArgs e) { }
+
     }
 }

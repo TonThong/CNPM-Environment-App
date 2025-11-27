@@ -31,7 +31,7 @@ namespace Environmental_Monitoring.Controller.Data
                     {
                         list.Add(new Parameter
                         {
-                            ParameterID = reader["ParameterID"] != DBNull.Value ? Convert.ToInt32(reader["ParameterID"]) : (int?)null,
+                            ParameterID = Convert.ToInt32(reader["ParameterID"]),
                             TenThongSo = reader["TenThongSo"] != DBNull.Value ? reader["TenThongSo"].ToString() : null,
                             DonVi = reader["DonVi"] != DBNull.Value ? reader["DonVi"].ToString() : null,
                             GioiHanMin = reader["GioiHanMin"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMin"]) : (decimal?)null,
@@ -88,7 +88,7 @@ namespace Environmental_Monitoring.Controller.Data
                 cmd.Parameters.AddWithValue("@GioiHanMin", (object)parameter.GioiHanMin ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@GioiHanMax", (object)parameter.GioiHanMax ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@PhuTrach", (object)parameter.PhuTrach ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@ParameterID", parameter.ParameterID ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@ParameterID", parameter.ParameterID);
 
                 cmd.ExecuteNonQuery();
             }
@@ -128,7 +128,7 @@ namespace Environmental_Monitoring.Controller.Data
                     {
                         return new Parameter
                         {
-                            ParameterID = reader["ParameterID"] != DBNull.Value ? Convert.ToInt32(reader["ParameterID"]) : (int?)null,
+                            ParameterID = Convert.ToInt32(reader["ParameterID"]),
                             TenThongSo = reader["TenThongSo"] != DBNull.Value ? reader["TenThongSo"].ToString() : null,
                             DonVi = reader["DonVi"] != DBNull.Value ? reader["DonVi"].ToString() : null,
                             GioiHanMin = reader["GioiHanMin"] != DBNull.Value ? Convert.ToDecimal(reader["GioiHanMin"]) : (decimal?)null,

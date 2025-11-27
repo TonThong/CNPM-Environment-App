@@ -588,4 +588,434 @@
   <data name="Forgot_Set_New_Password" xml:space="preserve">
     <value>Đặt Mật Khẩu Mới</value>
   </data>
+  <data name="Business_Title" xml:space="preserve">
+    <value>Thông Tin Khách Hàng Và Hợp Đồng</value>
+  </data>
+  <data name="Business_Customer" xml:space="preserve">
+    <value>Khách Hàng</value>
+  </data>
+  <data name="Business_Contract" xml:space="preserve">
+    <value>Hợp Đồng</value>
+  </data>
+  <data name="Business_CustomerName_Placeholder" xml:space="preserve">
+    <value>Tên Doanh Nghiệp</value>
+  </data>
+  <data name="Business_CustomerSymbol_Placeholder" xml:space="preserve">
+    <value>Ký Hiệu Doanh Nghiệp</value>
+  </data>
+  <data name="Business_Address_Placeholder" xml:space="preserve">
+    <value>Địa Chỉ Doanh Nghiệp</value>
+  </data>
+  <data name="Business_Representative_Placeholder" xml:space="preserve">
+    <value>Người Đại Diện</value>
+  </data>
+  <data name="Business_ContractID_Placeholder" xml:space="preserve">
+    <value>Số Hợp Đồng</value>
+  </data>
+  <data name="Business_DueDate_Placeholder" xml:space="preserve">
+    <value>Ngày Dự Kiến Trả Kết Quả</value>
+  </data>
+  <data name="Business_Employee_Placeholder" xml:space="preserve">
+    <value>Nhân Viên Thụ Lý</value>
+  </data>
+  <data name="ContractType_Quarterly" xml:space="preserve">
+    <value>Quý</value>
+  </data>
+  <data name="ContractType_Semiannual" xml:space="preserve">
+    <value>6 Tháng</value>
+  </data>
+  <data name="Error_AllFieldsRequired" xml:space="preserve">
+    <value>Vui lòng điền đầy đủ tất cả thông tin.</value>
+  </data>
+  <data name="Error_ContractIDPrefix" xml:space="preserve">
+    <value>Mã hợp đồng phải bắt đầu bằng 'HD-'.</value>
+  </data>
+  <data name="Error_LoadEmployees" xml:space="preserve">
+    <value>Lỗi khi tải danh sách nhân viên</value>
+  </data>
+  <data name="Error_CustomerUndefined" xml:space="preserve">
+    <value>Không thể xác định khách hàng.</value>
+  </data>
+  <data name="Success_ContractCreated" xml:space="preserve">
+    <value>Tạo hợp đồng thành công.</value>
+  </data>
+  <data name="Error_General" xml:space="preserve">
+    <value>Đã xảy ra lỗi</value>
+  </data>
+  <data name="Business_EmailCustomer_Placeholder" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Error_InvalidEmailFormat" xml:space="preserve">
+    <value>Định dạng email không hợp lệ.</value>
+  </data>
+  <data name="Alert_SuccessTitle" xml:space="preserve">
+    <value>Thành công</value>
+  </data>
+  <data name="Alert_ErrorTitle" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+  <data name="Alert_WarningTitle" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="Button_OK" xml:space="preserve">
+    <value>Đồng Ý</value>
+  </data>
+  <data name="Grid_Select" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="Grid_ParamName" xml:space="preserve">
+    <value>Tên Thông Số</value>
+  </data>
+  <data name="Grid_Unit" xml:space="preserve">
+    <value>Đơn Vị</value>
+  </data>
+  <data name="Grid_Min" xml:space="preserve">
+    <value>Tối Thiểu</value>
+  </data>
+  <data name="Grid_Max" xml:space="preserve">
+    <value>Tối Đa</value>
+  </data>
+  <data name="Grid_Department" xml:space="preserve">
+    <value>Phụ Trách</value>
+    <comment>&#x8;</comment>
+  </data>
+  <data name="Grid_Sample" xml:space="preserve">
+    <value>Mẫu</value>
+  </data>
+  <data name="Grid_Value" xml:space="preserve">
+    <value>Giá Trị</value>
+  </data>
+  <data name="Grid_ValueEntry" xml:space="preserve">
+    <value>Nhập Giá Trị Đo</value>
+  </data>
+  <data name="Grid_Result" xml:space="preserve">
+    <value>Kết Quả</value>
+  </data>
+  <data name="Grid_ApprovalStatus" xml:space="preserve">
+    <value>Trạng Thái Duyệt</value>
+  </data>
+  <data name="Grid_Approved" xml:space="preserve">
+    <value>Đã Duyệt</value>
+  </data>
+  <data name="Grid_NotApproved" xml:space="preserve">
+    <value>Chưa Duyệt</value>
+  </data>
+  <data name="Grid_Polluted" xml:space="preserve">
+    <value>Ô Nhiễm</value>
+  </data>
+  <data name="Grid_SoonPolluted" xml:space="preserve">
+    <value>Sắp Ô Nhiễm</value>
+  </data>
+  <data name="Grid_NotPolluted" xml:space="preserve">
+    <value>Không Ô Nhiễm</value>
+  </data>
+  <data name="Grid_SignDate" xml:space="preserve">
+    <value>Ngày ký</value>
+  </data>
+  <data name="Grid_DueDate" xml:space="preserve">
+    <value>Ngày Trả Kết Quả</value>
+  </data>
+  <data name="Grid_Status" xml:space="preserve">
+    <value>Trạng Thái</value>
+  </data>
+  <data name="Error_LoadContracts" xml:space="preserve">
+    <value>Lỗi khi tải danh sách hợp đồng</value>
+  </data>
+  <data name="Error_LoadSampleTemplates" xml:space="preserve">
+    <value>Lỗi khi tải mẫu môi trường</value>
+  </data>
+  <data name="Error_LoadParameters" xml:space="preserve">
+    <value>Lỗi khi tải thông số của mẫu</value>
+  </data>
+  <data name="Error_ReloadParameters" xml:space="preserve">
+    <value>Lỗi khi tải lại thông số</value>
+  </data>
+  <data name="Error_SaveNewParam" xml:space="preserve">
+    <value>Lỗi khi lưu thông số mới</value>
+  </data>
+  <data name="Error_LoadParamInfo" xml:space="preserve">
+    <value>Lỗi khi tải thông tin thông số</value>
+  </data>
+  <data name="Error_UpdateParam" xml:space="preserve">
+    <value>Lỗi khi cập nhật thông số</value>
+  </data>
+  <data name="Error_SavePlan" xml:space="preserve">
+    <value>Lỗi khi lưu kế hoạch</value>
+  </data>
+  <data name="Error_InvalidValue" xml:space="preserve">
+    <value>Giá trị nhập không hợp lệ</value>
+  </data>
+  <data name="Error_SampleIDNotFound" xml:space="preserve">
+    <value>Không tìm thấy mẫu (SampleID) để lưu giá trị.</value>
+  </data>
+  <data name="Error_SavingValue" xml:space="preserve">
+    <value>Lỗi khi lưu giá trị</value>
+  </data>
+  <data name="Error_LoadExperimentData" xml:space="preserve">
+    <value>Lỗi khi tải dữ liệu thử nghiệm</value>
+  </data>
+  <data name="Error_SaveData" xml:space="preserve">
+    <value>Lỗi khi lưu dữ liệu</value>
+  </data>
+  <data name="Error_SelectContract" xml:space="preserve">
+    <value>Lỗi khi chọn hợp đồng</value>
+  </data>
+  <data name="Error_GeneratePDF" xml:space="preserve">
+    <value>Lỗi khi tạo file PDF</value>
+  </data>
+  <data name="Plan_ContractIDLabel" xml:space="preserve">
+    <value>Khách Hàng</value>
+  </data>
+  <data name="Plan_ContractListButton" xml:space="preserve">
+    <value>Danh Sách Hợp Đồng</value>
+  </data>
+  <data name="Plan_AddParamButton" xml:space="preserve">
+    <value>Thêm Thông Số Mới</value>
+  </data>
+  <data name="Plan_SampleTemplatesLabel" xml:space="preserve">
+    <value>Mẫu Môi Trường</value>
+  </data>
+  <data name="Plan_ParametersLabel" xml:space="preserve">
+    <value>Thông Số</value>
+  </data>
+  <data name="Plan_SelectContract" xml:space="preserve">
+    <value>Vui lòng chọn một hợp đồng từ 'Danh sách hợp đồng'.</value>
+  </data>
+  <data name="Plan_SelectSampleTemplate" xml:space="preserve">
+    <value>Vui lòng chọn ít nhất một mẫu môi trường.</value>
+  </data>
+  <data name="Plan_SelectParameter" xml:space="preserve">
+    <value>Vui lòng chọn ít nhất một thông số đo.</value>
+  </data>
+  <data name="Plan_ContractCodeNotFound" xml:space="preserve">
+    <value>Lỗi: Không tìm thấy Mã hợp đồng (MaDon) tương ứng.</value>
+  </data>
+  <data name="Plan_SaveSuccess" xml:space="preserve">
+    <value>Đã lưu kế hoạch cho hợp đồng '{0}' và bàn giao cho Phòng Hiện Trường.</value>
+  </data>
+  <data name="Plan_DuplicateSampleError" xml:space="preserve">
+    <value>Lỗi: Mẫu này đã được thêm vào hợp đồng này rồi.</value>
+  </data>
+  <data name="Plan_ParamAlreadyExists" xml:space="preserve">
+    <value>Thông số này đã tồn tại trong hệ thống.</value>
+  </data>
+  <data name="Plan_AddParamSuccess" xml:space="preserve">
+    <value>Đã thêm thông số mới vào hệ thống.</value>
+  </data>
+  <data name="Request_Title" xml:space="preserve">
+    <value>Chọn phòng ban cần chỉnh sửa</value>
+  </data>
+  <data name="Request_FieldDept" xml:space="preserve">
+    <value>Hiện Trường</value>
+  </data>
+  <data name="Request_LabDept" xml:space="preserve">
+    <value>Thí nghiệm</value>
+  </data>
+  <data name="Request_SelectDeptWarning" xml:space="preserve">
+    <value>Vui lòng chọn một phòng ban để chuyển về.</value>
+  </data>
+  <data name="AddEditParam_EditTitle" xml:space="preserve">
+    <value>Chỉnh sửa Thông số</value>
+  </data>
+  <data name="AddEditParam_AddTitle" xml:space="preserve">
+    <value>Thêm Thông số mới</value>
+  </data>
+  <data name="AddEditParam_ValidationWarning" xml:space="preserve">
+    <value>Tên thông số và phòng ban phụ trách không được để trống.</value>
+  </data>
+  <data name="Exp_NoDataToSave" xml:space="preserve">
+    <value>Không có dữ liệu để lưu.</value>
+  </data>
+  <data name="Exp_SaveSuccess" xml:space="preserve">
+    <value>Đã lưu {0} trạng thái ô nhiễm và chuyển sang Phòng Kết Quả.</value>
+  </data>
+  <data name="Popup_SelectContractTitle" xml:space="preserve">
+    <value>Chọn Hợp đồng</value>
+  </data>
+  <data name="Status_NotAvailable" xml:space="preserve">
+    <value>Chưa có</value>
+  </data>
+  <data name="Status_InvalidFormat" xml:space="preserve">
+    <value>Sai định dạng</value>
+  </data>
+  <data name="Status_OutOfRange" xml:space="preserve">
+    <value>Ngoài giới hạn</value>
+  </data>
+  <data name="Status_Passed" xml:space="preserve">
+    <value>Đạt</value>
+  </data>
+  <data name="Real_NoDataToSave" xml:space="preserve">
+    <value>Không có dữ liệu để lưu.</value>
+  </data>
+  <data name="Real_SaveSuccess" xml:space="preserve">
+    <value>Lưu giá trị thành công và bàn giao cho Phòng Thí Nghiệm.</value>
+  </data>
+  <data name="Result_Approve" xml:space="preserve">
+    <value>Duyệt</value>
+  </data>
+  <data name="Result_RequestEdit" xml:space="preserve">
+    <value> Yêu Cầu Chỉnh Sửa</value>
+  </data>
+  <data name="Result_PDF" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="Result_Mail" xml:space="preserve">
+    <value>Mail</value>
+  </data>
+  <data name="Result_LoadError" xml:space="preserve">
+    <value>Lỗi khi tải kết quả</value>
+  </data>
+  <data name="PDF_Title" xml:space="preserve">
+    <value>PHIẾU KẾT QUẢ THỬ NGHIỆM</value>
+  </data>
+  <data name="PDF_Company" xml:space="preserve">
+    <value>Doanh Nghiệp</value>
+  </data>
+  <data name="PDF_CompanySymbol" xml:space="preserve">
+    <value>Ký Hiệu Doanh Nghiệp</value>
+  </data>
+  <data name="PDF_Representative" xml:space="preserve">
+    <value>Đại diện bên A</value>
+  </data>
+  <data name="PDF_TableTitle" xml:space="preserve">
+    <value>Kết quả quan trắc</value>
+  </data>
+  <data name="PDF_DateFormat" xml:space="preserve">
+    <value>Ngày {0} tháng {1} năm {2}</value>
+  </data>
+  <data name="PDF_Sign_Company" xml:space="preserve">
+    <value>ĐẠI DIỆN DOANH NGHIỆP</value>
+  </data>
+  <data name="PDF_Sign_Manager" xml:space="preserve">
+    <value>ĐẠI DIỆN PHỤ TRÁCH</value>
+  </data>
+  <data name="Result_SelectContractBeforePDF" xml:space="preserve">
+    <value>Vui lòng chọn hợp đồng trước khi xuất PDF.</value>
+  </data>
+  <data name="Result_SavePDFTitle" xml:space="preserve">
+    <value>Chọn nơi lưu hợp đồng</value>
+  </data>
+  <data name="Result_SelectContractBeforeMail" xml:space="preserve">
+    <value>Vui lòng chọn hợp đồng trước khi gửi mail.</value>
+  </data>
+  <data name="Result_EmailNotFound" xml:space="preserve">
+    <value>Khách hàng này không có email. Vui lòng cập nhật.</value>
+  </data>
+  <data name="Result_GeneratingPDF" xml:space="preserve">
+    <value>Đang chuẩn bị file PDF để gửi...</value>
+  </data>
+  <data name="Mail_Subject" xml:space="preserve">
+    <value>[BÁO CÁO KẾT QUẢ] Hợp đồng {0} - Green Flow</value>
+  </data>
+  <data name="Mail_Body" xml:space="preserve">
+    <value>&lt;p&gt;Kính gửi quý khách hàng,&lt;/p&gt;&lt;p&gt;Công ty Green Flow xin gửi bạn báo cáo kết quả quan trắc môi trường cho hợp đồng &lt;b&gt;{0}&lt;/b&gt; (ID: {1}).&lt;/p&gt;&lt;p&gt;Vui lòng xem chi tiết trong file PDF đính kèm.&lt;/p&gt;
+
+
+&lt;p&gt;Trân trọng,
+
+
+Đội ngũ Green Flow&lt;/p&gt;</value>
+  </data>
+  <data name="Result_SendingMailTo" xml:space="preserve">
+    <value>Đang gửi báo cáo đến {0}...</value>
+  </data>
+  <data name="Result_MailSendSuccess" xml:space="preserve">
+    <value>Đã gửi email và file PDF thành công!</value>
+  </data>
+  <data name="Result_SelectContract" xml:space="preserve">
+    <value>Vui lòng chọn hợp đồng.</value>
+  </data>
+  <data name="Result_RequestSuccess" xml:space="preserve">
+    <value>Đã gửi yêu cầu chỉnh sửa và chuyển hợp đồng về cho phòng {0}.</value>
+  </data>
+  <data name="Result_RequestError" xml:space="preserve">
+    <value>Lỗi khi gửi yêu cầu</value>
+  </data>
+  <data name="Result_SelectContractBeforeApprove" xml:space="preserve">
+    <value>Vui lòng chọn hợp đồng trước khi duyệt.</value>
+  </data>
+  <data name="Result_ApproveSuccess" xml:space="preserve">
+    <value>Đã duyệt hợp đồng</value>
+  </data>
+  <data name="Result_ApproveError" xml:space="preserve">
+    <value>Lỗi khi duyệt hợp đồng</value>
+  </data>
+  <data name="Role_Admin" xml:space="preserve">
+    <value>Quản trị viên</value>
+  </data>
+  <data name="Role_Business" xml:space="preserve">
+    <value>Kinh doanh</value>
+  </data>
+  <data name="Role_Field" xml:space="preserve">
+    <value>Hiện trường</value>
+  </data>
+  <data name="Role_Lab" xml:space="preserve">
+    <value>Phòng thí nghiệm</value>
+  </data>
+  <data name="Role_Plan" xml:space="preserve">
+    <value>Kế hoạch</value>
+  </data>
+  <data name="Role_Result" xml:space="preserve">
+    <value>Kết quả</value>
+  </data>
+  <data name="Alert_DeleteError_InUse_Specific" xml:space="preserve">
+    <value>Không thể xóa. {0}</value>
+  </data>
+  <data name="Usage_Contract" xml:space="preserve">
+    <value>Nhân Viên đang phụ trách Hợp đồng '{0}'</value>
+  </data>
+  <data name="Usage_SampleHT" xml:space="preserve">
+    <value>đang phụ trách mẫu Hiện trường '{0}'</value>
+  </data>
+  <data name="Usage_SamplePTN" xml:space="preserve">
+    <value>đang phụ trách mẫu Thí nghiệm '{0}'</value>
+  </data>
+  <data name="Contract_Tab_Manager" xml:space="preserve">
+    <value>Quản Lý</value>
+  </data>
+  <data name="Template_Air" xml:space="preserve">
+    <value>Môi trường không khí</value>
+  </data>
+  <data name="Template_Water" xml:space="preserve">
+    <value>Môi trường nước</value>
+  </data>
+  <data name="Template_Soil" xml:space="preserve">
+    <value>Môi trường đất</value>
+  </data>
+  <data name="Template_Noise" xml:space="preserve">
+    <value>Tiếng ồn và độ rung</value>
+  </data>
+  <data name="Dept_Field" xml:space="preserve">
+    <value>Hiện Trường</value>
+  </data>
+  <data name="Dept_Lab" xml:space="preserve">
+    <value>Thí Nghiệm</value>
+  </data>
+  <data name="Label_Template" xml:space="preserve">
+    <value>Mẫu Môi Trường</value>
+  </data>
+  <data name="Grid_ContractID" xml:space="preserve">
+    <value>Số Hợp Đồng</value>
+  </data>
+  <data name="Grid_Employee" xml:space="preserve">
+    <value>Nhân Viên Thụ Lý</value>
+  </data>
+  <data name="Business_Employee" xml:space="preserve">
+    <value>Nhân Viên Thụ Lý</value>
+  </data>
+  <data name="Grid_Detail" xml:space="preserve">
+    <value>Chi Tiết</value>
+  </data>
+  <data name="ContractDetail_Title" xml:space="preserve">
+    <value>Chi Tiết Hợp đồng: {0}</value>
+  </data>
+  <data name="PDF_Address" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="PDF_TITLEI" xml:space="preserve">
+    <value>THÔNG TIN CHUNG</value>
+  </data>
+  <data name="PDF_DateReturn" xml:space="preserve">
+    <value>Ngày trả kết quả</value>
+  </data>
 </root>

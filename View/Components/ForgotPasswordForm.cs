@@ -294,11 +294,11 @@ namespace Environmental_Monitoring.View
         private bool SendVerifySms(string phoneNumber)
         {
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine("--- MOCK SMS (GIẢ LẬP) ---");
-            System.Diagnostics.Debug.WriteLine($"Đang giả lập gửi đến SĐT: {phoneNumber}");
-            System.Diagnostics.Debug.WriteLine($"Dùng ServiceSID: {verifyServiceSid}");
-            System.Diagnostics.Debug.WriteLine("--- HÃY DÙNG MÃ '123456' ĐỂ TEST ---");
-            return true;
+            //System.Diagnostics.Debug.WriteLine("--- MOCK SMS (GIẢ LẬP) ---");
+            //System.Diagnostics.Debug.WriteLine($"Đang giả lập gửi đến SĐT: {phoneNumber}");
+            //System.Diagnostics.Debug.WriteLine($"Dùng ServiceSID: {verifyServiceSid}");
+            //System.Diagnostics.Debug.WriteLine("--- HÃY DÙNG MÃ '123456' ĐỂ TEST ---");
+            //return true;
 #endif
             if (string.IsNullOrEmpty(verifyServiceSid) || verifyServiceSid.StartsWith("VA..."))
             {
@@ -328,8 +328,8 @@ namespace Environmental_Monitoring.View
         private bool CheckVerifySms(string phoneNumber, string otpCode)
         {
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine($"--- MOCK SMS (GIẢ LẬP) --- Đang kiểm tra mã: {otpCode}");
-            return (otpCode == "123456"); 
+            //System.Diagnostics.Debug.WriteLine($"--- MOCK SMS (GIẢ LẬP) --- Đang kiểm tra mã: {otpCode}");
+            //return (otpCode == "123456"); 
 #endif
             TwilioClient.Init(accountSid, authToken);
             try

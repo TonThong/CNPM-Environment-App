@@ -172,12 +172,13 @@ namespace Environmental_Monitoring.View
             int[] months = GetMonthsForQuarter(quarter);
 
             List<string> monthParams = new List<string>();
-            for (int i = 0; i < months.Length; i++)
-            {
-                monthParams.Add($"@month{i}");
-            }
+            for (int i = 0; i < months.Length; i++) monthParams.Add($"@month{i}");
             string monthList = string.Join(",", monthParams);
 
+            // Câu lệnh SQL mới:
+            // - OnTimeFlag = 1 khi Status là 'Completed' (Đúng hạn)
+            // - OnTimeFlag = 0 khi Status là 'Expired' HOẶC 'Late Completion' (Trễ hạn)
+            // - Lấy dữ liệu của cả 3 loại trạng thái này
             string sql = $@"
                 SELECT 
                     MONTH(NgayTraKetQua) AS Thang,
@@ -187,7 +188,7 @@ namespace Environmental_Monitoring.View
                 WHERE 
                     YEAR(NgayTraKetQua) = @Year
                     AND MONTH(NgayTraKetQua) IN ({monthList})
-                    AND TRIM(Status) IN ('Completed', 'Expired')
+                    AND TRIM(Status) IN ('Completed', 'Expired', 'Late Completion')
                 GROUP BY Thang, OnTimeFlag;
             ";
 
@@ -197,11 +198,7 @@ namespace Environmental_Monitoring.View
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@Year", year);
-
-                    for (int i = 0; i < months.Length; i++)
-                    {
-                        command.Parameters.AddWithValue($"@month{i}", months[i]);
-                    }
+                    for (int i = 0; i < months.Length; i++) command.Parameters.AddWithValue($"@month{i}", months[i]);
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
@@ -211,6 +208,7 @@ namespace Environmental_Monitoring.View
                             {
                                 Month = reader.IsDBNull("Thang") ? 0 : reader.GetInt32("Thang"),
                                 Count = reader.IsDBNull("SoLuong") ? 0 : reader.GetInt32("SoLuong"),
+                                // IsOnTime = true (Đúng hạn), false (Trễ/Expired)
                                 IsOnTime = !reader.IsDBNull("OnTimeFlag") && reader.GetInt32("OnTimeFlag") == 1
                             });
                         }

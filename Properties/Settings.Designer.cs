@@ -70,5 +70,16 @@ namespace Environmental_Monitoring.Properties {
                 this["NotifyInApp"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastNotificationCheck {
+            get {
+                return ((global::System.DateTime)(this["LastNotificationCheck"]));
+            }
+            set {
+                this["LastNotificationCheck"] = value;
+            }
+        }
     }
 }

@@ -331,7 +331,7 @@
     <value>Overdue Contracts</value>
   </data>
   <data name="Grid_ContractCode" xml:space="preserve">
-    <value>Contract Code</value>
+    <value>Contract ID</value>
   </data>
   <data name="Grid_CustomerName" xml:space="preserve">
     <value>Customer Name</value>
@@ -587,5 +587,432 @@
   </data>
   <data name="Forgot_Set_New_Password" xml:space="preserve">
     <value>Set New Password</value>
+  </data>
+  <data name="Business_Title" xml:space="preserve">
+    <value>Customer And Contract Information</value>
+  </data>
+  <data name="Business_Customer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="Business_Contract" xml:space="preserve">
+    <value>Contract</value>
+  </data>
+  <data name="Business_CustomerName_Placeholder" xml:space="preserve">
+    <value>Business Name</value>
+  </data>
+  <data name="Business_CustomerSymbol_Placeholder" xml:space="preserve">
+    <value>Business Symbol</value>
+  </data>
+  <data name="Business_Address_Placeholder" xml:space="preserve">
+    <value>Business Address</value>
+  </data>
+  <data name="Business_Representative_Placeholder" xml:space="preserve">
+    <value>Representative</value>
+  </data>
+  <data name="Business_ContractID_Placeholder" xml:space="preserve">
+    <value>ContractID</value>
+  </data>
+  <data name="Business_DueDate_Placeholder" xml:space="preserve">
+    <value>DueDate</value>
+  </data>
+  <data name="Business_Employee_Placeholder" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="ContractType_Quarterly" xml:space="preserve">
+    <value>Quarterly</value>
+  </data>
+  <data name="ContractType_Semiannual" xml:space="preserve">
+    <value>6 Months</value>
+  </data>
+  <data name="Error_AllFieldsRequired" xml:space="preserve">
+    <value>Please fill in all required fields.</value>
+  </data>
+  <data name="Error_ContractIDPrefix" xml:space="preserve">
+    <value>Contract ID must start with 'HD-'.</value>
+  </data>
+  <data name="Error_LoadEmployees" xml:space="preserve">
+    <value>Error loading employee list</value>
+  </data>
+  <data name="Error_CustomerUndefined" xml:space="preserve">
+    <value>Could not identify customer.</value>
+  </data>
+  <data name="Success_ContractCreated" xml:space="preserve">
+    <value>Contract created successfully.</value>
+  </data>
+  <data name="Error_General" xml:space="preserve">
+    <value>An error occurred</value>
+  </data>
+  <data name="Business_EmailCustomer_Placeholder" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Error_InvalidEmailFormat" xml:space="preserve">
+    <value>Invalid email format.</value>
+  </data>
+  <data name="Alert_SuccessTitle" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Alert_ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Alert_WarningTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Button_OK" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="Grid_Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Grid_ParamName" xml:space="preserve">
+    <value>Parameter Name</value>
+  </data>
+  <data name="Grid_Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="Grid_Min" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="Grid_Max" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="Grid_Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="Grid_Sample" xml:space="preserve">
+    <value>Sample</value>
+  </data>
+  <data name="Grid_Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Grid_ValueEntry" xml:space="preserve">
+    <value>ValueEntry</value>
+  </data>
+  <data name="Grid_Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="Grid_ApprovalStatus" xml:space="preserve">
+    <value>Approval Status</value>
+  </data>
+  <data name="Grid_Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Grid_NotApproved" xml:space="preserve">
+    <value>Not Approved</value>
+  </data>
+  <data name="Grid_Polluted" xml:space="preserve">
+    <value>Polluted</value>
+  </data>
+  <data name="Grid_SoonPolluted" xml:space="preserve">
+    <value>Soon Polluted</value>
+  </data>
+  <data name="Grid_NotPolluted" xml:space="preserve">
+    <value>Not Polluted</value>
+  </data>
+  <data name="Grid_SignDate" xml:space="preserve">
+    <value>Sign Date</value>
+  </data>
+  <data name="Grid_DueDate" xml:space="preserve">
+    <value>DueDate</value>
+  </data>
+  <data name="Grid_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Error_LoadContracts" xml:space="preserve">
+    <value>Error loading contract list</value>
+  </data>
+  <data name="Error_LoadSampleTemplates" xml:space="preserve">
+    <value>Error loading environment template</value>
+  </data>
+  <data name="Error_LoadParameters" xml:space="preserve">
+    <value>Error loading template parameters</value>
+  </data>
+  <data name="Error_ReloadParameters" xml:space="preserve">
+    <value>Error reloading parameters</value>
+  </data>
+  <data name="Error_SaveNewParam" xml:space="preserve">
+    <value>Error saving new parameters</value>
+  </data>
+  <data name="Error_LoadParamInfo" xml:space="preserve">
+    <value>Error loading parameter information</value>
+  </data>
+  <data name="Error_UpdateParam" xml:space="preserve">
+    <value>Error updating parameters</value>
+  </data>
+  <data name="Error_SavePlan" xml:space="preserve">
+    <value>Error saving plan</value>
+  </data>
+  <data name="Error_InvalidValue" xml:space="preserve">
+    <value>Invalid input value</value>
+  </data>
+  <data name="Error_SampleIDNotFound" xml:space="preserve">
+    <value>No sample (SampleID) was found to store the value.</value>
+  </data>
+  <data name="Error_SavingValue" xml:space="preserve">
+    <value>Error saving value</value>
+  </data>
+  <data name="Error_LoadExperimentData" xml:space="preserve">
+    <value>Error loading test data</value>
+  </data>
+  <data name="Error_SaveData" xml:space="preserve">
+    <value>Error saving data</value>
+  </data>
+  <data name="Error_SelectContract" xml:space="preserve">
+    <value>Error in selecting contract</value>
+  </data>
+  <data name="Error_GeneratePDF" xml:space="preserve">
+    <value>Error creating PDF file</value>
+  </data>
+  <data name="Plan_ContractIDLabel" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="Plan_ContractListButton" xml:space="preserve">
+    <value>Contract List</value>
+  </data>
+  <data name="Plan_AddParamButton" xml:space="preserve">
+    <value>Add New Parameters</value>
+  </data>
+  <data name="Plan_SampleTemplatesLabel" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="Plan_ParametersLabel" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="Plan_SelectContract" xml:space="preserve">
+    <value>Please select a contract from the 'Contract List'.</value>
+  </data>
+  <data name="Plan_SelectSampleTemplate" xml:space="preserve">
+    <value>Please select at least one environment template.</value>
+  </data>
+  <data name="Plan_SelectParameter" xml:space="preserve">
+    <value>Please select at least one measurement parameter.</value>
+  </data>
+  <data name="Plan_ContractCodeNotFound" xml:space="preserve">
+    <value>Error: No corresponding Contract ID (MaDon) found.</value>
+  </data>
+  <data name="Plan_SaveSuccess" xml:space="preserve">
+    <value>Saved plan for contract '{0}' and handed over to Scene.</value>
+  </data>
+  <data name="Plan_DuplicateSampleError" xml:space="preserve">
+    <value>Error: This Template has already been added to this contract.</value>
+  </data>
+  <data name="Plan_ParamAlreadyExists" xml:space="preserve">
+    <value>This parameter already exists in the system.</value>
+  </data>
+  <data name="Plan_AddParamSuccess" xml:space="preserve">
+    <value>New parameters added to the system.</value>
+  </data>
+  <data name="Request_Title" xml:space="preserve">
+    <value>Select the department to edit</value>
+  </data>
+  <data name="Request_FieldDept" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="Request_LabDept" xml:space="preserve">
+    <value>Laboratory</value>
+  </data>
+  <data name="Request_SelectDeptWarning" xml:space="preserve">
+    <value>Please select a department to transfer to.</value>
+  </data>
+  <data name="AddEditParam_EditTitle" xml:space="preserve">
+    <value>Edit Parameters</value>
+  </data>
+  <data name="AddEditParam_AddTitle" xml:space="preserve">
+    <value>Add New Parameter</value>
+  </data>
+  <data name="AddEditParam_ValidationWarning" xml:space="preserve">
+    <value>Parameter name and responsible department cannot be left blank.</value>
+  </data>
+  <data name="Exp_NoDataToSave" xml:space="preserve">
+    <value>No data to save.</value>
+  </data>
+  <data name="Exp_SaveSuccess" xml:space="preserve">
+    <value>Saved {0} pollution status and moved to Results Room.</value>
+  </data>
+  <data name="Popup_SelectContractTitle" xml:space="preserve">
+    <value>Select Contract</value>
+  </data>
+  <data name="Status_NotAvailable" xml:space="preserve">
+    <value>Not Available</value>
+  </data>
+  <data name="Status_InvalidFormat" xml:space="preserve">
+    <value>Invalid Format</value>
+  </data>
+  <data name="Status_OutOfRange" xml:space="preserve">
+    <value>Above Max</value>
+  </data>
+  <data name="Status_Passed" xml:space="preserve">
+    <value>Pass</value>
+  </data>
+  <data name="Real_NoDataToSave" xml:space="preserve">
+    <value>No data to save.</value>
+  </data>
+  <data name="Real_SaveSuccess" xml:space="preserve">
+    <value>Save value successfully and hand over to Lab.</value>
+  </data>
+  <data name="Result_Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Result_RequestEdit" xml:space="preserve">
+    <value>Request Edit</value>
+  </data>
+  <data name="Result_PDF" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="Result_Mail" xml:space="preserve">
+    <value>Mail</value>
+  </data>
+  <data name="Result_LoadError" xml:space="preserve">
+    <value>LoadError</value>
+  </data>
+  <data name="PDF_Title" xml:space="preserve">
+    <value>TEST RESULTS SHEET</value>
+  </data>
+  <data name="PDF_Company" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="PDF_CompanySymbol" xml:space="preserve">
+    <value>Business Symbols</value>
+  </data>
+  <data name="PDF_Representative" xml:space="preserve">
+    <value>Representative of Party A</value>
+  </data>
+  <data name="PDF_TableTitle" xml:space="preserve">
+    <value>Monitoring results</value>
+  </data>
+  <data name="PDF_DateFormat" xml:space="preserve">
+    <value>Date {0} month {1} year {2}</value>
+  </data>
+  <data name="PDF_Sign_Company" xml:space="preserve">
+    <value>BUSINESS REPRESENTATIVE</value>
+  </data>
+  <data name="PDF_Sign_Manager" xml:space="preserve">
+    <value>REPRESENTATIVE IN CHARGE</value>
+  </data>
+  <data name="Result_SelectContractBeforePDF" xml:space="preserve">
+    <value>Please select the contract before exporting PDF.</value>
+  </data>
+  <data name="Result_SavePDFTitle" xml:space="preserve">
+    <value>Select where to save the contract</value>
+  </data>
+  <data name="Result_SelectContractBeforeMail" xml:space="preserve">
+    <value>Please select a contract before sending email.</value>
+  </data>
+  <data name="Result_EmailNotFound" xml:space="preserve">
+    <value>This customer does not have an email. Please update.</value>
+  </data>
+  <data name="Result_GeneratingPDF" xml:space="preserve">
+    <value>Preparing PDF file to send...</value>
+  </data>
+  <data name="Mail_Subject" xml:space="preserve">
+    <value>[RESULT REPORT] Contract {0} - Green Flow</value>
+  </data>
+  <data name="Mail_Body" xml:space="preserve">
+    <value>&lt;p&gt;Dear Customer,&lt;/p&gt;&lt;p&gt;Green Flow Company would like to send you the environmental monitoring results report for the contract &lt;b&gt;{0}&lt;/b&gt; (ID: {1}).&lt;/p&gt;&lt;p&gt;Please see the details in the attached PDF file.&lt;/p&gt;
+
+&lt;p&gt;Sincerely,
+
+Green Flow Team&lt;/p&gt;</value>
+  </data>
+  <data name="Result_SendingMailTo" xml:space="preserve">
+    <value>Sending report to {0}...</value>
+  </data>
+  <data name="Result_MailSendSuccess" xml:space="preserve">
+    <value>Email and PDF sent successfully!</value>
+  </data>
+  <data name="Result_SelectContract" xml:space="preserve">
+    <value>Please select a contract.</value>
+  </data>
+  <data name="Result_RequestSuccess" xml:space="preserve">
+    <value>The request for modification has been sent and the contract has been transferred to department {0}.</value>
+  </data>
+  <data name="Result_RequestError" xml:space="preserve">
+    <value>Error sending request</value>
+  </data>
+  <data name="Result_SelectContractBeforeApprove" xml:space="preserve">
+    <value>Please select a contract before browsing.</value>
+  </data>
+  <data name="Result_ApproveSuccess" xml:space="preserve">
+    <value>Contract approved</value>
+  </data>
+  <data name="Result_ApproveError" xml:space="preserve">
+    <value>Error in contract approval</value>
+  </data>
+  <data name="Role_Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Role_Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="Role_Field" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="Role_Lab" xml:space="preserve">
+    <value>Laboratory</value>
+  </data>
+  <data name="Role_Plan" xml:space="preserve">
+    <value>Planning</value>
+  </data>
+  <data name="Role_Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="Alert_DeleteError_InUse_Specific" xml:space="preserve">
+    <value>Cannot delete. {0}</value>
+  </data>
+  <data name="Usage_Contract" xml:space="preserve">
+    <value>The Employee in charge of Contract '{0}'</value>
+  </data>
+  <data name="Usage_SampleHT" xml:space="preserve">
+    <value>assigned to Field Sample '{0}'</value>
+  </data>
+  <data name="Usage_SamplePTN" xml:space="preserve">
+    <value>assigned to Lab Sample '{0}'</value>
+  </data>
+  <data name="Contract_Tab_Manager" xml:space="preserve">
+    <value>Manager</value>
+  </data>
+  <data name="Template_Air" xml:space="preserve">
+    <value>Air Environment</value>
+  </data>
+  <data name="Template_Water" xml:space="preserve">
+    <value>Water Environment</value>
+  </data>
+  <data name="Template_Soil" xml:space="preserve">
+    <value>Soil Environment</value>
+  </data>
+  <data name="Template_Noise" xml:space="preserve">
+    <value>Noise &amp; Vibration</value>
+  </data>
+  <data name="Dept_Field" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="Dept_Lab" xml:space="preserve">
+    <value>Laboratory</value>
+  </data>
+  <data name="Label_Template" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="Grid_ContractID" xml:space="preserve">
+    <value>Contract Number</value>
+  </data>
+  <data name="Grid_Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="Business_Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="Grid_Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="ContractDetail_Title" xml:space="preserve">
+    <value>Contract Detail: {0}</value>
+  </data>
+  <data name="PDF_Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="PDF_TITLEI" xml:space="preserve">
+    <value>GENERAL INFORMATION</value>
+  </data>
+  <data name="PDF_DateReturn" xml:space="preserve">
+    <value>Date of results</value>
   </data>
 </root>

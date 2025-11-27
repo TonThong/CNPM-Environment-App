@@ -115,7 +115,7 @@ namespace Environmental_Monitoring
 
             if (loaiThongBao == "SapHetHan")
             {
-                query = @"
+                 query = @"
                     SELECT 
                         c.MaDon, 
                         cust.TenNguoiDaiDien,
@@ -125,12 +125,12 @@ namespace Environmental_Monitoring
                     JOIN 
                         Customers cust ON c.CustomerID = cust.CustomerID
                     WHERE 
-                        DATEDIFF(c.NgayTraKetQua, CURDATE()) BETWEEN 1 AND 7
+                        DATEDIFF(c.NgayTraKetQua, CURDATE()) BETWEEN 0 AND 7
                         AND c.Status != 'Completed'";
             }
             else
             {
-                query = @"
+                 query = @"
                     SELECT 
                         c.MaDon, 
                         cust.TenNguoiDaiDien,
@@ -140,7 +140,7 @@ namespace Environmental_Monitoring
                     JOIN 
                         Customers cust ON c.CustomerID = cust.CustomerID
                     WHERE 
-                        DATEDIFF(c.NgayTraKetQua, CURDATE()) <= 0
+                        DATEDIFF(c.NgayTraKetQua, CURDATE()) < 0
                         AND c.Status != 'Completed'";
             }
 

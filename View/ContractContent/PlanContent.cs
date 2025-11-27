@@ -1,430 +1,373 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Environmental_Monitoring.Controller.Data;
+using Environmental_Monitoring.Model;
+using System.Resources;
+using System.Globalization;
+using System.Threading;
 using Environmental_Monitoring.Controller;
+using Environmental_Monitoring.View.Components;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
     public partial class PlanContent : UserControl
     {
-        private int contractId;
+        private int currentContractId = 0;
+        private List<SampleDTO> _listSamples = new List<SampleDTO>();
+        private ResourceManager rm;
+        private CultureInfo culture;
+
         public PlanContent()
         {
             InitializeComponent();
-            roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            btnAddParameter.Click += btnAddParameter_Click;
-            roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick;
+            InitializeLocalization();
         }
 
-        private void lbCustomer_Click(object sender, EventArgs e)
+        // Khởi tạo ResourceManager để hỗ trợ đa ngôn ngữ
+        private void InitializeLocalization()
         {
-
+            rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(PlanContent).Assembly);
+            culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        private void lbContract_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
+        // Sự kiện khi UserControl được load
         private void PlanContent_Load(object sender, EventArgs e)
         {
-            // Force labels visible and on top in case they are covered or have wrong color
-            try
-            {
-                label1.Visible = true;
-                label1.ForeColor = Color.Black;
-                label1.BringToFront();
+            SetupMainGrid(); // Cấu hình bảng
 
-                label2.Visible = true;
-                label2.ForeColor = Color.Black;
-                label2.BringToFront();
-            }
-            catch
+            // Đăng ký sự kiện nút Lưu Hợp Đồng
+            if (roundedButton2 != null)
             {
-                // ignore if designer names differ at runtime
+                roundedButton2.Click -= btnSaveContract_Click;
+                roundedButton2.Click += btnSaveContract_Click;
             }
-            roundedDataGridView1.DefaultCellStyle.ForeColor = Color.Black;
+
+            // Đăng ký sự kiện nút Hủy
+            var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
+            if (btnCancel != null) btnCancel.Click += btnCancel_Click;
+
+            // --- [MỚI] ĐĂNG KÝ SỰ KIỆN CHO NÚT "THÊM MẪU" ---
+            if (btnThemMau != null)
+            {
+                btnThemMau.Click -= btnThemMau_Click;
+                btnThemMau.Click += btnThemMau_Click;
+            }
+
+            UpdateUIText();
+            UpdateSaveButtonState();
         }
 
-        // Renamed to match designer wiring
+        // --- SỰ KIỆN MỚI: BẤM NÚT THÊM MẪU ---
+        private void btnThemMau_Click(object sender, EventArgs e)
+        {
+            // Kiểm tra đã chọn hợp đồng chưa
+            if (currentContractId == 0)
+            {
+                ShowAlert(rm.GetString("Plan_SelectContract", culture) ?? "Vui lòng chọn Hợp đồng trước!", AlertPanel.AlertType.Error);
+                return;
+            }
+
+            // Gọi Popup ở chế độ THÊM MỚI (tham số editSample = null)
+            using (var frm = new SampleInformation(editSample: null))
+            {
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    // Thêm mẫu mới vào danh sách và cập nhật Grid
+                    _listSamples.Add(frm.ResultSample);
+                    BindMainGrid();
+                }
+            }
+        }
+
+        // Cấu hình GridView hiển thị danh sách mẫu đã thêm
+        private void SetupMainGrid()
+        {
+            roundedDataGridView1.AutoGenerateColumns = false;
+            roundedDataGridView1.AllowUserToAddRows = false;
+            roundedDataGridView1.Columns.Clear();
+            roundedDataGridView1.RowHeadersVisible = false;
+            roundedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // --- CẤU HÌNH MÀU CHỮ ĐEN ---
+            roundedDataGridView1.DefaultCellStyle.ForeColor = Color.Black;
+            roundedDataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            roundedDataGridView1.RowsDefaultCellStyle.ForeColor = Color.Black;
+
+            // Style chung: Header in đậm
+            roundedDataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            // -----------------------------
+
+            // Cột Nền Mẫu (sẽ được gộp ô nếu giống nhau)
+            var colNenMau = new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Nền mẫu",
+                DataPropertyName = "TenNenMau",
+                Width = 150
+            };
+            colNenMau.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            roundedDataGridView1.Columns.Add(colNenMau);
+
+            roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ký hiệu", DataPropertyName = "KyHieuMau", Width = 80 });
+            roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Vị trí lấy mẫu", DataPropertyName = "ViTri", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+            roundedDataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "SL Thông số", Name = "colCount", Width = 100 });
+
+            // Cột Xóa
+            DataGridViewButtonColumn btnDel = new DataGridViewButtonColumn();
+            btnDel.Name = "colDelete";
+            btnDel.HeaderText = "Xóa";
+            btnDel.Text = "X";
+            btnDel.UseColumnTextForButtonValue = true;
+            btnDel.DefaultCellStyle.ForeColor = Color.Red; // Nút xóa màu đỏ
+            roundedDataGridView1.Columns.Add(btnDel);
+
+            // Đăng ký sự kiện
+            roundedDataGridView1.CellContentClick += roundedDataGridView1_CellContentClick;
+            roundedDataGridView1.CellPainting += roundedDataGridView1_CellPainting; // Sự kiện vẽ gộp ô
+            roundedDataGridView1.CellDoubleClick += roundedDataGridView1_CellDoubleClick; // Sự kiện sửa
+            roundedDataGridView1.CellFormatting += roundedDataGridView1_CellFormatting;
+        }
+
+        // Vẽ lại Grid để gộp các ô có cùng "Nền mẫu"
+        private void roundedDataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != 0) return;
+            e.Handled = true;
+
+            using (Brush backBrush = new SolidBrush(Color.White))
+            {
+                e.Graphics.FillRectangle(backBrush, e.CellBounds);
+            }
+
+            string currentValue = e.Value?.ToString();
+
+            // Tìm vị trí bắt đầu và kết thúc của nhóm cần gộp
+            int startIndex = e.RowIndex;
+            while (startIndex > 0)
+            {
+                var prevValue = roundedDataGridView1.Rows[startIndex - 1].Cells[e.ColumnIndex].Value?.ToString();
+                if (prevValue != currentValue) break;
+                startIndex--;
+            }
+
+            int endIndex = e.RowIndex;
+            while (endIndex < roundedDataGridView1.Rows.Count - 1)
+            {
+                var nextValue = roundedDataGridView1.Rows[endIndex + 1].Cells[e.ColumnIndex].Value?.ToString();
+                if (nextValue != currentValue) break;
+                endIndex++;
+            }
+
+            // Tính toán kích thước ô gộp
+            int totalHeight = 0;
+            for (int i = startIndex; i <= endIndex; i++) totalHeight += roundedDataGridView1.Rows[i].Height;
+
+            int offsetY = 0;
+            for (int i = startIndex; i < e.RowIndex; i++) offsetY -= roundedDataGridView1.Rows[i].Height;
+
+            Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
+
+            // Vẽ Text - Ép buộc màu chữ là Color.Black
+            TextRenderer.DrawText(e.Graphics, e.FormattedValue?.ToString(), e.CellStyle.Font, groupRect, Color.Black, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+
+            // Vẽ đường kẻ
+            using (Pen gridPen = new Pen(Color.Black, 1))
+            {
+                e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                if (e.RowIndex == endIndex) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+            }
+        }
+
+        // Sự kiện: Double Click vào dòng để Sửa Mẫu
+        private void roundedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var sampleToEdit = _listSamples[e.RowIndex];
+
+            // Mở Popup ở chế độ SỬA (truyền object sampleToEdit vào)
+            using (var frm = new SampleInformation(editSample: sampleToEdit))
+            {
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    _listSamples[e.RowIndex] = frm.ResultSample;
+                    BindMainGrid();
+                }
+            }
+        }
+
+        // Sự kiện: Click nút Xóa
+        private void roundedDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && roundedDataGridView1.Columns[e.ColumnIndex].Name == "colDelete")
+            {
+                if (MessageBox.Show("Xóa mẫu này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    _listSamples.RemoveAt(e.RowIndex);
+                    BindMainGrid();
+                }
+            }
+        }
+
+        // Hiển thị số lượng thông số
+        private void roundedDataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && roundedDataGridView1.Columns[e.ColumnIndex].Name == "colCount")
+            {
+                e.Value = _listSamples[e.RowIndex].Parameters.Count;
+            }
+        }
+
+        // Refresh lại dữ liệu trên Grid
+        private void BindMainGrid()
+        {
+            // Sắp xếp theo Tên nền mẫu để hàm gộp ô hoạt động đúng
+            _listSamples = _listSamples.OrderBy(x => x.TenNenMau).ThenBy(x => x.KyHieuMau).ToList();
+            roundedDataGridView1.DataSource = null;
+            roundedDataGridView1.DataSource = _listSamples;
+        }
+
+        // Logic Lưu toàn bộ Hợp đồng và Mẫu vào Database
+        private void btnSaveContract_Click(object sender, EventArgs e)
+        {
+            if (currentContractId == 0) return;
+            if (_listSamples.Count == 0)
+            {
+                ShowAlert("Danh sách mẫu trống!", AlertPanel.AlertType.Error);
+                return;
+            }
+
+            try
+            {
+                string maDon = DataProvider.Instance.ExecuteScalar("SELECT MaDon FROM Contracts WHERE ContractID = @id", new object[] { currentContractId }).ToString();
+
+                foreach (var sample in _listSamples)
+                {
+                    // 1. Tạo Template riêng cho mẫu cụ thể này (SampleTemplates)
+                    string specificTemplateName = $"Template cho {maDon} - {sample.KyHieuMau}";
+                    string insertTempQ = "INSERT INTO SampleTemplates (TenMau) VALUES (@name)";
+                    DataProvider.Instance.ExecuteNonQuery(insertTempQ, new object[] { specificTemplateName });
+                    int newTemplateID = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
+
+                    // 2. Lưu các thông số
+                    foreach (var p in sample.Parameters)
+                    {
+                        int finalParamID = p.ParameterID;
+
+                        // Nếu là thông số mới thêm thủ công (ID = 0) -> Insert mới vào bảng Parameters
+                        if (finalParamID == 0)
+                        {
+                            string insertParam = @"INSERT INTO Parameters (TenThongSo, DonVi, GioiHanMin, GioiHanMax, PhuongPhap, QuyChuan, PhuTrach, ONhiem)
+                                                   VALUES (@ten, @dv, @min, @max, @pp, @qc, @pt, 0)";
+                            DataProvider.Instance.ExecuteNonQuery(insertParam, new object[] {
+                                p.TenThongSo, p.DonVi, p.Min, p.Max, p.PhuongPhap, p.QuyChuan, p.PhuTrach
+                            });
+                            finalParamID = Convert.ToInt32(DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null));
+                        }
+
+                        // 3. Liên kết thông số với Template
+                        string linkQ = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@tid, @pid)";
+                        DataProvider.Instance.ExecuteNonQuery(linkQ, new object[] { newTemplateID, finalParamID });
+                    }
+
+                    // 4. Lưu Mẫu môi trường (EnvironmentalSamples)
+                    string maMauFull = $"{maDon} - {sample.KyHieuMau}";
+                    string insertSampleQ = @"INSERT INTO EnvironmentalSamples 
+                                           (MaMau, ContractID, TemplateID, KyHieuMau, ViTriLayMau, ToaDoX, ToaDoY, TenNenMau)
+                                           VALUES (@ma, @cid, @tid, @kyhieu, @vitri, @x, @y, @tennen)";
+
+                    DataProvider.Instance.ExecuteNonQuery(insertSampleQ, new object[] {
+                        maMauFull,
+                        currentContractId,
+                        newTemplateID,
+                        sample.KyHieuMau,
+                        sample.ViTri,
+                        sample.ToaDoX,
+                        sample.ToaDoY,
+                        sample.TenNenMau // Lưu tên người dùng nhập tay
+                    });
+                }
+
+                // Cập nhật trạng thái Hợp đồng -> Đã lập kế hoạch
+                string updateContract = "UPDATE Contracts SET TienTrinh = 2 WHERE ContractID = @id";
+                DataProvider.Instance.ExecuteNonQuery(updateContract, new object[] { currentContractId });
+
+                // Thông báo thành công
+                ShowAlert("Lưu kế hoạch thành công!", AlertPanel.AlertType.Success);
+
+                // Reset giao diện
+                _listSamples.Clear();
+                BindMainGrid();
+                currentContractId = 0;
+                lbContractID.Text = "Khách Hàng:";
+                UpdateSaveButtonState();
+            }
+            catch (Exception ex)
+            {
+                ShowAlert("Lỗi lưu dữ liệu: " + ex.Message, AlertPanel.AlertType.Error);
+            }
+        }
+
+        // Cập nhật ngôn ngữ hiển thị
+        public void UpdateUIText()
+        {
+            culture = Thread.CurrentThread.CurrentUICulture;
+            if (currentContractId == 0) lbContractID.Text = "Khách Hàng:";
+            if (btnContracts != null) btnContracts.Text = rm.GetString("Plan_ContractListButton", culture);
+            if (roundedButton2 != null) roundedButton2.Text = rm.GetString("Button_Save", culture);
+        }
+
+        // Sự kiện: Mở Popup chọn Hợp đồng
         private void btnContracts_Click(object sender, EventArgs e)
         {
             try
             {
-                // Lấy danh sách hợp đồng cơ bản
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status FROM Contracts where TienTrinh = 1";
+                string query = "SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked FROM Contracts WHERE TienTrinh = 1";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
-
-                // Hiện popup với DataTable
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
-                    // Khi người dùng chọn một hợp đồng trong popup
                     popup.ContractSelected += (contractId) =>
                     {
-                        this.contractId = contractId;
-                        // Load mẫu môi trường liên quan và cập nhật CheckedListBox
-                        lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
-                        LoadSamplesForContract(contractId);
-                    };
+                        this.currentContractId = contractId;
+                        // Lấy tên khách hàng
+                        string cusQuery = @"SELECT cus.TenDoanhNghiep FROM Contracts c JOIN Customers cus ON c.CustomerID = cus.CustomerID WHERE c.ContractID = @cid";
+                        object result = DataProvider.Instance.ExecuteScalar(cusQuery, new object[] { contractId });
+                        string tenCongTy = result != null ? result.ToString() : "Không xác định";
 
+                        lbContractID.Text = "Khách Hàng: " + tenCongTy;
+                        UpdateSaveButtonState();
+                    };
                     popup.ShowDialog();
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Đã xảy ra lỗi khi tải danh sách hợp đồng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex) { ShowAlert("Lỗi tải HĐ: " + ex.Message, AlertPanel.AlertType.Error); }
         }
 
-        private void LoadSamplesForContract(int contractId)
+        // Sự kiện: Nút Hủy
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            try
-            {
-                string q = "SELECT SampleID, MaMau, TemplateID, AssignedToHT, AssignedToPTN FROM EnvironmentalSamples WHERE ContractID = @contractId";
-                DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
-
-                // Clear existing binding/items
-                checkedListBox1.BeginUpdate();
-                try
-                {
-                    checkedListBox1.DataSource = null;
-                    checkedListBox1.Items.Clear();
-
-                    if (dt == null || dt.Rows.Count == 0)
-                    {
-                        ClearParameterControls();
-                        return;
-                    }
-
-                    // Create a simple list of plain objects to avoid DataRowView display
-                    var list = dt.AsEnumerable()
-                                 .Select(r => new
-                                 {
-                                     SampleID = r.Field<int>("SampleID"),
-                                     MaMau = r.Field<string>("MaMau"),
-                                     TemplateID = r.Field<int?>("TemplateID"),
-                                     AssignedToHT = r.Field<int?>("AssignedToHT"),
-                                     AssignedToPTN = r.Field<int?>("AssignedToPTN")
-                                 })
-                                 .ToList();
-
-                    checkedListBox1.DataSource = list;
-                    checkedListBox1.DisplayMember = "MaMau";
-                    checkedListBox1.ValueMember = "SampleID";
-
-                    // Also populate parameters grid based on the first sample's template (single select)
-                    var first = list.FirstOrDefault();
-                    if (first != null && first.TemplateID.HasValue)
-                    {
-                        int sampleId = first.SampleID;
-                        LoadParametersForTemplate(first.TemplateID.Value, sampleId);
-                        // store AssignedToHT on tag for department lookup (use fallback AssignedToPTN)
-                        int empId = first.AssignedToHT ?? first.AssignedToPTN ?? 0;
-                        roundedDataGridView1.Tag = empId; // store as int
-                    }
-                    else
-                    {
-                        ClearParameterControls();
-                    }
-                }
-                finally
-                {
-                    checkedListBox1.EndUpdate();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Đã xảy ra lỗi khi tải mẫu môi trường: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            _listSamples.Clear();
+            BindMainGrid();
+            currentContractId = 0;
+            lbContractID.Text = "Khách Hàng:";
+            UpdateSaveButtonState();
         }
 
-        // Now accepts sampleId to fetch GiaTri from Results
-        private void LoadParametersForTemplate(int templateId, int sampleId = 0)
+        // Bật/Tắt nút Lưu
+        private void UpdateSaveButtonState()
         {
-            try
-            {
-                // Join TemplateParameters -> Parameters and LEFT JOIN Results for GiaTri of the given sample
-                string q = @"SELECT p.ParameterID, p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax, r.GiaTri
-                             FROM TemplateParameters tp
-                             JOIN Parameters p ON tp.ParameterID = p.ParameterID
-                             LEFT JOIN Results r ON r.ParameterID = p.ParameterID AND r.SampleID = @sampleId
-                             WHERE tp.TemplateID = @templateId";
-
-                // Note: DataProvider expects parameters in the order matches found in query (@sampleId then @templateId)
-                DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { sampleId, templateId });
-
-                if (dt == null | dt.Rows.Count == 0)
-                {
-                    roundedDataGridView1.DataSource = null;
-                    ClearParameterControls();
-                    return;
-                }
-
-                // bind to grid
-                roundedDataGridView1.DataSource = dt;
-
-                // Adjust headers
-                if (roundedDataGridView1.Columns["ParameterID"] != null)
-                    roundedDataGridView1.Columns["ParameterID"].Visible = false;
-                if (roundedDataGridView1.Columns["TenThongSo"] != null)
-                    roundedDataGridView1.Columns["TenThongSo"].HeaderText = "Tên thông số";
-                if (roundedDataGridView1.Columns["DonVi"] != null)
-                    roundedDataGridView1.Columns["DonVi"].HeaderText = "Đơn vị";
-                if (roundedDataGridView1.Columns["GioiHanMin"] != null)
-                    roundedDataGridView1.Columns["GioiHanMin"].HeaderText = "Min";
-                if (roundedDataGridView1.Columns["GioiHanMax"] != null)
-                    roundedDataGridView1.Columns["GioiHanMax"].HeaderText = "Max";
-                if (roundedDataGridView1.Columns["GiaTri"] != null)
-                    roundedDataGridView1.Columns["GiaTri"].HeaderText = "Giá trị";
-
-                // clear detail labels
-                lblParamNameValue.Text = string.Empty;
-                lblUnitValue.Text = string.Empty;
-                lblDeptValue.Text = string.Empty;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Đã xảy ra lỗi khi tải thông số của mẫu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            bool isContractSelected = (currentContractId != 0);
+            if (roundedButton2 != null) roundedButton2.Enabled = isContractSelected;
         }
 
-        private void ClearParameterControls()
+        // Hàm hiển thị thông báo
+        private void ShowAlert(string message, AlertPanel.AlertType type)
         {
-            roundedDataGridView1.DataSource = null;
-            lblParamNameValue.Text = string.Empty;
-            lblUnitValue.Text = string.Empty;
-            lblDeptValue.Text = string.Empty;
-        }
-
-        private void roundedDataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (e.RowIndex < 0) return;
-                var row = roundedDataGridView1.Rows[e.RowIndex];
-
-                var ten = row.Cells["TenThongSo"].Value?.ToString();
-                var donvi = row.Cells["DonVi"].Value?.ToString();
-                var giatri = row.Cells["GiaTri"]?.Value; // may be null
-
-                lblParamNameValue.Text = ten ?? string.Empty;
-                lblUnitValue.Text = donvi ?? string.Empty;
-
-                // show GiaTri somewhere if you want; for now we can append to unit label or a new label
-                if (giatri != null && decimal.TryParse(giatri.ToString(), out var g))
-                {
-                    lblUnitValue.Text += " (Giá trị: " + g.ToString() + ")";
-                }
-
-                // department of AssignedToHT stored in grid tag
-                int empId = 0;
-                if (roundedDataGridView1.Tag != null)
-                {
-                    int.TryParse(roundedDataGridView1.Tag.ToString(), out empId);
-                }
-
-                if (empId > 0)
-                {
-                    string q = "SELECT PhongBan FROM Employees WHERE EmployeeID = @id LIMIT 1";
-                    object res = DataProvider.Instance.ExecuteScalar(q, new object[] { empId });
-                    lblDeptValue.Text = res?.ToString() ?? string.Empty;
-                }
-                else
-                {
-                    lblDeptValue.Text = string.Empty;
-                }
-            }
-            catch
-            {
-                // ignore
-            }
-        }
-
-        private void cbbParameters_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // kept empty; not used now
-        }
-
-        private void ClearParameterControls(object v)
-        {
-            ClearParameterControls();
-        }
-
-        private void roundedDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void checkedListBox1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            // When user selects sample in list, update parameters grid to that sample's template
-            try
-            {
-                if (checkedListBox1.SelectedItem == null) return;
-
-                var item = checkedListBox1.SelectedItem;
-                // item is anonymous type; use reflection to get TemplateID and AssignedToHT/AssignedToPTN/SampleID
-                var t = item.GetType();
-                var templateIdProp = t.GetProperty("TemplateID");
-                var assignedHTProp = t.GetProperty("AssignedToHT");
-                var assignedPTNProp = t.GetProperty("AssignedToPTN");
-                var sampleIdProp = t.GetProperty("SampleID");
-
-                int? templateId = templateIdProp?.GetValue(item) as int?;
-                int? assignedToHT = assignedHTProp?.GetValue(item) as int?;
-                int? assignedToPTN = assignedPTNProp?.GetValue(item) as int?;
-                int? sampleId = sampleIdProp?.GetValue(item) as int?;
-
-                if (templateId.HasValue)
-                {
-                    LoadParametersForTemplate(templateId.Value, sampleId ?? 0);
-                }
-                else
-                {
-                    ClearParameterControls();
-                }
-
-                // store assigned employee id for dept lookup (HT first, then PTN)
-                int empId = assignedToHT ?? assignedToPTN ?? 0;
-                roundedDataGridView1.Tag = empId;
-            }
-            catch
-            {
-                // ignore
-            }
-        }
-
-        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            // Nếu người dùng đang check (chọn) 1 item mới
-            if (e.NewValue == CheckState.Checked)
-            {
-                // Bỏ chọn tất cả item khác
-                for (int i = 0; i < checkedListBox1.Items.Count; i++)
-                {
-                    if (i != e.Index)
-                    {
-                        checkedListBox1.SetItemChecked(i, false);
-                    }
-                }
-            }
-        }
-
-        private void btnAddParameter_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new AddEditParameterForm())
-            {
-                dlg.SetPhuTrachOptions(new[] { "HienTruong", "ThiNghiem" });
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    // Lưu vào DB (giả sử có ParameterRepo)
-                    var repo = new Environmental_Monitoring.Controller.Data.ParameterRepo(DataProvider.Instance.GetConnectionString());
-                    repo.Add(dlg.Parameter);
-                    // Reload grid nếu cần
-                    if (checkedListBox1.SelectedItem != null)
-                    {
-                        var item = checkedListBox1.SelectedItem;
-                        var t = item.GetType();
-                        var templateIdProp = t.GetProperty("TemplateID");
-                        var sampleIdProp = t.GetProperty("SampleID");
-                        int? templateId = templateIdProp?.GetValue(item) as int?;
-                        int? sampleId = sampleIdProp?.GetValue(item) as int?;
-                        if (templateId.HasValue)
-                            LoadParametersForTemplate(templateId.Value, sampleId ?? 0);
-                    }
-                }
-            }
-
-        }
-
-        private void roundedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-            var row = roundedDataGridView1.Rows[e.RowIndex];
-            int? paramId = row.Cells["ParameterID"].Value as int?;
-            if (paramId == null) return;
-            var repo = new Environmental_Monitoring.Controller.Data.ParameterRepo(DataProvider.Instance.GetConnectionString());
-            var param = repo.GetByID(paramId.Value);
-            using (var dlg = new AddEditParameterForm(param))
-            {
-                dlg.SetPhuTrachOptions(new[] { "HienTruong", "ThiNghiem" });
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    repo.Update(dlg.Parameter);
-                    // Reload grid
-                    if (checkedListBox1.SelectedItem != null)
-                    {
-                        var item = checkedListBox1.SelectedItem;
-                        var t = item.GetType();
-                        var templateIdProp = t.GetProperty("TemplateID");
-                        var sampleIdProp = t.GetProperty("SampleID");
-                        int? templateId = templateIdProp?.GetValue(item) as int?;
-                        int? sampleId = sampleIdProp?.GetValue(item) as int?;
-                        if (templateId.HasValue)
-                            LoadParametersForTemplate(templateId.Value, sampleId ?? 0);
-                    }
-                }
-            }
-        }
-
-        private void roundedButton2_Click(object sender, EventArgs e)
-        {
-            string query = @"UPDATE Contracts SET TienTrinh = 2 WHERE ContractID = @contractId;";
-            DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.contractId });
-            MessageBox.Show("Lưu giá trị thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void roundedButton1_Click(object sender, EventArgs e)
-        {
-            string q = "SELECT ParameterID, TenThongSo FROM Parameters";
-            DataTable dt = DataProvider.Instance.ExecuteQuery(q);
-
-            using (var dlg = new AddTemplateForm(dt))
-            {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    // create new SampleTemplates entry linked to current contract via EnvironmentalSamples
-                    // 1) insert into SampleTemplates
-                    string insertTemplate = "INSERT INTO SampleTemplates (TenMau) VALUES (@tenmau)";
-                    DataProvider.Instance.ExecuteNonQuery(insertTemplate, new object[] { dlg.TemplateName });
-
-                    // get last inserted template id (MySQL LAST_INSERT_ID)
-                    object last = DataProvider.Instance.ExecuteScalar("SELECT LAST_INSERT_ID()", null);
-                    int templateId = 0;
-                    if (last != null && int.TryParse(last.ToString(), out int tmp)) templateId = tmp;
-
-                    if (templateId > 0)
-                    {
-                        // 2) link selected parameters in TemplateParameters
-                        foreach (var pid in dlg.SelectedParameterIds)
-                        {
-                            string ins = "INSERT INTO TemplateParameters (TemplateID, ParameterID) VALUES (@t, @p)";
-                            DataProvider.Instance.ExecuteNonQuery(ins, new object[] { templateId, pid });
-                        }
-
-                        // 3) create an EnvironmentalSamples row for this contract using the new template
-                        string insertSample = "INSERT INTO EnvironmentalSamples (MaMau, ContractID, TemplateID) VALUES (@mamau, @contractId, @templateId)";
-                        string sampleCode = $"M{contractId}_{templateId}_{DateTime.Now.Ticks % 10000}";
-                        DataProvider.Instance.ExecuteNonQuery(insertSample, new object[] { sampleCode, contractId, templateId });
-
-                        MessageBox.Show("Tạo mẫu thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        // reload
-                    }
-                }
-            }
-            lbContractID.Text = "Mã Hợp đồng: " + contractId.ToString();
-            LoadSamplesForContract(contractId);
+            var mainLayout = this.FindForm() as Mainlayout;
+            if (mainLayout != null) mainLayout.ShowGlobalAlert(message, type);
+            else MessageBox.Show(message, type.ToString(), MessageBoxButtons.OK, type == AlertPanel.AlertType.Success ? MessageBoxIcon.Information : MessageBoxIcon.Error);
         }
     }
 }
