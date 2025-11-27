@@ -59,7 +59,7 @@
             btnCancel.BorderSize = 0;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.FromArgb(34, 139, 34);
             btnCancel.Location = new Point(947, 383);
@@ -78,7 +78,7 @@
             btnSave.BorderSize = 0;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSave.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
             btnSave.HoverColor = Color.FromArgb(34, 139, 34);
             btnSave.Location = new Point(682, 383);
@@ -91,23 +91,23 @@
             // 
             // lbContractID
             // 
-            lbContractID.BackColor = Color.FromArgb(217, 217, 217);
-            lbContractID.BaseColor = Color.FromArgb(217, 217, 217);
-            lbContractID.BorderColor = Color.Transparent;
-            lbContractID.BorderRadius = 25;
-            lbContractID.BorderSize = 0;
-            lbContractID.Enabled = false;
-            lbContractID.FlatAppearance.BorderSize = 0;
-            lbContractID.FlatStyle = FlatStyle.Flat;
-            lbContractID.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
-            lbContractID.ForeColor = Color.Black;
-            lbContractID.HoverColor = Color.FromArgb(34, 139, 34);
-            lbContractID.Location = new Point(883, 15);
-            lbContractID.Name = "lbContractID";
-            lbContractID.Size = new Size(341, 50);
-            lbContractID.TabIndex = 67;
-            lbContractID.Text = "Mã Hợp Đồng: ";
-            lbContractID.UseVisualStyleBackColor = false;
+            btnSearch.BackColor = Color.FromArgb(217, 217, 217);
+            btnSearch.BaseColor = Color.FromArgb(217, 217, 217);
+            btnSearch.BorderColor = Color.Transparent;
+            btnSearch.BorderRadius = 25;
+            btnSearch.BorderSize = 0;
+            btnSearch.Enabled = false;
+            btnSearch.FlatAppearance.BorderSize = 0;
+            btnSearch.FlatStyle = FlatStyle.Flat;
+            btnSearch.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnSearch.ForeColor = Color.Black;
+            btnSearch.HoverColor = Color.FromArgb(34, 139, 34);
+            btnSearch.Location = new Point(883, 15);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(341, 50);
+            btnSearch.TabIndex = 67;
+            btnSearch.Text = "Mã Hợp Đồng: ";
+            btnSearch.UseVisualStyleBackColor = false;
             // 
             // btnContracts
             // 
@@ -118,7 +118,7 @@
             btnContracts.BorderSize = 0;
             btnContracts.FlatAppearance.BorderSize = 0;
             btnContracts.FlatStyle = FlatStyle.Flat;
-            btnContracts.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            btnContracts.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnContracts.ForeColor = Color.White;
             btnContracts.HoverColor = Color.FromArgb(34, 139, 34);
             btnContracts.Location = new Point(29, 15);
