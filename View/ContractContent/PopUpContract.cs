@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Threading;
 using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.Controller.Data;
+using System.Collections.Generic; // Cần thêm cái này để dùng List
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -27,7 +28,6 @@ namespace Environmental_Monitoring.View.ContractContent
             if (!dt.Columns.Contains("IsUnlocked"))
             {
                 dt.Columns.Add("IsUnlocked", typeof(bool));
-                // Nếu DB không trả về cột này, mặc định là False (Chưa mở)
                 foreach (DataRow r in dt.Rows) r["IsUnlocked"] = false;
             }
 
@@ -35,21 +35,106 @@ namespace Environmental_Monitoring.View.ContractContent
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.DefaultCellStyle.ForeColor = Color.Black;
 
-            // Ẩn cột IsUnlocked (Logic ngầm)
-            if (dataGridView1.Columns.Contains("IsUnlocked"))
-                dataGridView1.Columns["IsUnlocked"].Visible = false;
-
-            // Ẩn cột Unlock (Vì ta tự vẽ nút giả lập đè lên, không cần cột nút thật)
-            if (dataGridView1.Columns.Contains("Unlock"))
-                dataGridView1.Columns["Unlock"].Visible = false;
+            // Ẩn cột logic
+            if (dataGridView1.Columns.Contains("IsUnlocked")) dataGridView1.Columns["IsUnlocked"].Visible = false;
+            if (dataGridView1.Columns.Contains("Unlock")) dataGridView1.Columns["Unlock"].Visible = false;
 
             UpdateUIText();
 
-            // ĐĂNG KÝ SỰ KIỆN
-            dataGridView1.CellFormatting += DataGridView1_CellFormatting; // Tô màu đỏ
-            dataGridView1.RowPostPaint += DataGridView1_RowPostPaint;     // Vẽ lớp phủ & Nút
-            dataGridView1.MouseClick += DataGridView1_MouseClick;         // Xử lý click nút
-            dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick; // Chọn hợp đồng
+            // ĐĂNG KÝ CÁC SỰ KIỆN GRID
+            dataGridView1.CellFormatting += DataGridView1_CellFormatting;
+            dataGridView1.RowPostPaint += DataGridView1_RowPostPaint;
+            dataGridView1.MouseClick += DataGridView1_MouseClick;
+            dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;
+
+            // --- [MỚI] ĐĂNG KÝ SỰ KIỆN TÌM KIẾM ---
+            // Giả sử tên TextBox trong Design là txtSearch
+            if (txtSearch != null)
+            {
+                txtSearch.TextChanged += TxtSearch_TextChanged;
+                // Thêm placeholder text nếu cần
+                SetPlaceholder(txtSearch, "Tìm kiếm...");
+            }
+        }
+
+        // --- [MỚI] HÀM XỬ LÝ TÌM KIẾM ---
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtSearch.Text;
+
+            // Nếu là placeholder text thì coi như rỗng
+            if (keyword == "Tìm kiếm...") keyword = "";
+
+            PerformSearch(keyword);
+        }
+
+        private void PerformSearch(string keyword)
+        {
+            DataTable dt = dataGridView1.DataSource as DataTable;
+            if (dt == null) return;
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(keyword))
+                {
+                    dt.DefaultView.RowFilter = string.Empty; // Xóa lọc
+                }
+                else
+                {
+                    // Xử lý ký tự đặc biệt để tránh lỗi SQL
+                    string safeKeyword = keyword.Replace("'", "''")
+                                                .Replace("[", "[[]")
+                                                .Replace("]", "[]]")
+                                                .Replace("%", "[%]")
+                                                .Replace("*", "[*]")
+                                                .Trim();
+
+                    // Tạo danh sách các điều kiện lọc
+                    List<string> filterParts = new List<string>();
+
+                    // Duyệt qua tất cả các cột có trong DataTable để tìm kiếm
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        // Bỏ qua cột IsUnlocked hoặc các cột bool không cần thiết nếu muốn
+                        if (col.DataType == typeof(bool)) continue;
+
+                        // Cấu trúc: Convert(TenCot, 'System.String') LIKE '%keyword%'
+                        filterParts.Add($"Convert([{col.ColumnName}], 'System.String') LIKE '%{safeKeyword}%'");
+                    }
+
+                    // Nối các điều kiện bằng OR
+                    dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Console.WriteLine("Search Error: " + ex.Message);
+            }
+        }
+
+        // Helper tạo Placeholder cho đẹp (Tùy chọn)
+        private void SetPlaceholder(Environmental_Monitoring.View.Components.RoundedTextBox txt, string placeholder)
+        {
+            txt.Text = placeholder;
+            txt.ForeColor = Color.Gray;
+
+            txt.Enter += (s, e) =>
+            {
+                if (txt.Text == placeholder)
+                {
+                    txt.Text = "";
+                    txt.ForeColor = Color.Black;
+                }
+            };
+
+            txt.Leave += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txt.Text))
+                {
+                    txt.Text = placeholder;
+                    txt.ForeColor = Color.Gray;
+                }
+            };
         }
 
         private void InitializeLocalization()
@@ -62,7 +147,6 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             if (UserSession.CurrentUser != null)
             {
-                // Admin (5) hoặc Trưởng bộ phận (1) được quyền mở
                 isAuthorizedToUnlock = (UserSession.CurrentUser.RoleID == 5) || (UserSession.CurrentUser.TruongBoPhan == 1);
             }
         }
@@ -77,7 +161,7 @@ namespace Environmental_Monitoring.View.ContractContent
             if (dataGridView1.Columns.Contains("Status")) dataGridView1.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture);
         }
 
-        // --- 1. LUÔN TÔ MÀU ĐỎ NẾU EXPIRED ---
+        // --- CÁC HÀM XỬ LÝ GRID (GIỮ NGUYÊN) ---
         private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -86,21 +170,19 @@ namespace Environmental_Monitoring.View.ContractContent
 
             if (status.Equals("Expired", StringComparison.OrdinalIgnoreCase))
             {
-                e.CellStyle.BackColor = Color.FromArgb(255, 200, 200); // Đỏ nhạt
+                e.CellStyle.BackColor = Color.FromArgb(255, 200, 200);
                 e.CellStyle.ForeColor = Color.DarkRed;
                 e.CellStyle.SelectionBackColor = Color.FromArgb(255, 150, 150);
                 e.CellStyle.SelectionForeColor = Color.White;
             }
         }
 
-        // --- 2. VẼ LỚP PHỦ XÁM VÀ NÚT UNLOCK NHỎ (NỀN TRẮNG CHỮ ĐEN) ---
         private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
             string status = row.Cells["Status"].Value?.ToString() ?? "";
-
             bool isUnlocked = false;
-            // Lấy giá trị IsUnlocked an toàn
+
             if (dataGridView1.Columns.Contains("IsUnlocked") && row.Cells["IsUnlocked"].Value != DBNull.Value)
             {
                 var val = row.Cells["IsUnlocked"].Value;
@@ -109,10 +191,8 @@ namespace Environmental_Monitoring.View.ContractContent
                 else if (val is ulong uVal) isUnlocked = (uVal == 1);
             }
 
-            // CHỈ VẼ KHI: Hết hạn VÀ Chưa mở khóa
             if (status.Equals("Expired", StringComparison.OrdinalIgnoreCase) && !isUnlocked)
             {
-                // A. Vẽ lớp xám bán trong suốt trùm lên hàng
                 using (Brush grayBrush = new SolidBrush(Color.FromArgb(180, 160, 160, 160)))
                 {
                     Rectangle rowBounds = e.RowBounds;
@@ -120,45 +200,33 @@ namespace Environmental_Monitoring.View.ContractContent
                     e.Graphics.FillRectangle(grayBrush, rowBounds);
                 }
 
-                // B. Vẽ nút Unlock
                 string btnText = isAuthorizedToUnlock ? "UNLOCK 🔓" : "LOCKED 🔒";
-                Font btnFont = new Font("Segoe UI", 7, FontStyle.Bold); // Font nhỏ size 7-8
+                Font btnFont = new Font("Segoe UI", 7, FontStyle.Bold);
                 Size textSize = TextRenderer.MeasureText(btnText, btnFont);
 
                 int btnWidth = textSize.Width + 10;
                 int btnHeight = textSize.Height + 4;
-
-                // Căn giữa dòng
                 int btnX = e.RowBounds.Left + (e.RowBounds.Width - btnWidth) / 2;
                 int btnY = e.RowBounds.Top + (e.RowBounds.Height - btnHeight) / 2;
-
                 Rectangle btnRect = new Rectangle(btnX, btnY, btnWidth, btnHeight);
 
-                // Bóng đổ nhẹ
                 using (Brush shadowBrush = new SolidBrush(Color.FromArgb(50, 0, 0, 0)))
                 {
                     e.Graphics.FillRectangle(shadowBrush, btnX + 1, btnY + 1, btnWidth, btnHeight);
                 }
-
-                // Nền nút: TRẮNG
                 using (Brush btnBrush = new SolidBrush(Color.White))
                 {
                     e.Graphics.FillRectangle(btnBrush, btnRect);
                 }
-
-                // Viền nút: ĐEN
                 using (Pen btnPen = new Pen(Color.Black))
                 {
                     e.Graphics.DrawRectangle(btnPen, btnRect);
                 }
-
-                // Chữ: ĐEN
                 TextRenderer.DrawText(e.Graphics, btnText, btnFont, btnRect, Color.Black,
                                       TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
             }
         }
 
-        // --- 3. XỬ LÝ CLICK CHUỘT VÀO NÚT UNLOCK ---
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             var hitTest = dataGridView1.HitTest(e.X, e.Y);
@@ -166,7 +234,6 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 DataGridViewRow row = dataGridView1.Rows[hitTest.RowIndex];
                 string status = row.Cells["Status"].Value?.ToString() ?? "";
-
                 bool isUnlocked = false;
                 if (dataGridView1.Columns.Contains("IsUnlocked") && row.Cells["IsUnlocked"].Value != DBNull.Value)
                 {
@@ -176,10 +243,8 @@ namespace Environmental_Monitoring.View.ContractContent
                     else if (val is ulong uVal) isUnlocked = (uVal == 1);
                 }
 
-                // Chỉ xử lý nếu đang bị KHÓA
                 if (status.Equals("Expired", StringComparison.OrdinalIgnoreCase) && !isUnlocked)
                 {
-                    // TÍNH LẠI VÙNG BẤM (Phải khớp logic vẽ bên trên)
                     Rectangle rowBounds = dataGridView1.GetRowDisplayRectangle(hitTest.RowIndex, false);
                     string btnText = isAuthorizedToUnlock ? "UNLOCK 🔓" : "LOCKED 🔒";
                     Font btnFont = new Font("Segoe UI", 7, FontStyle.Bold);
@@ -190,7 +255,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     int btnY = rowBounds.Top + (rowBounds.Height - btnHeight) / 2;
                     Rectangle btnRect = new Rectangle(btnX, btnY, btnWidth, btnHeight);
 
-                    // Kiểm tra chuột có click trúng nút không
                     if (btnRect.Contains(e.Location))
                     {
                         if (isAuthorizedToUnlock)
@@ -220,13 +284,10 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 if (contractId > 0)
                 {
-                    // Cập nhật Database: Đặt IsUnlocked = 1
                     string query = "UPDATE Contracts SET IsUnlocked = 1 WHERE ContractID = @id";
                     DataProvider.Instance.ExecuteNonQuery(query, new object[] { contractId });
-
-                    // Cập nhật UI ngay lập tức (Xóa cờ khóa để lớp xám biến mất)
                     dataGridView1.Rows[rowIndex].Cells["IsUnlocked"].Value = true;
-                    dataGridView1.InvalidateRow(rowIndex); // Vẽ lại dòng
+                    dataGridView1.InvalidateRow(rowIndex);
                 }
             }
             catch (Exception ex)
@@ -235,13 +296,11 @@ namespace Environmental_Monitoring.View.ContractContent
             }
         }
 
-        // --- 4. CHẶN DOUBLE CLICK NẾU KHÓA ---
         private void DataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
             DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
             string status = row.Cells["Status"].Value?.ToString() ?? "";
-
             bool isUnlocked = false;
             if (dataGridView1.Columns.Contains("IsUnlocked") && row.Cells["IsUnlocked"].Value != DBNull.Value)
             {
@@ -251,13 +310,11 @@ namespace Environmental_Monitoring.View.ContractContent
                 else if (val is ulong uVal) isUnlocked = (uVal == 1);
             }
 
-            // Nếu Expired mà chưa Unlock -> Chặn
             if (status.Equals("Expired", StringComparison.OrdinalIgnoreCase) && !isUnlocked)
             {
-                return; // Không làm gì
+                return;
             }
 
-            // Nếu OK -> Chọn
             try
             {
                 int contractId = 0;

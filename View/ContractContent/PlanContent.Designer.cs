@@ -31,16 +31,14 @@
             lblParamNameValue = new Label();
             lblUnitValue = new Label();
             lblDeptValue = new Label();
-            label2 = new Label();
-            label1 = new Label();
             roundedDataGridView1 = new Environmental_Monitoring.View.Components.RoundedDataGridView();
             btnContracts = new Environmental_Monitoring.View.Components.RoundedButton();
             lbContractID = new Environmental_Monitoring.View.Components.RoundedButton();
             btnCancel = new Environmental_Monitoring.View.Components.RoundedButton();
             roundedButton2 = new Environmental_Monitoring.View.Components.RoundedButton();
             tableLayoutPanel1 = new TableLayoutPanel();
-            flpTemplates = new FlowLayoutPanel();
             mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
+            btnThemMau = new Environmental_Monitoring.View.Components.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -72,28 +70,6 @@
             lblDeptValue.Size = new Size(0, 21);
             lblDeptValue.TabIndex = 66;
             // 
-            // label2
-            // 
-            label2.Anchor = AnchorStyles.Left;
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
-            label2.Location = new Point(354, 86);
-            label2.Name = "label2";
-            label2.Size = new Size(142, 25);
-            label2.TabIndex = 59;
-            label2.Text = "Danh sách mẫu";
-            // 
-            // label1
-            // 
-            label1.Anchor = AnchorStyles.Left;
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
-            label1.Location = new Point(27, 86);
-            label1.Name = "label1";
-            label1.Size = new Size(204, 25);
-            label1.TabIndex = 58;
-            label1.Text = "Chọn Mẫu Môi Trường";
-            // 
             // roundedDataGridView1
             // 
             roundedDataGridView1.BackgroundColor = Color.White;
@@ -101,13 +77,13 @@
             roundedDataGridView1.BorderStyle = BorderStyle.None;
             roundedDataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.None;
             roundedDataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            tableLayoutPanel1.SetColumnSpan(roundedDataGridView1, 3);
+            tableLayoutPanel1.SetColumnSpan(roundedDataGridView1, 5);
             roundedDataGridView1.EnableHeadersVisualStyles = false;
-            roundedDataGridView1.Location = new Point(354, 119);
+            roundedDataGridView1.Location = new Point(27, 119);
             roundedDataGridView1.Name = "roundedDataGridView1";
             roundedDataGridView1.RowHeadersWidth = 51;
             tableLayoutPanel1.SetRowSpan(roundedDataGridView1, 3);
-            roundedDataGridView1.Size = new Size(831, 355);
+            roundedDataGridView1.Size = new Size(1158, 355);
             roundedDataGridView1.TabIndex = 67;
             // 
             // btnContracts
@@ -156,7 +132,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Anchor = AnchorStyles.Right;
+            btnCancel.Anchor = AnchorStyles.None;
             btnCancel.BackColor = Color.Silver;
             btnCancel.BaseColor = Color.Silver;
             btnCancel.BorderColor = Color.Transparent;
@@ -168,7 +144,7 @@
             btnCancel.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnCancel.ForeColor = Color.Black;
             btnCancel.HoverColor = Color.DarkGray;
-            btnCancel.Location = new Point(1006, 503);
+            btnCancel.Location = new Point(959, 503);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(179, 52);
             btnCancel.TabIndex = 56;
@@ -177,7 +153,7 @@
             // 
             // roundedButton2
             // 
-            roundedButton2.Anchor = AnchorStyles.Right;
+            roundedButton2.Anchor = AnchorStyles.None;
             roundedButton2.BackColor = Color.FromArgb(0, 113, 0);
             roundedButton2.BaseColor = Color.FromArgb(0, 113, 0);
             roundedButton2.BorderColor = Color.Transparent;
@@ -189,7 +165,7 @@
             roundedButton2.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             roundedButton2.ForeColor = Color.White;
             roundedButton2.HoverColor = Color.FromArgb(34, 139, 34);
-            roundedButton2.Location = new Point(727, 503);
+            roundedButton2.Location = new Point(680, 503);
             roundedButton2.Name = "roundedButton2";
             roundedButton2.Size = new Size(179, 52);
             roundedButton2.TabIndex = 55;
@@ -208,12 +184,10 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
             tableLayoutPanel1.Controls.Add(roundedButton2, 4, 7);
             tableLayoutPanel1.Controls.Add(btnContracts, 1, 1);
-            tableLayoutPanel1.Controls.Add(roundedDataGridView1, 3, 3);
-            tableLayoutPanel1.Controls.Add(label1, 1, 2);
-            tableLayoutPanel1.Controls.Add(label2, 3, 2);
             tableLayoutPanel1.Controls.Add(btnCancel, 5, 7);
-            tableLayoutPanel1.Controls.Add(flpTemplates, 1, 3);
             tableLayoutPanel1.Controls.Add(lbContractID, 4, 1);
+            tableLayoutPanel1.Controls.Add(roundedDataGridView1, 1, 3);
+            tableLayoutPanel1.Controls.Add(btnThemMau, 3, 7);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -230,23 +204,33 @@
             tableLayoutPanel1.Size = new Size(1215, 584);
             tableLayoutPanel1.TabIndex = 71;
             // 
-            // flpTemplates
-            // 
-            flpTemplates.BackColor = Color.White;
-            flpTemplates.FlowDirection = FlowDirection.TopDown;
-            flpTemplates.Location = new Point(27, 119);
-            flpTemplates.Name = "flpTemplates";
-            tableLayoutPanel1.SetRowSpan(flpTemplates, 3);
-            flpTemplates.Size = new Size(273, 262);
-            flpTemplates.TabIndex = 75;
-            flpTemplates.WrapContents = false;
-            // 
             // mySqlCommand1
             // 
             mySqlCommand1.CacheAge = 0;
             mySqlCommand1.Connection = null;
             mySqlCommand1.EnableCaching = false;
             mySqlCommand1.Transaction = null;
+            // 
+            // btnThemMau
+            // 
+            btnThemMau.Anchor = AnchorStyles.None;
+            btnThemMau.BackColor = Color.FromArgb(0, 0, 64);
+            btnThemMau.BaseColor = Color.FromArgb(0, 0, 64);
+            btnThemMau.BorderColor = Color.Transparent;
+            btnThemMau.BorderRadius = 15;
+            btnThemMau.BorderSize = 0;
+            btnThemMau.Cursor = Cursors.Hand;
+            btnThemMau.FlatAppearance.BorderSize = 0;
+            btnThemMau.FlatStyle = FlatStyle.Flat;
+            btnThemMau.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
+            btnThemMau.ForeColor = Color.White;
+            btnThemMau.HoverColor = Color.Navy;
+            btnThemMau.Location = new Point(401, 503);
+            btnThemMau.Name = "btnThemMau";
+            btnThemMau.Size = new Size(179, 52);
+            btnThemMau.TabIndex = 68;
+            btnThemMau.Text = "Thêm Mẫu";
+            btnThemMau.UseVisualStyleBackColor = false;
             // 
             // PlanContent
             // 
@@ -258,7 +242,6 @@
             Load += PlanContent_Load;
             ((System.ComponentModel.ISupportInitialize)roundedDataGridView1).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -270,8 +253,6 @@
         private Label lblUnitValue;
         private Label lblDeptTitle;
         private Label lblDeptValue;
-        private Label label2;
-        private Label label1;
         private Components.RoundedDataGridView roundedDataGridView1;
         private TableLayoutPanel tableLayoutPanel1;
         private Components.RoundedButton roundedButton2;
@@ -279,6 +260,6 @@
         private Components.RoundedButton lbContractID;
         private Components.RoundedButton btnContracts;
         private MySql.Data.MySqlClient.MySqlCommand mySqlCommand1;
-        private FlowLayoutPanel flpTemplates;
+        private Components.RoundedButton btnThemMau;
     }
 }
