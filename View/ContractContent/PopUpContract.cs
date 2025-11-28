@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Threading;
 using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.Controller.Data;
-using System.Collections.Generic; // Cần thêm cái này để dùng List
+using System.Collections.Generic;
 
 namespace Environmental_Monitoring.View.ContractContent
 {
@@ -24,7 +24,6 @@ namespace Environmental_Monitoring.View.ContractContent
             InitializeLocalization();
             CheckPermission();
 
-            // Xử lý dữ liệu đầu vào: Đảm bảo có cột IsUnlocked
             if (!dt.Columns.Contains("IsUnlocked"))
             {
                 dt.Columns.Add("IsUnlocked", typeof(bool));
@@ -35,36 +34,35 @@ namespace Environmental_Monitoring.View.ContractContent
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.DefaultCellStyle.ForeColor = Color.Black;
 
-            // Ẩn cột logic
+            // --- [SỬA] Ẩn các cột không cần thiết ---
             if (dataGridView1.Columns.Contains("IsUnlocked")) dataGridView1.Columns["IsUnlocked"].Visible = false;
             if (dataGridView1.Columns.Contains("Unlock")) dataGridView1.Columns["Unlock"].Visible = false;
 
+            // Ẩn cột ContractID (Số Hợp Đồng) vì người dùng không cần xem số này
+            if (dataGridView1.Columns.Contains("ContractID")) dataGridView1.Columns["ContractID"].Visible = false;
+
+            // --- [SỬA] Sắp xếp thứ tự hiển thị (Nếu muốn Tên KH lên đầu hoặc sau Mã Đơn) ---
+            if (dataGridView1.Columns.Contains("MaDon")) dataGridView1.Columns["MaDon"].DisplayIndex = 0;
+            if (dataGridView1.Columns.Contains("TenDoanhNghiep")) dataGridView1.Columns["TenDoanhNghiep"].DisplayIndex = 1;
+
             UpdateUIText();
 
-            // ĐĂNG KÝ CÁC SỰ KIỆN GRID
             dataGridView1.CellFormatting += DataGridView1_CellFormatting;
             dataGridView1.RowPostPaint += DataGridView1_RowPostPaint;
             dataGridView1.MouseClick += DataGridView1_MouseClick;
             dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;
 
-            // --- [MỚI] ĐĂNG KÝ SỰ KIỆN TÌM KIẾM ---
-            // Giả sử tên TextBox trong Design là txtSearch
             if (txtSearch != null)
             {
                 txtSearch.TextChanged += TxtSearch_TextChanged;
-                // Thêm placeholder text nếu cần
                 SetPlaceholder(txtSearch, "Tìm kiếm...");
             }
         }
 
-        // --- [MỚI] HÀM XỬ LÝ TÌM KIẾM ---
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             string keyword = txtSearch.Text;
-
-            // Nếu là placeholder text thì coi như rỗng
             if (keyword == "Tìm kiếm...") keyword = "";
-
             PerformSearch(keyword);
         }
 
@@ -77,64 +75,30 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 if (string.IsNullOrWhiteSpace(keyword))
                 {
-                    dt.DefaultView.RowFilter = string.Empty; // Xóa lọc
+                    dt.DefaultView.RowFilter = string.Empty;
                 }
                 else
                 {
-                    // Xử lý ký tự đặc biệt để tránh lỗi SQL
-                    string safeKeyword = keyword.Replace("'", "''")
-                                                .Replace("[", "[[]")
-                                                .Replace("]", "[]]")
-                                                .Replace("%", "[%]")
-                                                .Replace("*", "[*]")
-                                                .Trim();
-
-                    // Tạo danh sách các điều kiện lọc
+                    string safeKeyword = keyword.Replace("'", "''").Replace("[", "[[]").Replace("]", "[]]").Replace("%", "[%]").Replace("*", "[*]").Trim();
                     List<string> filterParts = new List<string>();
 
-                    // Duyệt qua tất cả các cột có trong DataTable để tìm kiếm
                     foreach (DataColumn col in dt.Columns)
                     {
-                        // Bỏ qua cột IsUnlocked hoặc các cột bool không cần thiết nếu muốn
                         if (col.DataType == typeof(bool)) continue;
-
-                        // Cấu trúc: Convert(TenCot, 'System.String') LIKE '%keyword%'
                         filterParts.Add($"Convert([{col.ColumnName}], 'System.String') LIKE '%{safeKeyword}%'");
                     }
-
-                    // Nối các điều kiện bằng OR
                     dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
                 }
             }
-            catch (Exception ex)
-            {
-                // Console.WriteLine("Search Error: " + ex.Message);
-            }
+            catch (Exception) { }
         }
 
-        // Helper tạo Placeholder cho đẹp (Tùy chọn)
         private void SetPlaceholder(Environmental_Monitoring.View.Components.RoundedTextBox txt, string placeholder)
         {
             txt.Text = placeholder;
             txt.ForeColor = Color.Gray;
-
-            txt.Enter += (s, e) =>
-            {
-                if (txt.Text == placeholder)
-                {
-                    txt.Text = "";
-                    txt.ForeColor = Color.Black;
-                }
-            };
-
-            txt.Leave += (s, e) =>
-            {
-                if (string.IsNullOrWhiteSpace(txt.Text))
-                {
-                    txt.Text = placeholder;
-                    txt.ForeColor = Color.Gray;
-                }
-            };
+            txt.Enter += (s, e) => { if (txt.Text == placeholder) { txt.Text = ""; txt.ForeColor = Color.Black; } };
+            txt.Leave += (s, e) => { if (string.IsNullOrWhiteSpace(txt.Text)) { txt.Text = placeholder; txt.ForeColor = Color.Gray; } };
         }
 
         private void InitializeLocalization()
@@ -154,14 +118,24 @@ namespace Environmental_Monitoring.View.ContractContent
         private void UpdateUIText()
         {
             this.Text = rm.GetString("Popup_SelectContractTitle", culture) ?? "Chọn Hợp Đồng";
-            if (dataGridView1.Columns.Contains("ContractID")) dataGridView1.Columns["ContractID"].HeaderText = rm.GetString("Grid_ContractID", culture);
-            if (dataGridView1.Columns.Contains("MaDon")) dataGridView1.Columns["MaDon"].HeaderText = rm.GetString("Grid_ContractCode", culture);
-            if (dataGridView1.Columns.Contains("NgayKy")) dataGridView1.Columns["NgayKy"].HeaderText = rm.GetString("Grid_SignDate", culture);
-            if (dataGridView1.Columns.Contains("NgayTraKetQua")) dataGridView1.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture);
-            if (dataGridView1.Columns.Contains("Status")) dataGridView1.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture);
+
+            // --- [SỬA] Cập nhật Header Text ---
+            if (dataGridView1.Columns.Contains("MaDon"))
+                dataGridView1.Columns["MaDon"].HeaderText = rm.GetString("Grid_ContractCode", culture) ?? "Mã Đơn";
+
+            if (dataGridView1.Columns.Contains("TenDoanhNghiep"))
+                dataGridView1.Columns["TenDoanhNghiep"].HeaderText = rm.GetString("PDF_Company", culture) ?? "Khách Hàng"; // Hiển thị tên khách hàng
+
+            if (dataGridView1.Columns.Contains("NgayKy"))
+                dataGridView1.Columns["NgayKy"].HeaderText = rm.GetString("Grid_SignDate", culture) ?? "Ngày Ký";
+
+            if (dataGridView1.Columns.Contains("NgayTraKetQua"))
+                dataGridView1.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture) ?? "Ngày Trả";
+
+            if (dataGridView1.Columns.Contains("Status"))
+                dataGridView1.Columns["Status"].HeaderText = rm.GetString("Grid_Status", culture) ?? "Trạng Thái";
         }
 
-        // --- CÁC HÀM XỬ LÝ GRID (GIỮ NGUYÊN) ---
         private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -179,6 +153,7 @@ namespace Environmental_Monitoring.View.ContractContent
 
         private void DataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
+            // (Giữ nguyên logic vẽ nút Unlock)
             DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
             string status = row.Cells["Status"].Value?.ToString() ?? "";
             bool isUnlocked = false;
@@ -222,13 +197,13 @@ namespace Environmental_Monitoring.View.ContractContent
                 {
                     e.Graphics.DrawRectangle(btnPen, btnRect);
                 }
-                TextRenderer.DrawText(e.Graphics, btnText, btnFont, btnRect, Color.Black,
-                                      TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                TextRenderer.DrawText(e.Graphics, btnText, btnFont, btnRect, Color.Black, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
             }
         }
 
         private void DataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
+            // (Giữ nguyên logic Click nút Unlock)
             var hitTest = dataGridView1.HitTest(e.X, e.Y);
             if (hitTest.RowIndex >= 0)
             {
@@ -266,8 +241,7 @@ namespace Environmental_Monitoring.View.ContractContent
                         }
                         else
                         {
-                            MessageBox.Show("Bạn không phải là Trưởng bộ phận hoặc Admin.\nKhông có quyền mở khóa.",
-                                            "Từ chối", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Bạn không phải là Trưởng bộ phận hoặc Admin.\nKhông có quyền mở khóa.", "Từ chối", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -290,10 +264,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     dataGridView1.InvalidateRow(rowIndex);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
         }
 
         private void DataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -310,15 +281,13 @@ namespace Environmental_Monitoring.View.ContractContent
                 else if (val is ulong uVal) isUnlocked = (uVal == 1);
             }
 
-            if (status.Equals("Expired", StringComparison.OrdinalIgnoreCase) && !isUnlocked)
-            {
-                return;
-            }
+            if (status.Equals("Expired", StringComparison.OrdinalIgnoreCase) && !isUnlocked) return;
 
             try
             {
                 int contractId = 0;
                 if (dataGridView1.Columns.Contains("ContractID")) int.TryParse(row.Cells["ContractID"].Value?.ToString(), out contractId);
+                // Fallback nếu không tìm thấy cột tên ContractID (ít xảy ra nếu làm đúng bước 1)
                 else if (row.Cells.Count > 0) int.TryParse(row.Cells[0].Value?.ToString(), out contractId);
 
                 if (contractId > 0)

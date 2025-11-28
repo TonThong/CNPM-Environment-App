@@ -11,9 +11,7 @@ using System.Globalization;
 using System.Threading;
 using Environmental_Monitoring.View.Components;
 using Environmental_Monitoring.Controller.Data;
-using Environmental_Monitoring.Controller;
 using System.Reflection;
-using Environmental_Monitoring.View;
 using System.Collections.Generic;
 
 namespace Environmental_Monitoring.View.ContractContent
@@ -42,10 +40,6 @@ namespace Environmental_Monitoring.View.ContractContent
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        /// <summary>
-        /// Phương thức được gọi từ Contract.cs thông qua Reflection khi nhấn Enter ở ô tìm kiếm.
-        /// Tìm kiếm theo: Mẫu, Thông số, Đơn vị, Min, Max, Giá trị, Kết quả.
-        /// </summary>
         public void PerformSearch(string keyword)
         {
             if (roundedDataGridView2.DataSource is DataTable dt)
@@ -58,61 +52,29 @@ namespace Environmental_Monitoring.View.ContractContent
                     }
                     else
                     {
-                        string safeKeyword = keyword.Replace("'", "''")
-                                                    .Replace("[", "[[]")
-                                                    .Replace("]", "[]]")
-                                                    .Replace("%", "[%]")
-                                                    .Replace("*", "[*]")
-                                                    .Trim();
-
+                        string safeKeyword = keyword.Replace("'", "''").Replace("[", "[[]").Replace("]", "[]]").Replace("%", "[%]").Replace("*", "[*]").Trim();
                         List<string> filterParts = new List<string>();
 
-                        if (dt.Columns.Contains("MauKiemNghiem"))
-                            filterParts.Add($"MauKiemNghiem LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("TenThongSo"))
-                            filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("DonVi"))
-                            filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("GioiHanMin"))
-                            filterParts.Add($"Convert(GioiHanMin, 'System.String') LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("GioiHanMax"))
-                            filterParts.Add($"Convert(GioiHanMax, 'System.String') LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("GiaTri"))
-                            filterParts.Add($"Convert(GiaTri, 'System.String') LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("KetQua"))
-                            filterParts.Add($"KetQua LIKE '%{safeKeyword}%'");
-                        if (dt.Columns.Contains("TrangThaiHienThi"))
-                            filterParts.Add($"TrangThaiHienThi LIKE '%{safeKeyword}%'");
+                        // [CẬP NHẬT] Tìm kiếm theo TenNenMau thay vì MauKiemNghiem
+                        if (dt.Columns.Contains("TenNenMau")) filterParts.Add($"TenNenMau LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("TenThongSo")) filterParts.Add($"TenThongSo LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("DonVi")) filterParts.Add($"DonVi LIKE '%{safeKeyword}%'");
+                        if (dt.Columns.Contains("GiaTri")) filterParts.Add($"Convert(GiaTri, 'System.String') LIKE '%{safeKeyword}%'");
+
+                        // Bỏ tìm kiếm KetQua vì đã xóa cột này
 
                         dt.DefaultView.RowFilter = string.Join(" OR ", filterParts);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Search Error: " + ex.Message);
-                }
+                catch (Exception ex) { Console.WriteLine("Search Error: " + ex.Message); }
             }
         }
 
         private void ShowAlert(string message, AlertPanel.AlertType type)
         {
             var mainLayout = this.FindForm() as Mainlayout;
-            if (mainLayout != null)
-            {
-                mainLayout.ShowGlobalAlert(message, type);
-            }
-            else
-            {
-                string title;
-                MessageBoxIcon icon;
-                switch (type)
-                {
-                    case AlertPanel.AlertType.Success: title = rm.GetString("Alert_SuccessTitle", culture); icon = MessageBoxIcon.Information; break;
-                    case AlertPanel.AlertType.Error: title = rm.GetString("Alert_ErrorTitle", culture); icon = MessageBoxIcon.Error; break;
-                    default: title = rm.GetString("Alert_InfoTitle", culture) ?? "Information"; icon = MessageBoxIcon.Information; break;
-                }
-                MessageBox.Show(message, title, MessageBoxButtons.OK, icon);
-            }
+            if (mainLayout != null) mainLayout.ShowGlobalAlert(message, type);
+            else MessageBox.Show(message, type.ToString(), MessageBoxButtons.OK, type == AlertPanel.AlertType.Success ? MessageBoxIcon.Information : MessageBoxIcon.Error);
         }
 
         public void UpdateUIText()
@@ -121,10 +83,8 @@ namespace Environmental_Monitoring.View.ContractContent
 
             if (lbContractID != null)
             {
-                if (currentContractId == 0)
-                    lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
-                else
-                    lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + currentContractId.ToString();
+                if (currentContractId == 0) lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture);
+                // Giữ nguyên text nếu đã load (là tên khách hàng)
             }
             if (btnContract != null) btnContract.Text = rm.GetString("Plan_ContractListButton", culture);
             if (btnDuyet != null) btnDuyet.Text = rm.GetString("Result_Approve", culture);
@@ -135,26 +95,25 @@ namespace Environmental_Monitoring.View.ContractContent
             var btnCancel = this.Controls.Find("btnCancel", true).FirstOrDefault();
             if (btnCancel != null) btnCancel.Text = rm.GetString("Button_Cancel", culture);
 
+            // [CẬP NHẬT] Header: Bỏ các cột cũ, thêm TenNenMau
             if (roundedDataGridView2.Columns.Contains("MaDon")) roundedDataGridView2.Columns["MaDon"].HeaderText = rm.GetString("Grid_ContractCode", culture);
             if (roundedDataGridView2.Columns.Contains("NgayKy")) roundedDataGridView2.Columns["NgayKy"].HeaderText = rm.GetString("Grid_SignDate", culture);
             if (roundedDataGridView2.Columns.Contains("NgayTraKetQua")) roundedDataGridView2.Columns["NgayTraKetQua"].HeaderText = rm.GetString("Grid_DueDate", culture);
             if (roundedDataGridView2.Columns.Contains("TenDoanhNghiep")) roundedDataGridView2.Columns["TenDoanhNghiep"].HeaderText = rm.GetString("PDF_Company", culture);
             if (roundedDataGridView2.Columns.Contains("TenNguoiDaiDien")) roundedDataGridView2.Columns["TenNguoiDaiDien"].HeaderText = rm.GetString("PDF_Representative", culture);
             if (roundedDataGridView2.Columns.Contains("TenNhanVien")) roundedDataGridView2.Columns["TenNhanVien"].HeaderText = rm.GetString("Grid_Employee", culture);
-            if (roundedDataGridView2.Columns.Contains("MauKiemNghiem")) roundedDataGridView2.Columns["MauKiemNghiem"].HeaderText = rm.GetString("Grid_Sample", culture);
+
+            // Thay MauKiemNghiem bằng TenNenMau
+            if (roundedDataGridView2.Columns.Contains("TenNenMau")) roundedDataGridView2.Columns["TenNenMau"].HeaderText = "Tên nền mẫu";
+
             if (roundedDataGridView2.Columns.Contains("TenThongSo")) roundedDataGridView2.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture);
             if (roundedDataGridView2.Columns.Contains("GioiHanMin")) roundedDataGridView2.Columns["GioiHanMin"].HeaderText = rm.GetString("Grid_Min", culture);
             if (roundedDataGridView2.Columns.Contains("GioiHanMax")) roundedDataGridView2.Columns["GioiHanMax"].HeaderText = rm.GetString("Grid_Max", culture);
             if (roundedDataGridView2.Columns.Contains("DonVi")) roundedDataGridView2.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture);
             if (roundedDataGridView2.Columns.Contains("GiaTri")) roundedDataGridView2.Columns["GiaTri"].HeaderText = rm.GetString("Grid_Value", culture);
-            if (roundedDataGridView2.Columns.Contains("KetQua")) roundedDataGridView2.Columns["KetQua"].HeaderText = rm.GetString("Grid_Result", culture);
             if (roundedDataGridView2.Columns.Contains("TrangThaiHienThi")) roundedDataGridView2.Columns["TrangThaiHienThi"].HeaderText = rm.GetString("Grid_ApprovalStatus", culture);
-            if (roundedDataGridView2.Columns.Contains("TrangThaiHopDong")) roundedDataGridView2.Columns["TrangThaiHopDong"].HeaderText = rm.GetString("Grid_ContractStatus", culture);
 
-            if (currentContractId != 0)
-            {
-                LoadContract(currentContractId);
-            }
+            if (currentContractId != 0) LoadContract(currentContractId);
         }
 
         private void ResultContent_Load(object sender, EventArgs e)
@@ -162,23 +121,18 @@ namespace Environmental_Monitoring.View.ContractContent
             roundedDataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             roundedDataGridView2.RowHeadersVisible = false;
             roundedDataGridView2.ScrollBars = ScrollBars.Both;
-
-            // Tự động giãn hàng và xuống dòng
             roundedDataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             roundedDataGridView2.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
             roundedDataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.None;
             roundedDataGridView2.ReadOnly = true;
             roundedDataGridView2.Scroll += roundedDataGridView2_Scroll;
             roundedDataGridView2.GridColor = Color.Black;
 
-            // Đăng ký sự kiện vẽ và định dạng
             roundedDataGridView2.CellPainting -= RoundedDataGridView2_CellPainting;
             roundedDataGridView2.CellPainting += RoundedDataGridView2_CellPainting;
 
-            // QUAN TRỌNG: Đăng ký sự kiện CellFormatting để tô màu bền vững
+            // [CẬP NHẬT] Bỏ đăng ký CellFormatting vì không còn cột Kết quả để tô màu
             roundedDataGridView2.CellFormatting -= RoundedDataGridView2_CellFormatting;
-            roundedDataGridView2.CellFormatting += RoundedDataGridView2_CellFormatting;
 
             try { Type dgvType = roundedDataGridView2.GetType(); PropertyInfo pi = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic); if (pi != null) pi.SetValue(roundedDataGridView2, true, null); } catch { }
 
@@ -196,35 +150,10 @@ namespace Environmental_Monitoring.View.ContractContent
             UpdateUIText();
         }
 
-        // CẬP NHẬT: Logic tô màu nằm trong sự kiện này để đảm bảo không bị mất khi lọc
+        // [CẬP NHẬT] Xóa logic tô màu cột Kết quả (vì đã xóa cột này)
         private void RoundedDataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            // Tô màu cột "Kết quả" (Result)
-            if (roundedDataGridView2.Columns[e.ColumnIndex].Name == "KetQua")
-            {
-                string val = e.Value?.ToString() ?? "";
-                string polluted = rm.GetString("Grid_Polluted", culture);
-                string soonPolluted = rm.GetString("Grid_SoonPolluted", culture);
-                // string notPolluted = rm.GetString("Grid_NotPolluted", culture); // Mặc định là xanh
-
-                e.CellStyle.ForeColor = Color.White;
-
-                if (val == polluted)
-                {
-                    e.CellStyle.BackColor = Color.Red;
-                }
-                else if (val == soonPolluted)
-                {
-                    e.CellStyle.BackColor = Color.Orange;
-                }
-                else
-                {
-                    // Không ô nhiễm (Not Polluted)
-                    e.CellStyle.BackColor = Color.Green;
-                }
-            }
+            // Không làm gì hoặc xóa hàm này đi
         }
 
         private void RoundedDataGridView2_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
@@ -234,7 +163,8 @@ namespace Environmental_Monitoring.View.ContractContent
             e.Handled = true;
             e.PaintBackground(e.CellBounds, true);
 
-            string[] mergeColumns = { "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "MauKiemNghiem", "TrangThaiHopDong" };
+            // [CẬP NHẬT] Danh sách cột cần gộp ô (Thay MauKiemNghiem bằng TenNenMau)
+            string[] mergeColumns = { "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "TenNenMau" };
             bool isMergeColumn = mergeColumns.Contains(roundedDataGridView2.Columns[e.ColumnIndex].Name);
 
             using (Pen gridPen = new Pen(Color.Black, 1))
@@ -265,10 +195,8 @@ namespace Environmental_Monitoring.View.ContractContent
                     for (int i = startIndex; i < e.RowIndex; i++) offsetY -= roundedDataGridView2.Rows[i].Height;
 
                     Rectangle groupRect = new Rectangle(e.CellBounds.X, e.CellBounds.Y + offsetY, e.CellBounds.Width, totalHeight);
-
                     TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak | TextFormatFlags.PreserveGraphicsClipping;
 
-                    // Vẽ text với màu của style hiện tại (để hỗ trợ CellFormatting nếu sau này merge các ô màu)
                     TextRenderer.DrawText(e.Graphics, displayValue, e.CellStyle.Font, groupRect, e.CellStyle.ForeColor, flags);
 
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
@@ -276,7 +204,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 }
                 else
                 {
-                    // Vẽ ô bình thường, giữ lại BackColor đã set trong CellFormatting
                     e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.Border);
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
                     e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
@@ -290,40 +217,36 @@ namespace Environmental_Monitoring.View.ContractContent
             {
                 this.currentContractId = contractId;
 
-                string q = QueryRepository.LoadContractResults;
+                // [CẬP NHẬT] Query SQL: Chọn trực tiếp TenNenMau, bỏ logic tính toán Kết quả/Trạng thái HĐ
+                string q = @"SELECT 
+                                r.ResultID, r.SampleID, r.ParameterID, r.GiaTri, r.TrangThaiPheDuyet,
+                                p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax,
+                                s.TenNenMau, -- Lấy tên nền mẫu
+                                c.MaDon, c.NgayKy, c.NgayTraKetQua, c.Status,
+                                cus.TenDoanhNghiep, cus.TenNguoiDaiDien,
+                                emp.HoTen AS TenNhanVien
+                             FROM Results r
+                             JOIN Parameters p ON r.ParameterID = p.ParameterID
+                             JOIN EnvironmentalSamples s ON r.SampleID = s.SampleID
+                             JOIN Contracts c ON s.ContractID = c.ContractID
+                             JOIN Customers cus ON c.CustomerID = cus.CustomerID
+                             LEFT JOIN Employees emp ON c.EmployeeID = emp.EmployeeID
+                             WHERE s.ContractID = @contractId";
+
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { contractId });
 
                 if (dt == null || dt.Rows.Count == 0) { roundedDataGridView2.DataSource = null; UpdateUIStates(false, false); return; }
 
-                if (!dt.Columns.Contains("KetQua")) dt.Columns.Add("KetQua", typeof(string));
+                // Chỉ giữ lại cột TrangThaiHienThi
                 if (!dt.Columns.Contains("TrangThaiHienThi")) dt.Columns.Add("TrangThaiHienThi", typeof(string));
-                if (!dt.Columns.Contains("TrangThaiHopDong")) dt.Columns.Add("TrangThaiHopDong", typeof(string));
 
-                string polluted = rm.GetString("Grid_Polluted", culture);
-                string soonPolluted = rm.GetString("Grid_SoonPolluted", culture);
-                string notPolluted = rm.GetString("Grid_NotPolluted", culture);
                 string approved = rm.GetString("Grid_Approved", culture);
                 string notApproved = rm.GetString("Grid_NotApproved", culture);
-                string status_Completed = rm.GetString("Status_Completed", culture);
-                string status_Expired = rm.GetString("Status_Expired", culture);
-                string status_Overdue = rm.GetString("Status_Overdue", culture);
-                string status_Active = rm.GetString("Status_Active", culture);
 
                 bool tatCaDaDuyet = true;
                 foreach (DataRow row in dt.Rows)
                 {
-                    string rawSample = row["MauKiemNghiem"] != DBNull.Value ? row["MauKiemNghiem"].ToString() : "";
-                    int idx = rawSample.IndexOf(" - Template");
-                    if (idx > 0) row["MauKiemNghiem"] = rawSample.Substring(0, idx);
-
-                    int onhiemStatus = (row["ONhiem"] != DBNull.Value) ? Convert.ToInt32(row["ONhiem"]) : 0;
-                    switch (onhiemStatus)
-                    {
-                        case 1: row["KetQua"] = polluted; break;
-                        case 2: row["KetQua"] = soonPolluted; break;
-                        default: row["KetQua"] = notPolluted; break;
-                    }
-
+                    // Logic duyệt
                     int pheDuyetStatus = 0;
                     if (row["TrangThaiPheDuyet"] != DBNull.Value) int.TryParse(row["TrangThaiPheDuyet"].ToString(), out pheDuyetStatus);
 
@@ -333,16 +256,10 @@ namespace Environmental_Monitoring.View.ContractContent
                         row["TrangThaiHienThi"] = notApproved;
                         tatCaDaDuyet = false;
                     }
-
-                    string statusHopDongDB = row["Status"].ToString();
-                    DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
-                    if (statusHopDongDB == "Completed") row["TrangThaiHopDong"] = status_Completed;
-                    else if (statusHopDongDB == "Expired") row["TrangThaiHopDong"] = status_Expired;
-                    else if (DateTime.Now > ngayTra) row["TrangThaiHopDong"] = status_Overdue;
-                    else row["TrangThaiHopDong"] = status_Active;
                 }
 
-                dt.DefaultView.Sort = "MauKiemNghiem ASC, TenThongSo ASC";
+                // Sắp xếp theo Tên nền mẫu -> Thông số
+                dt.DefaultView.Sort = "TenNenMau ASC, TenThongSo ASC";
                 roundedDataGridView2.DataSource = dt.DefaultView.ToTable();
 
                 isContractApproved = tatCaDaDuyet;
@@ -350,24 +267,28 @@ namespace Environmental_Monitoring.View.ContractContent
 
                 foreach (DataGridViewColumn col in roundedDataGridView2.Columns) col.SortMode = DataGridViewColumnSortMode.NotSortable;
 
-                string[] noHighlightCols = { "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "MauKiemNghiem" };
-                foreach (string colName in noHighlightCols)
-                {
-                    if (roundedDataGridView2.Columns.Contains(colName))
-                    {
-                        roundedDataGridView2.Columns[colName].DefaultCellStyle.SelectionBackColor = Color.White;
-                        roundedDataGridView2.Columns[colName].DefaultCellStyle.SelectionForeColor = Color.Black;
-                    }
-                }
-
-                // Đã xóa vòng lặp tô màu thủ công ở đây để tránh xung đột với CellFormatting
-
-                string[] hiddenCols = { "SampleID", "ParameterID", "ONhiem", "TrangThaiPheDuyet", "Status" };
+                // [CẬP NHẬT] Các cột ẩn
+                string[] hiddenCols = { "ResultID", "SampleID", "ParameterID", "TrangThaiPheDuyet", "Status", "ContractID" };
                 foreach (string col in hiddenCols) if (roundedDataGridView2.Columns.Contains(col)) roundedDataGridView2.Columns[col].Visible = false;
+
+                // [CẬP NHẬT] Sắp xếp lại thứ tự cột cho đẹp
+                if (roundedDataGridView2.Columns.Contains("TenNenMau")) roundedDataGridView2.Columns["MaDon"].DisplayIndex = 0;
+                if (roundedDataGridView2.Columns.Contains("GioiHanMin")) roundedDataGridView2.Columns["TenDoanhNghiep"].DisplayIndex = 1;
+                if (roundedDataGridView2.Columns.Contains("GioiHanMax")) roundedDataGridView2.Columns["TenNguoiDaiDien"].DisplayIndex = 2;
+                if (roundedDataGridView2.Columns.Contains("TenThongSo")) roundedDataGridView2.Columns["NgayKy"].DisplayIndex = 3;
+                if (roundedDataGridView2.Columns.Contains("DonVi")) roundedDataGridView2.Columns["NgayTraKetQua"].DisplayIndex = 4;
+                if (roundedDataGridView2.Columns.Contains("GiaTri")) roundedDataGridView2.Columns["TenNhanVien"].DisplayIndex = 5;
+                if (roundedDataGridView2.Columns.Contains("TenNenMau")) roundedDataGridView2.Columns["TenNenMau"].DisplayIndex = 6;
+                if (roundedDataGridView2.Columns.Contains("TenThongSo")) roundedDataGridView2.Columns["TenThongSo"].DisplayIndex = 7;
+                if (roundedDataGridView2.Columns.Contains("DonVi")) roundedDataGridView2.Columns["DonVi"].DisplayIndex = 8;
+                if (roundedDataGridView2.Columns.Contains("GioiHanMin")) roundedDataGridView2.Columns["GioiHanMin"].DisplayIndex = 9;
+                if (roundedDataGridView2.Columns.Contains("GioiHanMax")) roundedDataGridView2.Columns["GioiHanMax"].DisplayIndex = 10;
+                if (roundedDataGridView2.Columns.Contains("GiaTri")) roundedDataGridView2.Columns["GiaTri"].DisplayIndex = 11;
+                if (roundedDataGridView2.Columns.Contains("TrangThaiHienThi")) roundedDataGridView2.Columns["TrangThaiHienThi"].DisplayIndex = 12;
 
                 foreach (DataGridViewColumn col in roundedDataGridView2.Columns)
                 {
-                    if (col.Name == "TenThongSo" || col.Name == "MauKiemNghiem") { col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; col.MinimumWidth = 150; }
+                    if (col.Name == "TenThongSo" || col.Name == "TenNenMau") { col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; col.MinimumWidth = 150; }
                     else if (col.Visible) col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
                 }
             }
@@ -476,39 +397,27 @@ namespace Environmental_Monitoring.View.ContractContent
             if (this.currentContractId == 0) { ShowAlert(rm.GetString("Result_SelectContractBeforeApprove", culture), AlertPanel.AlertType.Error); return; }
             try
             {
-                // 1. Duyệt tất cả các kết quả chi tiết (Results)
                 DataProvider.Instance.ExecuteNonQuery(QueryRepository.ApproveAllResults, new object[] { this.currentContractId });
 
-                // 2. [LOGIC MỚI] Kiểm tra ngày hiện tại để xác định trạng thái Hợp Đồng
                 string getDateQuery = "SELECT NgayTraKetQua FROM Contracts WHERE ContractID = @id";
                 object dateObj = DataProvider.Instance.ExecuteScalar(getDateQuery, new object[] { this.currentContractId });
 
-                string newStatus = "Completed"; // Mặc định là Hoàn thành đúng hạn
-
+                string newStatus = "Completed";
                 if (dateObj != null && dateObj != DBNull.Value)
                 {
                     DateTime ngayTraKetQua = Convert.ToDateTime(dateObj);
-                    // Nếu ngày hiện tại (Now) lớn hơn ngày trả (Deadline) -> Trễ hạn
-                    if (DateTime.Now.Date > ngayTraKetQua.Date)
-                    {
-                        newStatus = "Late Completion";
-                    }
+                    if (DateTime.Now.Date > ngayTraKetQua.Date) newStatus = "Late Completion";
                 }
 
-                // 3. Cập nhật Status mới và Tiến độ (TienTrinh = 5) vào Database
                 string updateStatusQuery = "UPDATE Contracts SET Status = @status, TienTrinh = 5 WHERE ContractID = @id";
                 DataProvider.Instance.ExecuteNonQuery(updateStatusQuery, new object[] { newStatus, this.currentContractId });
 
-                // 4. Tạo thông báo
                 int adminRoleID = (int)UserRole.Admin;
                 string maDon = DataProvider.Instance.ExecuteScalar(QueryRepository.GetMaDon, new object[] { this.currentContractId }).ToString();
-                // Thông báo ghi rõ trạng thái (Completed hoặc Late Completion)
                 string noiDungAdmin = $"Hợp đồng '{maDon}' đã được duyệt và hoàn thành ({newStatus}).";
                 NotificationService.CreateNotification("ChinhSua", noiDungAdmin, adminRoleID, this.currentContractId, null);
 
                 ShowAlert(rm.GetString("Result_ApproveSuccess", culture), AlertPanel.AlertType.Success);
-
-                // Load lại để thấy thay đổi
                 LoadContract(this.currentContractId);
             }
             catch (Exception ex) { ShowAlert(rm.GetString("Result_ApproveError", culture) + ": " + ex.Message, AlertPanel.AlertType.Error); }
@@ -518,15 +427,16 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
-                         FROM Contracts WHERE TienTrinh >= 4";
+                string query = @"SELECT c.ContractID, c.MaDon, c.NgayKy, c.NgayTraKetQua, c.Status, c.IsUnlocked, cus.TenDoanhNghiep 
+                 FROM Contracts c 
+                 JOIN Customers cus ON c.CustomerID = cus.CustomerID 
+                 WHERE c.TienTrinh >= 4";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
                     popup.ContractSelected += (contractId) => {
                         LoadContract(contractId);
 
-                        // --- LOGIC MỚI: LẤY TÊN KHÁCH HÀNG ---
                         string cusQuery = @"SELECT cus.TenDoanhNghiep 
                                             FROM Contracts c 
                                             JOIN Customers cus ON c.CustomerID = cus.CustomerID 
@@ -535,9 +445,6 @@ namespace Environmental_Monitoring.View.ContractContent
                         string tenCongTy = result != null ? result.ToString() : "Không xác định";
 
                         lbContractID.Text = rm.GetString("Plan_ContractIDLabel", culture) + " " + tenCongTy;
-                        // -------------------------------------
-
-                        // Lưu ý: Không gọi UpdateUIText() ở đây nữa để tránh bị reset về ID
                     };
                     popup.ShowDialog();
                 }

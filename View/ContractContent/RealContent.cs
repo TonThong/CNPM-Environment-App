@@ -492,14 +492,16 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
-                string query = @"SELECT ContractID, MaDon, NgayKy, NgayTraKetQua, Status, IsUnlocked 
-                         FROM Contracts WHERE TienTrinh = 2";
+                string query = @"SELECT c.ContractID, c.MaDon, c.NgayKy, c.NgayTraKetQua, c.Status, c.IsUnlocked, cus.TenDoanhNghiep 
+                 FROM Contracts c 
+                 JOIN Customers cus ON c.CustomerID = cus.CustomerID 
+                 WHERE c.TienTrinh = 3";
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
                     popup.ContractSelected += (contractId) =>
                     {
-                        // --- LOGIC MỚI: LẤY TÊN KHÁCH HÀNG ---
+                        // --- LOGIC MỚI: Lấy Tên Khách Hàng ---
                         string cusQuery = @"SELECT cus.TenDoanhNghiep 
                                             FROM Contracts c 
                                             JOIN Customers cus ON c.CustomerID = cus.CustomerID 
