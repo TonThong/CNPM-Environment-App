@@ -33,7 +33,7 @@ namespace Environmental_Monitoring.Controller
         ORDER BY c.MaDon, s.MaMau, p.TenThongSo";
 
         public const string GetContractHeaderInfo = @"
-            SELECT c.MaDon, cu.TenDoanhNghiep, cu.KyHieuDoanhNghiep, cu.TenNguoiDaiDien
+            SELECT c.MaDon, cu.TenDoanhNghiep, cu.KyHieuDoanhNghiep, cu.TenNguoiDaiDien,cu.DiaChi, c.NgayTraKetQua
             FROM Contracts c
             JOIN Customers cu ON c.CustomerID = cu.CustomerID
             WHERE c.ContractID = @ContractID";

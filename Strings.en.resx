@@ -865,7 +865,7 @@
     <value>LoadError</value>
   </data>
   <data name="PDF_Title" xml:space="preserve">
-    <value>ENVIRONMENTAL MONITORING CONTRACT</value>
+    <value>TEST RESULTS SHEET</value>
   </data>
   <data name="PDF_Company" xml:space="preserve">
     <value>Business</value>
@@ -877,7 +877,7 @@
     <value>Representative of Party A</value>
   </data>
   <data name="PDF_TableTitle" xml:space="preserve">
-    <value>Monitoring Parameters</value>
+    <value>Monitoring results</value>
   </data>
   <data name="PDF_DateFormat" xml:space="preserve">
     <value>Date {0} month {1} year {2}</value>
@@ -1005,5 +1005,14 @@ Green Flow Team&lt;/p&gt;</value>
   </data>
   <data name="ContractDetail_Title" xml:space="preserve">
     <value>Contract Detail: {0}</value>
+  </data>
+  <data name="PDF_Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="PDF_TITLEI" xml:space="preserve">
+    <value>GENERAL INFORMATION</value>
+  </data>
+  <data name="PDF_DateReturn" xml:space="preserve">
+    <value>Date of results</value>
   </data>
 </root>

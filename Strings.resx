@@ -866,7 +866,7 @@
     <value>Lỗi khi tải kết quả</value>
   </data>
   <data name="PDF_Title" xml:space="preserve">
-    <value>HỢP ĐỒNG QUAN TRẮC MÔI TRƯỜNG</value>
+    <value>PHIẾU KẾT QUẢ THỬ NGHIỆM</value>
   </data>
   <data name="PDF_Company" xml:space="preserve">
     <value>Doanh Nghiệp</value>
@@ -878,7 +878,7 @@
     <value>Đại diện bên A</value>
   </data>
   <data name="PDF_TableTitle" xml:space="preserve">
-    <value>Các Thông Số Quan Trắc</value>
+    <value>Kết quả quan trắc</value>
   </data>
   <data name="PDF_DateFormat" xml:space="preserve">
     <value>Ngày {0} tháng {1} năm {2}</value>
@@ -1008,5 +1008,14 @@
   </data>
   <data name="ContractDetail_Title" xml:space="preserve">
     <value>Chi Tiết Hợp đồng: {0}</value>
+  </data>
+  <data name="PDF_Address" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="PDF_TITLEI" xml:space="preserve">
+    <value>THÔNG TIN CHUNG</value>
+  </data>
+  <data name="PDF_DateReturn" xml:space="preserve">
+    <value>Ngày trả kết quả</value>
   </data>
 </root>

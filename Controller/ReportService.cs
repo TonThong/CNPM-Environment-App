@@ -1,21 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Environmental_Monitoring.Controller;
+﻿using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.Controller.Data;
 using iText.IO.Font;
+using iText.IO.Image;
+using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Draw;
 using iText.Layout;
+using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Resources;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Environmental_Monitoring.Controller
 {
@@ -40,10 +45,10 @@ namespace Environmental_Monitoring.Controller
         /// <summary>
         /// Tạo file PDF báo cáo kết quả từ dữ liệu.
         /// </summary>
+        /// 
         public string GeneratePdfReport(int contractId, DataTable gridData)
         {
             string tempFilePath = Path.Combine(Path.GetTempPath(), $"HopDong_{contractId}_{Path.GetRandomFileName()}.pdf");
-
             try
             {
                 using (PdfWriter writer = new PdfWriter(tempFilePath))
@@ -64,6 +69,96 @@ namespace Environmental_Monitoring.Controller
                         font = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.TIMES_ROMAN);
                     }
 
+                    // Đường dẫn logo (tự động dò nhiều vị trí để tránh thiếu file trong output)
+                    string logoFileName = "d39e375b17e2b47022e116931a9df1af13e4f774.png";
+                    string[] candidates = new string[] {
+                        Path.Combine(Application.StartupPath, "Assets", "icons", logoFileName),
+                        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "icons", logoFileName),
+                        Path.Combine(Directory.GetCurrentDirectory(), "Assets", "icons", logoFileName),
+                        Path.Combine(Environment.CurrentDirectory, "Assets", "icons", logoFileName)
+                    };
+
+                    string logoPath = candidates.FirstOrDefault(p => File.Exists(p));
+
+                    // Nếu vẫn chưa tìm thấy, dò trong thư mục chạy (tìm đệ quy trong vài cấp)
+                    if (string.IsNullOrEmpty(logoPath))
+                    {
+                        try
+                        {
+                            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                            var found = Directory.GetFiles(baseDir, logoFileName, SearchOption.AllDirectories).FirstOrDefault();
+                            if (!string.IsNullOrEmpty(found)) logoPath = found;
+                        }
+                        catch { /* ignore search errors */ }
+                    }
+
+                    // Nếu vẫn chưa có, thử lên các thư mục cha (dùng khi chạy trong IDE)
+                    if (string.IsNullOrEmpty(logoPath))
+                    {
+                        try
+                        {
+                            var dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                            for (int depth = 0; depth < 5 && dir != null; depth++)
+                            {
+                                var candidate = Path.Combine(dir.FullName, "Assets", "icons", logoFileName);
+                                if (File.Exists(candidate)) { logoPath = candidate; break; }
+                                dir = dir.Parent;
+                            }
+                        }
+                        catch { }
+                    }
+
+                    // Bảng header 2 cột
+                    Table headerTable = new Table(UnitValue.CreatePercentArray(new float[] { 30, 70 }))
+                        .SetWidth(UnitValue.CreatePercentValue(100));
+
+                    // ===== CỘT LOGO =====
+                    if (!string.IsNullOrEmpty(logoPath) && File.Exists(logoPath))
+                    {
+                        iText.Layout.Element.Image logo = new iText.Layout.Element.Image(ImageDataFactory.Create(logoPath))
+                            .ScaleToFit(100, 100);
+
+                        Cell logoCell = new Cell()
+                            .Add(logo)
+                            .SetBorder(Border.NO_BORDER)
+                            .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                            .SetTextAlignment(TextAlignment.CENTER);
+
+                        headerTable.AddCell(logoCell);
+                    }
+                    else
+                    {
+                        // Nếu không tìm thấy file, thêm ô rỗng và (tùy chọn) ghi log vào file tạm để debug
+                        headerTable.AddCell(new Cell().SetBorder(Border.NO_BORDER));
+#if DEBUG
+                        try { File.WriteAllText(Path.Combine(Path.GetTempPath(), "report_logo_debug.txt"), "Logo not found. Candidates:\r\n" + string.Join("\r\n", candidates) + "\r\nResolved:" + (logoPath ?? "(null)")); } catch { }
+#endif
+                    }
+                    SolidLine solidLine = new SolidLine();
+                    solidLine.SetColor(ColorConstants.GREEN);
+                    solidLine.SetLineWidth(2f);
+
+                    LineSeparator line = new LineSeparator(solidLine);
+
+                    // ===== CỘT THÔNG TIN DOANH NGHIỆP =====
+                    Paragraph companyInfo = new Paragraph()
+                        .Add(new Text("Công Ti Cổ Phẩn GreenFlow" + "\n").SetFontSize(13)).SetTextAlignment(TextAlignment.CENTER)
+                        .Add("Địa chỉ: " + "Đường Môi Trường, Quận Xanh, TP. Sạch, Tỉnh Đẹp" + "\n").SetTextAlignment(TextAlignment.CENTER)
+                        .Add("ĐT: " + "0123456789" + "      ")
+                        .Add("Email: " + "noreply@greenflow.com" + "\n")
+                        .Add("Giấy chứng nhận hoạt động quan trắc: ANWUXCB 224"); 
+
+                    Cell infoCell = new Cell()
+                        .Add(companyInfo.SetFont(font))
+                        .SetBorder(Border.NO_BORDER)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetVerticalAlignment(VerticalAlignment.MIDDLE);
+
+                    headerTable.AddCell(infoCell);
+
+                    // Thêm header vào PDF
+                    doc.Add(headerTable);
+
                     // Lấy thông tin Header
                     DataTable dt = DataProvider.Instance.ExecuteQuery(QueryRepository.GetContractHeaderInfo, new object[] { contractId });
 
@@ -75,16 +170,37 @@ namespace Environmental_Monitoring.Controller
                     string nguoiDaiDien = dt.Rows[0]["TenNguoiDaiDien"].ToString();
                     string tenDoanhNghiep = dt.Rows[0]["TenDoanhNghiep"].ToString();
                     string kyHieuDoanhNghiep = dt.Rows[0]["KyHieuDoanhNghiep"].ToString();
+                    string diachi = dt.Rows[0]["DiaChi"].ToString();
+                    string ngaytraketqua = dt.Rows[0]["NgayTraKetQua"].ToString();
+
+                    doc.Add(line);
 
                     // Tiêu đề và thông tin chung
                     doc.Add(new Paragraph(rm.GetString("PDF_Title", culture)).SetFont(font).SetFontSize(16).SetTextAlignment(TextAlignment.CENTER));
-                    doc.Add(new Paragraph(rm.GetString("PDF_Company", culture) + ": " + tenDoanhNghiep).SetFont(font));
-                    doc.Add(new Paragraph(rm.GetString("PDF_CompanySymbol", culture) + ": " + kyHieuDoanhNghiep).SetFont(font));
-                    doc.Add(new Paragraph(rm.GetString("PDF_Representative", culture) + ": " + nguoiDaiDien).SetFont(font));
+                    doc.Add(new Paragraph("I." + rm.GetString("PDF_TITLEI", culture)).SetFont(font).SetFontSize(14));
 
-                    Paragraph title = new Paragraph(rm.GetString("PDF_TableTitle", culture));
+                    Table infoTable = new Table(UnitValue.CreatePercentArray(new float[] { 30, 70 }))
+                        .UseAllAvailableWidth();
+
+                    // Hàm tiện lợi để thêm 1 dòng vào table
+                    void AddRow(string label, string value)
+                    {
+                        infoTable.AddCell(new Cell().Add(new Paragraph(label).SetFont(font)));
+                        infoTable.AddCell(new Cell().Add(new Paragraph(value).SetFont(font)));
+                    }
+
+                    AddRow(rm.GetString("PDF_Company", culture), tenDoanhNghiep);
+                    AddRow(rm.GetString("PDF_CompanySymbol", culture), kyHieuDoanhNghiep);
+                    AddRow(rm.GetString("PDF_Address", culture), diachi);
+                    AddRow(rm.GetString("PDF_Representative", culture), nguoiDaiDien);
+                    AddRow(rm.GetString("PDF_DateReturn", culture), ngaytraketqua);
+
+                    // Thêm table vào document
+                    doc.Add(infoTable);
+
+                    Paragraph title = new Paragraph( "II. " + rm.GetString("PDF_TableTitle", culture));
                     title.SetFont(font);
-                    title.SetTextAlignment(TextAlignment.CENTER);
+                    title.SetFontSize(14);
                     doc.Add(title);
 
                     // --- TẠO BẢNG VỚI ROWSPAN ---

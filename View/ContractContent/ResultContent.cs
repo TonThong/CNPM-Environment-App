@@ -434,7 +434,8 @@ namespace Environmental_Monitoring.View.ContractContent
                 DataTable dt = DataProvider.Instance.ExecuteQuery(query);
                 using (PopUpContract popup = new PopUpContract(dt))
                 {
-                    popup.ContractSelected += (contractId) => {
+                    popup.ContractSelected += (contractId) =>
+                    {
                         LoadContract(contractId);
 
                         string cusQuery = @"SELECT cus.TenDoanhNghiep 
@@ -455,5 +456,6 @@ namespace Environmental_Monitoring.View.ContractContent
         private void btnSearch_Click(object sender, EventArgs e) { }
         private void roundedButton1_Click(object sender, EventArgs e) { }
         private void btnSearch_Click_1(object sender, EventArgs e) { }
+
     }
 }

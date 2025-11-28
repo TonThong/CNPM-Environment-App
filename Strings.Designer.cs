@@ -1642,6 +1642,15 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Địa chỉ.
+        /// </summary>
+        internal static string PDF_Address {
+            get {
+                return ResourceManager.GetString("PDF_Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Doanh Nghiệp.
         /// </summary>
         internal static string PDF_Company {
@@ -1665,6 +1674,15 @@ namespace Environmental_Monitoring {
         internal static string PDF_DateFormat {
             get {
                 return ResourceManager.GetString("PDF_DateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ngày trả kết quả.
+        /// </summary>
+        internal static string PDF_DateReturn {
+            get {
+                return ResourceManager.GetString("PDF_DateReturn", resourceCulture);
             }
         }
         
@@ -1696,7 +1714,7 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Các Thông Số Quan Trắc.
+        ///   Looks up a localized string similar to Kết quả quan trắc.
         /// </summary>
         internal static string PDF_TableTitle {
             get {
@@ -1705,11 +1723,20 @@ namespace Environmental_Monitoring {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HỢP ĐỒNG QUAN TRẮC MÔI TRƯỜNG.
+        ///   Looks up a localized string similar to PHIẾU KẾT QUẢ THỬ NGHIỆM.
         /// </summary>
         internal static string PDF_Title {
             get {
                 return ResourceManager.GetString("PDF_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to THÔNG TIN CHUNG.
+        /// </summary>
+        internal static string PDF_TITLEI {
+            get {
+                return ResourceManager.GetString("PDF_TITLEI", resourceCulture);
             }
         }
         
