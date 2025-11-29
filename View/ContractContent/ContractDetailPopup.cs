@@ -17,7 +17,7 @@ namespace Environmental_Monitoring.View.ContractContent
     {
         private int _contractId;
         private int _initialEmployeeId;
-        private string _maDon; // Lưu mã đơn để dùng khi format tiêu đề
+        private string _maDon;
         private RoundedDataGridView dgvDetails;
         private ResourceManager rm;
         private CultureInfo culture;
@@ -212,10 +212,7 @@ namespace Environmental_Monitoring.View.ContractContent
 
             dgvDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dgvDetails.RowHeadersVisible = false;
-
-            // CẬP NHẬT: Dùng None để CellPainting tự vẽ viền chuẩn, tránh lỗi gộp ô
             dgvDetails.CellBorderStyle = DataGridViewCellBorderStyle.None;
-
             dgvDetails.GridColor = Color.Black;
             dgvDetails.BackgroundColor = Color.White;
             dgvDetails.AllowUserToAddRows = false;
@@ -232,8 +229,6 @@ namespace Environmental_Monitoring.View.ContractContent
 
             dgvDetails.CellPainting += DgvDetails_CellPainting;
             dgvDetails.DataError += (s, e) => { e.ThrowException = false; };
-
-            // CẬP NHẬT: Sự kiện để xử lý giao diện khi nhập liệu
             dgvDetails.EditingControlShowing += DgvDetails_EditingControlShowing;
         }
 
@@ -281,21 +276,26 @@ namespace Environmental_Monitoring.View.ContractContent
         {
             try
             {
+                // Lấy tiến độ hợp đồng
                 string tienTrinhQuery = "SELECT TienTrinh FROM Contracts WHERE ContractID = @id";
                 object ttObj = DataProvider.Instance.ExecuteScalar(tienTrinhQuery, new object[] { _contractId });
                 int tienTrinh = (ttObj != null && ttObj != DBNull.Value) ? Convert.ToInt32(ttObj) : 0;
                 txtProgress.Text = GetProgressName(tienTrinh);
 
-                string q = QueryRepository.LoadContractResults;
+                // Query lấy dữ liệu
+                string q = @"SELECT r.ResultID, r.SampleID, r.ParameterID, r.GiaTri, r.TrangThaiPheDuyet, 
+                                    p.TenThongSo, p.DonVi, p.GioiHanMin, p.GioiHanMax, 
+                                    s.TenNenMau, s.MaMau 
+                             FROM Results r
+                             JOIN Parameters p ON r.ParameterID = p.ParameterID
+                             JOIN EnvironmentalSamples s ON r.SampleID = s.SampleID
+                             WHERE s.ContractID = @cid";
+
                 DataTable dt = DataProvider.Instance.ExecuteQuery(q, new object[] { _contractId });
                 if (dt == null) dt = new DataTable();
 
-                if (!dt.Columns.Contains("KetQua")) dt.Columns.Add("KetQua", typeof(string));
                 if (!dt.Columns.Contains("TrangThaiHienThi")) dt.Columns.Add("TrangThaiHienThi", typeof(string));
 
-                string polluted = rm.GetString("Grid_Polluted", culture) ?? "Ô nhiễm";
-                string soonPolluted = rm.GetString("Grid_SoonPolluted", culture) ?? "Sắp ô nhiễm";
-                string notPolluted = rm.GetString("Grid_NotPolluted", culture) ?? "Không ô nhiễm";
                 string approved = rm.GetString("Grid_Approved", culture) ?? "Đã duyệt";
                 string notApproved = rm.GetString("Grid_NotApproved", culture) ?? "Chưa duyệt";
 
@@ -303,33 +303,33 @@ namespace Environmental_Monitoring.View.ContractContent
                 {
                     foreach (DataRow row in dt.Rows)
                     {
-                        int onhiemStatus = (row["ONhiem"] != DBNull.Value) ? Convert.ToInt32(row["ONhiem"]) : 0;
-                        switch (onhiemStatus)
-                        {
-                            case 1: row["KetQua"] = polluted; break;
-                            case 2: row["KetQua"] = soonPolluted; break;
-                            default: row["KetQua"] = notPolluted; break;
-                        }
                         int pheDuyetStatus = 0;
                         if (row["TrangThaiPheDuyet"] != DBNull.Value) int.TryParse(row["TrangThaiPheDuyet"].ToString(), out pheDuyetStatus);
                         row["TrangThaiHienThi"] = (pheDuyetStatus == 1) ? approved : notApproved;
-
-                        string rawSample = row["MauKiemNghiem"].ToString();
-                        int idx = rawSample.IndexOf(" - Template");
-                        if (idx > 0) row["MauKiemNghiem"] = rawSample.Substring(0, idx);
                     }
                 }
 
-                if (dt.Rows.Count > 0 && dt.Columns.Contains("MauKiemNghiem") && dt.Columns.Contains("TenThongSo"))
-                    dt.DefaultView.Sort = "MauKiemNghiem ASC, TenThongSo ASC";
+                // Sắp xếp theo Tên nền mẫu để gộp ô
+                if (dt.Rows.Count > 0 && dt.Columns.Contains("TenNenMau") && dt.Columns.Contains("TenThongSo"))
+                    dt.DefaultView.Sort = "TenNenMau ASC, TenThongSo ASC";
 
                 dgvDetails.DataSource = dt.DefaultView.ToTable();
 
-                string[] hiddenCols = { "SampleID", "ParameterID", "ONhiem", "TrangThaiPheDuyet", "Status", "ContractID", "MaDon", "NgayKy", "NgayTraKetQua", "TenDoanhNghiep", "TenNguoiDaiDien", "TenNhanVien", "TrangThaiHopDong", "EmployeeID" };
+                // Ẩn các cột không cần thiết
+                string[] hiddenCols = { "ResultID", "SampleID", "ParameterID", "TrangThaiPheDuyet", "MaMau" };
                 foreach (string col in hiddenCols) if (dgvDetails.Columns.Contains(col)) dgvDetails.Columns[col].Visible = false;
 
-                // CẬP NHẬT: Thêm GioiHanMin, GioiHanMax vào danh sách ReadOnly
-                string[] readOnlyCols = { "MauKiemNghiem", "TenThongSo", "DonVi", "KetQua", "TrangThaiHienThi", "GioiHanMin", "GioiHanMax" };
+                // --- SẮP XẾP LẠI THỨ TỰ CỘT (QUAN TRỌNG) ---
+                if (dgvDetails.Columns.Contains("TenNenMau")) dgvDetails.Columns["TenNenMau"].DisplayIndex = 0;
+                if (dgvDetails.Columns.Contains("TenThongSo")) dgvDetails.Columns["TenThongSo"].DisplayIndex = 1;
+                if (dgvDetails.Columns.Contains("DonVi")) dgvDetails.Columns["DonVi"].DisplayIndex = 2;
+                if (dgvDetails.Columns.Contains("GioiHanMin")) dgvDetails.Columns["GioiHanMin"].DisplayIndex = 3;
+                if (dgvDetails.Columns.Contains("GioiHanMax")) dgvDetails.Columns["GioiHanMax"].DisplayIndex = 4;
+                if (dgvDetails.Columns.Contains("GiaTri")) dgvDetails.Columns["GiaTri"].DisplayIndex = 5;
+                if (dgvDetails.Columns.Contains("TrangThaiHienThi")) dgvDetails.Columns["TrangThaiHienThi"].DisplayIndex = 6;
+
+                // Cấu hình ReadOnly
+                string[] readOnlyCols = { "TenNenMau", "TenThongSo", "DonVi", "TrangThaiHienThi", "GioiHanMin", "GioiHanMax" };
                 foreach (string col in readOnlyCols)
                 {
                     if (dgvDetails.Columns.Contains(col))
@@ -339,7 +339,7 @@ namespace Environmental_Monitoring.View.ContractContent
                     }
                 }
 
-                // CẬP NHẬT: Cột GiaTri là Editable và có Padding để hiện viền khi nhập
+                // Cột GiaTri cho phép sửa
                 string[] editableCols = { "GiaTri" };
                 foreach (string col in editableCols)
                 {
@@ -348,25 +348,21 @@ namespace Environmental_Monitoring.View.ContractContent
                         dgvDetails.Columns[col].ReadOnly = false;
                         dgvDetails.Columns[col].DefaultCellStyle.BackColor = Color.White;
                         dgvDetails.Columns[col].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-                        // Padding(2) giúp TextBox khi hiện lên sẽ nhỏ hơn ô Grid, lộ ra viền đen
                         dgvDetails.Columns[col].DefaultCellStyle.Padding = new Padding(2);
                     }
                 }
 
-                if (dgvDetails.Columns.Contains("MauKiemNghiem")) dgvDetails.Columns["MauKiemNghiem"].HeaderText = rm.GetString("Grid_Sample", culture) ?? "Mẫu";
+                // Đặt Header
+                if (dgvDetails.Columns.Contains("TenNenMau")) dgvDetails.Columns["TenNenMau"].HeaderText = "Tên nền mẫu";
                 if (dgvDetails.Columns.Contains("TenThongSo")) dgvDetails.Columns["TenThongSo"].HeaderText = rm.GetString("Grid_ParamName", culture) ?? "Thông số";
                 if (dgvDetails.Columns.Contains("DonVi")) dgvDetails.Columns["DonVi"].HeaderText = rm.GetString("Grid_Unit", culture) ?? "Đơn vị";
                 if (dgvDetails.Columns.Contains("GioiHanMin")) dgvDetails.Columns["GioiHanMin"].HeaderText = "Min";
                 if (dgvDetails.Columns.Contains("GioiHanMax")) dgvDetails.Columns["GioiHanMax"].HeaderText = "Max";
                 if (dgvDetails.Columns.Contains("GiaTri")) dgvDetails.Columns["GiaTri"].HeaderText = rm.GetString("Grid_Value", culture) ?? "Giá trị";
-                if (dgvDetails.Columns.Contains("KetQua")) dgvDetails.Columns["KetQua"].HeaderText = rm.GetString("Grid_Result", culture) ?? "Kết quả";
                 if (dgvDetails.Columns.Contains("TrangThaiHienThi")) dgvDetails.Columns["TrangThaiHienThi"].HeaderText = rm.GetString("Grid_ApprovalStatus", culture) ?? "Trạng thái";
 
-                if (dgvDetails.Columns.Contains("cboEmployee")) dgvDetails.Columns.Remove("cboEmployee");
-                UpdateResultColors();
                 if (dgvDetails.Columns.Contains("TenThongSo")) dgvDetails.Columns["TenThongSo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                if (dgvDetails.Columns.Contains("MauKiemNghiem")) dgvDetails.Columns["MauKiemNghiem"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                if (dgvDetails.Columns.Contains("TenNenMau")) dgvDetails.Columns["TenNenMau"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             catch (Exception ex) { MessageBox.Show("Lỗi tải chi tiết: " + ex.Message); }
         }
@@ -381,21 +377,6 @@ namespace Environmental_Monitoring.View.ContractContent
                 case 4: return "Phòng Kết Quả (Result)";
                 case 5: return "Hoàn Thành (Completed)";
                 default: return "Chưa xác định (Unknown)";
-            }
-        }
-
-        private void UpdateResultColors()
-        {
-            string polluted = rm.GetString("Grid_Polluted", culture) ?? "Ô nhiễm";
-            string soonPolluted = rm.GetString("Grid_SoonPolluted", culture) ?? "Sắp ô nhiễm";
-            foreach (DataGridViewRow dgRow in dgvDetails.Rows)
-            {
-                if (dgRow.Cells["KetQua"] == null || dgRow.Cells["KetQua"].Value == null) continue;
-                var cell = dgRow.Cells["KetQua"];
-                string v = cell.Value?.ToString() ?? string.Empty;
-                if (v == polluted) { cell.Style.BackColor = Color.Red; cell.Style.ForeColor = Color.White; }
-                else if (v == soonPolluted) { cell.Style.BackColor = Color.Orange; cell.Style.ForeColor = Color.White; }
-                else if (!string.IsNullOrEmpty(v)) { cell.Style.BackColor = Color.Green; cell.Style.ForeColor = Color.White; }
             }
         }
 
@@ -418,8 +399,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     object valObj = row.Cells["GiaTri"].Value;
                     double? giaTri = (valObj != null && valObj != DBNull.Value && double.TryParse(valObj.ToString(), out double v)) ? v : (double?)null;
 
-                    // Min/Max là ReadOnly nên không cần lấy giá trị từ Grid để update, nhưng giữ query cũng không sao
-                    // (Chỉ cần lưu ý là người dùng không sửa được trên giao diện)
                     object minObj = row.Cells["GioiHanMin"].Value;
                     double? minVal = (minObj != null && minObj != DBNull.Value && double.TryParse(minObj.ToString(), out double min)) ? min : (double?)null;
                     object maxObj = row.Cells["GioiHanMax"].Value;
@@ -428,7 +407,6 @@ namespace Environmental_Monitoring.View.ContractContent
                     string updateResultQuery = @"UPDATE Results SET GiaTri = @GiaTri WHERE SampleID = @SampleID AND ParameterID = @ParameterID";
                     DataProvider.Instance.ExecuteNonQuery(updateResultQuery, new object[] { giaTri.HasValue ? (object)giaTri.Value : DBNull.Value, sampleId, paramId });
 
-                    // Vẫn giữ code update Param dù cột đã khóa, để đảm bảo logic đồng bộ
                     string updateParamQuery = @"UPDATE Parameters SET GioiHanMin = @Min, GioiHanMax = @Max WHERE ParameterID = @ParameterID";
                     DataProvider.Instance.ExecuteNonQuery(updateParamQuery, new object[] { minVal.HasValue ? (object)minVal.Value : DBNull.Value, maxVal.HasValue ? (object)maxVal.Value : DBNull.Value, paramId });
                 }
@@ -447,7 +425,8 @@ namespace Environmental_Monitoring.View.ContractContent
             e.Handled = true;
             e.PaintBackground(e.CellBounds, true);
 
-            bool isMergeColumn = (dgvDetails.Columns[e.ColumnIndex].Name == "MauKiemNghiem");
+            // Gộp ô cho cột TenNenMau (Cột đầu tiên)
+            bool isMergeColumn = (dgvDetails.Columns[e.ColumnIndex].Name == "TenNenMau");
 
             using (Pen gridPen = new Pen(dgvDetails.GridColor, 1))
             {
@@ -461,6 +440,8 @@ namespace Environmental_Monitoring.View.ContractContent
                         if (currVal == nextVal) drawBottomLine = false;
                     }
                 }
+
+                // Vẽ đường kẻ
                 e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
                 if (e.ColumnIndex == 0) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Left, e.CellBounds.Bottom);
                 if (drawBottomLine) e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);

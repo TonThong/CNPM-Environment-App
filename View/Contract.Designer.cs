@@ -68,9 +68,9 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 5;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 1F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 6F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 83F));
             tableLayoutPanel1.Size = new Size(1221, 709);
             tableLayoutPanel1.TabIndex = 32;
@@ -90,7 +90,7 @@ namespace Environmental_Monitoring.View
             // 
             // roundedTextBox1
             // 
-            roundedTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            roundedTextBox1.Anchor = AnchorStyles.None;
             roundedTextBox1.BackColor = Color.White;
             roundedTextBox1.BorderRadius = 15;
             roundedTextBox1.BorderThickness = 1;
@@ -104,7 +104,7 @@ namespace Environmental_Monitoring.View
             roundedTextBox1.PasswordChar = '\0';
             roundedTextBox1.PlaceholderText = "Tìm Kiếm...";
             roundedTextBox1.ReadOnly = false;
-            roundedTextBox1.Size = new Size(531, 36);
+            roundedTextBox1.Size = new Size(531, 43);
             roundedTextBox1.TabIndex = 19;
             roundedTextBox1.UseSystemPasswordChar = false;
             // 
@@ -125,25 +125,25 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel2.BackColor = Color.FromArgb(217, 244, 227);
             tableLayoutPanel2.ColumnCount = 8;
             tableLayoutPanel1.SetColumnSpan(tableLayoutPanel2, 5);
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2F));
             tableLayoutPanel2.Controls.Add(roundedButton1, 4, 0);
             tableLayoutPanel2.Controls.Add(btnReal, 3, 0);
             tableLayoutPanel2.Controls.Add(btnPlan, 2, 0);
             tableLayoutPanel2.Controls.Add(btnBusiness, 1, 0);
             tableLayoutPanel2.Controls.Add(btnResult, 5, 0);
             tableLayoutPanel2.Controls.Add(btnManager, 6, 0);
-            tableLayoutPanel2.Location = new Point(3, 87);
+            tableLayoutPanel2.Location = new Point(3, 80);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new Size(1215, 29);
+            tableLayoutPanel2.Size = new Size(1215, 36);
             tableLayoutPanel2.TabIndex = 21;
             // 
             // roundedButton1
@@ -162,7 +162,7 @@ namespace Environmental_Monitoring.View
             roundedButton1.Location = new Point(609, 3);
             roundedButton1.Name = "roundedButton1";
             roundedButton1.Padding = new Padding(30, 15, 30, 15);
-            roundedButton1.Size = new Size(176, 23);
+            roundedButton1.Size = new Size(176, 30);
             roundedButton1.TabIndex = 31;
             roundedButton1.Text = "Phòng Thí Nghiệm";
             roundedButton1.UseVisualStyleBackColor = false;
@@ -181,10 +181,10 @@ namespace Environmental_Monitoring.View
             btnReal.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnReal.ForeColor = Color.Black;
             btnReal.HoverColor = Color.LightGray;
-            btnReal.Location = new Point(427, 3);
+            btnReal.Location = new Point(415, 3);
             btnReal.Name = "btnReal";
             btnReal.Padding = new Padding(30, 15, 30, 15);
-            btnReal.Size = new Size(176, 23);
+            btnReal.Size = new Size(176, 30);
             btnReal.TabIndex = 29;
             btnReal.Text = "Hiện Trường";
             btnReal.UseVisualStyleBackColor = false;
@@ -203,10 +203,10 @@ namespace Environmental_Monitoring.View
             btnPlan.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnPlan.ForeColor = Color.Black;
             btnPlan.HoverColor = Color.LightGray;
-            btnPlan.Location = new Point(245, 3);
+            btnPlan.Location = new Point(221, 3);
             btnPlan.Name = "btnPlan";
             btnPlan.Padding = new Padding(30, 15, 30, 15);
-            btnPlan.Size = new Size(176, 23);
+            btnPlan.Size = new Size(176, 30);
             btnPlan.TabIndex = 28;
             btnPlan.Text = "Kế Hoạch";
             btnPlan.UseVisualStyleBackColor = false;
@@ -225,10 +225,10 @@ namespace Environmental_Monitoring.View
             btnBusiness.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnBusiness.ForeColor = Color.Black;
             btnBusiness.HoverColor = Color.LightGray;
-            btnBusiness.Location = new Point(63, 3);
+            btnBusiness.Location = new Point(27, 3);
             btnBusiness.Name = "btnBusiness";
             btnBusiness.Padding = new Padding(30, 15, 30, 15);
-            btnBusiness.Size = new Size(176, 23);
+            btnBusiness.Size = new Size(176, 30);
             btnBusiness.TabIndex = 27;
             btnBusiness.Text = "Kinh Doanh";
             btnBusiness.UseVisualStyleBackColor = false;
@@ -247,10 +247,10 @@ namespace Environmental_Monitoring.View
             btnResult.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnResult.ForeColor = Color.Black;
             btnResult.HoverColor = Color.LightGray;
-            btnResult.Location = new Point(791, 3);
+            btnResult.Location = new Point(803, 3);
             btnResult.Name = "btnResult";
             btnResult.Padding = new Padding(30, 15, 30, 15);
-            btnResult.Size = new Size(176, 23);
+            btnResult.Size = new Size(176, 30);
             btnResult.TabIndex = 30;
             btnResult.Text = "Kết Quả";
             btnResult.UseVisualStyleBackColor = false;
@@ -269,10 +269,10 @@ namespace Environmental_Monitoring.View
             btnManager.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             btnManager.ForeColor = Color.Black;
             btnManager.HoverColor = Color.LightGray;
-            btnManager.Location = new Point(973, 3);
+            btnManager.Location = new Point(997, 3);
             btnManager.Name = "btnManager";
             btnManager.Padding = new Padding(30, 15, 30, 15);
-            btnManager.Size = new Size(176, 23);
+            btnManager.Size = new Size(176, 30);
             btnManager.TabIndex = 32;
             btnManager.Text = "Quản Lý";
             btnManager.UseVisualStyleBackColor = false;

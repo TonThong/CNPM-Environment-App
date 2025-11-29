@@ -89,7 +89,7 @@ namespace Environmental_Monitoring.View
             panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point(0, 0);
             panelMenu.Name = "panelMenu";
-            panelMenu.Size = new Size(90, 853);
+            panelMenu.Size = new Size(60, 853);
             panelMenu.TabIndex = 15;
             // 
             // btnToggleMenu
@@ -134,7 +134,7 @@ namespace Environmental_Monitoring.View
             btnNotification.Location = new Point(0, 363);
             btnNotification.Name = "btnNotification";
             btnNotification.PressedBackColor = Color.FromArgb(200, 200, 200);
-            btnNotification.Size = new Size(190, 90);
+            btnNotification.Size = new Size(190, 91);
             btnNotification.TabIndex = 9;
             btnNotification.UseVisualStyleBackColor = false;
             // 

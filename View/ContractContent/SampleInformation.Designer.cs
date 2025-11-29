@@ -141,23 +141,23 @@
             // 
             // cbbThongSo
             // 
+            cbbThongSo.Anchor = AnchorStyles.None;
             cbbThongSo.BackColor = Color.White;
             cbbThongSo.BorderRadius = 12;
             cbbThongSo.BorderThickness = 2;
             cbbThongSo.Cursor = Cursors.Hand;
             cbbThongSo.DataSource = null;
             cbbThongSo.DisplayMember = "";
-            cbbThongSo.Dock = DockStyle.Fill;
             cbbThongSo.DropDownStyle = ComboBoxStyle.DropDownList;
             cbbThongSo.FocusBorderColor = Color.DimGray;
             cbbThongSo.HoverBorderColor = Color.DarkGray;
-            cbbThongSo.Location = new Point(163, 84);
+            cbbThongSo.Location = new Point(163, 87);
             cbbThongSo.Name = "cbbThongSo";
             cbbThongSo.NormalBorderColor = Color.Gray;
             cbbThongSo.SelectedIndex = -1;
             cbbThongSo.SelectedItem = null;
             cbbThongSo.SelectedValue = null;
-            cbbThongSo.Size = new Size(214, 50);
+            cbbThongSo.Size = new Size(214, 43);
             cbbThongSo.TabIndex = 16;
             cbbThongSo.ValueMember = "";
             // 
@@ -249,7 +249,7 @@
             txtToaDo.BorderThickness = 2;
             txtToaDo.FocusBorderColor = Color.DimGray;
             txtToaDo.HoverBorderColor = Color.DarkGray;
-            txtToaDo.Location = new Point(823, 84);
+            txtToaDo.Location = new Point(823, 87);
             txtToaDo.Multiline = false;
             txtToaDo.Name = "txtToaDo";
             txtToaDo.NormalBorderColor = Color.Gray;
@@ -257,7 +257,7 @@
             txtToaDo.PasswordChar = '\0';
             txtToaDo.PlaceholderText = "";
             txtToaDo.ReadOnly = false;
-            txtToaDo.Size = new Size(154, 50);
+            txtToaDo.Size = new Size(154, 43);
             txtToaDo.TabIndex = 10;
             txtToaDo.UseSystemPasswordChar = false;
             // 
@@ -289,7 +289,7 @@
             txtKyHieu.BorderThickness = 2;
             txtKyHieu.FocusBorderColor = Color.DimGray;
             txtKyHieu.HoverBorderColor = Color.DarkGray;
-            txtKyHieu.Location = new Point(823, 18);
+            txtKyHieu.Location = new Point(823, 21);
             txtKyHieu.Multiline = false;
             txtKyHieu.Name = "txtKyHieu";
             txtKyHieu.NormalBorderColor = Color.Gray;
@@ -297,7 +297,7 @@
             txtKyHieu.PasswordChar = '\0';
             txtKyHieu.PlaceholderText = "";
             txtKyHieu.ReadOnly = false;
-            txtKyHieu.Size = new Size(154, 50);
+            txtKyHieu.Size = new Size(154, 43);
             txtKyHieu.TabIndex = 14;
             txtKyHieu.UseSystemPasswordChar = false;
             // 
@@ -309,7 +309,7 @@
             txtViTri.BorderThickness = 2;
             txtViTri.FocusBorderColor = Color.DimGray;
             txtViTri.HoverBorderColor = Color.DarkGray;
-            txtViTri.Location = new Point(543, 84);
+            txtViTri.Location = new Point(543, 87);
             txtViTri.Multiline = false;
             txtViTri.Name = "txtViTri";
             txtViTri.NormalBorderColor = Color.Gray;
@@ -317,29 +317,29 @@
             txtViTri.PasswordChar = '\0';
             txtViTri.PlaceholderText = "";
             txtViTri.ReadOnly = false;
-            txtViTri.Size = new Size(154, 50);
+            txtViTri.Size = new Size(154, 43);
             txtViTri.TabIndex = 7;
             txtViTri.UseSystemPasswordChar = false;
             // 
             // cbbMoiTruong
             // 
+            cbbMoiTruong.Anchor = AnchorStyles.None;
             cbbMoiTruong.BackColor = Color.White;
             cbbMoiTruong.BorderRadius = 12;
             cbbMoiTruong.BorderThickness = 2;
             cbbMoiTruong.Cursor = Cursors.Hand;
             cbbMoiTruong.DataSource = null;
             cbbMoiTruong.DisplayMember = "";
-            cbbMoiTruong.Dock = DockStyle.Fill;
             cbbMoiTruong.DropDownStyle = ComboBoxStyle.DropDownList;
             cbbMoiTruong.FocusBorderColor = Color.DimGray;
             cbbMoiTruong.HoverBorderColor = Color.DarkGray;
-            cbbMoiTruong.Location = new Point(163, 18);
+            cbbMoiTruong.Location = new Point(163, 21);
             cbbMoiTruong.Name = "cbbMoiTruong";
             cbbMoiTruong.NormalBorderColor = Color.Gray;
             cbbMoiTruong.SelectedIndex = -1;
             cbbMoiTruong.SelectedItem = null;
             cbbMoiTruong.SelectedValue = null;
-            cbbMoiTruong.Size = new Size(214, 50);
+            cbbMoiTruong.Size = new Size(214, 43);
             cbbMoiTruong.TabIndex = 20;
             cbbMoiTruong.ValueMember = "";
             // 
@@ -351,7 +351,7 @@
             txtNenMau.BorderThickness = 2;
             txtNenMau.FocusBorderColor = Color.DimGray;
             txtNenMau.HoverBorderColor = Color.DarkGray;
-            txtNenMau.Location = new Point(543, 18);
+            txtNenMau.Location = new Point(543, 21);
             txtNenMau.Multiline = false;
             txtNenMau.Name = "txtNenMau";
             txtNenMau.NormalBorderColor = Color.Gray;
@@ -359,7 +359,7 @@
             txtNenMau.PasswordChar = '\0';
             txtNenMau.PlaceholderText = "";
             txtNenMau.ReadOnly = false;
-            txtNenMau.Size = new Size(154, 50);
+            txtNenMau.Size = new Size(154, 43);
             txtNenMau.TabIndex = 21;
             txtNenMau.UseSystemPasswordChar = false;
             // 

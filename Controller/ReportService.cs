@@ -205,17 +205,15 @@ namespace Environmental_Monitoring.Controller
 
                     // --- TẠO BẢNG VỚI ROWSPAN ---
                     string[] headers = {
-                        rm.GetString("Grid_Sample", culture),
                         rm.GetString("Grid_ParamName", culture),
                         rm.GetString("Grid_Unit", culture),
                         rm.GetString("Grid_Min", culture),
                         rm.GetString("Grid_Max", culture),
                         rm.GetString("Grid_Value", culture),
-                        rm.GetString("Grid_Result", culture),
                         rm.GetString("Grid_ApprovalStatus", culture)
                     };
 
-                    float[] columnWidths = { 3, 3, 1, 1, 1, 1, 2, 2 };
+                    float[] columnWidths = { 3, 3, 1, 1, 1, 1};
                     Table table = new Table(UnitValue.CreatePercentArray(columnWidths)).UseAllAvailableWidth();
 
                     // Header bảng
@@ -234,7 +232,7 @@ namespace Environmental_Monitoring.Controller
                     List<string> processedSampleNames = new List<string>();
                     foreach (DataRow row in gridData.Rows)
                     {
-                        string sName = row["MauKiemNghiem"].ToString();
+                        string sName = row["TenNenMau"].ToString();
                         int idxTemplate = sName.IndexOf(" - Template");
                         if (idxTemplate > 0) sName = sName.Substring(0, idxTemplate);
                         processedSampleNames.Add(sName);
@@ -244,42 +242,25 @@ namespace Environmental_Monitoring.Controller
                     for (int i = 0; i < gridData.Rows.Count; i++)
                     {
                         DataRow row = gridData.Rows[i];
-                        string currentSampleName = processedSampleNames[i];
 
-                        bool isNewSampleGroup = (i == 0) || (currentSampleName != processedSampleNames[i - 1]);
-
-                        if (isNewSampleGroup)
-                        {
-                            // Tính toán Rowspan: Đếm xem có bao nhiêu dòng liên tiếp giống nhau kể từ dòng hiện tại
-                            int rowspan = 1;
-                            for (int j = i + 1; j < gridData.Rows.Count; j++)
-                            {
-                                if (processedSampleNames[j] == currentSampleName)
-                                {
-                                    rowspan++;
-                                }
-                                else
-                                {
-                                    break; 
-                                }
-                            }
-
-                            Cell sampleCell = new Cell(rowspan, 1) 
-                                .Add(CreateStyledParagraph(currentSampleName, font))
-                                .SetVerticalAlignment(VerticalAlignment.MIDDLE) 
-                                .SetTextAlignment(TextAlignment.LEFT)
-                                .SetPadding(5);
-
-                            table.AddCell(sampleCell);
-                        }
-
-                        table.AddCell(new Cell().Add(CreateStyledParagraph(row["TenThongSo"].ToString(), font)).SetVerticalAlignment(VerticalAlignment.MIDDLE));
-                        table.AddCell(new Cell().Add(CreateStyledParagraph(row["DonVi"].ToString(), font)).SetTextAlignment(TextAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMin"].ToString()).SetFont(font)).SetTextAlignment(TextAlignment.RIGHT).SetVerticalAlignment(VerticalAlignment.MIDDLE));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMax"].ToString()).SetFont(font)).SetTextAlignment(TextAlignment.RIGHT).SetVerticalAlignment(VerticalAlignment.MIDDLE));
-                        table.AddCell(new Cell().Add(new Paragraph(row["GiaTri"].ToString()).SetFont(font)).SetTextAlignment(TextAlignment.RIGHT).SetVerticalAlignment(VerticalAlignment.MIDDLE));
-                        table.AddCell(new Cell().Add(new Paragraph(row["KetQua"].ToString()).SetFont(font)).SetTextAlignment(TextAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE));
-                        table.AddCell(new Cell().Add(new Paragraph(row["TrangThaiHienThi"].ToString()).SetFont(font)).SetTextAlignment(TextAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE));
+                        // Thêm các cột còn lại của row
+                        table.AddCell(new Cell().Add(CreateStyledParagraph(row["TenThongSo"].ToString(), font))
+                            .SetVerticalAlignment(VerticalAlignment.MIDDLE));
+                        table.AddCell(new Cell().Add(CreateStyledParagraph(row["DonVi"].ToString(), font))
+                            .SetTextAlignment(TextAlignment.CENTER)
+                            .SetVerticalAlignment(VerticalAlignment.MIDDLE));
+                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMin"].ToString()).SetFont(font))
+                            .SetTextAlignment(TextAlignment.RIGHT)
+                            .SetVerticalAlignment(VerticalAlignment.MIDDLE));
+                        table.AddCell(new Cell().Add(new Paragraph(row["GioiHanMax"].ToString()).SetFont(font))
+                            .SetTextAlignment(TextAlignment.RIGHT)
+                            .SetVerticalAlignment(VerticalAlignment.MIDDLE));
+                        table.AddCell(new Cell().Add(new Paragraph(row["GiaTri"].ToString()).SetFont(font))
+                            .SetTextAlignment(TextAlignment.RIGHT)
+                            .SetVerticalAlignment(VerticalAlignment.MIDDLE));
+                        table.AddCell(new Cell().Add(new Paragraph(row["TrangThaiHienThi"].ToString()).SetFont(font))
+                            .SetTextAlignment(TextAlignment.CENTER)
+                            .SetVerticalAlignment(VerticalAlignment.MIDDLE));
                     }
 
                     doc.Add(table);
