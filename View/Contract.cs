@@ -11,8 +11,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-// BẮT BUỘC CÓ THƯ VIỆN NÀY
-using System.Speech.Recognition;
+using Vosk;
+using NAudio.Wave;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Environmental_Monitoring.View
 {
@@ -26,11 +28,14 @@ namespace Environmental_Monitoring.View
         private ResourceManager rm;
         private CultureInfo culture;
 
-        // --- BIẾN NHẬN DIỆN GIỌNG NÓI ---
-        private SpeechRecognitionEngine recognitionEngine;
-        private bool isListening = false;
+        // --- CÁC BIẾN CHO VOSK (NHẬN DIỆN GIỌNG NÓI) ---
+        private Vosk.Model voskModel;
+        private VoskRecognizer voskRecognizer;
+        private WaveInEvent waveIn;
+        private bool isModelLoaded = false;
+        // ------------------------------------------------
 
-        // Nút Micro đè lên thanh tìm kiếm
+        private bool isListening = false;
         private Button btnMicOverlay;
 
         #endregion
@@ -42,80 +47,77 @@ namespace Environmental_Monitoring.View
             InitializeComponent();
             InitializeLocalization();
 
-            // 1. Khởi tạo bộ nhận diện giọng nói
-            InitializeVoiceRecognition();
+            // Khởi tạo Vosk (chạy ngầm để không đơ UI lúc mới mở)
+            Task.Run(() => InitializeVosk());
 
-            // 2. Thiết lập nút Micro nằm TRÊN thanh tìm kiếm
             SetupSearchMicrophone();
 
             this.btnManager.Click += new System.EventHandler(this.btnManager_Click);
-
             this.Load += new System.EventHandler(this.Contract_Load);
             this.VisibleChanged += new System.EventHandler(this.Contract_VisibleChanged);
-
-            // Cập nhật vị trí nút Mic khi thay đổi kích thước
             this.Resize += (s, e) => AdjustMicPosition();
         }
 
+        /// <summary>
+        /// Sự kiện Load của UserControl: Cập nhật ngôn ngữ và vị trí nút Mic.
+        /// </summary>
         private void Contract_Load(object sender, EventArgs e)
         {
             UpdateUIText();
-            AdjustMicPosition(); // Đảm bảo vị trí đúng khi load xong
+            AdjustMicPosition();
         }
 
+        /// <summary>
+        /// Khi UserControl hiển thị lại, kích hoạt kiểm tra quyền để đảm bảo bảo mật.
+        /// </summary>
         private void Contract_VisibleChanged(object sender, EventArgs e)
         {
-            if (this.Visible)
+            if (this.Visible && UserSession.CurrentUser != null)
             {
-                ApplyRolePermissions();
+                string roleName = UserSession.CurrentUser.Role?.RoleName ?? "";
+                SetTabAccess(roleName);
             }
         }
 
+        /// <summary>
+        /// Khởi tạo tài nguyên ngôn ngữ (ResourceManager).
+        /// </summary>
         private void InitializeLocalization()
         {
             rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Contract).Assembly);
             culture = Thread.CurrentThread.CurrentUICulture;
         }
 
-        // --- TẠO NÚT MICRO ĐÈ LÊN TEXTBOX ---
+        /// <summary>
+        /// Cấu hình và thêm nút Micro đè lên ô tìm kiếm.
+        /// </summary>
         private void SetupSearchMicrophone()
         {
             btnMicOverlay = new Button();
 
-            // --- Tìm đến đoạn gán ảnh trong hàm SetupSearchMicrophone ---
-
+            // 1. Load icon Micro từ Resources
+            Image originalIcon = null;
             try
             {
-                // BƯỚC 1: Gán ảnh vào BackgroundImage thay vì Image
-                btnMicOverlay.BackgroundImage = Properties.Resources.Micro;
-
-                // BƯỚC 2: Chọn chế độ hiển thị
-                // ImageLayout.Zoom: Co giãn ảnh cho vừa khung nhưng vẫn GIỮ TỶ LỆ (ảnh không bị méo)
-                // ImageLayout.Stretch: Kéo dãn ảnh để LẤP ĐẦY toàn bộ nút (ảnh có thể bị méo) -> Bạn chọn 1 trong 2 nhé
-                btnMicOverlay.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // Đảm bảo xóa thuộc tính Image và Text cũ để không bị đè
-                btnMicOverlay.Image = null;
-                btnMicOverlay.Text = "";
+                originalIcon = Properties.Resources.Micro;
             }
-            catch
-            {
-                // Fallback nếu không tìm thấy ảnh
-                btnMicOverlay.Text = "🎤";
-                btnMicOverlay.Font = new Font("Segoe UI", 12f, FontStyle.Regular);
-                btnMicOverlay.ForeColor = Color.Gray;
-            }
+            catch { }
+
+            // 2. Cấu hình nút để trông "tàng hình" trên thanh tìm kiếm
+            btnMicOverlay.BackgroundImage = originalIcon;
+            btnMicOverlay.BackgroundImageLayout = ImageLayout.Zoom;
+            btnMicOverlay.Text = originalIcon == null ? "🎤" : ""; // Fallback text nếu thiếu ảnh
 
             btnMicOverlay.FlatStyle = FlatStyle.Flat;
             btnMicOverlay.FlatAppearance.BorderSize = 0;
+
+            // Đặt màu nền trùng với màu textbox để hòa làm một
             btnMicOverlay.BackColor = ThemeManager.PanelColor;
             btnMicOverlay.FlatAppearance.MouseDownBackColor = ThemeManager.PanelColor;
             btnMicOverlay.FlatAppearance.MouseOverBackColor = ThemeManager.PanelColor;
 
             btnMicOverlay.Cursor = Cursors.Hand;
-            btnMicOverlay.Size = new Size(30, 25);
-
-            // Gán sự kiện Click
+            btnMicOverlay.Size = new Size(24, 24); // Kích thước nhỏ gọn
             btnMicOverlay.Click += new EventHandler(this.btnVoiceSearch_Click);
 
             this.Controls.Add(btnMicOverlay);
@@ -124,6 +126,9 @@ namespace Environmental_Monitoring.View
             AdjustMicPosition();
         }
 
+        /// <summary>
+        /// Tự động căn chỉnh vị trí nút Mic luôn nằm ở cuối ô tìm kiếm khi thay đổi kích thước.
+        /// </summary>
         private void AdjustMicPosition()
         {
             if (roundedTextBox1 != null && btnMicOverlay != null)
@@ -133,7 +138,6 @@ namespace Environmental_Monitoring.View
 
                 btnMicOverlay.Location = new Point(x, y);
 
-                // Đồng bộ màu nền cơ bản (chưa tính trạng thái Recording)
                 if (!isListening)
                 {
                     btnMicOverlay.BackColor = roundedTextBox1.BackColor;
@@ -143,126 +147,171 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        // --- [CẬP NHẬT 1] CẤU HÌNH NHẬN DIỆN GIỌNG NÓI CHÍNH XÁC ---
-        private void InitializeVoiceRecognition()
+        #endregion
+
+        #region Vosk Implementation (Free Text Search)
+
+        /// <summary>
+        /// Khởi tạo Model Vosk và thiết lập Microphone (Chạy 1 lần duy nhất).
+        /// </summary>
+        private void InitializeVosk()
         {
             try
             {
-                // Sử dụng Tiếng Anh (Mỹ)
-                recognitionEngine = new SpeechRecognitionEngine(new CultureInfo("en-US"));
+                // Lấy đường dẫn đến thư mục chứa model
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string modelPath = Path.Combine(baseDir, "model");
 
-                // --- TẠO DANH SÁCH TỪ KHÓA ---
-                Choices commandList = new Choices();
-                commandList.Add(new string[] {
-                    "Business", "Plan", "Scene", "Real", "Field", // Các tab
-                    "Lab", "Experiment", "Result", "Manager",     // Các tab
-                    "Search", "Find", "Clear", "Close",           // Lệnh
-                    "Contract", "Home"                            // Khác
-                });
+                if (!Directory.Exists(modelPath))
+                {
+                    // Không tìm thấy model thì thôi, không crash app
+                    return;
+                }
 
-                // Xây dựng Grammar
-                GrammarBuilder grammarBuilder = new GrammarBuilder();
-                grammarBuilder.Append(commandList);
-                Grammar customGrammar = new Grammar(grammarBuilder);
+                Vosk.Vosk.SetLogLevel(-1); // Tắt log rác
 
-                // Load Grammar thay vì DictationGrammar
-                recognitionEngine.LoadGrammar(customGrammar);
+                // Khởi tạo Model và Recognizer
+                voskModel = new Vosk.Model(modelPath);
+                voskRecognizer = new VoskRecognizer(voskModel, 16000.0f); // 16kHz là chuẩn của Vosk
 
-                recognitionEngine.SpeechRecognized += RecognitionEngine_SpeechRecognized;
-                recognitionEngine.SetInputToDefaultAudioDevice();
+                // Cấu hình NAudio để bắt mic
+                waveIn = new WaveInEvent();
+                waveIn.WaveFormat = new WaveFormat(16000, 1);
+                waveIn.DataAvailable += WaveIn_DataAvailable;
+
+                isModelLoaded = true;
             }
             catch (Exception ex)
             {
-                // Nếu máy không có mic hoặc lỗi driver
-                Console.WriteLine("Lỗi khởi tạo giọng nói: " + ex.Message);
+                Console.WriteLine("Lỗi khởi tạo Vosk: " + ex.Message);
+                isModelLoaded = false;
             }
         }
 
-        // --- [CẬP NHẬT 2] XỬ LÝ KẾT QUẢ THÔNG MINH ---
-        private void RecognitionEngine_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        /// <summary>
+        /// Xử lý sự kiện khi Mic thu được dữ liệu âm thanh -> Gửi vào Vosk.
+        /// </summary>
+        private void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
-            // Tăng độ tin cậy lên 0.6 vì đã dùng Grammar List
-            if (e.Result.Confidence < 0.6) return;
+            if (voskRecognizer == null) return;
 
-            string spokenText = e.Result.Text;
-
-            this.Invoke(new Action(() =>
+            if (voskRecognizer.AcceptWaveform(e.Buffer, e.BytesRecorded))
             {
-                // Logic thông minh: Điều hướng hoặc Tìm kiếm
-                switch (spokenText)
-                {
-                    case "Business":
-                        if (btnBusiness.Enabled) btnBusiness.PerformClick();
-                        break;
-                    case "Plan":
-                        if (btnPlan.Enabled) btnPlan.PerformClick();
-                        break;
-                    case "Scene":
-                    case "Real":
-                    case "Field":
-                        if (btnReal.Enabled) btnReal.PerformClick();
-                        break;
-                    case "Lab":
-                    case "Experiment":
-                        if (roundedButton1.Enabled) roundedButton1.PerformClick();
-                        break;
-                    case "Result":
-                        if (btnResult.Enabled) btnResult.PerformClick();
-                        break;
-                    case "Manager":
-                        if (btnManager.Enabled) btnManager.PerformClick();
-                        break;
-                    case "Clear":
-                        roundedTextBox1.Text = "";
-                        break;
-                    default:
-                        // Nếu là lệnh tìm kiếm bình thường
-                        roundedTextBox1.Text = spokenText;
-                        SendKeys.Send("{ENTER}"); // Tự động Enter
-                        break;
-                }
-            }));
+                string jsonResult = voskRecognizer.Result();
+                ProcessVoskResult(jsonResult);
+            }
         }
 
-        // --- [CẬP NHẬT 3] QUẢN LÝ GIAO DIỆN MIC (ĐỔI MÀU) ---
+        /// <summary>
+        /// Phân tích kết quả JSON từ Vosk -> Lấy ra văn bản thô.
+        /// </summary>
+        private void ProcessVoskResult(string json)
+        {
+            try
+            {
+                var parsed = JObject.Parse(json);
+                string text = parsed["text"].ToString().Trim();
+
+                if (!string.IsNullOrEmpty(text))
+                {
+                    this.Invoke(new Action(() => ExecuteVoiceSearch(text)));
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Xử lý văn bản nhận được: Điền vào ô tìm kiếm và tự động nhấn Enter.
+        /// </summary>
+        private void ExecuteVoiceSearch(string spokenText)
+        {
+            if (string.IsNullOrWhiteSpace(spokenText)) return;
+
+            // 1. Điền nội dung nghe được vào ô tìm kiếm
+            roundedTextBox1.Text = spokenText;
+
+            // 2. Giả lập hành động nhấn phím Enter để kích hoạt sự kiện tìm kiếm
+            SendKeys.Send("{ENTER}");
+        }
+
+        /// <summary>
+        /// Cập nhật giao diện nút Mic (Đỏ khi đang nghe, Mặc định khi dừng).
+        /// </summary>
         private void UpdateMicUI(bool recording)
         {
             if (btnMicOverlay == null) return;
 
-            if (recording)
+            try
             {
-                // ĐANG NGHE: Màu đỏ, Placeholder hướng dẫn
-                btnMicOverlay.BackColor = Color.FromArgb(255, 192, 192); // Màu đỏ nhạt
-                btnMicOverlay.FlatAppearance.MouseOverBackColor = Color.Red;
-                roundedTextBox1.PlaceholderText = "Listening... (Say: Business, Plan...)";
-                roundedTextBox1.Focus();
+                Image originalIcon = Properties.Resources.Micro;
+
+                if (recording)
+                {
+                    // Đổi icon sang màu đỏ đậm để báo hiệu đang nghe
+                    btnMicOverlay.BackgroundImage = RecolorImage(originalIcon, Color.Red);
+
+                    roundedTextBox1.PlaceholderText = "Đang nghe... (Nói tên, mã số...)";
+                    roundedTextBox1.Focus();
+                }
+                else
+                {
+                    // Trả về icon màu gốc
+                    btnMicOverlay.BackgroundImage = originalIcon;
+
+                    roundedTextBox1.PlaceholderText = rm.GetString("Search_Placeholder", culture);
+                }
             }
-            else
-            {
-                // ĐÃ TẮT: Trả về màu giao diện gốc
-                btnMicOverlay.BackColor = ThemeManager.PanelColor;
-                btnMicOverlay.FlatAppearance.MouseOverBackColor = ThemeManager.PanelColor;
-                roundedTextBox1.PlaceholderText = rm.GetString("Search_Placeholder", culture);
-            }
+            catch { }
         }
 
+        /// <summary>
+        /// Hàm hỗ trợ: Đổi màu của một bức ảnh (dùng để đổi màu icon Mic).
+        /// </summary>
+        private Image RecolorImage(Image originalImage, Color newColor)
+        {
+            if (originalImage == null) return null;
+
+            Bitmap bmp = new Bitmap(originalImage.Width, originalImage.Height);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                System.Drawing.Imaging.ColorMatrix colorMatrix = new System.Drawing.Imaging.ColorMatrix(new float[][]
+                {
+                    new float[] {0, 0, 0, 0, 0},
+                    new float[] {0, 0, 0, 0, 0},
+                    new float[] {0, 0, 0, 0, 0},
+                    new float[] {0, 0, 0, 1, 0},
+                    new float[] {newColor.R / 255.0f, newColor.G / 255.0f, newColor.B / 255.0f, 0, 1}
+                });
+
+                System.Drawing.Imaging.ImageAttributes attributes = new System.Drawing.Imaging.ImageAttributes();
+                attributes.SetColorMatrix(colorMatrix);
+
+                g.DrawImage(originalImage, new Rectangle(0, 0, bmp.Width, bmp.Height),
+                    0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, attributes);
+            }
+            return bmp;
+        }
+
+        /// <summary>
+        /// Dừng thu âm và reset trạng thái UI.
+        /// </summary>
         private void StopListening()
         {
-            if (isListening && recognitionEngine != null)
+            if (isListening && waveIn != null)
             {
-                recognitionEngine.RecognizeAsyncStop();
+                waveIn.StopRecording();
                 isListening = false;
-
-                this.Invoke(new Action(() => {
-                    UpdateMicUI(false);
-                }));
+                this.Invoke(new Action(() => { UpdateMicUI(false); }));
             }
         }
 
         #endregion
 
-        #region Core Logic (Permissions, UI Updates, Page Loading)
+        #region Core Logic
 
+        /// <summary>
+        /// Xử lý phím Enter trong ô tìm kiếm để gọi hàm tìm kiếm của trang con.
+        /// </summary>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Enter && this.ActiveControl == roundedTextBox1)
@@ -289,12 +338,14 @@ namespace Environmental_Monitoring.View
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        // --- [CẬP NHẬT 4] SỰ KIỆN CLICK MIC ---
+        /// <summary>
+        /// Bật/Tắt chế độ tìm kiếm bằng giọng nói khi nhấn nút Mic.
+        /// </summary>
         private void btnVoiceSearch_Click(object sender, EventArgs e)
         {
-            if (recognitionEngine == null)
+            if (!isModelLoaded)
             {
-                MessageBox.Show("Chức năng giọng nói chưa sẵn sàng (Kiểm tra Micro).", "Thông báo");
+                MessageBox.Show("Mô hình giọng nói chưa sẵn sàng. Vui lòng kiểm tra thư mục 'model'.", "Lỗi");
                 return;
             }
 
@@ -302,8 +353,8 @@ namespace Environmental_Monitoring.View
             {
                 try
                 {
-                    // Bắt đầu nghe liên tục
-                    recognitionEngine.RecognizeAsync(RecognizeMode.Multiple);
+                    voskRecognizer.Reset();
+                    waveIn.StartRecording();
                     isListening = true;
                     UpdateMicUI(true);
                 }
@@ -314,12 +365,45 @@ namespace Environmental_Monitoring.View
             }
             else
             {
-                // Dừng nghe chủ động
                 StopListening();
             }
         }
 
-        private void ResetTabsForEmployee()
+        /// <summary>
+        /// Phân quyền hiển thị Tab dựa trên Role của người dùng.
+        /// </summary>
+        public void SetTabAccess(string roleName)
+        {
+            if (string.IsNullOrEmpty(roleName)) return;
+
+            string cleanRole = roleName.ToLowerInvariant().Trim();
+            LockAllTabs(); // Khóa tất cả trước
+
+            // Admin/Manager thì mở hết
+            if (cleanRole == "admin" || cleanRole == "manager")
+            {
+                UnlockAllTabs();
+                if (currentActiveTab == null) btnBusiness.PerformClick();
+                return;
+            }
+
+            // Nhân viên phòng nào mở phòng đó
+            switch (cleanRole)
+            {
+                case "business": UnlockAndOpen(btnBusiness, new BusinessContent()); break;
+                case "plan": UnlockAndOpen(btnPlan, new PlanContent()); break;
+                case "field":
+                case "real":
+                case "scene": UnlockAndOpen(btnReal, new RealContent()); break;
+                case "lab":
+                case "experiment": UnlockAndOpen(roundedButton1, new ExperimentContent()); break;
+                case "result": UnlockAndOpen(btnResult, new ResultContent()); break;
+                default: break;
+            }
+        }
+
+        // Helper: Khóa và làm mờ tất cả các Tab
+        private void LockAllTabs()
         {
             btnBusiness.Enabled = false;
             btnPlan.Enabled = false;
@@ -328,17 +412,24 @@ namespace Environmental_Monitoring.View
             btnResult.Enabled = false;
             btnManager.Enabled = false;
 
-            btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
-            btnPlan.BackColor = btnPlan.BaseColor = tabDefaultColor;
-            btnReal.BackColor = btnReal.BaseColor = tabDefaultColor;
-            roundedButton1.BackColor = roundedButton1.BaseColor = tabDefaultColor;
-            btnResult.BackColor = btnResult.BaseColor = tabDefaultColor;
-            btnManager.BackColor = btnManager.BaseColor = tabDefaultColor;
+            btnBusiness.BackColor = tabDefaultColor;
+            btnPlan.BackColor = tabDefaultColor;
+            btnReal.BackColor = tabDefaultColor;
+            roundedButton1.BackColor = tabDefaultColor;
+            btnResult.BackColor = tabDefaultColor;
+            btnManager.BackColor = tabDefaultColor;
 
-            currentActiveTab = null;
+            Color defaultTxtColor = ThemeManager.TextColor;
+            btnBusiness.ForeColor = defaultTxtColor;
+            btnPlan.ForeColor = defaultTxtColor;
+            btnReal.ForeColor = defaultTxtColor;
+            roundedButton1.ForeColor = defaultTxtColor;
+            btnResult.ForeColor = defaultTxtColor;
+            btnManager.ForeColor = defaultTxtColor;
         }
 
-        private void ResetTabsForAdmin()
+        // Helper: Mở khóa tất cả các Tab
+        private void UnlockAllTabs()
         {
             btnBusiness.Enabled = true;
             btnPlan.Enabled = true;
@@ -346,86 +437,44 @@ namespace Environmental_Monitoring.View
             roundedButton1.Enabled = true;
             btnResult.Enabled = true;
             btnManager.Enabled = true;
-
-            btnBusiness.BackColor = btnBusiness.BaseColor = tabDefaultColor;
-            btnPlan.BackColor = btnPlan.BaseColor = tabDefaultColor;
-            btnReal.BackColor = btnReal.BaseColor = tabDefaultColor;
-            roundedButton1.BackColor = roundedButton1.BaseColor = tabDefaultColor;
-            btnResult.BackColor = btnResult.BaseColor = tabDefaultColor;
-            btnManager.BackColor = btnManager.BaseColor = tabDefaultColor;
-
-            currentActiveTab = null;
         }
 
-        private void ApplyRolePermissions()
+        // Helper: Mở khóa và tự động click vào Tab
+        private void UnlockAndOpen(Components.RoundedButton btn, UserControl pageContent)
         {
-            string userRole = UserSession.CurrentUser?.Role?.RoleName ?? "";
-            string cleanRoleName = userRole.ToLowerInvariant().Trim();
-
-            if (UserSession.IsAdmin())
-            {
-                ResetTabsForAdmin();
-                LoadPage(new BusinessContent());
-                HighlightTab(btnBusiness);
-                return;
-            }
-
-            ResetTabsForEmployee();
-
-            switch (cleanRoleName)
-            {
-                case "business":
-                    btnBusiness.Enabled = true;
-                    LoadPage(new BusinessContent());
-                    HighlightTab(btnBusiness);
-                    break;
-                case "plan":
-                    btnPlan.Enabled = true;
-                    LoadPage(new PlanContent());
-                    HighlightTab(btnPlan);
-                    break;
-                case "field":
-                    btnReal.Enabled = true;
-                    LoadPage(new RealContent());
-                    HighlightTab(btnReal);
-                    break;
-                case "lab":
-                    roundedButton1.Enabled = true;
-                    LoadPage(new ExperimentContent());
-                    HighlightTab(roundedButton1);
-                    break;
-                case "result":
-                    btnResult.Enabled = true;
-                    LoadPage(new ResultContent());
-                    HighlightTab(btnResult);
-                    break;
-                default:
-                    pnContent.Controls.Clear();
-                    break;
-            }
+            btn.Enabled = true;
+            btn.PerformClick();
         }
 
+        // Helper: Đổi màu Tab được chọn (Xanh đậm #007000)
         private void HighlightTab(Components.RoundedButton selectedButton)
         {
-            if (UserSession.IsAdmin() && currentActiveTab != null && currentActiveTab != selectedButton)
+            Color activeGreen = ColorTranslator.FromHtml("#007000");
+
+            // Reset tab cũ
+            if (currentActiveTab != null && currentActiveTab != selectedButton)
             {
                 currentActiveTab.BackColor = tabDefaultColor;
                 currentActiveTab.BaseColor = tabDefaultColor;
+                currentActiveTab.ForeColor = ThemeManager.TextColor;
             }
 
-            selectedButton.BackColor = ThemeManager.SecondaryPanelColor;
-            selectedButton.BaseColor = ThemeManager.SecondaryPanelColor;
-
+            // Highlight tab mới
+            selectedButton.BackColor = activeGreen;
+            selectedButton.BaseColor = activeGreen;
+            selectedButton.ForeColor = Color.White;
             currentActiveTab = selectedButton;
         }
 
+        /// <summary>
+        /// Cập nhật ngôn ngữ và Theme màu sắc cho giao diện.
+        /// </summary>
         public void UpdateUIText()
         {
             culture = Thread.CurrentThread.CurrentUICulture;
 
             lbContract.Text = rm.GetString("Contract_Title", culture);
 
-            // Chỉ reset placeholder nếu KHÔNG đang nghe
             if (!isListening)
             {
                 roundedTextBox1.PlaceholderText = rm.GetString("Search_Placeholder", culture);
@@ -441,15 +490,7 @@ namespace Environmental_Monitoring.View
             if (pnContent.Controls.Count > 0)
             {
                 Control currentChildPage = pnContent.Controls[0];
-                try
-                {
-                    var method = currentChildPage.GetType().GetMethod("UpdateUIText");
-                    if (method != null)
-                    {
-                        method.Invoke(currentChildPage, null);
-                    }
-                }
-                catch (Exception) { }
+                try { var method = currentChildPage.GetType().GetMethod("UpdateUIText"); if (method != null) method.Invoke(currentChildPage, null); } catch { }
             }
 
             try
@@ -457,100 +498,60 @@ namespace Environmental_Monitoring.View
                 this.BackColor = ThemeManager.BackgroundColor_tab;
                 lbContract.ForeColor = ThemeManager.TextColor;
 
-                btnBusiness.ForeColor = ThemeManager.TextColor;
-                btnPlan.ForeColor = ThemeManager.TextColor;
-                btnReal.ForeColor = ThemeManager.TextColor;
-                roundedButton1.ForeColor = ThemeManager.TextColor;
-                btnResult.ForeColor = ThemeManager.TextColor;
-                btnManager.ForeColor = ThemeManager.TextColor;
-
-                if (currentActiveTab != null)
-                {
-                    currentActiveTab.BackColor = ThemeManager.SecondaryPanelColor;
-                    currentActiveTab.BaseColor = ThemeManager.SecondaryPanelColor;
-                }
+                Color defaultTxtColor = ThemeManager.TextColor;
+                btnBusiness.ForeColor = defaultTxtColor;
+                btnPlan.ForeColor = defaultTxtColor;
+                btnReal.ForeColor = defaultTxtColor;
+                roundedButton1.ForeColor = defaultTxtColor;
+                btnResult.ForeColor = defaultTxtColor;
+                btnManager.ForeColor = defaultTxtColor;
 
                 roundedTextBox1.BackColor = ThemeManager.PanelColor;
                 roundedTextBox1.ForeColor = ThemeManager.TextColor;
 
-                // Cập nhật màu nút Mic (nếu đang KHÔNG nghe thì đồng bộ màu)
                 if (btnMicOverlay != null && !isListening)
                 {
                     btnMicOverlay.BackColor = ThemeManager.PanelColor;
                     btnMicOverlay.FlatAppearance.MouseDownBackColor = ThemeManager.PanelColor;
                     btnMicOverlay.FlatAppearance.MouseOverBackColor = ThemeManager.PanelColor;
+                    btnMicOverlay.BackgroundImage = Properties.Resources.Micro; // Reset icon về mặc định khi đổi theme
                 }
 
                 pnContent.BackColor = ThemeManager.PanelColor;
+
+                if (currentActiveTab != null)
+                {
+                    Color activeGreen = ColorTranslator.FromHtml("#007000");
+                    currentActiveTab.BackColor = activeGreen;
+                    currentActiveTab.BaseColor = activeGreen;
+                    currentActiveTab.ForeColor = Color.White;
+                }
             }
             catch (Exception) { }
         }
 
+        // Helper: Load trang con vào Panel chính
         private void LoadPage(UserControl pageToLoad)
         {
             pnContent.Controls.Clear();
             pageToLoad.Dock = DockStyle.Fill;
             pnContent.Controls.Add(pageToLoad);
-
-            try
-            {
-                var method = pageToLoad.GetType().GetMethod("UpdateUIText");
-                if (method != null)
-                {
-                    method.Invoke(pageToLoad, null);
-                }
-            }
-            catch (Exception) { }
+            try { var method = pageToLoad.GetType().GetMethod("UpdateUIText"); if (method != null) method.Invoke(pageToLoad, null); } catch { }
         }
 
         #endregion
 
         #region Tab Click Events
 
-        private void btnBusiness_Click(object sender, EventArgs e)
-        {
-            LoadPage(new BusinessContent());
-            HighlightTab(btnBusiness);
-        }
-
-        private void btnPlan_Click(object sender, EventArgs e)
-        {
-            LoadPage(new PlanContent());
-            HighlightTab(btnPlan);
-        }
-
-        private void btnReal_Click(object sender, EventArgs e)
-        {
-            LoadPage(new RealContent());
-            HighlightTab(btnReal);
-        }
-
-        private void roundedButton1_Click(object sender, EventArgs e)
-        {
-            LoadPage(new ExperimentContent());
-            HighlightTab(roundedButton1);
-        }
-
-        private void btnResult_Click(object sender, EventArgs e)
-        {
-            LoadPage(new ResultContent());
-            HighlightTab(btnResult);
-        }
-
-        private void btnManager_Click(object sender, EventArgs e)
-        {
-            if (UserSession.IsAdmin())
-            {
-                LoadPage(new ManagerContent());
-                HighlightTab(btnManager);
-            }
-        }
+        private void btnBusiness_Click(object sender, EventArgs e) { LoadPage(new BusinessContent()); HighlightTab(btnBusiness); }
+        private void btnPlan_Click(object sender, EventArgs e) { LoadPage(new PlanContent()); HighlightTab(btnPlan); }
+        private void btnReal_Click(object sender, EventArgs e) { LoadPage(new RealContent()); HighlightTab(btnReal); }
+        private void roundedButton1_Click(object sender, EventArgs e) { LoadPage(new ExperimentContent()); HighlightTab(roundedButton1); }
+        private void btnResult_Click(object sender, EventArgs e) { LoadPage(new ResultContent()); HighlightTab(btnResult); }
+        private void btnManager_Click(object sender, EventArgs e) { if (UserSession.IsAdmin()) { LoadPage(new ManagerContent()); HighlightTab(btnManager); } }
 
         #endregion
 
-        private void lbContract_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void lbContract_Click(object sender, EventArgs e) { }
     }
 }

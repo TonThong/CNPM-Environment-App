@@ -32,6 +32,7 @@ namespace Environmental_Monitoring.View
         private int menuCollapsedWidth = 90;
         private int menuExpandedWidth = 190;
 
+        // Các trang con
         private Notification notificationPage;
         private Contract contractPage;
         private Employee employeePage;
@@ -58,7 +59,7 @@ namespace Environmental_Monitoring.View
             ApplyTheme();
         }
 
-
+        // Thiết lập thuộc tính cơ bản của Form
         private void InitializeFormProperties()
         {
             this.Load += new System.EventHandler(this.Mainlayout_Load);
@@ -67,9 +68,11 @@ namespace Environmental_Monitoring.View
             this.DoubleBuffered = true;
         }
 
+        // Đăng ký các sự kiện click và kéo thả
         private void RegisterEventHandlers()
         {
             btnToggleMenu.Click += new EventHandler(btnToggleMenu_Click);
+
             btnHome.Click += new EventHandler(MenuButton_Click);
             btnUser.Click += new EventHandler(MenuButton_Click);
             btnContracts.Click += new EventHandler(MenuButton_Click);
@@ -92,14 +95,13 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        // Xử lý logic khi Form vừa khởi chạy
         private async void Mainlayout_Load(object sender, EventArgs e)
         {
-            // 1. Cập nhật trạng thái Hợp đồng ngay khi mở App
-            // Việc này đảm bảo hợp đồng quá hạn sẽ chuyển thành Expired -> Giao diện sẽ tô đỏ và khóa lại
             await UpdateContractStatuses();
 
             ApplyPermissions();
-            LoadHomePageForRole();
+            LoadHomePageForRole(); // Load trang chủ và áp dụng quyền ngay lập tức
             UpdateUIText();
 
             if (UserSession.CurrentUser != null)
@@ -111,9 +113,7 @@ namespace Environmental_Monitoring.View
                 lblUserName.Text = "Guest";
             }
 
-            // 2. Chạy các tác vụ thông báo hàng ngày
             await RunDailyNotificationChecks();
-
             CheckForUnreadNotifications();
 
             if (this.timerNotifications != null)
@@ -124,13 +124,14 @@ namespace Environmental_Monitoring.View
             }
 
             NotificationService.OnNotificationCreated += RefreshNotificationCount;
+            await RunDailyTasksInternal();
         }
 
         #endregion
 
-
         #region Permissions and Role Logic
 
+        // Ẩn nút quản lý nhân viên nếu không phải Admin
         private void ApplyPermissions()
         {
             if (UserSession.IsAdmin())
@@ -140,16 +141,19 @@ namespace Environmental_Monitoring.View
             btnUser.Enabled = false;
         }
 
-        private void LoadDefaultPageForRole()
+        // Gọi hàm phân quyền bên trong trang Contract
+        private void ConfigureContractPermissions()
         {
-            UserControl defaultPage = GetOrCreatePage(ref notificationPage);
-            MenuButton defaultButton = btnNotification;
+            GetOrCreatePage(ref contractPage);
 
-            LoadPage(defaultPage);
-            ResetAllButtons();
-            HighlightButton(defaultButton);
+            if (contractPage != null && UserSession.CurrentUser != null)
+            {
+                string roleName = UserSession.CurrentUser.Role?.RoleName ?? "";
+                contractPage.SetTabAccess(roleName);
+            }
         }
 
+        // Tải trang chủ mặc định dựa trên vai trò người dùng
         private void LoadHomePageForRole()
         {
             UserControl homePage = null;
@@ -172,6 +176,8 @@ namespace Environmental_Monitoring.View
                 case "result":
                     homePage = GetOrCreatePage(ref contractPage);
                     homeButton = btnContracts;
+                    // Kích hoạt phân quyền Tab ngay khi load trang
+                    ConfigureContractPermissions();
                     break;
 
                 default:
@@ -185,9 +191,11 @@ namespace Environmental_Monitoring.View
             HighlightButton(homeButton);
         }
 
+        // Hàm hỗ trợ để các form khác gọi về trang hợp đồng
         public void LoadContractPageForEmployee()
         {
             LoadPage(GetOrCreatePage(ref contractPage));
+            ConfigureContractPermissions(); // Đảm bảo phân quyền lại khi gọi hàm này
             ResetAllButtons();
             HighlightButton(btnContracts);
         }
@@ -196,6 +204,7 @@ namespace Environmental_Monitoring.View
 
         #region Page Navigation & Loading
 
+        // Tạo mới trang nếu chưa có hoặc trả về trang đã cache
         private T GetOrCreatePage<T>(ref T pageInstance) where T : UserControl, new()
         {
             if (pageInstance == null || pageInstance.IsDisposed)
@@ -207,6 +216,7 @@ namespace Environmental_Monitoring.View
             return pageInstance;
         }
 
+        // Xử lý sự kiện click menu sidebar
         private void MenuButton_Click(object sender, EventArgs e)
         {
             MenuButton clickedButton = (MenuButton)sender;
@@ -223,51 +233,36 @@ namespace Environmental_Monitoring.View
             {
                 oldActiveButton.Invalidate();
             }
-
             HighlightButton(clickedButton);
 
-            if (clickedButton == btnUser)
-            {
-                LoadPage(GetOrCreatePage(ref employeePage));
-            }
+            if (clickedButton == btnUser) LoadPage(GetOrCreatePage(ref employeePage));
             else if (clickedButton == btnContracts)
             {
                 LoadPage(GetOrCreatePage(ref contractPage));
+                ConfigureContractPermissions(); // Phân quyền Tab ngay khi bấm vào
             }
-            else if (clickedButton == btnNotification)
-            {
-                LoadPage(GetOrCreatePage(ref notificationPage));
-            }
-            else if (clickedButton == btnStats)
-            {
-                LoadPage(GetOrCreatePage(ref statsPage));
-            }
-            else if (clickedButton == btnSetting)
-            {
-                LoadPage(GetOrCreatePage(ref settingPage));
-            }
-            else if (clickedButton == btnAI)
-            {
-                LoadPage(GetOrCreatePage(ref aiPage));
-            }
-            else if (clickedButton == btnIntroduce)
-            {
-                LoadPage(GetOrCreatePage(ref introducePage));
-            }
+            else if (clickedButton == btnNotification) LoadPage(GetOrCreatePage(ref notificationPage));
+            else if (clickedButton == btnStats) LoadPage(GetOrCreatePage(ref statsPage));
+            else if (clickedButton == btnSetting) LoadPage(GetOrCreatePage(ref settingPage));
+            else if (clickedButton == btnAI) LoadPage(GetOrCreatePage(ref aiPage));
+            else if (clickedButton == btnIntroduce) LoadPage(GetOrCreatePage(ref introducePage));
         }
 
+        // Hiển thị UserControl lên panel chính
         private void LoadPage(UserControl pageToLoad)
         {
             if (pageToLoad == null) return;
             pageToLoad.BringToFront();
         }
 
+        // Đổi trạng thái visual của nút được chọn
         private void HighlightButton(MenuButton selectedButton)
         {
             currentActiveButton = selectedButton;
             selectedButton.IsSelected = true;
         }
 
+        // Reset trạng thái visual của tất cả nút
         private void ResetAllButtons()
         {
             foreach (Control ctrl in panelMenu.Controls)
@@ -283,6 +278,7 @@ namespace Environmental_Monitoring.View
 
         #region Menu Collapse/Expand Logic
 
+        // Xử lý mở/đóng menu sidebar
         private void btnToggleMenu_Click(object sender, EventArgs e)
         {
             isMenuCollapsed = !isMenuCollapsed;
@@ -304,6 +300,7 @@ namespace Environmental_Monitoring.View
             this.ResumeLayout(true);
         }
 
+        // Cập nhật text hiển thị trên nút menu
         private void SetMenuState(bool collapsed)
         {
             try
@@ -360,6 +357,7 @@ namespace Environmental_Monitoring.View
 
         #region Theme & Language
 
+        // Áp dụng theme màu sắc cho form
         private void ApplyTheme()
         {
             this.BackColor = ThemeManager.BackgroundColor;
@@ -385,12 +383,14 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        // Cập nhật ngôn ngữ cho toàn bộ giao diện
         public void UpdateUIText()
         {
             SetMenuState(isMenuCollapsed);
             ApplyTheme();
         }
 
+        // Cập nhật ngôn ngữ cho tất cả các control con
         public void UpdateAllChildLanguages()
         {
             this.UpdateUIText();
@@ -419,6 +419,7 @@ namespace Environmental_Monitoring.View
 
         #region Utilities & Form Events
 
+        // Hiển thị thông báo dạng popup
         public void ShowGlobalAlert(string message, AlertPanel.AlertType type)
         {
             if (globalAlertPanel != null)
@@ -431,11 +432,13 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        // Đóng ứng dụng
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        // Đăng xuất người dùng
         private void pbLogout_Click(object sender, EventArgs e)
         {
             ResourceManager rm = new ResourceManager("Environmental_Monitoring.Strings", typeof(Mainlayout).Assembly);
@@ -459,14 +462,10 @@ namespace Environmental_Monitoring.View
 
         #region Notification Logic
 
-        /// <summary>
-        /// Sự kiện chạy mỗi phút để kiểm tra thông báo và cập nhật trạng thái hợp đồng.
-        /// </summary>
+        // Timer kiểm tra thông báo và hợp đồng định kỳ
         private async void TimerNotifications_Tick(object sender, EventArgs e)
         {
             CheckForUnreadNotifications();
-
-            // Cập nhật trạng thái Expired định kỳ (đề phòng treo máy qua đêm)
             await UpdateContractStatuses();
 
             DateTime now = DateTime.Now;
@@ -486,15 +485,11 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// HÀM MỚI: Cập nhật trạng thái hợp đồng thành Expired nếu quá hạn.
-        /// Hàm này sẽ chạy mỗi khi mở App và trong Timer.
-        /// </summary>
+        // Cập nhật trạng thái hợp đồng quá hạn trong DB
         private async Task UpdateContractStatuses()
         {
             try
             {
-                // Cập nhật tất cả hợp đồng Active mà có ngày trả < hôm nay -> Expired
                 string updateExpiredQuery = @"
                     UPDATE Contracts
                     SET Status = 'Expired'
@@ -509,6 +504,7 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        // Kiểm tra số lượng thông báo chưa đọc
         public void CheckForUnreadNotifications()
         {
             if (UserSession.CurrentUser == null || UserSession.CurrentUser.RoleID == null)
@@ -538,6 +534,7 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        // Cập nhật icon chuông thông báo
         private void UpdateBellIcon()
         {
             if (unreadCount > 0)
@@ -554,6 +551,7 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        // Chạy kiểm tra thông báo hàng ngày (chỉ Admin)
         private async Task RunDailyNotificationChecks()
         {
             if (!UserSession.IsAdmin() || UserSession.CurrentUser?.RoleID.Value != 5)
@@ -576,53 +574,160 @@ namespace Environmental_Monitoring.View
             }
         }
 
-        /// <summary>
-        /// Tạo thông báo hàng ngày.
-        /// </summary>
+        // Logic chính: Gửi mail và tạo thông báo hợp đồng
         private async Task RunDailyTasksInternal()
         {
-            // Đảm bảo trạng thái đã được cập nhật trước khi tạo thông báo
             await UpdateContractStatuses();
 
             int adminRoleID = 5;
+            string adminEmail = await GetEmailByRoleID(adminRoleID);
 
-            string overdueQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
-                                    WHERE Status = 'Expired' 
-                                    AND NgayTraKetQua < CURDATE()";
+            var deptHeadOverdueMails = new Dictionary<int, StringBuilder>();
+            var deptHeadExpiringMails = new Dictionary<int, StringBuilder>();
 
+            StringBuilder adminOverdueBody = new StringBuilder();
+            StringBuilder adminExpiringBody = new StringBuilder();
+
+            int adminOverdueCount = 0;
+            int adminExpiringCount = 0;
+
+            string baseQuery = @"SELECT c.ContractID, c.MaDon, c.NgayTraKetQua, c.TienTrinh, cus.TenDoanhNghiep 
+                                 FROM Contracts c 
+                                 JOIN Customers cus ON c.CustomerID = cus.CustomerID";
+
+            // XỬ LÝ HỢP ĐỒNG QUÁ HẠN
+            string overdueQuery = baseQuery + " WHERE c.Status = 'Expired' AND c.NgayTraKetQua < CURDATE()";
             DataTable overdueContracts = await Task.Run(() => DataProvider.Instance.ExecuteQuery(overdueQuery));
+
             foreach (DataRow row in overdueContracts.Rows)
             {
                 int contractId = Convert.ToInt32(row["ContractID"]);
                 string maDon = row["MaDon"].ToString();
+                string tenCongTy = row["TenDoanhNghiep"].ToString();
+                int tienTrinh = Convert.ToInt32(row["TienTrinh"]);
                 DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
                 int daysOverdue = (DateTime.Now.Date - ngayTra.Date).Days;
 
-                string noiDung = $"Hợp đồng '{maDon}' đã trễ hạn {daysOverdue} ngày.";
-                await CreateDailyNotificationOnce(contractId, "QuaHan", noiDung, adminRoleID);
+                string noiDung = $"Hợp đồng '{maDon}' ({tenCongTy}) đã trễ hạn {daysOverdue} ngày.";
+                string mailLine = $"- <b>{maDon} - {tenCongTy}</b>: Trễ {daysOverdue} ngày (Hạn chót: {ngayTra:dd/MM/yyyy})<br/>";
+
+                bool isNew = await CreateDailyNotificationOnce(contractId, "QuaHan", noiDung, adminRoleID);
+                int headRoleID = GetDepartmentHeadRoleID(tienTrinh);
+                if (headRoleID > 0)
+                {
+                    await CreateDailyNotificationOnce(contractId, "QuaHan", noiDung, headRoleID);
+                }
+
+                if (isNew)
+                {
+                    adminOverdueBody.AppendLine(mailLine);
+                    adminOverdueCount++;
+
+                    if (headRoleID > 0)
+                    {
+                        if (!deptHeadOverdueMails.ContainsKey(headRoleID)) deptHeadOverdueMails[headRoleID] = new StringBuilder();
+                        deptHeadOverdueMails[headRoleID].AppendLine(mailLine);
+                    }
+                }
             }
 
-            string expiringQuery = @"SELECT ContractID, MaDon, NgayTraKetQua FROM Contracts 
-                                     WHERE Status = 'Active' 
-                                     AND NgayTraKetQua BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
-
+            // XỬ LÝ HỢP ĐỒNG SẮP HẾT HẠN
+            string expiringQuery = baseQuery + " WHERE c.Status = 'Active' AND c.NgayTraKetQua BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 5 DAY)";
             DataTable expiringContracts = await Task.Run(() => DataProvider.Instance.ExecuteQuery(expiringQuery));
+
             foreach (DataRow row in expiringContracts.Rows)
             {
                 int contractId = Convert.ToInt32(row["ContractID"]);
                 string maDon = row["MaDon"].ToString();
+                string tenCongTy = row["TenDoanhNghiep"].ToString();
+                int tienTrinh = Convert.ToInt32(row["TienTrinh"]);
                 DateTime ngayTra = Convert.ToDateTime(row["NgayTraKetQua"]);
                 int daysLeft = (ngayTra.Date - DateTime.Now.Date).Days;
 
-                string noiDung = $"Hợp đồng '{maDon}' sắp hết hạn, còn {daysLeft} ngày.";
-                await CreateDailyNotificationOnce(contractId, "SapHetHan", noiDung, adminRoleID);
+                string noiDung = $"Hợp đồng '{maDon}' ({tenCongTy}) sắp hết hạn, còn {daysLeft} ngày.";
+                string mailLine = $"- <b>{maDon} - {tenCongTy}</b>: Còn {daysLeft} ngày (Hạn chót: {ngayTra:dd/MM/yyyy})<br/>";
+
+                bool isNew = await CreateDailyNotificationOnce(contractId, "SapHetHan", noiDung, adminRoleID);
+                int headRoleID = GetDepartmentHeadRoleID(tienTrinh);
+                if (headRoleID > 0)
+                {
+                    await CreateDailyNotificationOnce(contractId, "SapHetHan", noiDung, headRoleID);
+                }
+
+                if (isNew)
+                {
+                    adminExpiringBody.AppendLine(mailLine);
+                    adminExpiringCount++;
+
+                    if (headRoleID > 0)
+                    {
+                        if (!deptHeadExpiringMails.ContainsKey(headRoleID)) deptHeadExpiringMails[headRoleID] = new StringBuilder();
+                        deptHeadExpiringMails[headRoleID].AppendLine(mailLine);
+                    }
+                }
+            }
+
+            // GỬI MAIL
+            if (adminOverdueCount > 0 && !string.IsNullOrEmpty(adminEmail))
+            {
+                string subject = $"[CẢNH BÁO] Tổng hợp {adminOverdueCount} hợp đồng QUÁ HẠN (Toàn hệ thống)";
+                string body = $"<h3>Danh sách hợp đồng quá hạn trên toàn hệ thống:</h3>{adminOverdueBody}<p>Vui lòng kiểm tra và đôn đốc các bộ phận.</p>";
+                await EmailService.SendEmailAsync(adminEmail, subject, body);
+            }
+            if (adminExpiringCount > 0 && !string.IsNullOrEmpty(adminEmail))
+            {
+                string subject = $"[NHẮC NHỞ] Tổng hợp {adminExpiringCount} hợp đồng SẮP HẾT HẠN (Toàn hệ thống)";
+                string body = $"<h3>Danh sách hợp đồng sắp hết hạn trên toàn hệ thống:</h3>{adminExpiringBody}<p>Vui lòng kiểm tra.</p>";
+                await EmailService.SendEmailAsync(adminEmail, subject, body);
+            }
+
+            foreach (var kvp in deptHeadOverdueMails)
+            {
+                int roleID = kvp.Key;
+                string content = kvp.Value.ToString();
+                string email = await GetEmailByRoleID(roleID);
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    string subject = $"[CẢNH BÁO] Phòng bạn có hợp đồng QUÁ HẠN xử lý";
+                    string body = $"<h3>Các hợp đồng đang nằm tại phòng bạn đã quá hạn:</h3>{content}<p>Vui lòng xử lý gấp.</p>";
+                    await EmailService.SendEmailAsync(email, subject, body);
+                }
+            }
+
+            foreach (var kvp in deptHeadExpiringMails)
+            {
+                int roleID = kvp.Key;
+                string content = kvp.Value.ToString();
+                string email = await GetEmailByRoleID(roleID);
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    string subject = $"[NHẮC NHỞ] Phòng bạn có hợp đồng SẮP HẾT HẠN";
+                    string body = $"<h3>Các hợp đồng đang nằm tại phòng bạn sắp hết hạn:</h3>{content}<p>Vui lòng ưu tiên xử lý.</p>";
+                    await EmailService.SendEmailAsync(email, subject, body);
+                }
             }
 
             Settings.Default.LastNotificationCheck = DateTime.Now;
             Settings.Default.Save();
         }
 
-        private async Task CreateDailyNotificationOnce(int contractId, string loai, string noiDung, int recipientRoleID)
+        // Lấy Email theo RoleID
+        private async Task<string> GetEmailByRoleID(int roleID)
+        {
+            try
+            {
+                string query = "SELECT Email FROM Employees WHERE RoleID = @roleId LIMIT 1";
+                object result = await Task.Run(() => DataProvider.Instance.ExecuteScalar(query, new object[] { roleID }));
+                if (result != null && result != DBNull.Value) return result.ToString();
+            }
+            catch { }
+            return "";
+        }
+
+        // Tạo thông báo DB (chỉ 1 lần/ngày)
+        private async Task<bool> CreateDailyNotificationOnce(int contractId, string loai, string noiDung, int recipientRoleID)
         {
             string checkQuery = @"SELECT COUNT(*) FROM Notifications 
                                   WHERE ContractID = @contractId 
@@ -637,11 +742,15 @@ namespace Environmental_Monitoring.View
             if (count == 0)
             {
                 NotificationService.CreateNotification(loai, noiDung, recipientRoleID, contractId, null);
+                return true;
             }
+
+            return false;
         }
 
         #endregion
 
+        // Mở popup thông báo
         private void iconBell_Click(object sender, EventArgs e)
         {
             if (UserSession.CurrentUser == null || UserSession.CurrentUser.RoleID == null) return;
@@ -652,9 +761,7 @@ namespace Environmental_Monitoring.View
                 notificationBell = new NotificationBell();
 
                 Point bellScreenLocation = iconBell.PointToScreen(Point.Empty);
-
                 int formX = bellScreenLocation.X + iconBell.Width - notificationBell.Width;
-
                 int formY = bellScreenLocation.Y + iconBell.Height + 5;
                 notificationBell.Location = new Point(formX, formY);
 
@@ -681,6 +788,7 @@ namespace Environmental_Monitoring.View
             }
         }
 
+        // Cập nhật số thông báo (gọi từ luồng khác)
         private void RefreshNotificationCount()
         {
             if (this.InvokeRequired)
@@ -690,6 +798,20 @@ namespace Environmental_Monitoring.View
             else
             {
                 CheckForUnreadNotifications();
+            }
+        }
+
+        // Mapping RoleID theo tiến trình
+        private int GetDepartmentHeadRoleID(int tienTrinh)
+        {
+            switch (tienTrinh)
+            {
+                case 1: return 6;  // Kế hoạch -> RoleID 6
+                case 2: return 10; // Hiện trường -> RoleID 10
+                case 3: return 7;  // Thí nghiệm -> RoleID 7
+                case 4: return 8;  // Kết quả -> RoleID 8
+
+                default: return 0;
             }
         }
     }

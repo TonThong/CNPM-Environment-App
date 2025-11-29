@@ -65,12 +65,12 @@ namespace Environmental_Monitoring.View
             tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 6;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 2.94117641F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.803922F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.803922F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 62.7451F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.803922F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 4.901961F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 64F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 3F));
             tableLayoutPanel1.Size = new Size(1221, 710);
             tableLayoutPanel1.TabIndex = 1;
             // 
@@ -84,10 +84,10 @@ namespace Environmental_Monitoring.View
             pnlPagination.Controls.Add(lblPageInfo);
             pnlPagination.Controls.Add(btnNext);
             pnlPagination.Controls.Add(btnLast);
-            pnlPagination.Location = new Point(331, 607);
+            pnlPagination.Location = new Point(331, 621);
             pnlPagination.Margin = new Padding(3, 4, 3, 4);
             pnlPagination.Name = "pnlPagination";
-            pnlPagination.Size = new Size(557, 61);
+            pnlPagination.Size = new Size(557, 63);
             pnlPagination.TabIndex = 25;
             // 
             // btnFirst
@@ -149,13 +149,13 @@ namespace Environmental_Monitoring.View
             dgvEmployee.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             tableLayoutPanel1.SetColumnSpan(dgvEmployee, 3);
             dgvEmployee.EnableHeadersVisualStyles = false;
-            dgvEmployee.Location = new Point(64, 162);
+            dgvEmployee.Location = new Point(64, 167);
             dgvEmployee.Margin = new Padding(3, 4, 3, 4);
             dgvEmployee.Name = "dgvEmployee";
             dgvEmployee.RowHeadersVisible = false;
             dgvEmployee.RowHeadersWidth = 51;
             dgvEmployee.RowTemplate.Height = 35;
-            dgvEmployee.Size = new Size(1092, 436);
+            dgvEmployee.Size = new Size(1092, 446);
             dgvEmployee.TabIndex = 24;
             // 
             // btnAdd
@@ -173,7 +173,7 @@ namespace Environmental_Monitoring.View
             btnAdd.HoverColor = Color.FromArgb(0, 192, 0);
             btnAdd.Image = (Image)resources.GetObject("btnAdd.Image");
             btnAdd.ImageAlign = ContentAlignment.MiddleLeft;
-            btnAdd.Location = new Point(64, 93);
+            btnAdd.Location = new Point(64, 96);
             btnAdd.Margin = new Padding(3, 4, 3, 4);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(243, 61);
@@ -186,7 +186,7 @@ namespace Environmental_Monitoring.View
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
             lblTitle.ForeColor = Color.Black;
-            lblTitle.Location = new Point(64, 20);
+            lblTitle.Location = new Point(64, 21);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(334, 50);
             lblTitle.TabIndex = 0;
@@ -200,7 +200,7 @@ namespace Environmental_Monitoring.View
             txtSearch.Cursor = Cursors.IBeam;
             txtSearch.FocusBorderColor = SystemColors.ControlDark;
             txtSearch.HoverBorderColor = Color.DarkGray;
-            txtSearch.Location = new Point(625, 23);
+            txtSearch.Location = new Point(625, 24);
             txtSearch.Multiline = false;
             txtSearch.Name = "txtSearch";
             txtSearch.NormalBorderColor = Color.DarkGray;

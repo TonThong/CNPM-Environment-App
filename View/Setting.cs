@@ -178,7 +178,7 @@ namespace Environmental_Monitoring
                     btnRegisterFace.Text = rm.GetString("Settings_FaceID_Button", culture);
 
                     lblFaceID.ForeColor = ThemeManager.TextColor;
-                    btnRegisterFace.BackColor = ThemeManager.SecondaryPanelColor; 
+                    btnRegisterFace.BackColor = ThemeManager.SecondaryPanelColor;
                     btnRegisterFace.ForeColor = ThemeManager.TextColor;
                 }
             }
@@ -207,6 +207,11 @@ namespace Environmental_Monitoring
             }
 
             if (mainForm != null) mainForm.Show();
+        }
+
+        private void lblTheme_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
