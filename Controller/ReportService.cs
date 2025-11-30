@@ -1,15 +1,20 @@
 ﻿using Environmental_Monitoring.Controller;
 using Environmental_Monitoring.Controller.Data;
+using iText.Commons.Actions;
 using iText.IO.Font;
 using iText.IO.Image;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas;
 using iText.Kernel.Pdf.Canvas.Draw;
+using iText.Kernel.Pdf.Event;
+using iText.Kernel.Pdf.Extgstate;
 using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -107,6 +112,8 @@ namespace Environmental_Monitoring.Controller
                         }
                         catch { }
                     }
+
+                    pdf.AddEventHandler(PdfDocumentEvent.END_PAGE, new WatermarkEventHandler(font));
 
                     // Bảng header 2 cột
                     Table headerTable = new Table(UnitValue.CreatePercentArray(new float[] { 30, 70 }))
@@ -265,6 +272,26 @@ namespace Environmental_Monitoring.Controller
 
                     doc.Add(table);
 
+                    Paragraph title_note = new Paragraph("" + "Ghi Chú");
+                    title_note.SetFont(font);
+                    title_note.SetFontSize(14);
+                    title_note.SetUnderline();
+                    doc.Add(title_note);
+
+                    List bulletList = new List()
+                        .SetListSymbol("   - ")
+                        .SetFontSize(11)
+                        .SetFont(font);
+
+                    bulletList.Add(new ListItem("QCVN 05:2013 / BTNMT: Quy chuẩn kỹ thuật quốc gia"));
+                    bulletList.Add(new ListItem("(a)QCVN 27:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+                    bulletList.Add(new ListItem("(b)QCVN 26:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+                    bulletList.Add(new ListItem("(c)QCVN 28:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+                    bulletList.Add(new ListItem("(d)QCVN 28:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+                    bulletList.Add(new ListItem("(e)QCVN 29:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+
+                    doc.Add(bulletList);
+
                     // Ngày tháng và Chữ ký
                     DateTime now = DateTime.Now;
                     string dateString = rm.GetString("PDF_DateFormat", culture);
@@ -333,6 +360,55 @@ namespace Environmental_Monitoring.Controller
             }
 
             return p;
+        }
+    }
+}
+
+public class WatermarkEventHandler : AbstractPdfDocumentEventHandler
+{
+    private readonly PdfFont font;
+
+    public WatermarkEventHandler(PdfFont font)
+    {
+        this.font = font;
+    }
+
+    protected override void OnAcceptedEvent(AbstractPdfDocumentEvent docEvent)
+    {
+        if (docEvent is PdfDocumentEvent pdfEvent)
+        {
+            PdfDocument pdfDoc = pdfEvent.GetDocument();
+            PdfPage page = pdfEvent.GetPage();
+
+            var rect = page.GetPageSize();
+            var canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
+            canvas.SaveState();
+
+            var gs = new PdfExtGState().SetFillOpacity(0.12f);
+            canvas.SetExtGState(gs);
+
+            float x = rect.GetWidth() / 2;
+            float y = rect.GetHeight() / 2;
+
+            using (var drawingCanvas = new Canvas(canvas, rect))
+            {
+                Paragraph watermark = new Paragraph("GREEN FLOW")
+                    .SetFont(font)
+                    .SetFontSize(60)
+                    .SetFontColor(ColorConstants.GREEN);
+
+                drawingCanvas.ShowTextAligned(
+                    watermark,
+                    x,
+                    y,
+                    pdfDoc.GetPageNumber(page),
+                    TextAlignment.CENTER,
+                    VerticalAlignment.MIDDLE,
+                    (float)(Math.PI / 6) // 30 độ
+                );
+            }
+
+            canvas.RestoreState();
         }
     }
 }
