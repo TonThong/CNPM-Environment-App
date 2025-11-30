@@ -388,7 +388,6 @@ E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\PollutionModel.ml
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Emgu.CV.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Emgu.CV.Bitmap.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\itext.bouncy-castle-adapter.dll
-E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\itextsharp.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Microsoft.ML.Core.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Microsoft.ML.Data.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Microsoft.ML.KMeansClustering.dll
@@ -498,3 +497,4 @@ E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\NAudio.WinForms.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\NAudio.WinMM.dll
 E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\Vosk.dll
+E:\TDTU\CNPM\Environmental_Monitoring\bin\Debug\net8.0-windows\BouncyCastle.Crypto.dll

@@ -265,6 +265,25 @@ namespace Environmental_Monitoring.Controller
 
                     doc.Add(table);
 
+                    Paragraph title_note = new Paragraph("" + "Ghi Chú");
+                    title_note.SetFont(font);
+                    title_note.SetFontSize(14);
+                    title_note.SetUnderline();
+                    doc.Add(title_note);
+
+                    List bulletList = new List()
+                        .SetListSymbol("   - ")
+                        .SetFontSize(11);
+
+                    bulletList.Add(new ListItem("QCVN 05:2013 / BTNMT: Quy chuẩn kỹ thuật quốc gia"));
+                    bulletList.Add(new ListItem("(a)QCVN 27:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+                    bulletList.Add(new ListItem("(b)QCVN 26:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+                    bulletList.Add(new ListItem("(c)QCVN 28:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+                    bulletList.Add(new ListItem("(d)QCVN 28:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+                    bulletList.Add(new ListItem("(e)QCVN 29:2010 / BTNMT - Quy chuẩn kỹ thuật Quốc gia"));
+
+                    doc.Add(bulletList);
+
                     // Ngày tháng và Chữ ký
                     DateTime now = DateTime.Now;
                     string dateString = rm.GetString("PDF_DateFormat", culture);
